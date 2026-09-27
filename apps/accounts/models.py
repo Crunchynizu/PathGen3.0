@@ -2,6 +2,7 @@ import uuid
 
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -84,3 +85,16 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return self.is_active and self.is_superuser
+
+    def save(self, *args, **kwargs):
+        if not self._state.adding and self.pk:
+            original = type(self).objects.filter(pk=self.pk).values(
+                "username",
+                "role",
+            ).first()
+            if original and (
+                original["username"] != self.username
+                or original["role"] != self.role
+            ):
+                raise ValidationError("Username and role are immutable.")
+        return super().save(*args, **kwargs)

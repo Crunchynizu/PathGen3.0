@@ -1,0 +1,228 @@
+/* ==========================================================================
+   Theme — Light Mode
+   Primary: #0cc0df (accent only)
+   Interactive fill: #0a9db8 (passes WCAG AA with white text)
+   Font: Inter (Google Fonts) — add this in your <head>, before this file:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+   ========================================================================== */
+
+:root {
+  color-scheme: only light;
+
+  /* ---- Primary scale (cyan) ------------------------------------------- */
+  --primary-50:  #eafcfd;
+  --primary-100: #d1f6fa;
+  --primary-200: #a3e9f2;
+  --primary-300: #6ed8e9;
+  --primary-400: #38c9de;
+  --primary-500: #0cc0df; /* base — accent only, never body text */
+  --primary-600: #0a9db8;
+  --primary-700: #087b90;
+  --primary-800: #0a5f6f;
+  --primary-900: #0b4a56;
+
+  /* ---- Neutral scale (slightly cool gray) ------------------------------ */
+  --gray-50:  #f8fafb;
+  --gray-100: #eff2f4;
+  --gray-200: #dfe4e8;
+  --gray-300: #c7cfd6;
+  --gray-400: #9aa5b1;
+  --gray-500: #74808d;
+  --gray-600: #57626d;
+  --gray-700: #3f4750;
+  --gray-800: #262b31;
+  --gray-900: #15181b;
+
+  /* ---- Status colors ---------------------------------------------------- */
+  --success: #1fa860;
+  --success-bg: #e5f7ee;
+  --warning: #e6a319;
+  --warning-bg: #fdf3df;
+  --danger:  #e0403f;
+  --danger-bg: #fbe7e6;
+  --info:    var(--primary-700);
+  --info-bg: var(--primary-50);
+
+  /* ---- Surfaces & borders ------------------------------------------------ */
+  --color-bg:            #ffffff;
+  --color-bg-subtle:     var(--gray-50);
+  --color-surface:       #ffffff;
+  --color-surface-raised:#ffffff;
+  --color-border:        var(--gray-200);
+  --color-border-strong: var(--gray-300);
+  --color-focus-ring:    var(--primary-700);
+
+  /* ---- Text --------------------------------------------------------------- */
+  --color-text:            var(--gray-900);
+  --color-text-secondary:  var(--gray-600);
+  --color-text-muted:      var(--gray-500);
+  --color-text-inverse:    #ffffff;
+  --color-text-link:       var(--primary-700);
+  --color-text-link-hover: var(--primary-800);
+  --color-text-cyan:       #0A8298; /* cyan text on white — passes AA */
+
+  /* ---- Interactive / brand ------------------------------------------------ */
+  --color-primary:        var(--primary-600);
+  --color-primary-hover:  var(--primary-700);
+  --color-primary-active: var(--primary-800);
+  --color-primary-subtle: var(--primary-50);
+  --color-on-primary:     #ffffff;
+
+  /* ---- Accent (large fills, icons, decoration) ---------------------------- */
+  --color-accent:         var(--primary-500);
+  --color-accent-hover:   var(--primary-600);
+
+  /* ---- Typography --------------------------------------------------------- */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  2rem;
+
+  --leading-tight:  1.2;
+  --leading-normal: 1.5;
+  --leading-loose:  1.7;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold:   700;
+
+  /* ---- Radius & shadow (kept minimal) -------------------------------------- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 1px 2px rgba(21, 24, 27, 0.06);
+  --shadow-md: 0 4px 10px rgba(21, 24, 27, 0.08);
+
+  /* ---- Translucent surface (frosted panels, toolbars) --------------------- */
+  --surface-translucent-bg: rgba(255, 255, 255, 0.7);
+  --surface-translucent-blur: 20px;
+  --surface-translucent-edge: rgba(255, 255, 255, 0.5); /* bright top border = light catching glass */
+}
+
+/* ---- Type scale: size-specific tracking & leading -----------------------
+   Large text needs tighter leading + negative tracking; body stays near 0. */
+
+h1, .text-3xl {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.02em;
+}
+
+h2, .text-2xl {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.015em;
+}
+
+h3, .text-xl {
+  font-size: var(--text-xl);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+body, p, .text-base {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  letter-spacing: 0;
+}
+
+.text-sm {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  letter-spacing: 0.005em; /* small text wants slightly positive tracking */
+}
+
+.text-xs {
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  letter-spacing: 0.01em;
+}
+
+/* ---- Base element defaults --------------------------------------------- */
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  font-optical-sizing: auto;
+}
+
+a:link, a:visited {
+  color: var(--color-text-link);
+}
+a:hover {
+  color: var(--color-text-link-hover);
+}
+
+/* ---- Press feedback (§1 Response — feedback on press, not release) ---- */
+
+.pressable {
+  transition: transform 100ms ease-out;
+}
+.pressable:active {
+  transform: scale(0.97);
+}
+
+::selection {
+  background: var(--primary-200);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---- Translucent surface utility (toolbars, sheets, sticky headers) ---- */
+
+.surface-translucent {
+  background: var(--surface-translucent-bg);
+  backdrop-filter: blur(var(--surface-translucent-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--surface-translucent-blur)) saturate(180%);
+  border-top: 1px solid var(--surface-translucent-edge);
+}
+
+/* ---- Accessibility fallbacks ------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .pressable {
+    transition: opacity 150ms ease;
+    transform: none !important;
+  }
+  .pressable:active {
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .surface-translucent {
+    background: var(--color-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-top: 1px solid var(--color-border);
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-border: var(--gray-400);
+    --color-border-strong: var(--gray-600);
+    --color-text-secondary: var(--gray-700);
+    --color-text-muted: var(--gray-600);
+  }
+  .surface-translucent {
+    background: var(--color-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid var(--color-border-strong);
+  }
+}

@@ -1,0 +1,26 @@
+<dialog id="update-name-dialog" class="modal-dialog"{% if name_form.errors %} data-auto-open{% endif %}>
+  <div class="modal-content">
+    <div class="modal-header">
+      <div><p class="eyebrow">My Account</p><h2 class="text-xl font-bold">Update name</h2></div>
+      <button class="icon-button" type="button" data-dialog-close aria-label="Close update name dialog">×</button>
+    </div>
+    <form class="form-stack" method="post" action="{% url 'account:update_name' %}" novalidate>
+      {% csrf_token %}
+      {% if name_form.non_field_errors %}<div class="error-summary" role="alert">{{ name_form.non_field_errors }}</div>{% endif %}
+      <div class="form-field">
+        <label class="form-label" for="{{ name_form.first_name.id_for_label }}">First name</label>
+        {{ name_form.first_name }}
+        {% if name_form.first_name.errors %}<div class="field-errors">{{ name_form.first_name.errors }}</div>{% endif %}
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="{{ name_form.last_name.id_for_label }}">Last name</label>
+        {{ name_form.last_name }}
+        {% if name_form.last_name.errors %}<div class="field-errors">{{ name_form.last_name.errors }}</div>{% endif %}
+      </div>
+      <div class="account-actions">
+        <button class="primary-button" type="submit">Save name</button>
+        <button class="secondary-button" type="button" data-dialog-close>Cancel</button>
+      </div>
+    </form>
+  </div>
+</dialog>

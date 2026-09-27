@@ -40,6 +40,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "apps.accounts.middleware.AccountSessionSecurityMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -94,6 +95,22 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
+LOGIN_URL = "account:login"
+
+SESSION_COOKIE_NAME = "pathgen_sessionid"
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_PATH = "/"
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_ABSOLUTE_TIMEOUT_SECONDS = int(
+    os.getenv("SESSION_ABSOLUTE_TIMEOUT_SECONDS", "28800")
+)
+SESSION_IDLE_TIMEOUT_SECONDS = int(os.getenv("SESSION_IDLE_TIMEOUT_SECONDS", "1800"))
+SESSION_COOKIE_AGE = SESSION_ABSOLUTE_TIMEOUT_SECONDS
+
+LOGIN_THROTTLE_WINDOW_SECONDS = 900
+LOGIN_THROTTLE_MAX_FAILURES = 5
+LOGIN_THROTTLE_MAX_DELAY_SECONDS = 300
 
 LOGGING = {
     "version": 1,
