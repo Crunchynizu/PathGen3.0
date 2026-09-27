@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "policy_version": "Q-LEARNING-V1",
+    "artifact_kind": "placeholder",
+    "placeholder_reason": "external trainer not yet available",
+    "placeholder_policy": "weakest_band decides preferred action",
+    "trained_episodes": 0,
+    "training_seed": null
+  },
+  "q_values": {
+    "(np, np, pp)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, np, pf)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, np, fp)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, np, ff)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, dev, pp)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, dev, pf)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, dev, fp)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, dev, ff)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, strong, pp)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, strong, pf)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, strong, fp)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(np, strong, ff)": {"progress": 0.0, "additional_exercise": 0.2, "foundational_exercise": 0.5},
+    "(dev, dev, pp)": {"progress": 0.2, "additional_exercise": 0.5, "foundational_exercise": 0.1},
+    "(dev, dev, pf)": {"progress": 0.2, "additional_exercise": 0.5, "foundational_exercise": 0.1},
+    "(dev, dev, fp)": {"progress": 0.2, "additional_exercise": 0.5, "foundational_exercise": 0.1},
+    "(dev, dev, ff)": {"progress": 0.2, "additional_exercise": 0.5, "foundational_exercise": 0.1},
+    "(dev, strong, pp)": {"progress": 0.2, "additional_exercise": 0.5, "foundational_exercise": 0.1},
+    "(dev, strong, pf)": {"progress": 0.2, "additional_exercise": 0.5, "foundational_exercise": 0.1},
+    "(dev, strong, fp)": {"progress": 0.2, "additional_exercise": 0.5, "foundational_exercise": 0.1},
+    "(dev, strong, ff)": {"progress": 0.2, "additional_exercise": 0.5, "foundational_exercise": 0.1},
+    "(strong, strong, pp)": {"progress": 0.5, "additional_exercise": 0.1, "foundational_exercise": 0.0},
+    "(strong, strong, pf)": {"progress": 0.5, "additional_exercise": 0.1, "foundational_exercise": 0.0},
+    "(strong, strong, fp)": {"progress": 0.5, "additional_exercise": 0.1, "foundational_exercise": 0.0},
+    "(strong, strong, ff)": {"progress": 0.5, "additional_exercise": 0.1, "foundational_exercise": 0.0}
+  }
+}

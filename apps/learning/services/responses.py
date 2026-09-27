@@ -5,10 +5,10 @@ from django.db import transaction
 from django.utils import timezone
 
 from apps.accounts.models import User
+from apps.adaptive.services import process_response
 from apps.core.models import SystemSetting
 from apps.curriculum.models import Lesson, QuestionChoice
 from apps.learning.models import Response, Session, SessionItem, StudentPath
-from apps.learning.services.bkt_stub import record_response as call_bkt_stub
 from apps.learning.services.paths import transition_path
 
 
@@ -195,7 +195,7 @@ def submit_response(*, actor, session_id, session_item_id, selected_choice_id, h
         hint_used=bool(hint_used),
     )
     if session.session_type != Session.SessionType.POSTTEST:
-        call_bkt_stub(response)
+        process_response(response.pk)
 
     if SessionItem.objects.filter(session=session, response__isnull=True).exists():
         if session.status == Session.Status.ISSUED:
