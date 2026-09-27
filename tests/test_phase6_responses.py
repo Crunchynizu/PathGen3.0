@@ -99,6 +99,8 @@ class ResponseServiceTests(Phase6SeededTestCase):
         self.path.refresh_from_db()
         self.assertEqual(self.path.status, StudentPath.Status.POSTTEST_READY)
 
+        self.setting.posttest_access_enabled = True
+        self.setting.save(update_fields=["posttest_access_enabled"])
         posttest = self._session(Session.SessionType.POSTTEST, limit=1)
         self._answer(posttest)
         self.path.refresh_from_db()

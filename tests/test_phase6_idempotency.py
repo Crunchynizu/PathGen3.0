@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 from apps.adaptive.models import MasteryEvent
+from apps.adaptive.services import process_response
 from apps.curriculum.models import QuestionSet
 from apps.learning.models import Response, Session, StudentPath
 from apps.learning.services.responses import submit_response
@@ -35,14 +36,17 @@ class ResponseIdempotencyTests(Phase6SeededTestCase):
         lesson = self.lesson(1)
         self.set_path(status=StudentPath.Status.LEARNING, stage=StudentPath.Stage.REGULAR, lesson=lesson)
         session = self._one_item_session(Session.SessionType.REGULAR, lesson=lesson)
-        with patch("apps.learning.services.responses.process_response") as process_bkt:
+        with patch(
+            "apps.learning.services.responses.process_response",
+            wraps=process_response,
+        ) as process_bkt:
             first = self._submit(session)
             second = self._submit(session)
         self.assertEqual(first.response.pk, second.response.pk)
         self.assertTrue(second.duplicate)
         self.assertEqual(Response.objects.filter(session_item__session=session).count(), 1)
         process_bkt.assert_called_once()
-        self.assertEqual(MasteryEvent.objects.count(), 0)
+        self.assertEqual(MasteryEvent.objects.count(), 1)
 
     def test_posttest_never_calls_bkt_or_creates_event(self):
         self.set_path(
@@ -50,6 +54,8 @@ class ResponseIdempotencyTests(Phase6SeededTestCase):
             stage=StudentPath.Stage.POSTTEST,
             lesson=self.lesson(3),
         )
+        self.setting.posttest_access_enabled = True
+        self.setting.save(update_fields=["posttest_access_enabled"])
         session = self._one_item_session(Session.SessionType.POSTTEST)
         with patch("apps.learning.services.responses.process_response") as process_bkt:
             self._submit(session)

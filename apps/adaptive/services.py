@@ -18,7 +18,7 @@ from apps.adaptive.q_learning import (
     state_key,
 )
 from apps.curriculum.models import LessonSkill
-from apps.learning.models import Response, Session
+from apps.learning.models import Response, Session, StudentPath
 
 
 logger = logging.getLogger(__name__)
@@ -54,6 +54,22 @@ def _lock_mastery_key(*, student_id, skill_id):
 
 @transaction.atomic(savepoint=False)
 def process_response(response_id):
+    response_ref = (
+        Response.objects.select_related(
+            "session_item__session",
+        )
+        .get(pk=response_id)
+    )
+    session_ref = response_ref.session_item.session
+    StudentPath.objects.select_for_update(of=("self",)).filter(
+        student_id=session_ref.student_id
+    ).first()
+    session = Session.objects.select_for_update(of=("self",)).get(
+        pk=session_ref.pk
+    )
+    if session.session_type == Session.SessionType.POSTTEST:
+        return None
+
     response = (
         Response.objects.select_related(
             "selected_choice",
@@ -62,9 +78,9 @@ def process_response(response_id):
         )
         .get(pk=response_id)
     )
-    session = response.session_item.session
-    if session.session_type == Session.SessionType.POSTTEST:
-        return None
+    existing_event = MasteryEvent.objects.filter(response=response).first()
+    if existing_event is not None:
+        return existing_event
 
     student = session.student
     skill = response.session_item.question.skill
@@ -81,10 +97,6 @@ def process_response(response_id):
             p_known=skill.p_l0,
             evidence_count=0,
         )
-
-    existing_event = MasteryEvent.objects.filter(response=response).first()
-    if existing_event is not None:
-        return existing_event
 
     p_before = mastery.p_known
     result = update_mastery_for_session(
@@ -174,17 +186,22 @@ def _failed_skill_ids(scores):
     }
 
 
-def _failure_count(*, student_id, skill_id):
+def _failure_count(*, student_id, skill_id, current_session_id):
     rows = (
         Response.objects.filter(
             session_item__session__student_id=student_id,
             session_item__session__session_type__in=SCORED_SESSION_TYPES,
-            session_item__session__status__in=[
-                Session.Status.SUBMITTED,
-                Session.Status.COMPLETED,
-            ],
             session_item__session__voided_at__isnull=True,
             session_item__question__skill_id=skill_id,
+        )
+        .filter(
+            Q(
+                session_item__session__status__in=[
+                    Session.Status.SUBMITTED,
+                    Session.Status.COMPLETED,
+                ]
+            )
+            | Q(session_item__session_id=current_session_id)
         )
         .values("session_item__session_id")
         .annotate(
@@ -261,13 +278,6 @@ def persist_session_decision(session):
                 scores,
             )
             state = state_key(weakest_band, average_band, pass_result)
-            action, reason_code = decide(
-                weakest_band,
-                average_band,
-                pass_result,
-                available_actions,
-            )
-            q_values = dict(load_q_table().get(state, {}))
         except Exception as exc:
             logger.warning(
                 "Adaptive state derivation failed; using progress fallback: %s",
@@ -277,13 +287,26 @@ def persist_session_decision(session):
             reason_code = "q_learning_missing_fallback"
             state = None
             q_values = {}
+        else:
+            action, reason_code = decide(
+                weakest_band,
+                average_band,
+                pass_result,
+                available_actions,
+            )
+            q_values = dict(load_q_table().get(state, {}))
     else:
         raise ValueError("This session type does not receive an adaptive decision.")
 
     safety_skill_ids = {
         skill_id
         for skill_id in failed_skill_ids
-        if _failure_count(student_id=session.student_id, skill_id=skill_id) >= 3
+        if _failure_count(
+            student_id=session.student_id,
+            skill_id=skill_id,
+            current_session_id=session.pk,
+        )
+        >= 3
     }
     if safety_skill_ids:
         action = Decision.Action.PROGRESS

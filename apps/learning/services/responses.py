@@ -2,15 +2,13 @@ from dataclasses import dataclass
 
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
-from django.utils import timezone
 
 from apps.accounts.models import User
-from apps.adaptive.models import Decision
-from apps.adaptive.services import persist_session_decision, process_response
+from apps.adaptive.services import process_response
 from apps.core.models import SystemSetting
-from apps.curriculum.models import Lesson, QuestionChoice
+from apps.curriculum.models import QuestionChoice
 from apps.learning.models import Response, Session, SessionItem, StudentPath
-from apps.learning.services.paths import transition_path
+from apps.learning.services.finalization import finalize_locked_session
 
 
 class ResponseSubmissionError(ValueError):
@@ -49,6 +47,15 @@ IMMEDIATE_FEEDBACK_TYPES = {
     Session.SessionType.ACTIVITY,
 }
 
+REQUIRED_PATH_STATUS = {
+    Session.SessionType.PRETEST: StudentPath.Status.PRETEST_REQUIRED,
+    Session.SessionType.REGULAR: StudentPath.Status.LEARNING,
+    Session.SessionType.ADDITIONAL: StudentPath.Status.LEARNING,
+    Session.SessionType.FOUNDATIONAL: StudentPath.Status.LEARNING,
+    Session.SessionType.ACTIVITY: StudentPath.Status.ACTIVITY_READY,
+    Session.SessionType.POSTTEST: StudentPath.Status.POSTTEST_READY,
+}
+
 
 def _require_student(actor):
     if not actor.is_active or actor.role != User.Role.STUDENT:
@@ -65,112 +72,44 @@ def _result(response, session, *, duplicate=False):
     )
 
 
-def _finalize(*, session):
-    issued_count = SessionItem.objects.filter(session=session).count()
-    response_count = Response.objects.filter(session_item__session=session).count()
-    if issued_count == 0 or response_count != issued_count:
-        raise ResponseSubmissionError("The session cannot be finalized yet.")
-
-    path = (
-        StudentPath.objects.select_for_update(of=("self",))
-        .select_related("current_lesson")
-        .get(student=session.student)
-    )
-    now = timezone.now()
-    session.status = Session.Status.COMPLETED
-    session.submitted_at = now
-    session.completed_at = now
-    session.save(update_fields=["status", "submitted_at", "completed_at", "updated_at"])
-
-    decision = None
+def _validate_path(session, path):
+    if (
+        path.status != REQUIRED_PATH_STATUS[session.session_type]
+        or path.current_stage != session.session_type
+    ):
+        raise SessionNotOpen("This session no longer matches the learning path.")
     if session.session_type in {
         Session.SessionType.REGULAR,
         Session.SessionType.ADDITIONAL,
         Session.SessionType.FOUNDATIONAL,
-        Session.SessionType.ACTIVITY,
-    }:
-        decision = persist_session_decision(session)
-
-    if session.session_type == Session.SessionType.PRETEST:
-        first_lesson = Lesson.objects.filter(is_published=True).order_by("lesson_order").first()
-        if first_lesson is None:
-            raise ResponseSubmissionError("The first lesson is not available.")
-        transition_path(
-            path=path,
-            status=StudentPath.Status.LEARNING,
-            current_stage=StudentPath.Stage.LESSON,
-            current_lesson=first_lesson,
-        )
-    elif session.session_type in {
-        Session.SessionType.REGULAR,
-        Session.SessionType.ADDITIONAL,
-        Session.SessionType.FOUNDATIONAL,
-    } and decision.action == Decision.Action.PROGRESS:
-        next_lesson = (
-            Lesson.objects.filter(
-                is_published=True,
-                lesson_order__gt=session.lesson.lesson_order,
-            )
-            .order_by("lesson_order")
-            .first()
-        )
-        if next_lesson is None:
-            transition_path(
-                path=path,
-                status=StudentPath.Status.ACTIVITY_READY,
-                current_stage=StudentPath.Stage.ACTIVITY,
-                current_lesson=session.lesson,
-            )
-        else:
-            transition_path(
-                path=path,
-                status=StudentPath.Status.LEARNING,
-                current_stage=StudentPath.Stage.LESSON,
-                current_lesson=next_lesson,
-            )
-    elif decision is not None and decision.action in {
-        Decision.Action.ADDITIONAL_EXERCISE,
-        Decision.Action.FOUNDATIONAL_EXERCISE,
-    }:
-        transition_path(
-            path=path,
-            status=StudentPath.Status.LEARNING,
-            current_stage=(
-                StudentPath.Stage.ADDITIONAL
-                if decision.action == Decision.Action.ADDITIONAL_EXERCISE
-                else StudentPath.Stage.FOUNDATIONAL
-            ),
-            current_lesson=session.lesson,
-        )
-    elif session.session_type == Session.SessionType.ACTIVITY:
-        transition_path(
-            path=path,
-            status=StudentPath.Status.POSTTEST_READY,
-            current_stage=StudentPath.Stage.POSTTEST,
-            current_lesson=path.current_lesson,
-        )
-    elif session.session_type == Session.SessionType.POSTTEST:
-        transition_path(
-            path=path,
-            status=StudentPath.Status.COMPLETED,
-            current_stage=StudentPath.Stage.POSTTEST,
-            current_lesson=path.current_lesson,
-        )
+    } and path.current_lesson_id != session.lesson_id:
+        raise SessionNotOpen("This lesson is no longer the current lesson.")
 
 
 @transaction.atomic
 def submit_response(*, actor, session_id, session_item_id, selected_choice_id, hint_used=False):
     _require_student(actor)
+    owner_id = Session.objects.filter(pk=session_id).values_list(
+        "student_id",
+        flat=True,
+    ).get()
+    if owner_id != actor.pk:
+        raise PermissionDenied
+    path = (
+        StudentPath.objects.select_for_update(of=("self",))
+        .select_related("current_lesson")
+        .get(student=actor)
+    )
     session = (
         Session.objects.select_for_update(of=("self",))
         .select_related("student", "lesson")
         .get(pk=session_id)
     )
-    if session.student_id != actor.pk:
-        raise PermissionDenied
 
     try:
-        item = SessionItem.objects.select_related("question").get(
+        item = SessionItem.objects.select_for_update(of=("self",)).select_related(
+            "question"
+        ).get(
             pk=session_item_id,
             session=session,
         )
@@ -185,10 +124,13 @@ def submit_response(*, actor, session_id, session_item_id, selected_choice_id, h
     if existing is not None:
         return _result(existing, session, duplicate=True)
 
-    if not SystemSetting.objects.filter(
-        singleton_key=1,
-        study_access_enabled=True,
-    ).exists():
+    setting = SystemSetting.objects.filter(singleton_key=1).first()
+    if setting is None or not setting.study_access_enabled:
+        raise PermissionDenied
+    if (
+        session.session_type == Session.SessionType.POSTTEST
+        and not setting.posttest_access_enabled
+    ):
         raise PermissionDenied
 
     if session.status not in {Session.Status.ISSUED, Session.Status.IN_PROGRESS}:
@@ -206,6 +148,7 @@ def submit_response(*, actor, session_id, session_item_id, selected_choice_id, h
         raise InvalidChoice("Select one of the choices for this question.") from exc
     if hint_used and session.session_type != Session.SessionType.FOUNDATIONAL:
         raise HintNotAllowed("Hints are only available for foundational exercises.")
+    _validate_path(session, path)
 
     response = Response.objects.create(
         session_item=item,
@@ -220,5 +163,5 @@ def submit_response(*, actor, session_id, session_item_id, selected_choice_id, h
             session.status = Session.Status.IN_PROGRESS
             session.save(update_fields=["status", "updated_at"])
     else:
-        _finalize(session=session)
+        finalize_locked_session(session=session, path=path)
     return _result(response, session)

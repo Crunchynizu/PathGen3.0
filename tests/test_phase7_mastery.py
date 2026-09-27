@@ -89,6 +89,13 @@ class MasteryServiceTests(Phase6SeededTestCase):
         self.assertEqual(mastery.evidence_count, 1)
 
     def test_posttest_creates_no_event_and_does_not_touch_mastery(self):
+        self.setting.posttest_access_enabled = True
+        self.setting.save(update_fields=["posttest_access_enabled"])
+        self.set_path(
+            status=StudentPath.Status.POSTTEST_READY,
+            stage=StudentPath.Stage.POSTTEST,
+            lesson=self.lesson(3),
+        )
         question_set = self.question_set(QuestionSet.SetType.PREPOST)
         session = self.make_session_from_set(
             session_type=Session.SessionType.POSTTEST,
