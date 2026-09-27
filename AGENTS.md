@@ -47,7 +47,7 @@ The primary research outcome is matched learning gain: post-test score minus pre
 
 ## Tech stack hard rules
 - PostgreSQL only. Never SQLite, not even for tests.
-- No npm. No Node. No package.json. No bundler. No PostCSS.
+- No npm. No Node. No package.json. No bundler. No PostCSS. No CDN for JavaScript or CSS libraries. The only allowed remote asset is Google Fonts for Inter.
 - Tailwind via `tools/tailwindcss.exe` and `input.css`.
 - No Preline, Geist, Impeccable, AWS S3, Redis, Celery, DRF, JWT, or external vector DB.
 - Python 3.12 + Django 5.2.
@@ -141,14 +141,14 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - Policy: 350-token target, 500 maximum, 50 overlap, top 4, similarity 0.35.
 - Maximum prompt is 12,000 characters. Maximum feedback is 180 words.
 - RAG cannot grade, update BKT, route students, or grant access.
-- RAG writes only `feedback_session_feedback.feedback_text`.
+- RAG writes exactly one row in `feedback_session_feedback`, populating `feedback_text`, `generation_status`, and optionally `model_name`. It writes no other table.
 - RAG-eligible sessions: regular, additional, foundational, activity.
 - RAG-ineligible sessions: pretest, posttest.
 - Provider failure uses deterministic fallback. Session still completes.
 
 ## Frontend
 - Tailwind through `tools/tailwindcss.exe` and `input.css`.
-- No npm, no Node, no bundler, no PostCSS, no CDN.
+- No npm, no Node, no bundler, no PostCSS. No CDN for JavaScript or CSS libraries. The only allowed remote asset is Google Fonts for Inter.
 - Inter font via Google Fonts.
 - Lucide SVG, self-hosted in `static/icon/`.
 - Chart.js UMD, self-hosted in `static/vendor/chartjs/`.
