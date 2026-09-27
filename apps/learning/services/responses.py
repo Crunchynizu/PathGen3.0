@@ -5,7 +5,8 @@ from django.db import transaction
 from django.utils import timezone
 
 from apps.accounts.models import User
-from apps.adaptive.services import process_response
+from apps.adaptive.models import Decision
+from apps.adaptive.services import persist_session_decision, process_response
 from apps.core.models import SystemSetting
 from apps.curriculum.models import Lesson, QuestionChoice
 from apps.learning.models import Response, Session, SessionItem, StudentPath
@@ -81,6 +82,15 @@ def _finalize(*, session):
     session.completed_at = now
     session.save(update_fields=["status", "submitted_at", "completed_at", "updated_at"])
 
+    decision = None
+    if session.session_type in {
+        Session.SessionType.REGULAR,
+        Session.SessionType.ADDITIONAL,
+        Session.SessionType.FOUNDATIONAL,
+        Session.SessionType.ACTIVITY,
+    }:
+        decision = persist_session_decision(session)
+
     if session.session_type == Session.SessionType.PRETEST:
         first_lesson = Lesson.objects.filter(is_published=True).order_by("lesson_order").first()
         if first_lesson is None:
@@ -91,7 +101,11 @@ def _finalize(*, session):
             current_stage=StudentPath.Stage.LESSON,
             current_lesson=first_lesson,
         )
-    elif session.session_type == Session.SessionType.REGULAR:
+    elif session.session_type in {
+        Session.SessionType.REGULAR,
+        Session.SessionType.ADDITIONAL,
+        Session.SessionType.FOUNDATIONAL,
+    } and decision.action == Decision.Action.PROGRESS:
         next_lesson = (
             Lesson.objects.filter(
                 is_published=True,
@@ -114,14 +128,18 @@ def _finalize(*, session):
                 current_stage=StudentPath.Stage.LESSON,
                 current_lesson=next_lesson,
             )
-    elif session.session_type in {
-        Session.SessionType.ADDITIONAL,
-        Session.SessionType.FOUNDATIONAL,
+    elif decision is not None and decision.action in {
+        Decision.Action.ADDITIONAL_EXERCISE,
+        Decision.Action.FOUNDATIONAL_EXERCISE,
     }:
         transition_path(
             path=path,
             status=StudentPath.Status.LEARNING,
-            current_stage=StudentPath.Stage.LESSON,
+            current_stage=(
+                StudentPath.Stage.ADDITIONAL
+                if decision.action == Decision.Action.ADDITIONAL_EXERCISE
+                else StudentPath.Stage.FOUNDATIONAL
+            ),
             current_lesson=session.lesson,
         )
     elif session.session_type == Session.SessionType.ACTIVITY:
