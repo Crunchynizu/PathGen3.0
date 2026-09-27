@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "question_set.schema.json",
+  "type": "object",
+  "required": ["code", "name", "set_type", "questions"],
+  "properties": {
+    "code": {"type": "string", "minLength": 1},
+    "name": {"type": "string", "minLength": 1},
+    "set_type": {"enum": ["prepost", "regular", "additional", "foundational", "activity"]},
+    "lesson_code": {"type": ["string", "null"]},
+    "skill_code": {"type": ["string", "null"]},
+    "fixed_order": {"type": "boolean"},
+    "questions": {
+      "type": "array",
+      "items": {"$ref": "question.schema.json"}
+    }
+  }
+}

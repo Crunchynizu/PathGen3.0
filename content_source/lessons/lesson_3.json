@@ -1,0 +1,794 @@
+{
+  "schema_version": 1,
+  "lesson": {
+    "code": "L3",
+    "slug": "lesson-3",
+    "lesson_order": 3,
+    "title": "Application of integers",
+    "summary": "Evaluate expressions using order of operations. Model signed-change situations.",
+    "skill_codes": [
+      "S4",
+      "S6"
+    ],
+    "content_schema_version": 1,
+    "content": {
+      "source_text": "Lesson 3 — Application of integers\nSkills: S4 + S6\nObjectives:\n1. Evaluate expressions using order of operations.\n2. Model signed-change situations.\nA story about temperature\nThe temperature at 7:00 AM was -7 degrees C. By noon it rose by 8 degrees.\nThe change is +8. Add: -7 + 8 = 1.\nThe new temperature is 1 degree C.\nOrder of operations\nWhen an expression has more than one operation:\n1. Grouping first: ( ), [ ], { }.\n2. Multiply and divide, left to right.\n3. Add and subtract, left to right.\n[insert figure: lesson3/operation-order-steps]\nWords that mean signs\nRise, gain, deposit, up -> positive.\nFall, loss, withdrawal, down -> negative.\nInterpreting the result\nAlways include the unit. Say if the result is positive or negative. Explain what it means.\n[insert figure: lesson3/temperature-change]\n[insert video: VID-INTEGER-ORDER-OPERATIONS | 0:40-1:25] (optional)\nWorked example\nProblem: Evaluate -3 x (-4) + (-18) / 6 - (-5).\nStep 1: Do multiplication and division first, left to right.\n-3 x (-4) = 12\n(-18) / 6 = -3\nStep 2: Rewrite: 12 + (-3) - (-5).\nStep 3: Subtract negative = add positive: 12 + (-3) + 5.\nStep 4: Add left to right: 12 - 3 = 9, then 9 + 5 = 14.\nAnswer: 14.\nCommon mistake\nAdding before dividing is wrong. In -3 x (-4) + (-18) / 6, division goes before addition. Correct\norder gives 14.\nReady to practice\nContinue to the regular exercise for 6 questions."
+    }
+  },
+  "question_sets": [
+    {
+      "code": "L3-R",
+      "name": "Lesson 3 Regular Exercise",
+      "set_type": "regular",
+      "lesson_code": "L3",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L3-R-S4-01",
+          "skill_code": "S4",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Evaluate 5 + (-3) x 4.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "8",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-7",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-32",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "-20",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Multiply first: -12, then 5 + (-12) = -7.",
+          "hint": null,
+          "image_asset": "exercise/lesson-3/L3-R-S4-01.png",
+          "image_alt": "Evaluate 5 + (-3) x 4.",
+          "source_figure_reference": "[insert figure: L3-R-S4-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-R-S4-02",
+          "skill_code": "S4",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Evaluate 18 / (-3) + 7.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-13",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-1",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "1",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "13",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Divide first to get -6, then -6 + 7 = 1.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-R-S4-03",
+          "skill_code": "S4",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Evaluate (-2) x [6 - 9].",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-6",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "6",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-18",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "18",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "The bracket is -3; (-2) x (-3) = 6.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-R-S6-01",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "It is -4 degrees C and warms by 9 degrees. What is the new temperature?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-13",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-5",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "5",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "13",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "-4 + 9 = 5.",
+          "hint": null,
+          "image_asset": "exercise/lesson-3/L3-R-S6-01.png",
+          "image_alt": "It is -4 degrees C and warms by 9 degrees. What is the new temperature?",
+          "source_figure_reference": "[insert figure: L3-R-S6-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-R-S6-02",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "A diver is at -6 m and descends 4 m. What is the new position?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-10 m",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-2 m",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "2 m",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "10 m",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "-6 + (-4) = -10.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-R-S6-03",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "An elevator starts at floor 3 and goes down 7 floors. Where does it stop?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-10",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-4",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "4",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "10",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "3 - 7 = -4.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    },
+    {
+      "code": "L3-A",
+      "name": "Lesson 3 Additional Exercise",
+      "set_type": "additional",
+      "lesson_code": "L3",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L3-A-S4-01",
+          "skill_code": "S4",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Evaluate (-4) x (-5) - 27 / 9.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "17",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "23",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-17",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "-23",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "20 - 3 = 17.",
+          "hint": null,
+          "image_asset": "exercise/lesson-3/L3-A-S4-01.png",
+          "image_alt": "Evaluate (-4) x (-5) - 27 / 9.",
+          "source_figure_reference": "[insert figure: L3-A-S4-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-A-S4-02",
+          "skill_code": "S4",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Evaluate 8 - [3 + (-7)].",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-2",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "4",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "12",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "18",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "The bracket is -4; 8 - (-4) = 12.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-A-S4-03",
+          "skill_code": "S4",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Evaluate (-24) / 6 x (-2).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-8",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "8",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-2",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "2",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Left to right: -4 x (-2) = 8.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-A-S6-01",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "A submarine is at -18 m and rises 7 m. Where is it now?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-25 m",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-11 m",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "11 m",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "25 m",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "-18 + 7 = -11.",
+          "hint": null,
+          "image_asset": "exercise/lesson-3/L3-A-S6-01.png",
+          "image_alt": "A submarine is at -18 m and rises 7 m. Where is it now?",
+          "source_figure_reference": "[insert figure: L3-A-S6-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-A-S6-02",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "The temperature is 6 degrees C and falls 14 degrees. What is the new temperature?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-20",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-8",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "8",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "20",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "6 - 14 = -8.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-A-S6-03",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "A hiker is 12 m above sea level, descends 19 m, then rises 3 m. Where is the hiker?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-10 m",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-4 m",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "4 m",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "10 m",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "12 - 19 + 3 = -4.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    },
+    {
+      "code": "L3-F-S4",
+      "name": "Lesson 3 Foundational Exercise (S4)",
+      "set_type": "foundational",
+      "lesson_code": null,
+      "skill_code": "S4",
+      "questions": [
+        {
+          "code": "L3-F-S4-01",
+          "skill_code": "S4",
+          "difficulty": "foundational",
+          "presentation_type": "figure",
+          "cognitive_level": "remember",
+          "bloom_band": "LOTS",
+          "prompt": "Evaluate 2 + 3 x 4.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "14",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "20",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "24",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "9",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "2 + 12 = 14.",
+          "hint": "Multiply first.",
+          "image_asset": "exercise/lesson-3/L3-F-S4-01.png",
+          "image_alt": "Evaluate 2 + 3 x 4.",
+          "source_figure_reference": "[insert figure: L3-F-S4-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-F-S4-02",
+          "skill_code": "S4",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Evaluate (5 - 8) x (-2).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-6",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "6",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-26",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "26",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Bracket is -3; (-3) x (-2) = 6.",
+          "hint": "Do the bracket first.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-F-S4-03",
+          "skill_code": "S4",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Evaluate 12 / (-3) + 1.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-5",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-3",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "3",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "5",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "-4 + 1 = -3.",
+          "hint": "Divide first.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    },
+    {
+      "code": "L3-F-S6",
+      "name": "Lesson 3 Foundational Exercise (S6)",
+      "set_type": "foundational",
+      "lesson_code": null,
+      "skill_code": "S6",
+      "questions": [
+        {
+          "code": "L3-F-S6-01",
+          "skill_code": "S6",
+          "difficulty": "foundational",
+          "presentation_type": "figure",
+          "cognitive_level": "remember",
+          "bloom_band": "LOTS",
+          "prompt": "It is -2 degrees C, then warms 5 degrees. What is the temperature?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-7",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-3",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "3",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "7",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "-2 + 5 = 3.",
+          "hint": "Warming adds a positive change.",
+          "image_asset": "exercise/lesson-3/L3-F-S6-01.png",
+          "image_alt": "It is -2 degrees C, then warms 5 degrees. What is the temperature?",
+          "source_figure_reference": "[insert figure: L3-F-S6-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-F-S6-02",
+          "skill_code": "S6",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "A diver is at -3 m and goes down 2 m. Where is the diver?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-5 m",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-1 m",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "1 m",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "5 m",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "-3 - 2 = -5.",
+          "hint": "Down means subtract 2.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-F-S6-03",
+          "skill_code": "S6",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "What expression models a rise of 4 from -6?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-6 + 4",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-6 - 4",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "6 + 4",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "6 - 4",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "A rise adds a positive change.",
+          "hint": "Start value plus change.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    }
+  ]
+}

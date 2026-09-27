@@ -1,0 +1,794 @@
+{
+  "schema_version": 1,
+  "lesson": {
+    "code": "L2",
+    "slug": "lesson-2",
+    "lesson_order": 2,
+    "title": "Operations with integers",
+    "summary": "Add and subtract integers. Multiply and divide integers.",
+    "skill_codes": [
+      "S2",
+      "S3"
+    ],
+    "content_schema_version": 1,
+    "content": {
+      "source_text": "Lesson 2 — Operations with integers\nSkills: S2 + S3\nObjectives:\n1. Add and subtract integers.\n2. Multiply and divide integers.\nZero pairs\nWhen you add integers with different signs, a positive chip and a negative chip cancel. Each pair\nequals zero.\nExample: -5 + 3.\nStart with 5 negative chips. Add 3 positive chips. Three pairs cancel. Two negatives remain.\n-5 + 3 = -2.\n[insert figure: lesson2/chip-model-zero-pairs]\nAdding same signs\nSame signs: add the distances and keep the sign.\n-\n(-4) + (-3) = -7\n-\n4 + 3 = 7\nSubtracting\nSubtracting an integer is the same as adding its opposite.\na - b = a + (-b)\nExample: 4 - (-3) = 4 + 3 = 7.\nMultiplying and dividing\nWork with distances first. Then decide the sign.\n-\nSame signs -> positive\n-\nDifferent signs -> negative\nExamples:\n-\n(-6) x 4 = -24\n-\n(-6) x (-4) = 24\n-\n(-24) / (-6) = 4\n-\n24 / (-6) = -4\n[insert figure: lesson2/sign-rules]\n[insert video: VID-INTEGER-ADD-SUBTRACT | 1:20-2:05] (optional)\n[insert video: VID-INTEGER-MULTIPLY-DIVIDE | 0:45-1:30] (optional)\nWorked example\nProblem: Compute (-6) x 4 and (-24) / (-6).\nStep 1: Signs of (-6) x 4 are different. Result is negative. 6 x 4 = 24.\nAnswer 1: -24.\nStep 2: Signs of (-24) / (-6) are the same. Result is positive. 24 / 6 = 4.\nAnswer 2: 4.\nCommon mistake\n(-6) x 4 = 24 is wrong. The signs are different, so the answer is -24.\nReady to practice\nContinue to the regular exercise for 6 questions."
+    }
+  },
+  "question_sets": [
+    {
+      "code": "L2-R",
+      "name": "Lesson 2 Regular Exercise",
+      "set_type": "regular",
+      "lesson_code": "L2",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L2-R-S2-01",
+          "skill_code": "S2",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute -18 + (-7).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-25",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-11",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "11",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "25",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Add distances, keep the negative sign.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-R-S2-02",
+          "skill_code": "S2",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Use the arrow to compute -9 + 14.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-23",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-5",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "5",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "23",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Fourteen steps right from -9 lands at 5.",
+          "hint": null,
+          "image_asset": "exercise/lesson-2/L2-R-S2-02.png",
+          "image_alt": "Use the arrow to compute -9 + 14.",
+          "source_figure_reference": "[insert figure: L2-R-S2-02]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-R-S2-03",
+          "skill_code": "S2",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Compute -31 - (-12).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-43",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-19",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "19",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "43",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Subtracting -12 means adding 12.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-R-S3-01",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-7) x 6.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-42",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "42",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-13",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "13",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative result.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-R-S3-02",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-48) / (-8).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-6",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "6",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-40",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "40",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs give a positive result.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-R-S3-03",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "What do four equal groups of -3 total?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-12",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "12",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-7",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "7",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "4 x (-3) = -12.",
+          "hint": null,
+          "image_asset": "exercise/lesson-2/L2-R-S3-03.png",
+          "image_alt": "What do four equal groups of -3 total?",
+          "source_figure_reference": "[insert figure: L2-R-S3-04]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    },
+    {
+      "code": "L2-A",
+      "name": "Lesson 2 Additional Exercise",
+      "set_type": "additional",
+      "lesson_code": "L2",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L2-A-S2-01",
+          "skill_code": "S2",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute -24 + 9.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-33",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-15",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "15",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "33",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "The larger distance is negative.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-A-S2-02",
+          "skill_code": "S2",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute 17 - (-6).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "11",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-11",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "23",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "-23",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Subtracting -6 means adding 6.",
+          "hint": null,
+          "image_asset": "exercise/lesson-2/L2-A-S2-02.png",
+          "image_alt": "Compute 17 - (-6).",
+          "source_figure_reference": "[insert figure: L2-A-S2-02]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-A-S2-03",
+          "skill_code": "S2",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Compute -42 - (-19).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-61",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-23",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "23",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "61",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "-42 + 19 = -23.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-A-S3-01",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-9) x (-4).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-36",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "36",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-13",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "13",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs give a positive product.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-A-S3-02",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-63) / 7.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-9",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "9",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-56",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "56",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative quotient.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-A-S3-03",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Compute 96 / (-12).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-8",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "8",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-84",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "84",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "96 / 12 = 8, signs differ.",
+          "hint": null,
+          "image_asset": "exercise/lesson-2/L2-A-S3-03.png",
+          "image_alt": "Compute 96 / (-12).",
+          "source_figure_reference": "[insert figure: L2-A-S3-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    },
+    {
+      "code": "L2-F-S2",
+      "name": "Lesson 2 Foundational Exercise (S2)",
+      "set_type": "foundational",
+      "lesson_code": null,
+      "skill_code": "S2",
+      "questions": [
+        {
+          "code": "L2-F-S2-01",
+          "skill_code": "S2",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "remember",
+          "bloom_band": "LOTS",
+          "prompt": "Compute -4 + (-3).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-7",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-1",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "1",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "7",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Move 3 left from -4.",
+          "hint": "Two negatives combine into a larger negative.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-F-S2-02",
+          "skill_code": "S2",
+          "difficulty": "foundational",
+          "presentation_type": "figure",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute -6 + 8.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-14",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-2",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "2",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "14",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Six pairs cancel, two positives remain.",
+          "hint": "Pair each negative with one positive.",
+          "image_asset": "exercise/lesson-2/L2-F-S2-02.png",
+          "image_alt": "Compute -6 + 8.",
+          "source_figure_reference": "[insert figure: L2-F-S2-02]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-F-S2-03",
+          "skill_code": "S2",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Compute 3 - (-2).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "1",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-1",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "5",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "-5",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Subtract negative = add positive.",
+          "hint": "Rewrite as 3 + 2.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    },
+    {
+      "code": "L2-F-S3",
+      "name": "Lesson 2 Foundational Exercise (S3)",
+      "set_type": "foundational",
+      "lesson_code": null,
+      "skill_code": "S3",
+      "questions": [
+        {
+          "code": "L2-F-S3-01",
+          "skill_code": "S3",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "remember",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-3) x 4.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-12",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "12",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-7",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "7",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "One negative factor gives a negative product.",
+          "hint": "Find 3 x 4 first, then the sign.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-F-S3-02",
+          "skill_code": "S3",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-12) / 3.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-4",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "4",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-9",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "9",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs make a negative quotient.",
+          "hint": "12 / 3 = 4, signs differ.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-F-S3-03",
+          "skill_code": "S3",
+          "difficulty": "foundational",
+          "presentation_type": "figure",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Compute (-2) x (-5).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-10",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "10",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-7",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "7",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs -> positive product.",
+          "hint": "Both factors are negative.",
+          "image_asset": "exercise/lesson-2/L2-F-S3-03.png",
+          "image_alt": "Compute (-2) x (-5).",
+          "source_figure_reference": "[insert figure: L2-F-S3-03]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    }
+  ]
+}

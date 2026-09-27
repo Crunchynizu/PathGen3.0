@@ -1,0 +1,43 @@
+{% extends "base_secondary.html" %}
+{% block title %}Content · PathGen{% endblock %}
+{% block secondary_content %}
+  <header class="content-heading">
+    <div>
+      <h1 class="page-title">Content library</h1>
+      <p class="page-copy">Review the published lessons and practice material available to students. Protected pre-test and post-test items are never shown here.</p>
+    </div>
+    <span class="status-badge">Read only</span>
+  </header>
+
+  <section class="content-destinations" aria-label="Content areas">
+    <article class="content-destination">
+      <div>
+        <p class="content-count">{{ lesson_count }}</p>
+        <h2>Lessons</h2>
+        <p>Read the three integer lessons and their ordered skill coverage.</p>
+      </div>
+      <a class="primary-button pressable" href="{% url 'curriculum:view_lessons' %}">View Lessons</a>
+    </article>
+    <article class="content-destination">
+      <div>
+        <p class="content-count">{{ visible_question_count }}</p>
+        <h2>Questions</h2>
+        <p>Browse regular, additional, foundational, and activity questions without answer keys.</p>
+      </div>
+      <a class="primary-button pressable" href="{% url 'curriculum:view_questions' %}">View Questions</a>
+    </article>
+  </section>
+
+  <section class="content-summary" aria-labelledby="content-summary-title">
+    <div>
+      <h2 id="content-summary-title">Published question mix</h2>
+      <p>Pre/post questions are intentionally excluded from these totals.</p>
+    </div>
+    <dl class="content-totals">
+      <div><dt>Regular</dt><dd>{{ set_counts.regular|default:0 }}</dd></div>
+      <div><dt>Additional</dt><dd>{{ set_counts.additional|default:0 }}</dd></div>
+      <div><dt>Foundational</dt><dd>{{ set_counts.foundational|default:0 }}</dd></div>
+      <div><dt>Activity</dt><dd>{{ set_counts.activity|default:0 }}</dd></div>
+    </dl>
+  </section>
+{% endblock %}

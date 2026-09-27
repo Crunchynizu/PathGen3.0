@@ -1,0 +1,56 @@
+{% extends "base_secondary.html" %}
+{% load static %}
+{% block title %}Questions · PathGen{% endblock %}
+{% block secondary_content %}
+  <header class="content-heading">
+    <div>
+      <h1 class="page-title">Published questions</h1>
+      <p class="page-copy">Read-only practice and activity items. Correct answers and protected pre/post content are not displayed.</p>
+    </div>
+    <span class="status-badge">Answer keys hidden</span>
+  </header>
+
+  <nav class="question-filters" aria-label="Filter question sets">
+    <a href="{% url 'curriculum:view_questions' %}"{% if not selected_type %} aria-current="page"{% endif %}>All</a>
+    {% for value, label in set_types %}
+      <a href="?type={{ value }}"{% if selected_type == value %} aria-current="page"{% endif %}>{{ label }}</a>
+    {% endfor %}
+  </nav>
+
+  <div class="question-set-stack">
+    {% for question_set in question_sets %}
+      <section class="question-set" aria-labelledby="set-{{ question_set.code }}">
+        <header class="question-set-header">
+          <div>
+            <h2 id="set-{{ question_set.code }}">{{ question_set.name }}</h2>
+            <p>{{ question_set.get_set_type_display }}{% if question_set.lesson %} · {{ question_set.lesson.title }}{% endif %}{% if question_set.skill %} · {{ question_set.skill.code }}{% endif %}</p>
+          </div>
+          <span class="status-badge">{{ question_set.question_count }} questions</span>
+        </header>
+        <ol class="question-list">
+          {% for item in question_set.items.all %}
+            <li class="question-record">
+              <div class="question-meta">
+                <code>{{ item.question.code }}</code>
+                <span>{{ item.question.skill.code }}</span>
+                <span>{{ item.question.get_cognitive_level_display }}</span>
+              </div>
+              <h3>{{ item.question.prompt }}</h3>
+              {% if item.question.image_asset %}
+                <img class="prompt-figure" src="{% static item.question.image_asset %}" alt="{{ item.question.image_alt }}">
+              {% endif %}
+              {% if item.question.presentation_type == "video" %}
+                <p class="media-note">Video reference: {{ item.question.video.title }}</p>
+              {% endif %}
+              <ol class="choice-list" type="A">
+                {% for choice in item.question.choices.all %}<li>{{ choice.text }}</li>{% endfor %}
+              </ol>
+            </li>
+          {% endfor %}
+        </ol>
+      </section>
+    {% empty %}
+      {% include "partials/empty_state.html" with empty_title="No published questions" empty_body="Choose another filter or seed the validated curriculum source." %}
+    {% endfor %}
+  </div>
+{% endblock %}

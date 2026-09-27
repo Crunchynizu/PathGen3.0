@@ -1,0 +1,36 @@
+{% extends "base_secondary.html" %}
+{% block title %}Lessons · PathGen{% endblock %}
+{% block secondary_content %}
+  <header class="content-heading">
+    <div>
+      <h1 class="page-title">Published lessons</h1>
+      <p class="page-copy">The complete Grade 7 integer sequence, presented in learning order.</p>
+    </div>
+    <span class="status-badge">{{ lessons|length }} lessons</span>
+  </header>
+
+  <div class="lesson-stack">
+    {% for lesson in lessons %}
+      <article class="lesson-record">
+        <header class="lesson-record-header">
+          <p class="lesson-order">Lesson {{ lesson.lesson_order }}</p>
+          <div>
+            <h2>{{ lesson.title }}</h2>
+            <p>{{ lesson.summary }}</p>
+          </div>
+        </header>
+        <div class="skill-row" aria-label="Skills in Lesson {{ lesson.lesson_order }}">
+          {% for relation in lesson.lesson_skills.all %}
+            <span class="skill-chip"><strong>{{ relation.skill.code }}</strong> {{ relation.skill.name }}</span>
+          {% endfor %}
+        </div>
+        <details class="lesson-source">
+          <summary>Read lesson content</summary>
+          <div class="lesson-source-text">{{ lesson.content_json.source_text|linebreaks }}</div>
+        </details>
+      </article>
+    {% empty %}
+      {% include "partials/empty_state.html" with empty_title="No published lessons" empty_body="Run the curriculum seed command after validating the source files." %}
+    {% endfor %}
+  </div>
+{% endblock %}

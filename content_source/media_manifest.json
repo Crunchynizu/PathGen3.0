@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "videos": [
+    {
+      "code": "VID-INTEGER-NUMBER-LINE",
+      "title": "Negative numbers and number line examples",
+      "source_reference": "1:00-1:50",
+      "segment_start_seconds": 60,
+      "segment_end_seconds": 110,
+      "duration_seconds": 50,
+      "youtube_video_id": null,
+      "transcript_file": "transcripts/VID-INTEGER-NUMBER-LINE.txt"
+    },
+    {
+      "code": "VID-INTEGER-ADD-SUBTRACT",
+      "title": "Adding and subtracting negative numbers",
+      "source_reference": "1:20-2:05",
+      "segment_start_seconds": 80,
+      "segment_end_seconds": 125,
+      "duration_seconds": 45,
+      "youtube_video_id": null,
+      "transcript_file": "transcripts/VID-INTEGER-ADD-SUBTRACT.txt"
+    },
+    {
+      "code": "VID-INTEGER-MULTIPLY-DIVIDE",
+      "title": "Multiplying and dividing negative numbers",
+      "source_reference": "0:45-1:30",
+      "segment_start_seconds": 45,
+      "segment_end_seconds": 90,
+      "duration_seconds": 45,
+      "youtube_video_id": null,
+      "transcript_file": "transcripts/VID-INTEGER-MULTIPLY-DIVIDE.txt"
+    },
+    {
+      "code": "VID-INTEGER-ORDER-OPERATIONS",
+      "title": "Order of operations example",
+      "source_reference": "0:40-1:25",
+      "segment_start_seconds": 40,
+      "segment_end_seconds": 85,
+      "duration_seconds": 45,
+      "youtube_video_id": null,
+      "transcript_file": "transcripts/VID-INTEGER-ORDER-OPERATIONS.txt"
+    }
+  ],
+  "figures": [
+    {
+      "question_code": "L1-R-S1-03",
+      "path": "exercise/lesson-1/L1-R-S1-03.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L1-R-S5-03",
+      "path": "exercise/lesson-1/L1-R-S5-03.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L1-A-S1-02",
+      "path": "exercise/lesson-1/L1-A-S1-02.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L1-A-S5-03",
+      "path": "exercise/lesson-1/L1-A-S5-03.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L1-F-S1-03",
+      "path": "exercise/lesson-1/L1-F-S1-03.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L1-F-S5-02",
+      "path": "exercise/lesson-1/L1-F-S5-02.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L2-R-S2-02",
+      "path": "exercise/lesson-2/L2-R-S2-02.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L2-R-S3-03",
+      "path": "exercise/lesson-2/L2-R-S3-03.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L2-A-S2-02",
+      "path": "exercise/lesson-2/L2-A-S2-02.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L2-A-S3-03",
+      "path": "exercise/lesson-2/L2-A-S3-03.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L2-F-S2-02",
+      "path": "exercise/lesson-2/L2-F-S2-02.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L2-F-S3-03",
+      "path": "exercise/lesson-2/L2-F-S3-03.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L3-R-S4-01",
+      "path": "exercise/lesson-3/L3-R-S4-01.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L3-R-S6-01",
+      "path": "exercise/lesson-3/L3-R-S6-01.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L3-A-S4-01",
+      "path": "exercise/lesson-3/L3-A-S4-01.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L3-A-S6-01",
+      "path": "exercise/lesson-3/L3-A-S6-01.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L3-F-S4-01",
+      "path": "exercise/lesson-3/L3-F-S4-01.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "L3-F-S6-01",
+      "path": "exercise/lesson-3/L3-F-S6-01.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "ACT-S1-01",
+      "path": "activity/whole-course/ACT-S1-01.png",
+      "source_available": false,
+      "placeholder": true
+    },
+    {
+      "question_code": "ACT-S2-01",
+      "path": "activity/whole-course/ACT-S2-01.png",
+      "source_available": false,
+      "placeholder": true
+    }
+  ]
+}

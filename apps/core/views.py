@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_GET, require_http_methods
@@ -94,5 +93,5 @@ def audit_logs(request):
 
 @role_required(User.Role.ADMIN, User.Role.TEACHER)
 @require_GET
-def content_placeholder(request):
-    return HttpResponse("Read-only content will be available after curriculum import.")
+def content_redirect(request):
+    return redirect("curriculum:content")

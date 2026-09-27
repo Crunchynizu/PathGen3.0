@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "question.schema.json",
+  "type": "object",
+  "required": [
+    "code",
+    "skill_code",
+    "difficulty",
+    "presentation_type",
+    "cognitive_level",
+    "prompt",
+    "choices",
+    "correct_answer"
+  ],
+  "properties": {
+    "code": {"type": "string", "minLength": 1},
+    "skill_code": {"type": "string", "pattern": "^S[1-6]$"},
+    "difficulty": {"enum": ["standard", "foundational"]},
+    "presentation_type": {"enum": ["text", "figure", "video"]},
+    "cognitive_level": {
+      "enum": ["remember", "understand", "apply", "analyze", "evaluate", "create"]
+    },
+    "bloom_band": {"type": ["string", "null"], "enum": ["LOTS", "HOTS", null]},
+    "prompt": {"type": "string", "minLength": 1},
+    "choices": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["label", "text", "is_correct"],
+        "properties": {
+          "label": {"enum": ["A", "B", "C", "D"]},
+          "text": {"type": "string", "minLength": 1},
+          "is_correct": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "correct_answer": {"enum": ["A", "B", "C", "D"]},
+    "solution_steps": {"type": "array", "items": {"type": "string"}},
+    "explanation": {"type": "string"},
+    "hint": {"type": ["string", "null"]},
+    "image_asset": {"type": ["string", "null"]},
+    "image_alt": {"type": ["string", "null"]},
+    "video_code": {"type": ["string", "null"]},
+    "video_pause_seconds": {"type": ["integer", "null"], "minimum": 0}
+  }
+}

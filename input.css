@@ -306,6 +306,10 @@
     @apply fixed inset-0 z-50 grid grid-cols-[min(85vw,20rem)_1fr] lg:hidden;
   }
 
+  .mobile-drawer[hidden] {
+    @apply hidden;
+  }
+
   .drawer-panel {
     @apply min-h-0 overflow-y-auto;
     background: var(--color-surface);
@@ -515,6 +519,179 @@
   .message-error {
     background: var(--color-danger-subtle);
     border-color: var(--color-danger);
+  }
+
+  .content-heading {
+    @apply flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between;
+  }
+
+  .content-heading .page-copy {
+    @apply max-w-3xl;
+  }
+
+  .content-destinations {
+    @apply grid gap-5 md:grid-cols-2;
+  }
+
+  .content-destination {
+    @apply flex min-h-64 flex-col justify-between gap-8 rounded-2xl p-6 sm:p-8;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .content-destination:first-child {
+    background: var(--color-primary-subtle);
+  }
+
+  .content-destination h2,
+  .content-summary h2,
+  .lesson-record h2,
+  .question-set h2 {
+    @apply text-2xl font-bold tracking-tight;
+    color: var(--color-text);
+  }
+
+  .content-destination p:not(.content-count),
+  .content-summary p,
+  .lesson-record-header p,
+  .question-set-header p,
+  .media-note {
+    @apply mt-2 leading-7;
+    color: var(--color-text-secondary);
+  }
+
+  .content-count {
+    @apply mb-4 text-4xl font-bold tracking-tight;
+    color: var(--color-primary-hover);
+  }
+
+  .content-summary,
+  .lesson-record,
+  .question-set {
+    @apply rounded-2xl p-5 sm:p-7;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .content-summary {
+    @apply grid gap-6 lg:grid-cols-[1fr_2fr] lg:items-center;
+  }
+
+  .content-totals {
+    @apply grid grid-cols-2 gap-3 sm:grid-cols-4;
+  }
+
+  .content-totals div {
+    @apply rounded-xl p-4;
+    background: var(--color-bg-subtle);
+  }
+
+  .content-totals dt {
+    @apply text-sm;
+    color: var(--color-text-secondary);
+  }
+
+  .content-totals dd {
+    @apply mt-1 text-2xl font-bold;
+    color: var(--color-text);
+  }
+
+  .lesson-stack,
+  .question-set-stack {
+    @apply space-y-5;
+  }
+
+  .lesson-record-header {
+    @apply grid gap-4 sm:grid-cols-[5rem_1fr];
+  }
+
+  .lesson-order {
+    @apply m-0 text-sm font-bold uppercase tracking-wider;
+    color: var(--color-text-cyan);
+  }
+
+  .skill-row {
+    @apply mt-5 flex flex-wrap gap-2;
+  }
+
+  .skill-chip {
+    @apply inline-flex min-h-11 items-center gap-2 rounded-xl px-3 py-2 text-sm;
+    background: var(--color-bg-subtle);
+    color: var(--color-text-secondary);
+  }
+
+  .lesson-source {
+    @apply mt-6 border-t pt-5;
+    border-color: var(--color-border);
+  }
+
+  .lesson-source summary {
+    @apply flex min-h-11 cursor-pointer items-center font-semibold;
+    color: var(--color-text-link);
+  }
+
+  .lesson-source-text {
+    @apply mt-4 max-w-3xl space-y-4 leading-7;
+    color: var(--color-text-secondary);
+  }
+
+  .question-filters {
+    @apply flex gap-2 overflow-x-auto pb-2;
+  }
+
+  .question-filters a {
+    @apply inline-flex min-h-11 shrink-0 items-center rounded-xl px-4 font-semibold no-underline;
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+  }
+
+  .question-filters a[aria-current="page"] {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .question-set-header {
+    @apply flex flex-col gap-3 border-b pb-5 sm:flex-row sm:items-start sm:justify-between;
+    border-color: var(--color-border);
+  }
+
+  .question-list {
+    @apply divide-y;
+    border-color: var(--color-border);
+  }
+
+  .question-record {
+    @apply py-6;
+  }
+
+  .question-record h3 {
+    @apply mt-3 max-w-3xl text-lg font-semibold leading-7;
+    color: var(--color-text);
+  }
+
+  .question-meta {
+    @apply flex flex-wrap items-center gap-2 text-sm;
+    color: var(--color-text-secondary);
+  }
+
+  .question-meta code,
+  .question-meta span {
+    @apply rounded-lg px-2 py-1;
+    background: var(--color-bg-subtle);
+  }
+
+  .choice-list {
+    @apply mt-4 grid max-w-3xl gap-2 pl-8 marker:font-semibold;
+    color: var(--color-text-secondary);
+  }
+
+  .choice-list li {
+    @apply min-h-11 rounded-xl py-2 pl-2 leading-7;
+  }
+
+  .prompt-figure {
+    @apply mt-4 max-h-72 max-w-full rounded-xl object-contain;
+    background: var(--color-bg-subtle);
   }
 }
 

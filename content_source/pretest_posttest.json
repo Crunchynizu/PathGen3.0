@@ -1,0 +1,1244 @@
+{
+  "schema_version": 1,
+  "source_pdf_sha256": "f0233e1b676a8d00083b7931eb4363c989572fad17d9094f5fe28737db5f88ad",
+  "question_set": {
+    "code": "PREPOST",
+    "name": "Protected Pre-test / Post-test",
+    "set_type": "prepost",
+    "lesson_code": null,
+    "skill_code": null,
+    "fixed_order": true,
+    "questions": [
+      {
+        "code": "PP-01",
+        "skill_code": "S1",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Which of the following is an integer?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "5",
+            "is_correct": true
+          },
+          {
+            "label": "B",
+            "text": "1/2",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "0.5",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "11.5%",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "A",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-02",
+        "skill_code": "S1",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "The opposite of 9 is -9, and the absolute value of |-5| is __________.",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-5",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "5",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "0.5",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "1/5",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-03",
+        "skill_code": "S2",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Find the sum of (-28) and (-23).",
+        "choices": [
+          {
+            "label": "A",
+            "text": "51",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-51",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "5",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-5",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-04",
+        "skill_code": "S2",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Find the difference: (-62) - (-135).",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-73",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "73",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "197",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-197",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-05",
+        "skill_code": "S3",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "What is the product of (-20) and (15)?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "300",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-300",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "-5",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "5",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-06",
+        "skill_code": "S3",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "What is the quotient when you divide 125 by (-5)?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-15",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "15",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "25",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-25",
+            "is_correct": true
+          }
+        ],
+        "correct_answer": "D",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-07",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Simplify -48 x (4) / (-16) + (-26)",
+        "choices": [
+          {
+            "label": "A",
+            "text": "14",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-14",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "1",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-1",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-08",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "What is 7 - 15 + 3 x 8?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "16",
+            "is_correct": true
+          },
+          {
+            "label": "B",
+            "text": "17",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "-40",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "60",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "A",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-09",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Simplify 2 + 5(10) - 25",
+        "choices": [
+          {
+            "label": "A",
+            "text": "27",
+            "is_correct": true
+          },
+          {
+            "label": "B",
+            "text": "45",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "-27",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-45",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "A",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-10",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "What is 2{5(9 - 5) + 3[8]}?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "64",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "368",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "88",
+            "is_correct": true
+          },
+          {
+            "label": "D",
+            "text": "184",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "C",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-11",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "What is (4) x (-5) + (6) x (3)?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "38",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "2",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "-2",
+            "is_correct": true
+          },
+          {
+            "label": "D",
+            "text": "-42",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "C",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-12",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Which expression is the least?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "(-5) + (-7)",
+            "is_correct": true
+          },
+          {
+            "label": "B",
+            "text": "(+5) + (+7)",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "(+5) - (+7)",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "(+5) - (-7)",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "A",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-13",
+        "skill_code": "S1",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Which of the following does NOT represent -4?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-1 + -1 + -1 + -1",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-2 + -2",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "Four negative counters",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "Four positive counters",
+            "is_correct": true
+          }
+        ],
+        "correct_answer": "D",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-14",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Solve (-6) x (-2) + 24 / 4",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-6",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "3",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "9",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "18",
+            "is_correct": true
+          }
+        ],
+        "correct_answer": "D",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-15",
+        "skill_code": "S5",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Which of the following statements is correct about -3 and -7?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-3 < -7",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-3 > -7",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "3 = -7",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-3 = -(-7) - 3",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-16",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Apply order of operations to solve: -3 x (-4) + (-18) / 6 - (-5)",
+        "choices": [
+          {
+            "label": "A",
+            "text": "4",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-11/6",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "14",
+            "is_correct": true
+          },
+          {
+            "label": "D",
+            "text": "10",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "C",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-17",
+        "skill_code": "S3",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Perform the operation: (-4) x (-4) / (-4) =",
+        "choices": [
+          {
+            "label": "A",
+            "text": "4",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-12",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "-4",
+            "is_correct": true
+          },
+          {
+            "label": "D",
+            "text": "-1",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "C",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-18",
+        "skill_code": "S6",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "If the temperature at 7:00 am was -7 degrees C and the temperature rose 8 degrees C during the morning, what was the temperature by noon?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-15 degrees C",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-1 degree C",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "15 degrees C",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "1 degree C",
+            "is_correct": true
+          }
+        ],
+        "correct_answer": "D",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-19",
+        "skill_code": "S5",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Which of the following integers are ordered from GREATEST to LEAST?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-1, -4, 0, 4, 7",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-5, -2, 0, 4, 7",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "7, 4, 0, -2, -5",
+            "is_correct": true
+          },
+          {
+            "label": "D",
+            "text": "7, 4, 0, -5, -4",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "C",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-20",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Which correctly answers [(-2) x (-4)] + [(-12) / (+3)]?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "4",
+            "is_correct": true
+          },
+          {
+            "label": "B",
+            "text": "12",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "-12",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "0",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "A",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-21",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Solve (-4) x (-3) + 18 / 3",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-6",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "3",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "9",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "18",
+            "is_correct": true
+          }
+        ],
+        "correct_answer": "D",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-22",
+        "skill_code": "S3",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Evaluate (-2) x 9 x (-5).",
+        "choices": [
+          {
+            "label": "A",
+            "text": "90",
+            "is_correct": true
+          },
+          {
+            "label": "B",
+            "text": "10",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "180",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "45",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "A",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-23",
+        "skill_code": "S5",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Order the integers 3, -7, 6, and 0 from least to greatest.",
+        "choices": [
+          {
+            "label": "A",
+            "text": "6, 3, 0, -7",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-7, 0, 3, 6",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "3, -7, 6, 0",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-7, 0, 6, 3",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-24",
+        "skill_code": "S3",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Find the product: -5 x (-6).",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-11",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "30",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "1",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-30",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-25",
+        "skill_code": "S3",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Find the quotient: 66 / 11.",
+        "choices": [
+          {
+            "label": "A",
+            "text": "77",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "6",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "-6",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "7",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-26",
+        "skill_code": "S5",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Write the integers -1, -7, 6, -6, 8, and 0 in order from least to greatest.",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-7, 6, -1, 0, -6, 8",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-1, -7, 6, -6, 8, 0",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "-7, -6, -1, 0, 6, 8",
+            "is_correct": true
+          },
+          {
+            "label": "D",
+            "text": "8, 6, 0, -1, -6, -7",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "C",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-27",
+        "skill_code": "S2",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Add: -34 + (-35)",
+        "choices": [
+          {
+            "label": "A",
+            "text": "69",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-69",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "1",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-1",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-28",
+        "skill_code": "S2",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Subtract: -26 from -25",
+        "choices": [
+          {
+            "label": "A",
+            "text": "1",
+            "is_correct": true
+          },
+          {
+            "label": "B",
+            "text": "-1",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "51",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-51",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "A",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-29",
+        "skill_code": "S3",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Multiply: 4 x (-6)",
+        "choices": [
+          {
+            "label": "A",
+            "text": "2",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-24",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "-2",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "24",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      },
+      {
+        "code": "PP-30",
+        "skill_code": "S3",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": null,
+        "prompt": "Find the quotient -102 / (-3)",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-99",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-105",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "-34",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "34",
+            "is_correct": true
+          }
+        ],
+        "correct_answer": "D",
+        "solution_steps": [],
+        "explanation": "",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "derived_mathematically_pdf_has_no_answer_line"
+      }
+    ]
+  }
+}

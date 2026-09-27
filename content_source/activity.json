@@ -1,0 +1,422 @@
+{
+  "schema_version": 1,
+  "question_set": {
+    "code": "ACTIVITY",
+    "name": "Whole-course Activity",
+    "set_type": "activity",
+    "lesson_code": null,
+    "skill_code": null,
+    "questions": [
+      {
+        "code": "ACT-S1-01",
+        "skill_code": "S1",
+        "difficulty": "standard",
+        "presentation_type": "figure",
+        "cognitive_level": "understand",
+        "bloom_band": "LOTS",
+        "prompt": "The point is -6. Which integer is its opposite?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-6",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "0",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "6",
+            "is_correct": true
+          },
+          {
+            "label": "D",
+            "text": "12",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "C",
+        "solution_steps": [],
+        "explanation": "Reflect -6 across zero.",
+        "hint": null,
+        "image_asset": "activity/whole-course/ACT-S1-01.png",
+        "image_alt": "The point is -6. Which integer is its opposite?",
+        "source_figure_reference": "[insert figure: ACT-S1-01]",
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "pdf_answer_line"
+      },
+      {
+        "code": "ACT-S1-02",
+        "skill_code": "S1",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "understand",
+        "bloom_band": "LOTS",
+        "prompt": "Which value is an integer?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-14",
+            "is_correct": true
+          },
+          {
+            "label": "B",
+            "text": "1/2",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "0.4",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "40%",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "A",
+        "solution_steps": [],
+        "explanation": "-14 has no fractional part.",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "pdf_answer_line"
+      },
+      {
+        "code": "ACT-S2-01",
+        "skill_code": "S2",
+        "difficulty": "standard",
+        "presentation_type": "figure",
+        "cognitive_level": "understand",
+        "bloom_band": "LOTS",
+        "prompt": "The model has four negative and seven positive chips. What is the sum?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-11",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-3",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "3",
+            "is_correct": true
+          },
+          {
+            "label": "D",
+            "text": "11",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "C",
+        "solution_steps": [],
+        "explanation": "Four zero pairs cancel; three positives remain.",
+        "hint": null,
+        "image_asset": "activity/whole-course/ACT-S2-01.png",
+        "image_alt": "The model has four negative and seven positive chips. What is the sum?",
+        "source_figure_reference": "[insert figure: ACT-S2-01]",
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "pdf_answer_line"
+      },
+      {
+        "code": "ACT-S2-02",
+        "skill_code": "S2",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": "HOTS",
+        "prompt": "Compute -18 + (-7).",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-25",
+            "is_correct": true
+          },
+          {
+            "label": "B",
+            "text": "-11",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "11",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "25",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "A",
+        "solution_steps": [],
+        "explanation": "Add distances, keep the negative sign.",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "pdf_answer_line"
+      },
+      {
+        "code": "ACT-S3-01",
+        "skill_code": "S3",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "understand",
+        "bloom_band": "LOTS",
+        "prompt": "Compute (-7) x 6.",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-42",
+            "is_correct": true
+          },
+          {
+            "label": "B",
+            "text": "42",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "-13",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "13",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "A",
+        "solution_steps": [],
+        "explanation": "Different signs give a negative product.",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "pdf_answer_line"
+      },
+      {
+        "code": "ACT-S3-02",
+        "skill_code": "S3",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "analyze",
+        "bloom_band": "HOTS",
+        "prompt": "Compute (-48) / (-8).",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-6",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "6",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "-40",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "40",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "Same signs give a positive quotient.",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "pdf_answer_line"
+      },
+      {
+        "code": "ACT-S4-01",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "understand",
+        "bloom_band": "LOTS",
+        "prompt": "Evaluate 5 + (-3) x 4.",
+        "choices": [
+          {
+            "label": "A",
+            "text": "8",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-7",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "-32",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "-20",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "Multiply first: -12, then 5 + (-12) = -7.",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "pdf_answer_line"
+      },
+      {
+        "code": "ACT-S4-02",
+        "skill_code": "S4",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "analyze",
+        "bloom_band": "HOTS",
+        "prompt": "Evaluate (-2) x [6 - 9].",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-6",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "6",
+            "is_correct": true
+          },
+          {
+            "label": "C",
+            "text": "-18",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "18",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "B",
+        "solution_steps": [],
+        "explanation": "Bracket is -3; (-2) x (-3) = 6.",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "pdf_answer_line"
+      },
+      {
+        "code": "ACT-S5-01",
+        "skill_code": "S5",
+        "difficulty": "standard",
+        "presentation_type": "video",
+        "cognitive_level": "understand",
+        "bloom_band": "LOTS",
+        "prompt": "After the number-line segment, which is greatest: -5, 0, 2, or 7?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-5",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "0",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "2",
+            "is_correct": false
+          },
+          {
+            "label": "D",
+            "text": "7",
+            "is_correct": true
+          }
+        ],
+        "correct_answer": "D",
+        "solution_steps": [],
+        "explanation": "7 is farthest right.",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": "VID-INTEGER-NUMBER-LINE",
+        "video_pause_seconds": 110,
+        "source_answer_basis": "pdf_answer_line"
+      },
+      {
+        "code": "ACT-S6-01",
+        "skill_code": "S6",
+        "difficulty": "standard",
+        "presentation_type": "text",
+        "cognitive_level": "apply",
+        "bloom_band": "HOTS",
+        "prompt": "It is -4 degrees C and warms by 9 degrees. What is the new temperature?",
+        "choices": [
+          {
+            "label": "A",
+            "text": "-13",
+            "is_correct": false
+          },
+          {
+            "label": "B",
+            "text": "-5",
+            "is_correct": false
+          },
+          {
+            "label": "C",
+            "text": "5",
+            "is_correct": true
+          },
+          {
+            "label": "D",
+            "text": "13",
+            "is_correct": false
+          }
+        ],
+        "correct_answer": "C",
+        "solution_steps": [],
+        "explanation": "-4 + 9 = 5.",
+        "hint": null,
+        "image_asset": null,
+        "image_alt": null,
+        "source_figure_reference": null,
+        "video_code": null,
+        "video_pause_seconds": null,
+        "source_answer_basis": "pdf_answer_line"
+      }
+    ]
+  }
+}

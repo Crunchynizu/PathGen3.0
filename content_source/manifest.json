@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "curriculum_version": "PATHGEN-CURRICULUM-V1",
+  "scoring_policy": {
+    "code": "SCORING-V2",
+    "correct_required": 2,
+    "questions_per_skill": 3
+  },
+  "counts": {
+    "lessons": 3,
+    "skills": 6,
+    "questions_total": 94,
+    "regular": 18,
+    "additional": 18,
+    "foundational": 18,
+    "activity": 10,
+    "prepost": 30
+  },
+  "source_files": {
+    "lesson_pdf": {
+      "path": "../pathgen3.0docs/content/lesson.pdf",
+      "sha256": "53554490dee286cd69d3a4e9aad84da1f73f710b43a2db0a2f6d3c7fe53a5ef0",
+      "page_count": 22
+    },
+    "pretest_posttest_pdf": {
+      "path": "../pathgen3.0docs/content/pretest_posttest.pdf",
+      "sha256": "f0233e1b676a8d00083b7931eb4363c989572fad17d9094f5fe28737db5f88ad",
+      "page_count": 6
+    }
+  },
+  "pretest_posttest_sha256": "f0233e1b676a8d00083b7931eb4363c989572fad17d9094f5fe28737db5f88ad",
+  "skills": [
+    {
+      "code": "S1",
+      "name": "Identify integers, opposites, and absolute value",
+      "description": "Identify integers, opposites, and absolute value.",
+      "p_l0": "0.300000",
+      "p_t": "0.090000",
+      "p_g": "0.100000",
+      "p_s": "0.090000"
+    },
+    {
+      "code": "S2",
+      "name": "Add and subtract integers",
+      "description": "Add and subtract integers.",
+      "p_l0": "0.300000",
+      "p_t": "0.090000",
+      "p_g": "0.100000",
+      "p_s": "0.090000"
+    },
+    {
+      "code": "S3",
+      "name": "Multiply and divide integers",
+      "description": "Multiply and divide integers.",
+      "p_l0": "0.300000",
+      "p_t": "0.090000",
+      "p_g": "0.100000",
+      "p_s": "0.090000"
+    },
+    {
+      "code": "S4",
+      "name": "Evaluate expressions using order of operations",
+      "description": "Evaluate expressions using order of operations.",
+      "p_l0": "0.300000",
+      "p_t": "0.090000",
+      "p_g": "0.100000",
+      "p_s": "0.090000"
+    },
+    {
+      "code": "S5",
+      "name": "Represent, compare, and order integers",
+      "description": "Represent, compare, and order integers on a number line.",
+      "p_l0": "0.300000",
+      "p_t": "0.090000",
+      "p_g": "0.100000",
+      "p_s": "0.090000"
+    },
+    {
+      "code": "S6",
+      "name": "Model signed-change situations",
+      "description": "Model signed-change situations.",
+      "p_l0": "0.300000",
+      "p_t": "0.090000",
+      "p_g": "0.100000",
+      "p_s": "0.090000"
+    }
+  ],
+  "prepost_rewrites": [
+    {
+      "code": "PP-13",
+      "reason": "text-only rewrite; original used number-line choice images",
+      "original_prompt": "Which does NOT represent -4? [Hint: open circle = negative; filled circle = positive]",
+      "new_prompt": "Which of the following does NOT represent -4?",
+      "new_choices": [
+        "A. -1 + -1 + -1 + -1",
+        "B. -2 + -2",
+        "C. Four negative counters",
+        "D. Four positive counters"
+      ],
+      "new_key": "D"
+    }
+  ],
+  "source_ambiguities": [
+    {
+      "scope": "PP-01 to PP-30",
+      "issue": "pretest_posttest.pdf contains no answer lines or answer-key page",
+      "resolution": "keys derived mathematically from the printed items"
+    },
+    {
+      "scope": "VID-INTEGER-*",
+      "issue": "lesson.pdf names four videos and time ranges but provides no YouTube video IDs or transcripts",
+      "resolution": "null source IDs in media_manifest and required transcript placeholder files"
+    },
+    {
+      "scope": "all figure questions",
+      "issue": "lesson.pdf contains insert-figure markers rather than embedded prompt figures",
+      "resolution": "1x1 transparent PNG placeholders at the specified static paths"
+    },
+    {
+      "scope": "ACT-S2-02 and ACT-S6-01",
+      "issue": "lesson.pdf labels the activity 8 LOTS / 2 HOTS, but the approved extraction contract requires 6 LOTS / 4 HOTS",
+      "resolution": "the two Apply items are classified as HOTS metadata; prompts, choices, and keys are unchanged"
+    },
+    {
+      "scope": "L2-R-S3-03 and L2-A-S3-03",
+      "issue": "the question headers use these codes, but their insert-figure markers say L2-R-S3-04 and L2-A-S3-01",
+      "resolution": "the canonical question header codes are used for question and placeholder asset paths"
+    }
+  ]
+}
