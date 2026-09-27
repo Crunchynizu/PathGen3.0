@@ -1,0 +1,14 @@
+{% extends "base_assessment.html" %}
+{% block title %}{{ assessment_title }} · PathGen{% endblock %}
+{% block assessment_header %}{% if mode == "question" %}<button class="assessment-exit" type="button" data-dialog-open="exit-assessment-dialog">Exit</button>{% endif %}{% endblock %}
+{% block assessment_content %}
+  {% if mode == "overview" %}
+    <section class="assessment-overview"><p class="eyebrow">Final assessment</p><h1>{{ assessment_title }}</h1><p>Answer {{ expected_items }} questions in the same fixed order as the pre-test. Feedback is delayed until submission.</p>{% if locked_reason %}<div class="locked-panel" role="status"><strong>Post-test locked</strong><p>{{ locked_reason }}</p></div>{% elif active_session %}<a class="primary-button" href="{% url 'learning:assessment_session' active_session.id %}">Resume post-test</a>{% else %}<form method="post">{% csrf_token %}<button class="primary-button" type="submit">Start post-test</button></form>{% endif %}<a class="secondary-link" href="{{ dashboard_url }}">Back to dashboard</a></section>
+  {% elif mode == "question" %}
+    {% include "partials/assessment_progress.html" %}
+    <section class="assessment-panel"><form method="post" action="{% url 'learning:submit_response' session.id %}">{% csrf_token %}<input type="hidden" name="session_item" value="{{ current_item.id }}">{% include "partials/assessment_question.html" %}<button class="primary-button" type="submit">Save and continue</button></form></section>
+    {% include "modals/assessment/exit_assessment_confirm.html" %}
+  {% else %}
+    <section class="assessment-result"><p class="eyebrow">Path complete</p><h1>Post-test submitted</h1><p class="result-score"><strong>{{ score }}</strong> of {{ total_questions }}</p><p>Your score is derived from your saved responses. This post-test did not update mastery.</p><a class="primary-button" href="{{ my_lesson_url }}">View My Lesson</a></section>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "base_main.html" %}
+{% block title %}{{ lesson.title }} · PathGen{% endblock %}
+{% block main_content %}
+  <a class="back-link" href="{{ back_url }}">← {{ back_label }}</a>
+  <article class="lesson-viewer"><header><p class="eyebrow">Lesson {{ lesson.lesson_order }}</p><h1 class="page-title">{{ lesson.title }}</h1><p class="page-copy">{{ lesson.summary }}</p></header><div class="lesson-reading">{{ lesson.content_json.source_text|linebreaks }}</div>{% if can_open_regular %}<form method="post" action="{% url 'learning:complete_lesson' lesson.slug %}">{% csrf_token %}<button class="primary-button" type="submit">Continue to regular exercise</button></form>{% endif %}</article>
+{% endblock %}

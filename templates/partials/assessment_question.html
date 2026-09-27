@@ -1,1 +1,11 @@
-<fieldset class="question-card"><legend>{{ question.prompt }}</legend>{% for choice in choices %}<label class="choice"><input type="radio" name="choice" value="{{ choice.id }}"> <span>{{ choice.label }}. {{ choice.text }}</span></label>{% endfor %}</fieldset>
+{% load static %}
+{% if question.video %}{% include "partials/video_player.html" with video=question.video pause_seconds=question.video_pause_seconds %}{% endif %}
+<fieldset class="question-card"{% if question.video %} data-video-question hidden{% endif %}>
+  <legend>{{ question.prompt }}</legend>
+  {% if question.image_asset %}<img class="assessment-figure" src="{% static question.image_asset %}" alt="{{ question.image_alt }}">{% endif %}
+  <div class="choice-grid">
+    {% for choice in choices %}
+      <label class="choice"><input type="radio" name="choice" value="{{ choice.id }}" required> <span><strong>{{ choice.label }}</strong> {{ choice.text }}</span></label>
+    {% endfor %}
+  </div>
+</fieldset>

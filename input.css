@@ -8,6 +8,8 @@
     --color-danger-subtle: var(--danger-bg);
     --color-success: var(--success);
     --color-success-subtle: var(--success-bg);
+    --color-warning: var(--warning);
+    --color-warning-subtle: var(--warning-bg);
     --color-overlay: color-mix(in srgb, var(--color-text) 45%, transparent);
   }
 
@@ -701,5 +703,243 @@
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@layer components {
+  .assessment-header .brand {
+    @apply text-lg font-bold no-underline;
+    color: var(--color-text);
+  }
+
+  .assessment-exit,
+  .hint-button {
+    @apply min-h-11 rounded-xl border px-4 font-semibold active:scale-[0.98];
+    background: var(--color-surface);
+    border-color: var(--color-border-strong);
+    color: var(--color-text-link);
+  }
+
+  .assessment-overview,
+  .assessment-result,
+  .assessment-panel {
+    @apply grid gap-5 rounded-3xl p-6 sm:p-8;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .assessment-overview h1,
+  .assessment-result h1 {
+    @apply text-3xl font-bold tracking-tight;
+    color: var(--color-text);
+  }
+
+  .assessment-overview > p:not(.eyebrow),
+  .assessment-result > p:not(.eyebrow) {
+    @apply leading-7;
+    color: var(--color-text-secondary);
+  }
+
+  .assessment-overview form {
+    @apply m-0;
+  }
+
+  .secondary-link {
+    @apply inline-flex min-h-11 items-center font-semibold underline-offset-4 hover:underline;
+    color: var(--color-text-link);
+  }
+
+  .locked-panel,
+  .hint-panel {
+    @apply rounded-2xl border p-4;
+    background: var(--color-bg-subtle);
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  .locked-panel strong,
+  .hint-panel strong {
+    color: var(--color-text);
+  }
+
+  .assessment-progress {
+    @apply mb-5 grid gap-2 text-sm font-semibold;
+    color: var(--color-text-secondary);
+  }
+
+  .assessment-progress progress {
+    @apply h-2 w-full overflow-hidden rounded-full;
+    accent-color: var(--color-primary);
+  }
+
+  .question-card {
+    @apply mb-5 p-0;
+    border: 0;
+  }
+
+  .question-card legend {
+    @apply mb-5 text-xl font-bold leading-8;
+    color: var(--color-text);
+  }
+
+  .choice-grid {
+    @apply grid gap-3;
+  }
+
+  .choice {
+    @apply m-0 cursor-pointer transition-transform active:scale-[0.99];
+    background: var(--color-surface);
+  }
+
+  .choice:has(input:checked) {
+    background: var(--color-primary-subtle);
+    border-color: var(--color-primary);
+  }
+
+  .choice input {
+    @apply h-5 w-5 shrink-0;
+    accent-color: var(--color-primary);
+  }
+
+  .assessment-figure {
+    @apply mb-5 max-h-72 w-full rounded-2xl object-contain;
+    background: var(--color-bg-subtle);
+  }
+
+  .assessment-panel .primary-button,
+  .assessment-panel .hint-button {
+    @apply mt-4;
+  }
+
+  .assessment-feedback {
+    @apply mb-5 grid gap-3 p-6;
+  }
+
+  .feedback-correct {
+    background: var(--color-success-subtle);
+    border-color: var(--color-success);
+  }
+
+  .feedback-incorrect {
+    background: var(--color-warning-subtle);
+    border-color: var(--color-warning);
+  }
+
+  .feedback-explanation {
+    @apply border-t pt-3 leading-7;
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  .result-score {
+    @apply flex items-baseline gap-2;
+  }
+
+  .result-score strong {
+    @apply text-5xl font-bold tracking-tight;
+    color: var(--color-primary-hover);
+  }
+
+  .video-shell {
+    @apply mb-6 grid gap-4 rounded-2xl border p-5;
+    background: var(--color-bg-subtle);
+    border-color: var(--color-border);
+  }
+
+  .video-frame {
+    @apply aspect-video overflow-hidden rounded-xl;
+    background: var(--color-text);
+  }
+
+  .video-frame iframe {
+    @apply h-full w-full border-0;
+  }
+
+  .page-header {
+    @apply mb-8;
+  }
+
+  .lesson-stepper {
+    @apply relative grid gap-5 pl-9;
+  }
+
+  .lesson-stepper::before {
+    content: "";
+    @apply absolute bottom-8 left-[0.6875rem] top-8 w-0.5;
+    background: var(--color-border);
+  }
+
+  .lesson-step {
+    @apply relative;
+  }
+
+  .step-marker {
+    @apply absolute -left-9 top-7 z-10 h-6 w-6 rounded-full border-4;
+    background: var(--color-surface);
+    border-color: var(--color-border-strong);
+  }
+
+  .lesson-step[data-state="completed"] .step-marker,
+  .lesson-step[data-state="current"] .step-marker,
+  .lesson-step[data-state="available"] .step-marker {
+    background: var(--color-primary);
+    border-color: var(--color-primary-subtle);
+  }
+
+  .step-card,
+  .lesson-viewer {
+    @apply rounded-2xl p-5 sm:p-7;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .lesson-step[data-state="current"] .step-card {
+    border: 2px solid var(--color-primary);
+  }
+
+  .lesson-step[data-state="locked"] .step-card {
+    background: var(--color-bg-subtle);
+  }
+
+  .step-heading {
+    @apply flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between;
+  }
+
+  .step-heading h2 {
+    @apply text-xl font-bold;
+    color: var(--color-text);
+  }
+
+  .step-state {
+    @apply text-sm font-semibold uppercase tracking-wider;
+    color: var(--color-text-cyan);
+  }
+
+  .step-actions {
+    @apply mt-5 flex flex-wrap gap-2;
+  }
+
+  .step-actions a {
+    @apply inline-flex min-h-11 items-center rounded-xl px-4 font-semibold no-underline;
+    background: var(--color-primary-subtle);
+    color: var(--color-text-link);
+  }
+
+  .locked-copy {
+    @apply mt-4;
+    color: var(--color-text-secondary);
+  }
+
+  .lesson-viewer {
+    @apply mt-5 grid gap-7;
+  }
+
+  .lesson-reading {
+    @apply max-w-3xl leading-8;
+    color: var(--color-text-secondary);
+  }
+
+  .lesson-reading p {
+    @apply mb-4;
   }
 }

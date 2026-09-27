@@ -16,7 +16,7 @@
         <li><a href="{% url 'portal:content' %}"{% if request.resolver_match.url_name == "content" %} aria-current="page"{% endif %}>Content</a></li>
       {% else %}
         <li><a href="{% url 'account:student_dashboard' %}"{% if request.resolver_match.url_name == "student_dashboard" %} aria-current="page"{% endif %}>Dashboard</a></li>
-        <li><a href="{% url 'account:my_lesson' %}"{% if request.resolver_match.url_name == "my_lesson" %} aria-current="page"{% endif %}>My Lesson</a></li>
+        <li><a href="{% url 'account:my_lesson' %}"{% if request.resolver_match.url_name == "my_lesson" or request.resolver_match.url_name == "lesson" %} aria-current="page"{% endif %}>My Lesson</a></li>
       {% endif %}
     </ul>
   </nav>

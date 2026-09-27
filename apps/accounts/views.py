@@ -359,4 +359,6 @@ def delete_managed_user(request, user_id):
 @role_required(User.Role.STUDENT)
 @require_GET
 def my_lesson_placeholder(request):
-    return HttpResponse("My Lesson will be available after curriculum import.")
+    from apps.learning.views import my_lesson
+
+    return my_lesson(request)

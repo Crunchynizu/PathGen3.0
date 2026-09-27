@@ -1,0 +1,14 @@
+{% extends "base_assessment.html" %}
+{% block title %}{{ assessment_title }} · PathGen{% endblock %}
+{% block assessment_header %}{% if mode == "question" %}<button class="assessment-exit" type="button" data-dialog-open="exit-assessment-dialog">Exit</button>{% endif %}{% endblock %}
+{% block assessment_content %}
+  {% if mode == "overview" %}
+    <section class="assessment-overview"><p class="eyebrow">Before the lessons</p><h1>{{ assessment_title }}</h1><p>Answer {{ expected_items }} questions, one at a time. Your answers are saved as you go. Results are shown only after the full pre-test.</p>{% if locked_reason %}<div class="locked-panel" role="status"><strong>Not available yet</strong><p>{{ locked_reason }}</p></div>{% elif active_session %}<a class="primary-button" href="{% url 'learning:assessment_session' active_session.id %}">Resume pre-test</a>{% else %}<form method="post">{% csrf_token %}<button class="primary-button" type="submit">Start pre-test</button></form>{% endif %}<a class="secondary-link" href="{{ dashboard_url }}">Back to dashboard</a></section>
+  {% elif mode == "question" %}
+    {% include "partials/assessment_progress.html" %}
+    <section class="assessment-panel"><form method="post" action="{% url 'learning:submit_response' session.id %}">{% csrf_token %}<input type="hidden" name="session_item" value="{{ current_item.id }}">{% include "partials/assessment_question.html" %}<button class="primary-button" type="submit">Save and continue</button></form></section>
+    {% include "modals/assessment/exit_assessment_confirm.html" %}
+  {% else %}
+    <section class="assessment-result"><p class="eyebrow">Complete</p><h1>Pre-test submitted</h1><p class="result-score"><strong>{{ score }}</strong> of {{ total_questions }}</p><p>Your answers are locked. Item keys remain protected until the post-test is complete.</p><a class="primary-button" href="{{ my_lesson_url }}">Continue to My Lesson</a></section>
+  {% endif %}
+{% endblock %}

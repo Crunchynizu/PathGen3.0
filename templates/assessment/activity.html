@@ -1,0 +1,14 @@
+{% extends "base_assessment.html" %}
+{% block title %}{{ assessment_title }} · PathGen{% endblock %}
+{% block assessment_header %}{% if mode == "question" %}<button class="assessment-exit" type="button" data-dialog-open="exit-assessment-dialog">Exit</button>{% endif %}{% endblock %}
+{% block assessment_content %}
+  {% if mode == "overview" %}
+    <section class="assessment-overview"><p class="eyebrow">After Lesson 3</p><h1>{{ assessment_title }}</h1><p>{{ expected_items }} questions across all six skills. Some questions include a video cue.</p>{% if locked_reason %}<div class="locked-panel" role="status"><strong>Not available yet</strong><p>{{ locked_reason }}</p></div>{% elif active_session %}<a class="primary-button" href="{% url 'learning:assessment_session' active_session.id %}">Resume activity</a>{% else %}<form method="post">{% csrf_token %}<button class="primary-button" type="submit">Start activity</button></form>{% endif %}<a class="secondary-link" href="{% url 'account:my_lesson' %}">Back to My Lesson</a></section>
+  {% elif mode == "question" %}
+    {% include "partials/assessment_progress.html" %}
+    {% if feedback %}{% include "partials/assessment_feedback.html" %}<a class="primary-button" href="{{ next_url }}">{% if session.status == "completed" %}View result{% else %}Next question{% endif %}</a>{% else %}<section class="assessment-panel"><form method="post" action="{% url 'learning:submit_response' session.id %}">{% csrf_token %}<input type="hidden" name="session_item" value="{{ current_item.id }}">{% include "partials/assessment_question.html" %}<button class="primary-button" type="submit">Submit answer</button></form></section>{% endif %}
+    {% include "modals/assessment/exit_assessment_confirm.html" %}
+  {% else %}
+    <section class="assessment-result"><p class="eyebrow">Activity complete</p><h1>Course activity result</h1><p class="result-score"><strong>{{ score }}</strong> of {{ total_questions }}</p><a class="primary-button" href="{{ my_lesson_url }}">Continue to My Lesson</a></section>
+  {% endif %}
+{% endblock %}

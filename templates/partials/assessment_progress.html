@@ -1,1 +1,4 @@
-<p class="assessment-progress" role="status">Question {{ current_number }} of {{ total_questions }}</p>
+<div class="assessment-progress" role="status" aria-live="polite">
+  <span>Question {{ current_number }} of {{ total_questions }}</span>
+  <progress value="{{ current_number }}" max="{{ total_questions }}">{{ current_number }} of {{ total_questions }}</progress>
+</div>

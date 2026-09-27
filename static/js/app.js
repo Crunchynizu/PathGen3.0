@@ -105,4 +105,68 @@
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && drawerElement && !drawerElement.hidden) closeDrawer();
   });
+
+  document.querySelectorAll("[data-hint-open]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const panel = button.parentElement.querySelector("[data-hint-panel]");
+      const input = button.parentElement.querySelector("[data-hint-used]");
+      if (!panel || !input) return;
+      panel.hidden = false;
+      input.value = "on";
+      button.setAttribute("aria-expanded", "true");
+      button.hidden = true;
+      requestAnimationFrame(() => panel.focus?.());
+    });
+  });
+
+  const feedback = document.querySelector("[data-feedback]");
+  if (feedback) requestAnimationFrame(() => feedback.focus());
+
+  document.querySelectorAll("[data-video-cue]").forEach((shell) => {
+    const frame = shell.querySelector("[data-video-frame]");
+    const question = shell.parentElement.querySelector("[data-video-question]");
+    const revealButton = shell.querySelector("[data-reveal-question]");
+    const pauseAt = Number(shell.dataset.pauseSeconds || 0);
+    let revealed = false;
+    let pollTimer = null;
+
+    function revealQuestion() {
+      if (revealed || !question) return;
+      revealed = true;
+      if (pollTimer) window.clearInterval(pollTimer);
+      question.hidden = false;
+      revealButton.hidden = true;
+      requestAnimationFrame(() => question.querySelector("input")?.focus());
+    }
+
+    function sendVideoCommand(func) {
+      frame?.contentWindow?.postMessage(
+        JSON.stringify({ event: "command", func, args: [] }),
+        "*"
+      );
+    }
+
+    window.addEventListener("message", (event) => {
+      if (!frame || event.source !== frame.contentWindow) return;
+      let payload;
+      try {
+        payload = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
+      } catch (_error) {
+        return;
+      }
+      const currentTime = payload?.info?.currentTime;
+      if (!revealed && typeof currentTime === "number" && currentTime >= pauseAt) {
+        sendVideoCommand("pauseVideo");
+        revealQuestion();
+      }
+    });
+
+    frame?.addEventListener("load", () => {
+      frame.contentWindow?.postMessage(JSON.stringify({ event: "listening" }), "*");
+      pollTimer = window.setInterval(() => {
+        if (!revealed) sendVideoCommand("getCurrentTime");
+      }, 500);
+    });
+    revealButton?.addEventListener("click", revealQuestion);
+  });
 })();
