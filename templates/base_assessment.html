@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block shell %}
+  <header class="assessment-header">
+    <a class="brand" href="/">PathGen</a>
+    {% block assessment_header %}{% endblock %}
+  </header>
+  <main id="main-content" class="assessment-main">
+    {% include "partials/messages.html" %}
+    {% block assessment_content %}{% endblock %}
+  </main>
+  <footer class="site-footer"><p>Focused assessment</p></footer>
+{% endblock %}

@@ -1,57 +1,8 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="only light">
-  <title>My Account · PathGen</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/theme.css' %}">
-  <link rel="stylesheet" href="{% static 'css/app.css' %}">
-</head>
-<body class="account-page">
-  <a class="skip-link" href="#main-content">Skip to content</a>
-  <header class="site-header"><a class="brand" href="/">PathGen</a></header>
-  <div class="account-shell">
-    <nav class="account-nav" aria-label="Account">
-      <p class="eyebrow">Account</p>
-      <a href="{% url 'account:my_account' %}" aria-current="page">My Account</a>
-      <a href="{% url 'account:logout' %}">Logout</a>
-    </nav>
-    <main id="main-content" class="account-content">
-      <header>
-        <h1 class="page-title">My Account</h1>
-        <p class="page-copy">Update your name or password. Your username and role cannot be changed.</p>
-      </header>
-      {% for message in messages %}<div class="message" role="status">{{ message }}</div>{% endfor %}
-      <section class="account-card" aria-labelledby="identity-heading">
-        <h2 id="identity-heading" class="text-xl font-bold">Account details</h2>
-        <div class="account-grid">
-          <div><p class="muted-label">Username</p><p class="readonly-value">{{ request.user.username }}</p></div>
-          <div><p class="muted-label">Role</p><p class="readonly-value">{{ request.user.get_role_display }}</p></div>
-        </div>
-        <div class="account-actions">
-          <button class="primary-button" type="button" data-dialog-open="update-name-dialog">Update name</button>
-          <button class="secondary-button" type="button" data-dialog-open="update-password-dialog">Change password</button>
-        </div>
-      </section>
-      {% include "account/update_name.html" %}
-      {% include "account/update_password.html" %}
-    </main>
-  </div>
-  <script>
-    document.querySelectorAll("[data-dialog-open]").forEach((button) => {
-      button.addEventListener("click", () => {
-        document.getElementById(button.dataset.dialogOpen).showModal();
-      });
-    });
-    document.querySelectorAll("[data-dialog-close]").forEach((button) => {
-      button.addEventListener("click", () => button.closest("dialog").close());
-    });
-    document.querySelectorAll("dialog[data-auto-open]").forEach((dialog) => dialog.showModal());
-  </script>
-</body>
-</html>
+{% extends "base_secondary.html" %}
+{% block title %}My Account · PathGen{% endblock %}
+{% block secondary_content %}
+  {% include "partials/page_header.html" with eyebrow="Account" page_title="My Account" page_subtitle="Update your name or password. Your username and role cannot be changed." %}
+  <section class="data-card" aria-labelledby="identity-heading"><h2 id="identity-heading">Account details</h2><dl class="detail-list"><div><dt>Username</dt><dd>{{ request.user.username }}</dd></div><div><dt>Role</dt><dd>{{ request.user.get_role_display }}</dd></div><div><dt>Name</dt><dd>{{ request.user.get_full_name|default:"Not provided" }}</dd></div></dl><div class="account-actions"><button class="primary-button" type="button" data-dialog-open="update-name-dialog">Update name</button><button class="secondary-button" type="button" data-dialog-open="update-password-dialog">Change password</button></div></section>
+  {% include "modals/account/update_name.html" %}
+  {% include "modals/account/update_password.html" %}
+{% endblock %}

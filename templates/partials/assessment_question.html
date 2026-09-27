@@ -1,0 +1,1 @@
+<fieldset class="question-card"><legend>{{ question.prompt }}</legend>{% for choice in choices %}<label class="choice"><input type="radio" name="choice" value="{{ choice.id }}"> <span>{{ choice.label }}. {{ choice.text }}</span></label>{% endfor %}</fieldset>

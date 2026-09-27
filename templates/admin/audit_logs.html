@@ -1,0 +1,7 @@
+{% extends "base_main.html" %}
+{% block title %}Audit Logs · PathGen{% endblock %}
+{% block main_content %}
+  {% include "partials/page_header.html" with eyebrow="Admin" page_title="Audit Logs" page_subtitle="Immutable history of sensitive authentication, lifecycle, class, and settings actions." %}
+  <form class="filter-bar" method="get"><label><span>Search action or reason</span><input class="form-input" type="search" name="q" value="{{ query }}"></label><button class="secondary-button" type="submit">Search</button><a class="text-link" href="{% url 'portal:audit_logs' %}">Reset</a></form>
+  <section class="data-card">{% if page_obj.object_list %}<div class="table-wrap"><table><thead><tr><th>Action</th><th>Actor</th><th>Target</th><th>Time</th><th>Detail</th></tr></thead><tbody>{% for event in page_obj %}<tr><td>{{ event.action }}</td><td>{{ event.actor.username|default:"System" }}</td><td>{{ event.target_type }}</td><td>{{ event.created_at }}</td><td><button type="button" data-dialog-open="audit-detail-{{ event.pk }}">View</button>{% include "modals/audit/audit_detail.html" %}</td></tr>{% endfor %}</tbody></table></div>{% include "partials/pagination.html" %}{% else %}{% include "partials/empty_state.html" with empty_title="No audit events match" empty_body="Try a different search." %}{% endif %}</section>
+{% endblock %}

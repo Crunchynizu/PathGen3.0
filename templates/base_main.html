@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block shell %}
+  <div class="app-frame">
+    <aside class="desktop-sidebar" aria-label="Primary navigation">
+      {% include "partials/sidebar.html" %}
+    </aside>
+    {% include "partials/mobile_nav.html" %}
+    <div class="app-workspace" data-drawer-background>
+      <main id="main-content" class="main-content">
+        {% include "partials/messages.html" %}
+        {% block main_content %}{% endblock %}
+      </main>
+      <footer class="site-footer"><p>PathGen · Grade 7 Mathematics</p></footer>
+    </div>
+  </div>
+{% endblock %}

@@ -217,6 +217,305 @@
     background: var(--color-bg-subtle);
     color: var(--color-text-secondary);
   }
+
+  .sr-only {
+    @apply absolute h-px w-px overflow-hidden whitespace-nowrap p-0;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .standalone-main {
+    @apply mx-auto grid min-h-[calc(100vh-9rem)] w-full max-w-6xl place-items-center px-4 py-10 sm:px-6;
+  }
+
+  .site-footer {
+    @apply px-4 py-5 text-center text-sm;
+    color: var(--color-text-muted);
+  }
+
+  .app-frame {
+    @apply min-h-screen lg:grid lg:grid-cols-[240px_1fr];
+    background: var(--color-bg-subtle);
+  }
+
+  .desktop-sidebar {
+    @apply fixed inset-y-0 left-0 hidden w-60 border-r lg:block;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .sidebar-inner {
+    @apply flex h-full min-h-0 flex-col p-4;
+  }
+
+  .sidebar-brand {
+    @apply flex min-h-11 items-center px-3 text-xl font-bold tracking-tight;
+  }
+
+  .nav-group-label {
+    @apply mb-2 mt-6 px-3 text-xs font-bold uppercase tracking-widest;
+    color: var(--color-text-muted);
+  }
+
+  .nav-list {
+    @apply space-y-1;
+  }
+
+  .nav-list a {
+    @apply flex min-h-11 items-center rounded-xl px-3 font-semibold no-underline;
+    color: var(--color-text-secondary);
+  }
+
+  .nav-list a:hover {
+    background: var(--color-bg-subtle);
+    color: var(--color-text);
+  }
+
+  .nav-list a[aria-current="page"] {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .sidebar-account {
+    @apply mt-auto;
+  }
+
+  .sidebar-user {
+    @apply mt-4 flex items-center gap-3 border-t px-3 pt-4 text-sm;
+    border-color: var(--color-border);
+  }
+
+  .sidebar-user span:not(.avatar) {
+    @apply block;
+    color: var(--color-text-muted);
+  }
+
+  .avatar {
+    @apply inline-flex min-h-11 min-w-11 items-center justify-center rounded-full font-bold;
+    background: var(--color-primary-subtle);
+    color: var(--color-primary-hover);
+  }
+
+  .mobile-header {
+    @apply sticky top-0 z-30 flex items-center gap-3 border-b px-4 py-3 lg:hidden;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .mobile-drawer {
+    @apply fixed inset-0 z-50 grid grid-cols-[min(85vw,20rem)_1fr] lg:hidden;
+  }
+
+  .drawer-panel {
+    @apply min-h-0 overflow-y-auto;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .drawer-header {
+    @apply flex min-h-16 items-center justify-between border-b px-4;
+    border-color: var(--color-border);
+  }
+
+  .drawer-scrim {
+    @apply h-full w-full;
+    background: var(--color-overlay);
+  }
+
+  .app-workspace {
+    @apply min-w-0 lg:col-start-2;
+  }
+
+  .main-content {
+    @apply mx-auto min-h-[calc(100vh-4rem)] max-w-7xl space-y-6 px-4 py-6 xs:px-5 sm:px-6 lg:px-8 lg:py-10;
+  }
+
+  .page-header {
+    @apply flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between;
+  }
+
+  .data-card,
+  .kpi-card,
+  .empty-state {
+    @apply rounded-2xl border p-5 sm:p-6;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .data-card h2,
+  .empty-state h2 {
+    @apply text-xl font-bold;
+  }
+
+  .kpi-grid {
+    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-4;
+  }
+
+  .kpi-label,
+  .kpi-definition,
+  .revision-note,
+  .field-help {
+    @apply text-sm;
+    color: var(--color-text-secondary);
+  }
+
+  .kpi-value {
+    @apply my-2 text-3xl font-bold tracking-tight;
+    color: var(--color-text);
+  }
+
+  .section-grid,
+  .record-grid {
+    @apply grid gap-5 md:grid-cols-2;
+  }
+
+  .record-stack,
+  .message-stack {
+    @apply space-y-4;
+  }
+
+  .card-header {
+    @apply mb-5 flex flex-wrap items-start justify-between gap-4;
+  }
+
+  .status-badge {
+    @apply inline-flex min-h-7 items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold;
+    background: var(--color-primary-subtle);
+    color: var(--color-primary-hover);
+  }
+
+  .status-inactive,
+  .status-closed,
+  .status-archived {
+    background: var(--color-bg-subtle);
+    color: var(--color-text-secondary);
+  }
+
+  .detail-list {
+    @apply mt-5 grid gap-4 sm:grid-cols-2;
+  }
+
+  .detail-list.compact {
+    @apply mb-5;
+  }
+
+  .detail-list dt {
+    @apply text-sm;
+    color: var(--color-text-muted);
+  }
+
+  .detail-list dd {
+    @apply mt-1 font-semibold;
+    color: var(--color-text);
+  }
+
+  .filter-bar {
+    @apply grid gap-4 rounded-2xl border p-4 sm:grid-cols-2 lg:flex lg:items-end;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .filter-bar label {
+    @apply grid flex-1 gap-2 text-sm font-semibold;
+  }
+
+  .table-wrap {
+    @apply w-full overflow-x-auto;
+  }
+
+  .roster-table {
+    @apply mt-5 border-t pt-5;
+    border-color: var(--color-border);
+  }
+
+  table {
+    @apply w-full min-w-[36rem] border-collapse text-left;
+  }
+
+  th {
+    @apply border-b px-3 py-3 text-sm font-semibold;
+    border-color: var(--color-border-strong);
+    color: var(--color-text-secondary);
+  }
+
+  td {
+    @apply border-b px-3 py-4 align-top;
+    border-color: var(--color-border);
+  }
+
+  .table-actions {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .table-actions button {
+    @apply min-h-11 rounded-lg px-3 font-semibold;
+    background: var(--color-bg-subtle);
+    color: var(--color-text-link);
+  }
+
+  .danger-button {
+    @apply inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 font-semibold transition-transform active:scale-[0.98];
+    background: var(--color-danger);
+    color: var(--color-on-primary);
+  }
+
+  .danger-button:link,
+  .danger-button:visited,
+  .primary-button:link,
+  .primary-button:visited {
+    color: var(--color-on-primary);
+  }
+
+  .pagination {
+    @apply mt-5 flex min-h-11 flex-wrap items-center justify-between gap-3;
+  }
+
+  .pagination a,
+  .back-link,
+  .breadcrumbs a {
+    @apply font-semibold underline-offset-4 hover:underline;
+    color: var(--color-text-link);
+  }
+
+  .breadcrumbs ol {
+    @apply flex flex-wrap items-center gap-2 text-sm;
+    color: var(--color-text-secondary);
+  }
+
+  .breadcrumbs li:not(:last-child)::after {
+    content: "/";
+    @apply ml-2;
+    color: var(--color-text-muted);
+  }
+
+  .assessment-header {
+    @apply flex min-h-16 items-center justify-between border-b px-4 sm:px-6;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .assessment-main {
+    @apply mx-auto w-full max-w-3xl px-4 py-8 sm:px-6;
+  }
+
+  .video-placeholder,
+  .question-card,
+  .assessment-feedback {
+    @apply rounded-2xl border p-5;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .choice {
+    @apply mt-3 flex min-h-11 items-center gap-3 rounded-xl border p-3;
+    border-color: var(--color-border);
+  }
+
+  .message-error {
+    background: var(--color-danger-subtle);
+    border-color: var(--color-danger);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

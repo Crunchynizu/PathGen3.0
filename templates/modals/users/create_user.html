@@ -1,0 +1,5 @@
+<dialog aria-label="Create User" id="create-user-dialog" class="modal-dialog"{% if create_form.errors %} data-auto-open{% endif %}>
+  <div class="modal-content"><div class="modal-header"><div><p class="eyebrow">Users</p><h2>Create account</h2></div><button class="icon-button" type="button" data-dialog-close aria-label="Close create account dialog">×</button></div>
+    <form class="form-stack" method="post" action="{% url 'portal:create_user' %}" novalidate>{% csrf_token %}{% include "partials/form_errors.html" with form=create_form %}{% for field in create_form %}{% include "partials/form_field.html" with field=field %}{% endfor %}<div class="account-actions"><button class="primary-button" type="submit">Create account</button><button class="secondary-button" type="button" data-dialog-close>Cancel</button></div></form>
+  </div>
+</dialog>

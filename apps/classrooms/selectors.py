@@ -9,8 +9,9 @@ def classrooms_visible_to(actor):
     if actor.role == User.Role.ADMIN:
         return classrooms
     if actor.role == User.Role.TEACHER:
-        return classrooms.filter(teacher=actor)
+        return classrooms.filter(teacher=actor, status=Classroom.Status.ACTIVE)
     return classrooms.filter(
+        status=Classroom.Status.ACTIVE,
         student_memberships__student=actor,
         student_memberships__left_at__isnull=True,
     ).distinct()

@@ -5,26 +5,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="only light">
-  <title>Log out · PathGen</title>
+  <title>{% block title %}PathGen{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/theme.css' %}">
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
-  <main id="main-content" class="auth-page">
-    <section class="auth-card" aria-labelledby="logout-heading">
-      <p class="eyebrow">Account</p>
-      <h1 id="logout-heading" class="page-title">Log out?</h1>
-      <p class="page-copy">You will need to enter your credentials to return.</p>
-      <form class="form-stack" method="post" action="{% url 'account:logout' %}">
-        {% csrf_token %}
-        <button class="primary-button w-full" type="submit">Log out</button>
-        <a class="secondary-button w-full" href="{% url 'account:my_account' %}">Cancel</a>
-      </form>
-    </section>
-  </main>
+  {% block shell %}
+    <header class="site-header"><a class="brand" href="/">PathGen</a></header>
+    <main id="main-content" class="standalone-main">
+      {% include "partials/messages.html" %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer"><p>PathGen · Grade 7 Mathematics</p></footer>
+  {% endblock %}
+  <script src="{% static 'js/app.js' %}" defer></script>
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>

@@ -1,6 +1,7 @@
 from django.contrib.auth import password_validation
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
+from django.db.models.deletion import ProtectedError
 from django.utils import timezone
 
 from apps.accounts.models import User
@@ -103,6 +104,50 @@ def reactivate_account(*, actor, user_id):
         target_snapshot={"role": user.role, "is_active": True},
     )
     return user
+
+
+@transaction.atomic
+def update_account_profile(*, actor, user_id, first_name, last_name, email=None):
+    _require_admin(actor)
+    user = User.objects.select_for_update().get(pk=user_id)
+    if user.role == User.Role.ADMIN:
+        raise PermissionDenied
+    user.first_name = first_name.strip()
+    user.last_name = last_name.strip()
+    user.email = User.objects.normalize_email(email) if email else None
+    user.save(update_fields=["first_name", "last_name", "email", "updated_at"])
+    record_audit_event(
+        action="account.profile_updated",
+        actor=actor,
+        target=user,
+        target_snapshot={"role": user.role, "is_active": user.is_active},
+    )
+    return user
+
+
+@transaction.atomic
+def delete_unused_account(*, actor, user_id, reason):
+    _require_admin(actor)
+    reason = reason.strip()
+    if not reason:
+        raise ValueError("A deletion reason is required.")
+    user = User.objects.select_for_update().get(pk=user_id)
+    if user.role == User.Role.ADMIN or user.is_active:
+        raise PermissionDenied
+    snapshot = {"role": user.role, "is_active": user.is_active, "username": user.username}
+    target_id = user.pk
+    try:
+        user.delete()
+    except ProtectedError as exc:
+        raise ValueError("This account has protected history and cannot be deleted.") from exc
+    record_audit_event(
+        action="account.deleted",
+        actor=actor,
+        target_type="accounts.User",
+        target_id=target_id,
+        target_snapshot=snapshot,
+        reason=reason,
+    )
 
 
 @transaction.atomic

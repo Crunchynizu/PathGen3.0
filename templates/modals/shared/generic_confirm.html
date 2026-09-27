@@ -1,0 +1,10 @@
+<dialog aria-label="Generic Confirm" id="{% block dialog_id %}confirm-dialog{% endblock %}" class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div><p class="eyebrow">Confirmation</p><h2>{% block dialog_title %}Confirm action{% endblock %}</h2></div>
+      <button class="icon-button" type="button" data-dialog-close aria-label="Close dialog">×</button>
+    </div>
+    <p class="page-copy">{% block dialog_message %}Review this action before continuing.{% endblock %}</p>
+    {% block dialog_body %}{% endblock %}
+  </div>
+</dialog>

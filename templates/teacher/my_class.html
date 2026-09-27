@@ -1,0 +1,6 @@
+{% extends "base_main.html" %}
+{% block title %}My Classes · PathGen{% endblock %}
+{% block main_content %}
+  {% include "partials/page_header.html" with eyebrow="Teacher" page_title="My Classes" page_subtitle="Only classes currently assigned to you are shown." %}
+  {% if classrooms %}<div class="record-grid">{% for classroom in classrooms %}<article class="data-card"><p class="eyebrow">{{ classroom.code }}</p><h2>{{ classroom.name }}</h2><a class="text-link" href="{% url 'portal:class_detail' classroom.pk %}">View class detail</a></article>{% endfor %}</div>{% else %}{% include "partials/empty_state.html" with empty_title="No assigned classes" empty_body="An admin assigns classes. There is nothing you need to configure." %}{% endif %}
+{% endblock %}
