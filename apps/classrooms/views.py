@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.core.exceptions import ValidationError
-from django.db.models import Prefetch
+from django.db.models import Avg, Prefetch
+from django.db.models.functions import Coalesce
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -9,7 +10,8 @@ from django.views.decorators.http import require_GET, require_POST
 
 from apps.accounts.models import User
 from apps.accounts.permissions import role_required
-from apps.adaptive.selectors import follow_up_targets_for_students
+from apps.adaptive.models import SkillMastery
+from apps.adaptive.selectors import decisions_for_students, follow_up_targets_for_students
 from apps.classrooms.forms import (
     AddStudentForm,
     AssignTeacherForm,
@@ -31,11 +33,8 @@ from apps.classrooms.services import (
 from apps.core import metrics
 from apps.core.dashboard_data import (
     BAND_LABELS,
-    bkt_chart,
     chart_spec,
-    decisions_chart,
     display_name,
-    matched_gain_chart,
 )
 from apps.core.selectors import (
     dashboard_classrooms,
@@ -44,7 +43,8 @@ from apps.core.selectors import (
     selected_dashboard_classroom,
 )
 from apps.adaptive.bkt import mastery_band
-from apps.learning.models import StudentPath
+from apps.curriculum.models import Skill
+from apps.learning.models import Session, StudentPath
 
 
 def _admin_classroom(classroom_id):
@@ -233,7 +233,7 @@ def teacher_dashboard(request):
         return render(
             request,
             "pages/teacher/teacher_dashboard.html",
-            {"classrooms": classes, "selected_class": None},
+            {"classrooms": classes, "selected_class": None, "filters": filters},
         )
 
     students = scoped_dashboard_students(request.user, classroom=selected)
@@ -247,7 +247,8 @@ def teacher_dashboard(request):
     mastery_metric = metrics.bkt_mastery_bands(**metric_kwargs)
     gain_metric = metrics.matched_gain(**metric_kwargs)
     decisions_metric = metrics.q_learning_decisions(**metric_kwargs)
-    follow_up_metric = metrics.follow_up_needed(**metric_kwargs)
+    # Follow-up is a current-class signal, not limited by the research date window.
+    follow_up_metric = metrics.follow_up_needed(students=students, cohort=cohort)
 
     path_counts = {value: 0 for value, _label in StudentPath.Status.choices}
     for status in StudentPath.objects.filter(student__in=students).values_list("status", flat=True):
@@ -262,7 +263,7 @@ def teacher_dashboard(request):
         "version": metrics.METRICS_VERSION,
         "insufficient": class_size == 0,
     }
-    labels = [label for _value, label in StudentPath.Status.choices]
+    labels = [value for value, _label in StudentPath.Status.choices]
     completion_values = [path_counts[value] for value, _label in StudentPath.Status.choices]
     completion_chart = chart_spec(
         chart_id="completion-distribution",
@@ -275,13 +276,31 @@ def teacher_dashboard(request):
         aria_label=f"Bar chart showing learning-path status for {cohort}.",
     )
 
+    member_ids = list(students.values_list("pk", flat=True))
+    paths = {
+        path.student_id: path
+        for path in StudentPath.objects.filter(student_id__in=member_ids)
+    }
+    latest_activity = dict(
+        Session.objects.filter(student_id__in=member_ids)
+        .annotate(activity_at=Coalesce("completed_at", "submitted_at", "started_at", "created_at"))
+        .order_by("student_id", "-activity_at")
+        .distinct("student_id")
+        .values_list("student_id", "activity_at")
+    )
+    average_mastery = {
+        row["student_id"]: row["average"]
+        for row in SkillMastery.objects.filter(student_id__in=member_ids, evidence_count__gt=0)
+        .values("student_id")
+        .annotate(average=Avg("p_known"))
+    }
+    latest_actions = {}
+    for decision in decisions_for_students(students).order_by("-created_at"):
+        latest_actions.setdefault(decision.session.student_id, decision.get_action_display())
+
     follow_up_rows = []
     seen = set()
-    for target in follow_up_targets_for_students(
-        students,
-        date_from=metric_kwargs["date_from"],
-        date_to=metric_kwargs["date_to"],
-    ):
+    for target in follow_up_targets_for_students(students):
         key = (target.decision.session.student_id, target.skill_id)
         if key in seen:
             continue
@@ -292,26 +311,104 @@ def teacher_dashboard(request):
                 "student_name": display_name(target.decision.session.student),
                 "skill": target.skill,
                 "band": (
-                    BAND_LABELS[mastery_band(target.current_p_known)]
+                    ("Needs Practice" if mastery_band(target.current_p_known) == "np" else BAND_LABELS[mastery_band(target.current_p_known)])
                     if target.current_p_known is not None
                     else "Not enough evidence"
                 ),
+                "latest_action": latest_actions.get(target.decision.session.student_id),
+                "current_stage": (
+                    paths[target.decision.session.student_id].get_current_stage_display()
+                    if target.decision.session.student_id in paths else None
+                ),
+                "last_activity": latest_activity.get(target.decision.session.student_id),
                 "created_at": target.decision.created_at,
             }
         )
-        if len(follow_up_rows) == 12:
-            break
+    follow_up_ids = {row["student"].pk for row in follow_up_rows}
+    roster_filter = request.GET.get("roster", "all").strip().lower()
+    if roster_filter not in {"all", "follow-up", "in-progress", "completed"}:
+        roster_filter = "all"
+    roster = []
+    for student in students:
+        path = paths.get(student.pk)
+        status = path.status if path else None
+        has_follow_up = student.pk in follow_up_ids
+        if roster_filter == "follow-up" and not has_follow_up:
+            continue
+        if roster_filter == "in-progress" and status not in {
+            StudentPath.Status.LEARNING, StudentPath.Status.ACTIVITY_READY,
+            StudentPath.Status.POSTTEST_READY,
+        }:
+            continue
+        if roster_filter == "completed" and status != StudentPath.Status.COMPLETED:
+            continue
+        mastery = average_mastery.get(student.pk)
+        band = mastery_band(mastery) if mastery is not None else None
+        roster.append({
+            "student": student,
+            "student_name": display_name(student),
+            "path_state": path.get_status_display() if path else "Not started",
+            "mastery_band": ("Needs Practice" if band == "np" else BAND_LABELS[band]) if band else "Not enough evidence",
+            "latest_activity": latest_activity.get(student.pk),
+            "has_follow_up": has_follow_up,
+        })
 
-    roster = selected.student_memberships.filter(left_at__isnull=True).select_related(
-        "student", "student__learning_path"
-    ).order_by("student__last_name", "student__first_name", "student__username")
-    roster_query = request.GET.get("q", "").strip()
-    if roster_query:
-        roster = roster.filter(
-            Q(student__username__icontains=roster_query)
-            | Q(student__first_name__icontains=roster_query)
-            | Q(student__last_name__icontains=roster_query)
-        )
+    mastery_values = mastery_metric["value"] or {}
+    skills = list(Skill.objects.order_by("code").values("code", "name"))
+    bkt_rows = [
+        [skill["name"], mastery_values.get(skill["code"], {}).get("np", 0),
+         mastery_values.get(skill["code"], {}).get("dev", 0),
+         mastery_values.get(skill["code"], {}).get("strong", 0)]
+        for skill in skills
+    ] if mastery_metric["n"] else []
+    bkt = chart_spec(
+        chart_id="bkt-bands", title="BKT distribution", metric=mastery_metric,
+        headers=["Skill", "Needs Practice", "Developing", "Strong"], rows=bkt_rows,
+        labels=[row[0] for row in bkt_rows],
+        datasets=[
+            {"label": label, "data": [row[index] for row in bkt_rows], "stack": "bands"}
+            for index, label in enumerate(("Needs Practice", "Developing", "Strong"), 1)
+        ],
+        aria_label=f"Stacked bar chart of BKT bands by skill for {cohort}.",
+    )
+    bkt["config"]["options"]["scales"]["x"] = {"stacked": True}
+    bkt["config"]["options"]["scales"]["y"]["stacked"] = True
+    bkt["empty_message"] = "Not enough evidence for BKT bands"
+
+    gain_series = gain_metric.get("series") or {}
+    gain_rows = [[label, f"{gain_series[label]:.1f}%"] for label in ("Pre-test average", "Post-test average") if label in gain_series]
+    gain = chart_spec(
+        chart_id="matched-gain", title="Matched pre/post gain", metric=gain_metric,
+        headers=["Assessment", "Mean score"], rows=gain_rows,
+        labels=[row[0] for row in gain_rows],
+        datasets=[{"label": "Mean score (%)", "data": [gain_series[label] for label, _ in gain_rows]}],
+        aria_label=f"Bar chart of paired pre-test and post-test mean scores for {cohort}.",
+    )
+    gain["empty_message"] = "Not enough matched pre/post data"
+    gain["config"]["options"]["scales"]["y"]["max"] = 100
+
+    actions = ("progress", "additional_exercise", "foundational_exercise")
+    decisions_by_lesson = decisions_metric["value"] or {}
+    lesson_labels = list(decisions_by_lesson)
+    decision_rows = [
+        [action, *[decisions_by_lesson[lesson].get(action, 0) for lesson in lesson_labels]]
+        for action in actions
+    ] if decisions_metric["n"] else []
+    decisions = chart_spec(
+        chart_id="decisions", title="Q-Learning decisions", metric=decisions_metric,
+        headers=["Decision action", *lesson_labels], rows=decision_rows,
+        labels=list(actions) if decisions_metric["n"] else [],
+        datasets=[
+            {"label": lesson, "data": [decisions_by_lesson[lesson].get(action, 0) for action in actions]}
+            for lesson in lesson_labels
+        ],
+        aria_label=f"Grouped bar chart of Q-Learning decision actions by lesson for {cohort}.",
+    )
+    decisions["empty_message"] = "No Q-Learning decisions yet"
+    completion_chart["empty_message"] = "No learning paths to chart"
+    # Revalidate before rendering in case the assignment changed during this request.
+    if not dashboard_classrooms(request.user).filter(pk=selected.pk).exists():
+        return redirect("portal:my_classes")
     return render(
         request,
         "pages/teacher/teacher_dashboard.html",
@@ -322,17 +419,20 @@ def teacher_dashboard(request):
             "cohort": cohort,
             "class_size": class_size,
             "completed_count": path_counts[StudentPath.Status.COMPLETED],
-            "learning_count": path_counts[StudentPath.Status.LEARNING],
+            "learning_count": sum(path_counts[state] for state in (
+                StudentPath.Status.LEARNING, StudentPath.Status.ACTIVITY_READY,
+                StudentPath.Status.POSTTEST_READY,
+            )),
             "follow_up_metric": follow_up_metric,
             "follow_up_rows": follow_up_rows,
             "charts": [
-                bkt_chart(mastery_metric, title="BKT distribution"),
-                matched_gain_chart(gain_metric),
-                decisions_chart(decisions_metric, title="Q-Learning decisions"),
+                bkt,
+                gain,
+                decisions,
                 completion_chart,
             ],
             "roster": roster,
-            "roster_query": roster_query,
+            "roster_filter": roster_filter,
         },
     )
 
