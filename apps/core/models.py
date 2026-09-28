@@ -50,3 +50,6 @@ class AuditEvent(models.Model):
 
     class Meta:
         db_table = "core_audit_event"
+        indexes = [
+            models.Index(fields=["-created_at"], name="core_audit_created_desc_idx"),
+        ]

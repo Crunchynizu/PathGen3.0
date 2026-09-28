@@ -24,7 +24,7 @@
     <p class="nav-group-label">Account</p>
     <ul class="nav-list">
       <li><a href="{% url 'account:my_account' %}"{% if request.resolver_match.url_name == "my_account" %} aria-current="page"{% endif %}>My Account</a></li>
-      <li><a href="{% url 'account:logout' %}">Logout</a></li>
+      <li><button type="button" data-dialog-open="shell-logout-dialog">Logout</button></li>
     </ul>
   </nav>
   <div class="sidebar-user">

@@ -1,6 +1,6 @@
 <section class="video-shell" data-video-cue data-pause-seconds="{{ pause_seconds }}">
   <div><p class="eyebrow">Video cue</p><h2>{{ video.title }}</h2><p>Watch until the cue point. The video pauses there and reveals the question.</p></div>
-  <div class="video-frame"><iframe title="{{ video.title }}" src="https://www.youtube-nocookie.com/embed/{{ video.youtube_video_id }}?enablejsapi=1&amp;rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen data-video-frame></iframe></div>
-  <p><a href="{% url 'learning:transcript' video.code %}" target="_blank" rel="noopener">Open transcript</a></p>
+  <div class="video-frame"><iframe title="{{ video.title }}" src="https://www.youtube-nocookie.com/embed/{{ video.youtube_video_id }}?enablejsapi=1&amp;rel=0&amp;cc_load_policy=1&amp;cc_lang_pref=en" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen data-video-frame></iframe></div>
+  <p class="video-alternatives"><a href="https://www.youtube.com/watch?v={{ video.youtube_video_id }}&amp;cc_load_policy=1" target="_blank" rel="noopener">Open video with captions</a><a href="{% url 'learning:transcript' video.code %}" target="_blank" rel="noopener">Open transcript</a></p>
   <button class="secondary-button" type="button" data-reveal-question>Continue to question</button>
 </section>

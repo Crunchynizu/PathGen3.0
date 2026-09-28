@@ -81,35 +81,34 @@ def login_view(request):
     if request.method == "POST" and form.is_valid():
         username = form.cleaned_data["username"]
         source = _request_source(request)
-        throttle = get_login_throttle(username, source)
-        if throttle["blocked"]:
-            record_login_failure(
-                username,
-                source,
-                throttled=True,
-                retry_after=throttle["retry_after"],
-            )
-            form.add_error(None, GENERIC_LOGIN_ERROR)
-            status = 429
-        else:
-            user = authenticate(
-                request,
-                username=username,
-                password=form.cleaned_data["password"],
-            )
-            if user is None:
-                record_login_failure(username, source)
-                form.add_error(None, GENERIC_LOGIN_ERROR)
-            else:
-                login(request, user)
-                initialize_security_session(request.session)
-                record_audit_event(
-                    action="auth.login_succeeded",
-                    actor=user,
-                    target=user,
-                    target_snapshot={"role": user.role, "is_active": user.is_active},
+        user = authenticate(
+            request,
+            username=username,
+            password=form.cleaned_data["password"],
+        )
+        if user is None:
+            throttle = get_login_throttle(username, source)
+            if throttle["blocked"]:
+                record_login_failure(
+                    username,
+                    source,
+                    throttled=True,
+                    retry_after=throttle["retry_after"],
                 )
-                return redirect(next_url or dashboard_url_for(user))
+                status = 429
+            else:
+                record_login_failure(username, source)
+            form.add_error(None, GENERIC_LOGIN_ERROR)
+        else:
+            login(request, user)
+            initialize_security_session(request.session)
+            record_audit_event(
+                action="auth.login_succeeded",
+                actor=user,
+                target=user,
+                target_snapshot={"role": user.role, "is_active": user.is_active},
+            )
+            return redirect(next_url or dashboard_url_for(user))
 
     return render(
         request,
@@ -121,19 +120,17 @@ def login_view(request):
 
 @login_required
 @never_cache
-@require_http_methods(["GET", "POST"])
+@require_POST
 def logout_view(request):
-    if request.method == "POST":
-        user = request.user
-        record_audit_event(
-            action="auth.logout",
-            actor=user,
-            target=user,
-            target_snapshot={"role": user.role, "is_active": user.is_active},
-        )
-        logout(request)
-        return redirect("account:login")
-    return render(request, "modals/auth/logout_confirm.html")
+    user = request.user
+    record_audit_event(
+        action="auth.logout",
+        actor=user,
+        target=user,
+        target_snapshot={"role": user.role, "is_active": user.is_active},
+    )
+    logout(request)
+    return redirect("account:login")
 
 
 def _account_context(user, *, name_form=None, password_form=None):

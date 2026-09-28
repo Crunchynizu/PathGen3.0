@@ -152,13 +152,14 @@ class AccountLifecycleTests(TestCase):
 
 
 class LogoutSecurityTests(TestCase):
-    def test_get_only_confirms_and_post_requires_csrf(self):
+    def test_get_is_rejected_and_post_requires_csrf(self):
         user = user_with_password()
         client = Client(enforce_csrf_checks=True)
         client.force_login(user)
 
+        self.assertEqual(client.get(reverse("account:my_account")).status_code, 200)
         confirmation = client.get(reverse("account:logout"))
-        self.assertEqual(confirmation.status_code, 200)
+        self.assertEqual(confirmation.status_code, 405)
         self.assertEqual(client.get(reverse("account:my_account")).status_code, 200)
         self.assertEqual(client.post(reverse("account:logout")).status_code, 403)
 

@@ -122,6 +122,13 @@ class Session(models.Model):
 
     class Meta:
         db_table = "learning_session"
+        indexes = [
+            models.Index(
+                fields=["student", "session_type"],
+                name="learn_sess_student_type_idx",
+            ),
+            models.Index(fields=["status"], name="learn_sess_status_idx"),
+        ]
         constraints = [
             models.CheckConstraint(
                 condition=models.Q(

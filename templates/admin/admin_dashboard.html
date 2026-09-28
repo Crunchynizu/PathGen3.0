@@ -6,12 +6,12 @@
     <div><p class="eyebrow">Admin research overview</p><h1 class="page-title">Welcome, {{ request.user.first_name|default:request.user.username }}</h1><p class="page-copy">A read-only view of access, learning evidence, and system reliability.</p></div>
     <div class="as-of"><span>As of</span><strong>{{ as_of|date:"M j, Y · g:i A" }}</strong></div>
   </header>
-  <form class="filter-bar" method="get" aria-label="Dashboard filters">
+  <details class="filter-disclosure" open><summary>Filters</summary><form class="filter-bar" method="get" aria-label="Dashboard filters">
     <label><span>Cohort</span><select class="form-input" name="class"><option value="">All students</option>{% for classroom in classrooms %}<option value="{{ classroom.pk }}"{% if selected_class.pk == classroom.pk %} selected{% endif %}>{{ classroom.code }} · {{ classroom.name }}</option>{% endfor %}</select></label>
     <label><span>From</span><input class="form-input" type="date" name="from" value="{{ filters.date_from|date:'Y-m-d' }}"></label>
     <label><span>To</span><input class="form-input" type="date" name="to" value="{{ filters.date_to|date:'Y-m-d' }}"></label>
     <div class="filter-actions"><button class="primary-button" type="submit">Apply filters</button><a class="secondary-button" href="{% url 'portal:admin_dashboard' %}">Reset</a></div>
-  </form>
+  </form></details>
   {% if filters.errors %}<div class="error-summary" role="alert"><strong>Review the filters.</strong><ul>{% for error in filters.errors %}<li>{{ error }}</li>{% endfor %}</ul></div>{% endif %}
 
   <section class="section-grid" aria-label="Access status">

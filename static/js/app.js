@@ -102,6 +102,27 @@
     activateLayer(dialog, null);
   });
 
+  document.querySelectorAll(".table-wrap table").forEach((table) => {
+    const labels = [...table.querySelectorAll("thead th")].map((heading) =>
+      heading.textContent.trim()
+    );
+    table.querySelectorAll("tbody tr").forEach((row) => {
+      [...row.children].forEach((cell, index) => {
+        if (!cell.dataset.label) cell.dataset.label = labels[index] || "Value";
+      });
+    });
+    table.classList.add("responsive-table-ready");
+  });
+
+  const compactFilterQuery = window.matchMedia("(max-width: 639px)");
+  function syncFilterDisclosures() {
+    document.querySelectorAll(".filter-disclosure").forEach((details) => {
+      details.open = !compactFilterQuery.matches;
+    });
+  }
+  syncFilterDisclosures();
+  compactFilterQuery.addEventListener?.("change", syncFilterDisclosures);
+
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && drawerElement && !drawerElement.hidden) closeDrawer();
   });

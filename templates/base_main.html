@@ -13,5 +13,19 @@
       </main>
       <footer class="site-footer"><p>PathGen · Grade 7 Mathematics</p></footer>
     </div>
+    <dialog aria-labelledby="shell-logout-title" id="shell-logout-dialog" class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div><p class="eyebrow">Account</p><h2 id="shell-logout-title">Log out?</h2></div>
+          <button class="icon-button" type="button" data-dialog-close aria-label="Close logout confirmation">×</button>
+        </div>
+        <p class="page-copy">You will need to enter your credentials to return.</p>
+        <form class="account-actions" method="post" action="{% url 'account:logout' %}">
+          {% csrf_token %}
+          <button class="primary-button" type="submit">Log out</button>
+          <button class="secondary-button" type="button" data-dialog-close>Cancel</button>
+        </form>
+      </div>
+    </dialog>
   </div>
 {% endblock %}

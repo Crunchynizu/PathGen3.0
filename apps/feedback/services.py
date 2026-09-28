@@ -206,8 +206,8 @@ def generate_session_feedback(session):
         )
     except Exception as exc:
         logger.warning(
-            "Feedback generation failed for session %s; using fallback: %s",
+            "Feedback generation failed for session %s; using fallback (%s).",
             session.pk,
-            exc,
+            type(exc).__name__,
         )
         return fallback

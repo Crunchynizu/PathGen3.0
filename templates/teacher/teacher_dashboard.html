@@ -4,12 +4,12 @@
 {% block main_content %}
   <header class="dashboard-hero"><div><p class="eyebrow">Teacher dashboard</p><h1 class="page-title">Your class priorities</h1><p class="page-copy">Read-only evidence for classes currently assigned to you.</p></div></header>
   {% if classrooms %}
-    <form class="filter-bar" method="get" aria-label="Teacher dashboard filters">
+    <details class="filter-disclosure" open><summary>Filters</summary><form class="filter-bar" method="get" aria-label="Teacher dashboard filters">
       <label><span>Class</span><select class="form-input" name="class">{% for classroom in classrooms %}<option value="{{ classroom.pk }}"{% if selected_class.pk == classroom.pk %} selected{% endif %}>{{ classroom.code }} · {{ classroom.name }}</option>{% endfor %}</select></label>
       <label><span>From</span><input class="form-input" type="date" name="from" value="{{ filters.date_from|date:'Y-m-d' }}"></label>
       <label><span>To</span><input class="form-input" type="date" name="to" value="{{ filters.date_to|date:'Y-m-d' }}"></label>
       <div class="filter-actions"><button class="primary-button" type="submit">View class</button><a class="secondary-button" href="{% url 'portal:teacher_dashboard' %}">Reset</a></div>
-    </form>
+    </form></details>
     {% if filters.errors %}<div class="error-summary" role="alert"><strong>Review the date filter.</strong><ul>{% for error in filters.errors %}<li>{{ error }}</li>{% endfor %}</ul></div>{% endif %}
     <section class="class-context" aria-label="Selected class"><div><p class="eyebrow">Selected class</p><h2>{{ selected_class.code }} · {{ selected_class.name }}</h2></div><p>{{ cohort }}</p></section>
     <section class="kpi-grid" aria-label="Class key metrics">{% include "partials/kpi_card.html" with label="Class size" value=class_size definition="Current open memberships in this class." %}{% include "partials/kpi_card.html" with label="Completed" value=completed_count definition="Current students with a completed learning path." %}{% include "partials/kpi_card.html" with label="Learning" value=learning_count definition="Current students in the learning stage." %}{% include "partials/kpi_card.html" with label="Follow-up needed" value=follow_up_metric.value definition=follow_up_metric.definition %}</section>
