@@ -9,6 +9,7 @@ from django.views.decorators.http import require_GET, require_POST
 
 from apps.accounts.models import User
 from apps.accounts.permissions import role_required
+from apps.adaptive.selectors import follow_up_targets_for_students
 from apps.classrooms.forms import (
     AddStudentForm,
     AssignTeacherForm,
@@ -27,6 +28,23 @@ from apps.classrooms.services import (
     remove_student,
     update_classroom,
 )
+from apps.core import metrics
+from apps.core.dashboard_data import (
+    BAND_LABELS,
+    bkt_chart,
+    chart_spec,
+    decisions_chart,
+    display_name,
+    matched_gain_chart,
+)
+from apps.core.selectors import (
+    dashboard_classrooms,
+    parse_dashboard_filters,
+    scoped_dashboard_students,
+    selected_dashboard_classroom,
+)
+from apps.adaptive.bkt import mastery_band
+from apps.learning.models import StudentPath
 
 
 def _admin_classroom(classroom_id):
@@ -206,33 +224,116 @@ def delete_class(request, classroom_id):
 @never_cache
 @require_GET
 def teacher_dashboard(request):
-    classes = Classroom.objects.filter(
-        teacher=request.user,
-        status=Classroom.Status.ACTIVE,
-    ).order_by("code")
-    selected = None
-    class_id = request.GET.get("class")
-    if class_id:
-        try:
-            selected = get_scoped_classroom_or_404(
-                actor=request.user,
-                classroom_id=class_id,
-            )
-        except (ValidationError, ValueError) as exc:
-            raise Http404 from exc
-    elif classes.exists():
-        selected = classes.first()
-    roster = (
-        selected.student_memberships.filter(left_at__isnull=True)
-        .select_related("student")
-        .order_by("student__last_name", "student__first_name")
-        if selected
-        else StudentMembership.objects.none()
+    filters = parse_dashboard_filters(request.GET)
+    if filters.requested_classroom and filters.classroom_id is None:
+        raise Http404
+    classes = dashboard_classrooms(request.user)
+    selected = selected_dashboard_classroom(request.user, filters, default_first=True)
+    if selected is None:
+        return render(
+            request,
+            "teacher/teacher_dashboard.html",
+            {"classrooms": classes, "selected_class": None},
+        )
+
+    students = scoped_dashboard_students(request.user, classroom=selected)
+    cohort = f"Current members of {selected.code} · {selected.name}"
+    metric_kwargs = {
+        "students": students,
+        "cohort": cohort,
+        "date_from": filters.date_from if not filters.errors else None,
+        "date_to": filters.date_to if not filters.errors else None,
+    }
+    mastery_metric = metrics.bkt_mastery_bands(**metric_kwargs)
+    gain_metric = metrics.matched_gain(**metric_kwargs)
+    decisions_metric = metrics.q_learning_decisions(**metric_kwargs)
+    follow_up_metric = metrics.follow_up_needed(**metric_kwargs)
+
+    path_counts = {value: 0 for value, _label in StudentPath.Status.choices}
+    for status in StudentPath.objects.filter(student__in=students).values_list("status", flat=True):
+        path_counts[status] += 1
+    class_size = students.count()
+    completion_metric = {
+        "value": path_counts if class_size else None,
+        "cohort": cohort,
+        "n": class_size,
+        "definition": "Current students grouped by their persisted learning-path status.",
+        "window": "all-time",
+        "version": metrics.METRICS_VERSION,
+        "insufficient": class_size == 0,
+    }
+    labels = [label for _value, label in StudentPath.Status.choices]
+    completion_values = [path_counts[value] for value, _label in StudentPath.Status.choices]
+    completion_chart = chart_spec(
+        chart_id="completion-distribution",
+        title="Completion distribution",
+        metric=completion_metric,
+        headers=["Learning-path status", "Students"],
+        rows=list(zip(labels, completion_values)) if class_size else [],
+        labels=labels if class_size else [],
+        datasets=[{"label": "Students", "data": completion_values if class_size else []}],
+        aria_label=f"Bar chart showing learning-path status for {cohort}.",
     )
+
+    follow_up_rows = []
+    seen = set()
+    for target in follow_up_targets_for_students(
+        students,
+        date_from=metric_kwargs["date_from"],
+        date_to=metric_kwargs["date_to"],
+    ):
+        key = (target.decision.session.student_id, target.skill_id)
+        if key in seen:
+            continue
+        seen.add(key)
+        follow_up_rows.append(
+            {
+                "student": target.decision.session.student,
+                "student_name": display_name(target.decision.session.student),
+                "skill": target.skill,
+                "band": (
+                    BAND_LABELS[mastery_band(target.current_p_known)]
+                    if target.current_p_known is not None
+                    else "Not enough evidence"
+                ),
+                "created_at": target.decision.created_at,
+            }
+        )
+        if len(follow_up_rows) == 12:
+            break
+
+    roster = selected.student_memberships.filter(left_at__isnull=True).select_related(
+        "student", "student__learning_path"
+    ).order_by("student__last_name", "student__first_name", "student__username")
+    roster_query = request.GET.get("q", "").strip()
+    if roster_query:
+        roster = roster.filter(
+            Q(student__username__icontains=roster_query)
+            | Q(student__first_name__icontains=roster_query)
+            | Q(student__last_name__icontains=roster_query)
+        )
     return render(
         request,
         "teacher/teacher_dashboard.html",
-        {"classrooms": classes, "selected_class": selected, "roster": roster},
+        {
+            "classrooms": classes,
+            "selected_class": selected,
+            "filters": filters,
+            "cohort": cohort,
+            "class_size": class_size,
+            "completed_count": path_counts[StudentPath.Status.COMPLETED],
+            "learning_count": path_counts[StudentPath.Status.LEARNING],
+            "follow_up_metric": follow_up_metric,
+            "follow_up_rows": follow_up_rows,
+            "charts": [
+                bkt_chart(mastery_metric, title="BKT distribution"),
+                matched_gain_chart(gain_metric),
+                decisions_chart(decisions_metric, title="Q-Learning decisions"),
+                completion_chart,
+            ],
+            "roster": roster,
+            "roster_query": roster_query,
+        },
     )
 
 

@@ -942,4 +942,239 @@
   .lesson-reading p {
     @apply mb-4;
   }
+
+  .dashboard-hero {
+    @apply flex flex-col gap-5 rounded-3xl p-6 sm:flex-row sm:items-end sm:justify-between sm:p-8;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .dashboard-hero .page-copy {
+    @apply max-w-2xl;
+  }
+
+  .as-of {
+    @apply grid shrink-0 gap-1 rounded-2xl px-4 py-3 text-sm;
+    background: var(--color-bg-subtle);
+    color: var(--color-text-secondary);
+  }
+
+  .as-of strong {
+    color: var(--color-text);
+  }
+
+  .filter-actions {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .filter-actions .secondary-button {
+    @apply no-underline;
+  }
+
+  .access-card {
+    @apply min-h-56;
+  }
+
+  .access-card .text-link {
+    @apply mt-4;
+  }
+
+  .empty-state-prominent {
+    @apply min-h-64 place-content-center text-center;
+  }
+
+  .dashboard-section {
+    @apply space-y-5;
+  }
+
+  .section-heading,
+  .chart-heading,
+  .class-context {
+    @apply flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between;
+  }
+
+  .section-heading > p,
+  .class-context > p,
+  .card-note {
+    @apply text-sm;
+    color: var(--color-text-secondary);
+  }
+
+  .chart-grid {
+    @apply grid gap-5 xl:grid-cols-2;
+  }
+
+  .chart-card {
+    @apply min-w-0;
+  }
+
+  .chart-card:first-child {
+    @apply xl:col-span-2;
+  }
+
+  .metric-sample {
+    @apply inline-flex min-h-8 items-center rounded-full px-3 text-sm font-semibold;
+    background: var(--color-primary-subtle);
+    color: var(--color-primary-hover);
+  }
+
+  .metric-context {
+    @apply mb-5 grid gap-3 rounded-xl p-4 text-sm;
+    background: var(--color-bg-subtle);
+  }
+
+  .metric-context div {
+    @apply grid gap-1 sm:grid-cols-[6rem_1fr];
+  }
+
+  .metric-context dt {
+    @apply font-semibold;
+    color: var(--color-text-secondary);
+  }
+
+  .metric-context dd {
+    color: var(--color-text);
+  }
+
+  .chart-canvas-wrap {
+    @apply relative h-72 w-full;
+  }
+
+  .chart-table-wrap {
+    @apply mt-5 border-t pt-5;
+    border-color: var(--color-border);
+  }
+
+  .chart-empty {
+    @apply rounded-xl border p-4;
+    background: var(--color-bg-subtle);
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  .compact-link {
+    @apply min-h-0;
+  }
+
+  .class-context {
+    @apply rounded-2xl border p-5;
+    background: var(--color-primary-subtle);
+    border-color: var(--color-border);
+  }
+
+  .class-context h2 {
+    @apply text-xl font-bold;
+  }
+
+  .priority-card {
+    border-color: var(--color-primary);
+  }
+
+  .roster-filter {
+    @apply mb-5 grid max-w-xl gap-2 text-sm font-semibold;
+  }
+
+  .roster-filter > div {
+    @apply flex flex-col gap-2 sm:flex-row;
+  }
+
+  .next-step-card {
+    @apply flex flex-col gap-6 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8;
+    background: var(--color-primary-subtle);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .next-step-card h2 {
+    @apply text-2xl font-bold tracking-tight;
+    color: var(--color-text);
+  }
+
+  .next-step-card p:not(.eyebrow) {
+    @apply mt-2 max-w-2xl leading-7;
+    color: var(--color-text-secondary);
+  }
+
+  .dashboard-path {
+    @apply grid gap-3 md:grid-cols-3;
+  }
+
+  .dashboard-path li {
+    @apply flex min-h-28 items-center gap-4 rounded-2xl border p-4;
+    background: var(--color-bg-subtle);
+    border-color: var(--color-border);
+  }
+
+  .dashboard-path li[data-state="completed"],
+  .dashboard-path li[data-state="reached"] {
+    background: var(--color-primary-subtle);
+  }
+
+  .path-index {
+    @apply inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold;
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .dashboard-path strong,
+  .dashboard-path span:not(.path-index) {
+    @apply block;
+  }
+
+  .dashboard-path span:not(.path-index) {
+    @apply mt-1 text-sm capitalize;
+    color: var(--color-text-secondary);
+  }
+
+  .skill-band-grid {
+    @apply grid gap-3 sm:grid-cols-2 xl:grid-cols-3;
+  }
+
+  .skill-band-card {
+    @apply grid min-h-40 content-between gap-4 rounded-2xl border p-4;
+    background: var(--color-bg-subtle);
+    border-color: var(--color-border);
+  }
+
+  .skill-band-card[data-band="strong"] {
+    border-color: var(--color-success);
+  }
+
+  .skill-band-card[data-band="dev"] {
+    border-color: var(--color-warning);
+  }
+
+  .skill-code {
+    @apply text-xs font-bold uppercase tracking-wider;
+    color: var(--color-text-cyan);
+  }
+
+  .skill-band-card h3 {
+    @apply mt-1 text-base font-semibold;
+  }
+
+  .band-label {
+    @apply font-semibold;
+    color: var(--color-text);
+  }
+
+  .evidence-label {
+    @apply text-sm;
+    color: var(--color-text-secondary);
+  }
+
+  .focus-card {
+    @apply grid gap-5 rounded-3xl p-6 sm:p-8 lg:grid-cols-[minmax(14rem,0.75fr)_minmax(0,1.5fr)];
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .focus-card h2 {
+    @apply text-xl font-bold;
+  }
+
+  .focus-card blockquote {
+    @apply m-0 border-l-4 pl-5 text-lg leading-8;
+    border-color: var(--color-primary);
+    color: var(--color-text-secondary);
+  }
 }

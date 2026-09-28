@@ -1,1 +1,15 @@
-<section class="data-card" aria-labelledby="{{ chart_id }}-title"><h2 id="{{ chart_id }}-title">{{ chart_title }}</h2><p>{{ chart_definition }}</p><div class="table-wrap">{{ chart_table }}</div></section>
+<article class="data-card chart-card" data-chart-block aria-labelledby="{{ chart.id }}-title">
+  <div class="chart-heading">
+    <div><p class="eyebrow">Read-only metric</p><h2 id="{{ chart.id }}-title">{{ chart.title }}</h2></div>
+    <span class="metric-sample">N={{ chart.metric.n }}</span>
+  </div>
+  <dl class="metric-context">
+    <div><dt>Cohort</dt><dd>{{ chart.metric.cohort }}</dd></div>
+    <div><dt>Window</dt><dd>{{ chart.metric.window }}</dd></div>
+    <div><dt>Version</dt><dd>{{ chart.metric.version }}</dd></div>
+    <div><dt>Definition</dt><dd>{{ chart.metric.definition }}</dd></div>
+  </dl>
+  {% if chart.rows %}<div class="chart-canvas-wrap"><canvas data-dashboard-chart="{{ chart.id }}-data" aria-label="{{ chart.aria_label }}" role="img"></canvas></div>{% else %}<p class="chart-empty" role="status">{{ chart.empty_message|default:"Not enough evidence for this chart" }}</p>{% endif %}
+  <div class="table-wrap chart-table-wrap"><table><caption class="sr-only">Data table for {{ chart.title }}</caption><thead><tr>{% for header in chart.headers %}<th scope="col">{{ header }}</th>{% endfor %}</tr></thead><tbody>{% for row in chart.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% empty %}<tr><td colspan="{{ chart.headers|length }}">{{ chart.empty_message|default:"Not enough evidence" }}</td></tr>{% endfor %}</tbody></table></div>
+  {% with data_id=chart.id|add:"-data" %}{{ chart.config|json_script:data_id }}{% endwith %}
+</article>

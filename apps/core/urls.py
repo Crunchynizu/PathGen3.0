@@ -29,5 +29,6 @@ urlpatterns = [
     path("teacher/dashboard/", classroom_views.teacher_dashboard, name="teacher_dashboard"),
     path("teacher/classes/", classroom_views.my_classes, name="my_classes"),
     path("teacher/classes/<uuid:classroom_id>/", classroom_views.class_detail, name="class_detail"),
+    path("students/<uuid:student_id>/progress/", views.student_progress, name="student_progress"),
     path("content/", views.content_redirect, name="content"),
 ]

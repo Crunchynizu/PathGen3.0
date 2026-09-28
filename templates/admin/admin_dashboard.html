@@ -1,14 +1,39 @@
 {% extends "base_main.html" %}
+{% load static %}
 {% block title %}Admin Dashboard · PathGen{% endblock %}
 {% block main_content %}
-  {% include "partials/page_header.html" with eyebrow="Admin" page_title="Dashboard" page_subtitle="System access, account, class, and audit overview. Learning analytics are introduced in the dashboard phase." %}
-  <section class="kpi-grid" aria-label="System totals">
-    {% include "partials/kpi_card.html" with label="Active students" value=active_student_count definition="Active accounts with the student role." %}
-    {% include "partials/kpi_card.html" with label="Active classes" value=active_class_count definition="Classes available for teacher monitoring." %}
+  <header class="dashboard-hero">
+    <div><p class="eyebrow">Admin research overview</p><h1 class="page-title">Welcome, {{ request.user.first_name|default:request.user.username }}</h1><p class="page-copy">A read-only view of access, learning evidence, and system reliability.</p></div>
+    <div class="as-of"><span>As of</span><strong>{{ as_of|date:"M j, Y · g:i A" }}</strong></div>
+  </header>
+  <form class="filter-bar" method="get" aria-label="Dashboard filters">
+    <label><span>Cohort</span><select class="form-input" name="class"><option value="">All students</option>{% for classroom in classrooms %}<option value="{{ classroom.pk }}"{% if selected_class.pk == classroom.pk %} selected{% endif %}>{{ classroom.code }} · {{ classroom.name }}</option>{% endfor %}</select></label>
+    <label><span>From</span><input class="form-input" type="date" name="from" value="{{ filters.date_from|date:'Y-m-d' }}"></label>
+    <label><span>To</span><input class="form-input" type="date" name="to" value="{{ filters.date_to|date:'Y-m-d' }}"></label>
+    <div class="filter-actions"><button class="primary-button" type="submit">Apply filters</button><a class="secondary-button" href="{% url 'portal:admin_dashboard' %}">Reset</a></div>
+  </form>
+  {% if filters.errors %}<div class="error-summary" role="alert"><strong>Review the filters.</strong><ul>{% for error in filters.errors %}<li>{{ error }}</li>{% endfor %}</ul></div>{% endif %}
+
+  <section class="section-grid" aria-label="Access status">
+    <article class="data-card access-card"><div class="card-header"><div><p class="eyebrow">Access status</p><h2>Study Access</h2></div>{% if setting %}{% include "partials/status_badge.html" with status=setting.study_access_enabled|yesno:"open,closed" label=setting.study_access_enabled|yesno:"Open,Closed" %}{% else %}<span class="status-badge status-closed">Not configured</span>{% endif %}</div><p class="page-copy">Read-only status for global student study access.</p><a class="text-link" href="{% url 'portal:override' %}">Open access overrides</a></article>
+    <article class="data-card access-card"><div class="card-header"><div><p class="eyebrow">Access status</p><h2>Post-test Access</h2></div>{% if setting %}{% include "partials/status_badge.html" with status=setting.posttest_access_enabled|yesno:"open,closed" label=setting.posttest_access_enabled|yesno:"Open,Closed" %}{% else %}<span class="status-badge status-closed">Not configured</span>{% endif %}</div><p class="page-copy">Read-only status combined with each student's path eligibility.</p><a class="text-link" href="{% url 'portal:override' %}">Open access overrides</a></article>
   </section>
-  <section class="section-grid">
-    <article class="data-card"><div class="card-header"><div><p class="eyebrow">Access status</p><h2>Student Study Access</h2></div>{% include "partials/status_badge.html" with status=setting.study_access_enabled|yesno:"open,closed" label=setting.study_access_enabled|yesno:"Open,Closed" %}</div><p class="page-copy">Controls student access globally. Class membership is never checked.</p><a class="text-link" href="{% url 'portal:override' %}">Manage Overrides</a></article>
-    <article class="data-card"><div class="card-header"><div><p class="eyebrow">Access status</p><h2>Post-test Access</h2></div>{% include "partials/status_badge.html" with status=setting.posttest_access_enabled|yesno:"open,closed" label=setting.posttest_access_enabled|yesno:"Open,Closed" %}</div><p class="page-copy">Global access is combined with each student's path eligibility.</p><a class="text-link" href="{% url 'portal:override' %}">Manage Overrides</a></article>
-  </section>
-  <section class="data-card"><div class="card-header"><div><p class="eyebrow">Recent activity</p><h2>Audit preview</h2></div><a class="text-link" href="{% url 'portal:audit_logs' %}">View Audit Logs</a></div>{% if recent_audits %}<div class="table-wrap"><table><thead><tr><th>Action</th><th>Actor</th><th>Time</th></tr></thead><tbody>{% for event in recent_audits %}<tr><td>{{ event.action }}</td><td>{{ event.actor.username|default:"System" }}</td><td>{{ event.created_at }}</td></tr>{% endfor %}</tbody></table></div>{% else %}{% include "partials/empty_state.html" with empty_title="No audit events yet" empty_body="Sensitive changes will appear here." %}{% endif %}</section>
+
+  {% if not system_has_students %}
+    <section class="empty-state empty-state-prominent"><p class="eyebrow">No students</p><h2>Research metrics will appear after student accounts exist</h2><p>No learning claims are shown for an empty system.</p></section>
+  {% elif filter_no_match %}
+    <section class="empty-state"><p class="eyebrow">No filter match</p><h2>No students match this cohort filter</h2><p>Reset the filter or choose another class. The system still contains student records.</p></section>
+  {% else %}
+    <section class="kpi-grid" aria-label="Selected cohort key metrics">
+      {% include "partials/kpi_card.html" with label="Active students" value=active_metric.value definition=active_metric.definition %}
+      {% include "partials/kpi_card.html" with label="Completed paths" value=completed_metric.value definition=completed_metric.definition %}
+      {% include "partials/kpi_card.html" with label="Matched pre/post sample" value=matched_sample_metric.value|default:"Not enough evidence" definition=matched_sample_metric.definition %}
+      {% include "partials/kpi_card.html" with label="Follow-up needed" value=follow_up_metric.value definition=follow_up_metric.definition %}
+    </section>
+    <section class="dashboard-section" aria-labelledby="research-heading"><div class="section-heading"><div><p class="eyebrow">Evidence</p><h2 id="research-heading">Research metrics</h2></div><p>{{ cohort }}</p></div><div class="chart-grid">{% for chart in charts %}{% include "partials/chart_with_table.html" with chart=chart %}{% endfor %}</div></section>
+    <section class="data-card" aria-labelledby="follow-up-heading"><div class="card-header"><div><p class="eyebrow">Priority preview</p><h2 id="follow-up-heading">Follow-up needed</h2></div><span class="metric-sample">{{ follow_up_rows|length }} shown</span></div>{% if follow_up_rows %}<div class="table-wrap"><table><thead><tr><th scope="col">Student</th><th scope="col">Skill</th><th scope="col">Current evidence band</th><th scope="col">Target added</th></tr></thead><tbody>{% for target in follow_up_rows %}<tr><td><a class="text-link compact-link" href="{% url 'portal:student_progress' target.student.pk %}">{{ target.student_name }}</a></td><td>{{ target.skill.code }} · {{ target.skill.name }}</td><td>{{ target.band }}</td><td>{{ target.created_at|date:"M j, Y" }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="chart-empty">No follow-up targets in this scope.</p>{% endif %}</section>
+  {% endif %}
+
+  <section class="data-card" aria-labelledby="audit-heading"><div class="card-header"><div><p class="eyebrow">Safe fields only</p><h2 id="audit-heading">Audit preview</h2></div><a class="text-link" href="{% url 'portal:audit_logs' %}">View audit logs</a></div>{% if recent_audits %}<div class="table-wrap"><table><thead><tr><th scope="col">Action</th><th scope="col">Actor</th><th scope="col">Target type</th><th scope="col">Time</th></tr></thead><tbody>{% for event in recent_audits %}<tr><td>{{ event.action }}</td><td>{{ event.actor.username|default:"System" }}</td><td>{{ event.target_type }}</td><td>{{ event.created_at|date:"M j, Y · g:i A" }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="chart-empty">No audit events yet.</p>{% endif %}</section>
 {% endblock %}
+{% block extra_scripts %}<script src="{% static 'vendor/chartjs/chart.umd.js' %}"></script><script src="{% static 'js/dashboard_charts.js' %}" defer></script>{% endblock %}

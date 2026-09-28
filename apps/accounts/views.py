@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -33,6 +32,8 @@ from apps.accounts.services.lifecycle import (
 from apps.accounts.sessions import initialize_security_session
 from apps.accounts.throttling import get_login_throttle, record_login_failure
 from apps.core.services.audit import record_audit_event
+from apps.core.dashboard_data import display_name, student_dashboard_data
+from apps.core.selectors import current_membership_for_student
 
 
 GENERIC_LOGIN_ERROR = "Invalid username or password."
@@ -217,7 +218,15 @@ def teacher_dashboard(request):
 @role_required(User.Role.STUDENT)
 @require_GET
 def student_dashboard(request):
-    return HttpResponse("Student dashboard placeholder")
+    return render(
+        request,
+        "student/student_dashboard.html",
+        {
+            "student_name": display_name(request.user),
+            "membership": current_membership_for_student(request.user),
+            **student_dashboard_data(request.user),
+        },
+    )
 
 
 def _managed_user(user_id):

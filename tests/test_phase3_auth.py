@@ -19,7 +19,7 @@ def user_with_password(role=User.Role.STUDENT, **overrides):
 
 
 class LoginTests(TestCase):
-    def test_class_free_student_can_login_and_reach_placeholder(self):
+    def test_class_free_student_can_login_and_reach_dashboard(self):
         student = user_with_password(username="classfree")
 
         response = self.client.post(
@@ -28,7 +28,9 @@ class LoginTests(TestCase):
         )
 
         self.assertRedirects(response, reverse("account:student_dashboard"))
-        self.assertContains(self.client.get(response.url), "Student dashboard placeholder")
+        dashboard = self.client.get(response.url)
+        self.assertContains(dashboard, "Your dashboard")
+        self.assertContains(dashboard, "Path setup pending")
         self.assertIn(SESSION_STARTED_AT_KEY, self.client.session)
 
     def test_successful_login_rotates_existing_session(self):
