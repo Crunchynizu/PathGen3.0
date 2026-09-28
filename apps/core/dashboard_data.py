@@ -4,7 +4,7 @@ from django.db.models import Count, Q
 from django.urls import reverse
 
 from apps.adaptive.bkt import mastery_band
-from apps.adaptive.models import SkillMastery
+from apps.adaptive.models import Decision, SkillMastery
 from apps.core.services.settings import current_system_setting
 from apps.curriculum.models import Lesson, Skill
 from apps.feedback.models import SessionFeedback
@@ -59,7 +59,7 @@ def student_skill_rows(student):
         mastery = masteries.get(skill.pk)
         if mastery and mastery.evidence_count > 0:
             band = mastery_band(mastery.p_known)
-            label = BAND_LABELS[band]
+            label = "Needs Practice" if band == "np" else BAND_LABELS[band]
             state = band
             evidence = f"{mastery.evidence_count} evidence item{'s' if mastery.evidence_count != 1 else ''}"
         else:
@@ -78,18 +78,19 @@ def student_skill_rows(student):
     return rows
 
 
-def student_lesson_rows(student, path):
+def student_lesson_rows(student, path, *, completed_orders=None):
     lessons = list(Lesson.objects.filter(is_published=True).order_by("lesson_order"))
     if not lessons:
         return []
-    completed_orders = set(
-        Session.objects.filter(
-            student=student,
-            status=Session.Status.COMPLETED,
-            voided_at__isnull=True,
-            lesson__isnull=False,
-        ).values_list("lesson__lesson_order", flat=True)
-    )
+    if completed_orders is None:
+        completed_orders = set(
+            Session.objects.filter(
+                student=student,
+                status=Session.Status.COMPLETED,
+                voided_at__isnull=True,
+                lesson__isnull=False,
+            ).values_list("lesson__lesson_order", flat=True)
+        )
     after_lessons = bool(
         path
         and path.status
@@ -114,12 +115,12 @@ def student_lesson_rows(student, path):
     return rows
 
 
-def next_step_for_path(path):
+def next_step_for_path(path, *, setting=None):
     if path is None:
         return {
-            "label": "Path setup pending",
-            "description": "Your learning path is not available yet.",
-            "url": None,
+            "label": "Begin or resume your pre-test",
+            "description": "Path setup pending. Begin the pre-test to open your lesson path.",
+            "url": reverse("learning:pretest_overview"),
         }
     if path.status == StudentPath.Status.PRETEST_REQUIRED:
         return {
@@ -159,7 +160,6 @@ def next_step_for_path(path):
             "url": reverse("learning:activity_overview"),
         }
     if path.status == StudentPath.Status.POSTTEST_READY:
-        setting = current_system_setting()
         if setting and setting.posttest_access_enabled:
             return {
                 "label": "Begin your post-test",
@@ -186,6 +186,103 @@ def next_step_for_path(path):
 
 def student_dashboard_data(student):
     path = StudentPath.objects.filter(student=student).select_related("current_lesson").first()
+    setting = current_system_setting()
+    next_step = next_step_for_path(path, setting=setting)
+    if setting is None or not setting.study_access_enabled:
+        next_step = {
+            "label": "Study access is paused",
+            "description": "Student Study Access is currently closed. Your progress is saved; an admin will reopen access.",
+            "url": None,
+        }
+    elif path and path.current_stage in {
+        StudentPath.Stage.ADDITIONAL,
+        StudentPath.Stage.FOUNDATIONAL,
+    }:
+        assigned_action = {
+            StudentPath.Stage.ADDITIONAL: Decision.Action.ADDITIONAL_EXERCISE,
+            StudentPath.Stage.FOUNDATIONAL: Decision.Action.FOUNDATIONAL_EXERCISE,
+        }[path.current_stage]
+        if not Decision.objects.filter(
+            session__student=student,
+            session__lesson=path.current_lesson,
+            action=assigned_action,
+        ).exists():
+            next_step = {
+                "label": "Assigned practice is being prepared",
+                "description": "Your assigned practice is not available yet. Please check My Lesson later.",
+                "url": None,
+            }
+    completed_orders = set()
+    completed_stages = {}
+    for session_type, lesson_order, session_id in Session.objects.filter(
+        student=student,
+        status=Session.Status.COMPLETED,
+        voided_at__isnull=True,
+    ).order_by("-completed_at", "-created_at").values_list(
+        "session_type", "lesson__lesson_order", "pk"
+    ):
+        if lesson_order is not None:
+            completed_orders.add(lesson_order)
+        if session_type in {
+            Session.SessionType.PRETEST,
+            Session.SessionType.ACTIVITY,
+            Session.SessionType.POSTTEST,
+        }:
+            completed_stages.setdefault(session_type, session_id)
+    lesson_rows = student_lesson_rows(student, path, completed_orders=completed_orders)
+
+    def assessment_step(label, session_type, *, current=False, unlocked=False, locked_reason=None):
+        completed_id = completed_stages.get(session_type)
+        if completed_id:
+            state = "completed"
+            url = reverse("learning:assessment_result", kwargs={"session_id": completed_id})
+        elif current and unlocked:
+            state = "current"
+            url = reverse(f"learning:{session_type}_overview")
+        else:
+            state = "locked"
+            url = None
+        return {"label": label, "state": state, "url": url, "locked_reason": locked_reason if state == "locked" else None}
+
+    study_open = bool(setting and setting.study_access_enabled)
+    path_steps = [assessment_step(
+        "Pretest", Session.SessionType.PRETEST,
+        current=path is None or path.status == StudentPath.Status.PRETEST_REQUIRED,
+        unlocked=study_open,
+    )]
+    for row in lesson_rows:
+        if row["state"] == "completed":
+            state = "completed"
+        elif path and path.status == StudentPath.Status.LEARNING and path.current_lesson_id == row["lesson"].pk:
+            state = "current"
+        elif row["state"] == "reached":
+            state = "available"
+        else:
+            state = "locked"
+        path_steps.append({
+            "label": f"Lesson {row['lesson'].lesson_order}",
+            "detail": row["lesson"].title,
+            "state": state,
+            "url": reverse("learning:lesson", kwargs={"slug": row["lesson"].slug})
+                   if state != "locked" and study_open else None,
+        })
+    path_steps.append(assessment_step(
+        "Activity", Session.SessionType.ACTIVITY,
+        current=bool(path and path.status == StudentPath.Status.ACTIVITY_READY),
+        unlocked=study_open,
+    ))
+    posttest_eligible = bool(path and path.status == StudentPath.Status.POSTTEST_READY)
+    posttest_open = bool(setting and setting.posttest_access_enabled)
+    path_steps.append(assessment_step(
+        "Posttest", Session.SessionType.POSTTEST,
+        current=posttest_eligible,
+        unlocked=study_open and posttest_open,
+        locked_reason=(
+            "Complete the activity first." if not posttest_eligible
+            else "Post-test Access is currently closed." if not posttest_open
+            else "Student Study Access is currently closed."
+        ),
+    ))
     latest_feedback = (
         SessionFeedback.objects.filter(session__student=student)
         .select_related("session", "session__lesson")
@@ -194,8 +291,9 @@ def student_dashboard_data(student):
     )
     return {
         "path": path,
-        "next_step": next_step_for_path(path),
-        "lesson_rows": student_lesson_rows(student, path),
+        "next_step": next_step,
+        "lesson_rows": lesson_rows,
+        "path_steps": path_steps,
         "skill_rows": student_skill_rows(student),
         "latest_feedback": latest_feedback,
         "recent_results": session_result_rows(
