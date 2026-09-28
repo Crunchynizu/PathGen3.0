@@ -99,9 +99,9 @@ class CurriculumSeedAndPageTests(TestCase):
 
     def test_admin_and_teacher_content_pages_render(self):
         pages = [
-            ("curriculum:content", "shared/content.html"),
-            ("curriculum:view_lessons", "shared/view_lessons.html"),
-            ("curriculum:view_questions", "shared/view_questions.html"),
+            ("curriculum:content", "pages/shared/content.html"),
+            ("curriculum:view_lessons", "pages/shared/view_lessons.html"),
+            ("curriculum:view_questions", "pages/shared/view_questions.html"),
         ]
         for user in (self.admin, self.teacher):
             self.client.force_login(user)
@@ -110,7 +110,7 @@ class CurriculumSeedAndPageTests(TestCase):
                     response = self.client.get(reverse(route))
                     self.assertEqual(response.status_code, 200)
                     self.assertTemplateUsed(response, template)
-                    self.assertTemplateUsed(response, "base_secondary.html")
+                    self.assertTemplateUsed(response, "pages/_base.html")
 
     def test_student_cannot_browse_staff_content(self):
         self.client.force_login(self.student)

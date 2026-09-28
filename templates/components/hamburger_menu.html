@@ -1,0 +1,12 @@
+{% load static %}
+<header class="sticky top-0 z-30 flex items-center gap-3 border-b px-4 py-3 lg:hidden [background:var(--color-surface)] [border-color:var(--color-border)]" data-ui="mobile-header" data-drawer-background>
+  <button class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl [background:var(--color-bg-subtle)] [color:var(--color-text-secondary)]" type="button" data-drawer-open aria-controls="mobile-drawer" aria-expanded="false"><i data-lucide="menu" aria-hidden="true"></i><span class="sr-only">Open navigation</span></button>
+  <a class="flex items-center gap-3 text-xl font-bold tracking-tight [color:var(--color-primary)]" href="/"><img src="{% static 'logo/pathgen.png' %}" width="32" height="32" alt="">PathGen</a>
+</header>
+<div id="mobile-drawer" class="fixed inset-0 z-50 grid grid-cols-[min(85vw,20rem)_1fr] lg:hidden [&[hidden]]:hidden" data-ui="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation" hidden>
+  <div class="min-h-0 overflow-y-auto [background:var(--color-surface)] [box-shadow:var(--shadow-md)]" data-ui="drawer-panel">
+    <div class="flex min-h-16 items-center justify-between border-b px-4 [border-color:var(--color-border)]"><strong>Navigation</strong><button class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl [background:var(--color-bg-subtle)] [color:var(--color-text-secondary)]" type="button" data-drawer-close aria-label="Close navigation"><i data-lucide="x" aria-hidden="true"></i></button></div>
+    {% include "components/sidebar.html" %}
+  </div>
+  <button class="h-full w-full [background:var(--color-overlay)]" type="button" data-drawer-close aria-label="Close navigation"></button>
+</div>

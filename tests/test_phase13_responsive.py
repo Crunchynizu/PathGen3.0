@@ -21,8 +21,12 @@ class Phase13ResponsiveContractTests(SimpleTestCase):
         )
 
     def test_viewport_supports_320px_and_does_not_disable_zoom(self):
-        base = (BASE_DIR / "templates" / "base.html").read_text(encoding="utf-8")
-        self.assertIn('name="viewport" content="width=device-width, initial-scale=1"', base)
+        base = (BASE_DIR / "templates" / "pages" / "_base.html").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            'name="viewport" content="width=device-width, initial-scale=1.0"', base
+        )
         self.assertNotIn("maximum-scale", base)
         self.assertNotIn("user-scalable=no", base)
 

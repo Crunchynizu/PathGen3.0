@@ -34,12 +34,12 @@ from apps.learning.services.sessions import (
 
 
 ASSESSMENT_TEMPLATES = {
-    Session.SessionType.PRETEST: "assessment/pretest.html",
-    Session.SessionType.REGULAR: "assessment/exercise.html",
-    Session.SessionType.ADDITIONAL: "assessment/exercise.html",
-    Session.SessionType.FOUNDATIONAL: "assessment/exercise.html",
-    Session.SessionType.ACTIVITY: "assessment/activity.html",
-    Session.SessionType.POSTTEST: "assessment/posttest.html",
+    Session.SessionType.PRETEST: "assessment/assessment.html",
+    Session.SessionType.REGULAR: "assessment/assessment.html",
+    Session.SessionType.ADDITIONAL: "assessment/assessment.html",
+    Session.SessionType.FOUNDATIONAL: "assessment/assessment.html",
+    Session.SessionType.ACTIVITY: "assessment/assessment.html",
+    Session.SessionType.POSTTEST: "assessment/assessment.html",
 }
 
 ASSESSMENT_TITLES = {
@@ -235,7 +235,7 @@ def my_lesson(request):
     )
     return render(
         request,
-        "student/my_lesson.html",
+        "pages/student/my_lesson.html",
         {
             "path": path,
             "lesson_steps": lesson_steps,
@@ -274,7 +274,7 @@ def lesson(request, slug):
         raise Http404
     return render(
         request,
-        "student/lesson.html",
+        "pages/student/lesson.html",
         {
             "lesson": lesson_obj,
             "path": path,

@@ -112,7 +112,7 @@ def login_view(request):
 
     return render(
         request,
-        "account/login.html",
+        "pages/account/login.html",
         {"form": form, "next": next_url or ""},
         status=status,
     )
@@ -153,7 +153,7 @@ def _account_context(user, *, name_form=None, password_form=None):
 @never_cache
 @require_GET
 def my_account(request):
-    return render(request, "account/my_account.html", _account_context(request.user))
+    return render(request, "pages/account/my_account.html", _account_context(request.user))
 
 
 @login_required
@@ -167,7 +167,7 @@ def update_name(request):
         return redirect("account:my_account")
     return render(
         request,
-        "account/my_account.html",
+        "pages/account/my_account.html",
         _account_context(request.user, name_form=form),
         status=400,
     )
@@ -190,7 +190,7 @@ def update_password(request):
         return redirect("account:my_account")
     return render(
         request,
-        "account/my_account.html",
+        "pages/account/my_account.html",
         _account_context(request.user, password_form=form),
         status=400,
     )
@@ -217,7 +217,7 @@ def teacher_dashboard(request):
 def student_dashboard(request):
     return render(
         request,
-        "student/student_dashboard.html",
+        "pages/student/student_dashboard.html",
         {
             "student_name": display_name(request.user),
             "membership": current_membership_for_student(request.user),
@@ -265,7 +265,7 @@ def user_management(request):
     users = users.order_by("role", "last_name", "first_name", "username")
     return render(
         request,
-        "admin/user_management.html",
+        "pages/admin/user_management.html",
         {
             "page_obj": Paginator(users, 25).get_page(request.GET.get("page")),
             "create_form": CreateManagedUserForm(),
@@ -288,7 +288,7 @@ def create_managed_user(request):
         return redirect("portal:user_management")
     return render(
         request,
-        "admin/user_management.html",
+        "pages/admin/user_management.html",
         _user_management_context(create_form=form),
         status=400,
     )

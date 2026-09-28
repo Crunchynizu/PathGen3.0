@@ -54,16 +54,24 @@ class Phase13AccessibilityTests(SimpleTestCase):
         )
 
     def test_01_every_base_template_declares_light_color_scheme(self):
-        base = self.templates["base.html"]
+        base = self.templates["pages/_base.html"]
         self.assertIn('<meta name="color-scheme" content="only light">', base)
-        self.assertIn('{% extends "base.html" %}', self.templates["base_main.html"])
-        self.assertIn('{% extends "base.html" %}', self.templates["base_assessment.html"])
-        self.assertIn(
-            '{% extends "base_main.html" %}', self.templates["base_secondary.html"]
-        )
+        page_templates = {
+            name: source
+            for name, source in self.templates.items()
+            if name.startswith("pages/") and name != "pages/_base.html"
+        }
+        page_templates["assessment/assessment.html"] = self.templates[
+            "assessment/assessment.html"
+        ]
+        page_templates["error/error.html"] = self.templates["error/error.html"]
+        self.assertEqual(len(page_templates), 19)
+        for name, source in page_templates.items():
+            with self.subTest(template=name):
+                self.assertIn('{% extends "pages/_base.html" %}', source)
 
     def test_02_every_base_has_skip_to_content(self):
-        base = self.templates["base.html"]
+        base = self.templates["pages/_base.html"]
         self.assertRegex(
             base,
             re.compile(
@@ -85,36 +93,16 @@ class Phase13AccessibilityTests(SimpleTestCase):
             self.assertRegex(canvas, r'aria-label="[^"]+"')
 
     def test_05_every_chart_has_a_table_or_text_alternative(self):
-        rendered = render_to_string(
-            "partials/chart_with_table.html",
-            {
-                "chart": {
-                    "id": "empty-chart",
-                    "title": "Empty chart",
-                    "metric": {
-                        "n": 0,
-                        "cohort": "All students",
-                        "window": "Current",
-                        "version": "v1",
-                        "definition": "No recorded results.",
-                    },
-                    "rows": [],
-                    "headers": ["Skill", "Result"],
-                    "aria_label": "Empty chart",
-                    "config": {},
-                }
-            },
-        )
-        response = HttpResponse(rendered)
-        self.assertContains(response, "<table", html=False)
-        self.assertContains(response, "Not enough evidence for this chart")
-        self.assertRegex(
-            rendered,
-            re.compile(
-                r'<p\b[^>]*role="status"[^>]*>.*Not enough evidence for this chart.*</p>',
-                re.I | re.S,
-            ),
-        )
+        for template_name in (
+            "pages/admin/admin_dashboard.html",
+            "pages/teacher/teacher_dashboard.html",
+        ):
+            with self.subTest(template=template_name):
+                source = self.templates[template_name]
+                self.assertIn("data-chart-block", source)
+                self.assertIn("<table", source)
+                self.assertIn('role="status"', source)
+                self.assertIn("Not enough evidence for this chart", source)
 
     def test_06_every_form_control_has_a_label_or_aria_label(self):
         failures = []
@@ -130,27 +118,25 @@ class Phase13AccessibilityTests(SimpleTestCase):
                 )
                 if not labelled:
                     failures.append((name, attrs.get("name") or attrs.get("id")))
-        form_field = self.templates["partials/form_field.html"]
-        self.assertIn('for="{{ field.id_for_label }}"', form_field)
+        login = self.templates["pages/account/login.html"]
+        self.assertIn('for="{{ field.id_for_label }}"', login)
         self.assertFalse(failures, failures)
 
     def test_07_field_errors_are_tied_with_aria_describedby(self):
         form = AccountNameForm(data={"first_name": "", "last_name": ""})
         self.assertFalse(form.is_valid())
         rendered = render_to_string(
-            "partials/form_field.html", {"field": form["first_name"]}
+            "modals/account/update_name.html", {"name_form": form}
         )
         self.assertIn('aria-describedby="id_first_name_error"', rendered)
         self.assertIn('id="id_first_name_error"', rendered)
 
     def test_08_status_is_never_conveyed_by_color_alone(self):
-        self.assertIn(
-            "{{ label|default:status|title }}",
-            self.templates["partials/status_badge.html"],
-        )
-        self.assertIn("{{ band|default:", self.templates["partials/skill_band_badge.html"])
+        dashboard = self.templates["pages/student/student_dashboard.html"]
+        self.assertIn("{{ skill.band }}", dashboard)
+        self.assertIn("{{ skill.evidence }}", dashboard)
         rendered = render_to_string(
-            "student/student_dashboard.html",
+            "pages/student/student_dashboard.html",
             {
                 "request": {
                     "user": {
@@ -241,13 +227,18 @@ class Phase13AccessibilityTests(SimpleTestCase):
         self.assertIn("deactivateLayer()", self.app_js)
 
     def test_16_assessment_progress_is_announced(self):
-        progress = self.templates["partials/assessment_progress.html"]
+        progress = self.templates["assessment/assessment.html"]
         self.assertIn('role="status"', progress)
         self.assertIn('aria-live="polite"', progress)
         self.assertIn("<progress", progress)
 
     def test_17_every_video_has_captions_and_transcript_links(self):
-        video = self.templates["partials/video_player.html"]
+        video = "\n".join(
+            (
+                self.templates["assessment/assessment.html"],
+                self.templates["pages/student/lesson.html"],
+            )
+        )
         self.assertIn("cc_load_policy=1", video)
         self.assertIn("Open video with captions", video)
         self.assertIn("Open transcript", video)

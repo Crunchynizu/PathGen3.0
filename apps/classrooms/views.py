@@ -82,7 +82,7 @@ def _class_management_context(*, create_form=None):
 @never_cache
 @require_GET
 def class_management(request):
-    return render(request, "admin/class_management.html", _class_management_context())
+    return render(request, "pages/admin/class_management.html", _class_management_context())
 
 
 @role_required(User.Role.ADMIN)
@@ -95,7 +95,7 @@ def create_class(request):
         return redirect("portal:class_management")
     return render(
         request,
-        "admin/class_management.html",
+        "pages/admin/class_management.html",
         _class_management_context(create_form=form),
         status=400,
     )
@@ -232,7 +232,7 @@ def teacher_dashboard(request):
     if selected is None:
         return render(
             request,
-            "teacher/teacher_dashboard.html",
+            "pages/teacher/teacher_dashboard.html",
             {"classrooms": classes, "selected_class": None},
         )
 
@@ -314,7 +314,7 @@ def teacher_dashboard(request):
         )
     return render(
         request,
-        "teacher/teacher_dashboard.html",
+        "pages/teacher/teacher_dashboard.html",
         {
             "classrooms": classes,
             "selected_class": selected,
@@ -345,7 +345,7 @@ def my_classes(request):
         teacher=request.user,
         status=Classroom.Status.ACTIVE,
     ).order_by("code")
-    return render(request, "teacher/my_class.html", {"classrooms": classes})
+    return render(request, "pages/teacher/my_class.html", {"classrooms": classes})
 
 
 @role_required(User.Role.TEACHER)
@@ -358,7 +358,7 @@ def class_detail(request, classroom_id):
     ).order_by("student__last_name", "student__first_name")
     return render(
         request,
-        "teacher/class_detail.html",
+        "pages/teacher/class_detail.html",
         {
             "classroom": classroom,
             "roster": roster,

@@ -1,0 +1,6 @@
+{% extends "pages/_base.html" %}
+{% block title %}{{ error_title|default:"Something went wrong" }} · PathGen{% endblock %}
+{% block shell %}
+<main id="main-content" class="mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-3xl place-items-center px-4 py-10 sm:px-6"><section class="w-full rounded-3xl border p-6 sm:p-8 [background:var(--color-surface)] [border-color:var(--color-border)] [box-shadow:var(--shadow-md)]" aria-labelledby="error-heading">{% include "components/back_link.html" with back_url=back_url|default:"/" back_label=back_label|default:"Back to PathGen" %}<p class="mt-6 text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">Error {{ status_code }}</p><h1 id="error-heading" class="mt-2">{{ error_title|default:"Something went wrong" }}</h1><p class="mt-4 max-w-[65ch] leading-7 [color:var(--color-text-secondary)]">{{ error_message|default:"The requested page could not be completed safely. Please return and try again." }}</p></section></main>
+<footer class="px-4 py-5 text-center text-sm [color:var(--color-text-muted)]"><p>PathGen · Grade 7 Mathematics</p></footer>
+{% endblock %}

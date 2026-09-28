@@ -14,11 +14,11 @@ class PhaseFourPageTests(TestCase):
     def test_every_admin_page_renders(self):
         self.client.force_login(self.admin)
         pages = {
-            "portal:admin_dashboard": "admin/admin_dashboard.html",
-            "portal:user_management": "admin/user_management.html",
-            "portal:class_management": "admin/class_management.html",
-            "portal:override": "admin/override.html",
-            "portal:audit_logs": "admin/audit_logs.html",
+            "portal:admin_dashboard": "pages/admin/admin_dashboard.html",
+            "portal:user_management": "pages/admin/user_management.html",
+            "portal:class_management": "pages/admin/class_management.html",
+            "portal:override": "pages/admin/override.html",
+            "portal:audit_logs": "pages/admin/audit_logs.html",
         }
         for route, template in pages.items():
             with self.subTest(route=route):
@@ -29,11 +29,14 @@ class PhaseFourPageTests(TestCase):
     def test_every_teacher_page_renders(self):
         self.client.force_login(self.teacher)
         pages = [
-            (reverse("portal:teacher_dashboard"), "teacher/teacher_dashboard.html"),
-            (reverse("portal:my_classes"), "teacher/my_class.html"),
+            (
+                reverse("portal:teacher_dashboard"),
+                "pages/teacher/teacher_dashboard.html",
+            ),
+            (reverse("portal:my_classes"), "pages/teacher/my_class.html"),
             (
                 reverse("portal:class_detail", args=[self.classroom.pk]),
-                "teacher/class_detail.html",
+                "pages/teacher/class_detail.html",
             ),
         ]
         for url, template in pages:

@@ -1,6 +1,0 @@
-{% load static %}
-{% if breadcrumbs %}
-<nav class="[&_a]:font-semibold [&_a]:underline-offset-4 hover:[&_a]:underline [&_a]:[color:var(--color-text-link)] [&_ol]:flex [&_ol]:flex-wrap [&_ol]:items-center [&_ol]:gap-2 [&_ol]:text-sm [&_ol]:[color:var(--color-text-secondary)] [&_li:not(:last-child)::after]:[content:'/'] [&_li:not(:last-child)::after]:ml-2 [&_li:not(:last-child)::after]:[color:var(--color-text-muted)] [&_a]:[display:inline-flex] [&_a]:[min-height:44px] [&_a]:[align-items:center] [&_a]:[gap:0.5rem]" data-ui="breadcrumbs" aria-label="Breadcrumb">
-  <ol><li aria-hidden="true"><i data-lucide="book-open" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i></li>{% for crumb in breadcrumbs %}<li>{% if crumb.url %}<a href="{{ crumb.url }}">{{ crumb.label }}</a>{% else %}<span aria-current="page">{{ crumb.label }}</span>{% endif %}</li>{% endfor %}</ol>
-</nav>
-{% endif %}

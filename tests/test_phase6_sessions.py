@@ -86,4 +86,4 @@ class SessionIssuanceTests(Phase6SeededTestCase):
         response = self.client.get(reverse("learning:posttest_overview"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Post-test locked")
-        self.assertTemplateUsed(response, "assessment/posttest.html")
+        self.assertTemplateUsed(response, "assessment/assessment.html")

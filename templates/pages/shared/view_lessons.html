@@ -1,0 +1,45 @@
+{% extends "pages/_base.html" %}
+{% load static %}
+{% block title %}Lessons · PathGen{% endblock %}
+{% block shell %}
+<main id="main-content" class="mx-auto min-h-[calc(100vh-4rem)] max-w-6xl space-y-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
+  {% if messages %}<div class="space-y-4" data-ui="message-stack" aria-live="polite">{% for message in messages %}<div class="rounded-xl border px-4 py-3 text-sm [color:var(--color-text)] [&_svg]:mr-2 {% if 'error' in message.tags %}[background:var(--color-danger-subtle)] [border-color:var(--color-danger)]{% elif 'warning' in message.tags %}[background:var(--color-warning-subtle)] [border-color:var(--color-warning)]{% elif 'info' in message.tags %}[background:var(--color-primary-subtle)] [border-color:var(--color-primary)]{% else %}[background:var(--color-success-subtle)] [border-color:var(--color-success)]{% endif %}" role="status">{% if 'error' in message.tags or 'warning' in message.tags %}<i data-lucide="alert-triangle" class="inline-block h-5 w-5 align-middle" aria-hidden="true"></i>{% else %}<i data-lucide="circle-check" class="inline-block h-5 w-5 align-middle" aria-hidden="true"></i>{% endif %}{{ message }}</div>{% endfor %}</div>{% endif %}
+  {% include "components/breadcrumbs.html" %}
+  <div class="grid gap-6" data-ui="secondary-content">
+<header class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between [&_[data-ui~=page-copy]]:max-w-3xl" data-ui="content-heading">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight [color:var(--color-text)] max-sm:[font-size:var(--text-2xl)]" data-ui="page-title">Published lessons</h1>
+      <p class="mt-2 leading-7 [color:var(--color-text-secondary)] [max-width:65ch]" data-ui="page-copy">The complete Grade 7 integer sequence, presented in learning order.</p>
+    </div>
+    <span class="inline-flex min-h-7 items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold [background:var(--color-primary-subtle)] [color:var(--color-primary-hover)] [max-width:100%] [line-height:var(--leading-normal)] [&_svg]:[width:1rem] [&_svg]:[height:1rem]" data-ui="status-badge"><i data-lucide="info" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i>{{ lessons|length }} lessons</span>
+  </header>
+
+  <div class="space-y-5" data-ui="lesson-stack">
+    {% for lesson in lessons %}
+      <article class="[&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:[color:var(--color-text)] rounded-2xl p-5 sm:p-7 [background:var(--color-surface)] [box-shadow:var(--shadow-sm)] [border:1px_solid_var(--color-border)] [border-radius:var(--radius-lg)]" data-ui="lesson-record">
+        <header class="[&_p]:mt-2 [&_p]:leading-7 [&_p]:[color:var(--color-text-secondary)] grid gap-4 sm:grid-cols-[5rem_1fr]" data-ui="lesson-record-header">
+          <p class="m-0 text-sm font-bold uppercase tracking-wider [color:var(--color-text-cyan)]" data-ui="lesson-order">Lesson {{ lesson.lesson_order }}</p>
+          <div>
+            <h2>{{ lesson.title }}</h2>
+            <p>{{ lesson.summary }}</p>
+          </div>
+        </header>
+        <div class="mt-5 flex flex-wrap gap-2" data-ui="skill-row" aria-label="Skills in Lesson {{ lesson.lesson_order }}">
+          {% for relation in lesson.lesson_skills.all %}
+            <span class="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 py-2 text-sm [background:var(--color-bg-subtle)] [color:var(--color-text-secondary)]" data-ui="skill-chip"><strong>{{ relation.skill.code }}</strong> {{ relation.skill.name }}</span>
+          {% endfor %}
+        </div>
+        <details class="mt-6 border-t pt-5 [border-color:var(--color-border)] [&_summary]:flex [&_summary]:min-h-11 [&_summary]:cursor-pointer [&_summary]:items-center [&_summary]:font-semibold [&_summary]:[color:var(--color-text-link)]" data-ui="lesson-source">
+          <summary>Read lesson content</summary>
+          <div class="mt-4 max-w-3xl space-y-4 leading-7 [color:var(--color-text-secondary)]" data-ui="lesson-source-text" data-lesson-source data-static-root="{% get_static_prefix %}">{{ lesson.content_json.source_text }}</div>
+        </details>
+      </article>
+    {% empty %}
+      {% with empty_title="No published lessons" empty_body="Run the curriculum seed command after validating the source files." %}{% load static %}
+<section class="rounded-2xl border p-5 sm:p-6 [background:var(--color-surface)] [border-color:var(--color-border)] [box-shadow:var(--shadow-sm)] [&_h2]:text-xl [&_h2]:font-bold [&_>_p]:[max-width:65ch] [&_[data-ui~=icon-tile]]:[margin-bottom:1rem] [&_h2]:[margin-bottom:0.5rem]" data-ui="empty-state"><span class="[display:inline-flex] [align-items:center] [justify-content:center] [width:2.5rem] [height:2.5rem] [border-radius:var(--radius-md)] [background:var(--color-primary-subtle)] [flex-shrink:0]" data-ui="icon-tile"><i data-lucide="search" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i></span><h2>{{ empty_title|default:"Nothing here yet" }}</h2><p>{{ empty_body|default:"Records will appear here when they are available." }}</p>{% if empty_action_url %}<a class="inline-flex min-h-11 items-center font-semibold underline-offset-4 hover:underline [color:var(--color-text-cyan)]" data-ui="text-link" href="{{ empty_action_url }}">{{ empty_action_label|default:"Continue" }}</a>{% else %}<a class="inline-flex min-h-11 items-center font-semibold underline-offset-4 hover:underline [color:var(--color-text-cyan)]" data-ui="text-link" href="{{ request.path }}">Refresh this view</a>{% endif %}</section>{% endwith %}
+    {% endfor %}
+  </div>
+  </div>
+</main>
+<footer class="px-4 py-5 text-center text-sm [color:var(--color-text-muted)]"><p>PathGen · Grade 7 Mathematics</p></footer>
+{% endblock %}

@@ -32,7 +32,7 @@ def content(request):
     }
     return render(
         request,
-        "shared/content.html",
+        "pages/shared/content.html",
         {
             "breadcrumbs": _content_breadcrumbs("Content"),
             "lesson_count": published_lessons().count(),
@@ -47,7 +47,7 @@ def content(request):
 def view_lessons(request):
     return render(
         request,
-        "shared/view_lessons.html",
+        "pages/shared/view_lessons.html",
         {
             "breadcrumbs": _content_breadcrumbs("Lessons"),
             "back_url": reverse("curriculum:content"),
@@ -74,7 +74,7 @@ def view_questions(request):
         set_type = ""
     return render(
         request,
-        "shared/view_questions.html",
+        "pages/shared/view_questions.html",
         {
             "breadcrumbs": _content_breadcrumbs("Questions"),
             "back_url": reverse("curriculum:content"),

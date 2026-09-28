@@ -6,30 +6,43 @@ from django.test import SimpleTestCase
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 DASHBOARD_TEMPLATES = [
-    BASE_DIR / "templates" / "admin" / "admin_dashboard.html",
-    BASE_DIR / "templates" / "teacher" / "teacher_dashboard.html",
-    BASE_DIR / "templates" / "student" / "student_dashboard.html",
-    BASE_DIR / "templates" / "shared" / "view_student_progress.html",
-    BASE_DIR / "templates" / "partials" / "chart_with_table.html",
+    BASE_DIR / "templates" / "pages" / "admin" / "admin_dashboard.html",
+    BASE_DIR / "templates" / "pages" / "teacher" / "teacher_dashboard.html",
+    BASE_DIR / "templates" / "pages" / "student" / "student_dashboard.html",
+    BASE_DIR / "templates" / "pages" / "shared" / "view_student_progress.html",
 ]
+CHART_TEMPLATES = DASHBOARD_TEMPLATES[:2]
 
 
 class Phase12AccessibilityTests(SimpleTestCase):
     def test_15_every_canvas_has_an_aria_label(self):
-        source = (BASE_DIR / "templates" / "partials" / "chart_with_table.html").read_text()
-        canvases = re.findall(r"<canvas\b[^>]*>", source, flags=re.IGNORECASE)
+        canvases = []
+        for path in CHART_TEMPLATES:
+            canvases.extend(
+                re.findall(r"<canvas\b[^>]*>", path.read_text(), flags=re.IGNORECASE)
+            )
         self.assertTrue(canvases)
         self.assertTrue(all("aria-label=" in canvas for canvas in canvases))
 
     def test_16_chart_partial_has_table_and_text_alternative(self):
-        source = (BASE_DIR / "templates" / "partials" / "chart_with_table.html").read_text()
-        self.assertIn("<table>", source)
-        self.assertIn("chart-empty", source)
-        self.assertIn("<caption", source)
+        for path in CHART_TEMPLATES:
+            with self.subTest(path=path):
+                source = path.read_text()
+                self.assertIn("<table>", source)
+                self.assertIn('data-ui="chart-empty"', source)
+                self.assertIn("<caption", source)
 
     def test_17_status_indicators_always_include_text(self):
-        student_source = (BASE_DIR / "templates" / "student" / "student_dashboard.html").read_text()
-        progress_source = (BASE_DIR / "templates" / "shared" / "view_student_progress.html").read_text()
+        student_source = (
+            BASE_DIR / "templates" / "pages" / "student" / "student_dashboard.html"
+        ).read_text()
+        progress_source = (
+            BASE_DIR
+            / "templates"
+            / "pages"
+            / "shared"
+            / "view_student_progress.html"
+        ).read_text()
         for source in [student_source, progress_source]:
             self.assertIn("{{ skill.band }}", source)
             self.assertIn("{{ skill.evidence }}", source)

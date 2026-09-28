@@ -119,7 +119,7 @@ def admin_dashboard(request):
     scoped_student_count = students.count()
     return render(
         request,
-        "admin/admin_dashboard.html",
+        "pages/admin/admin_dashboard.html",
         {
             **_setting_context(),
             "as_of": timezone.now(),
@@ -162,7 +162,7 @@ def student_progress(request, student_id):
     data = student_dashboard_data(student)
     return render(
         request,
-        "shared/view_student_progress.html",
+        "pages/shared/view_student_progress.html",
         {
             "student": student,
             "student_name": display_name(student),
@@ -189,7 +189,7 @@ def student_progress(request, student_id):
 @require_http_methods(["GET", "POST"])
 def override(request):
     if request.method == "GET":
-        return render(request, "admin/override.html", _setting_context())
+        return render(request, "pages/admin/override.html", _setting_context())
 
     form = OverrideForm(request.POST)
     if form.is_valid():
@@ -199,7 +199,7 @@ def override(request):
             form.add_error(None, "These settings changed in another request. Review the current state and try again.")
             return render(
                 request,
-                "admin/override.html",
+                "pages/admin/override.html",
                 _setting_context(form=form, conflict=True),
                 status=409,
             )
@@ -208,7 +208,7 @@ def override(request):
     messages.error(request, "Review the access-setting form and try again.")
     return render(
         request,
-        "admin/override.html",
+        "pages/admin/override.html",
         _setting_context(form=form),
         status=400,
     )
@@ -223,7 +223,7 @@ def audit_logs(request):
     if query:
         events = events.filter(Q(action__icontains=query) | Q(reason__icontains=query))
     page = Paginator(events, 25).get_page(request.GET.get("page"))
-    return render(request, "admin/audit_logs.html", {"page_obj": page, "query": query})
+    return render(request, "pages/admin/audit_logs.html", {"page_obj": page, "query": query})
 
 
 @role_required(User.Role.ADMIN, User.Role.TEACHER)

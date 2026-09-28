@@ -62,7 +62,7 @@ class FeedbackRuleTests(Phase6SeededTestCase):
         self.client.force_login(self.student)
         response = self.client.get(reverse("learning:posttest_overview"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "assessment/posttest.html")
+        self.assertTemplateUsed(response, "assessment/assessment.html")
         self.assertNotContains(response, "error.html")
 
     def test_video_question_has_pause_cue_transcript_and_hidden_prompt(self):
