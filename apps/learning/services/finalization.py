@@ -5,6 +5,10 @@ from apps.adaptive.models import Decision, MasteryEvent, SkillMastery
 from apps.adaptive.services import persist_session_decision
 from apps.curriculum.models import Lesson
 from apps.feedback.models import SessionFeedback
+from apps.feedback.services import (
+    generate_fallback_draft,
+    generate_session_feedback,
+)
 from apps.learning.models import Response, Session, SessionItem, StudentPath
 from apps.learning.services.paths import transition_path
 
@@ -15,12 +19,6 @@ RAG_ELIGIBLE_TYPES = {
     Session.SessionType.FOUNDATIONAL,
     Session.SessionType.ACTIVITY,
 }
-
-FALLBACK_FEEDBACK_TEXT = (
-    "Personalized feedback is temporarily unavailable. Review your completed "
-    "work and continue with the learning path assigned to you."
-)
-
 
 class SessionFinalizationError(ValueError):
     pass
@@ -165,44 +163,68 @@ def _pending_session_ids():
         Session.objects.filter(
             status=Session.Status.SUBMITTED,
             submitted_at__isnull=False,
-            session_type__in=RAG_ELIGIBLE_TYPES,
-            feedback__isnull=True,
-        ).values_list("pk", flat=True)
+        )
+        .order_by("created_at", "pk")
+        .values_list("pk", flat=True)
     )
 
 
-def finalize_pending_sessions():
-    """Complete submitted sessions with deterministic Phase 9 fallback feedback."""
+def _mark_completed(session):
+    session.status = Session.Status.COMPLETED
+    session.completed_at = timezone.now()
+    session.save(update_fields=["status", "completed_at", "updated_at"])
+
+
+def finalize_pending_sessions(*, feedback_generator=None):
+    """Generate feedback outside locks, then persist it in a short transaction."""
+    feedback_generator = feedback_generator or generate_session_feedback
     completed = 0
     for session_id in _pending_session_ids():
+        session = Session.objects.select_related("lesson").filter(pk=session_id).first()
+        if session is None:
+            continue
+
+        draft = None
+        if (
+            session.session_type in RAG_ELIGIBLE_TYPES
+            and not SessionFeedback.objects.filter(session_id=session_id).exists()
+        ):
+            try:
+                draft = feedback_generator(session)
+            except Exception:
+                draft = generate_fallback_draft(session)
+
         with transaction.atomic():
-            session_ref = Session.objects.filter(pk=session_id).values(
-                "student_id"
-            ).first()
-            if session_ref is None:
-                continue
-            StudentPath.objects.select_for_update(of=("self",)).get(
-                student_id=session_ref["student_id"]
-            )
             session = Session.objects.select_for_update(of=("self",)).get(
                 pk=session_id
             )
             if (
                 session.status != Session.Status.SUBMITTED
                 or session.submitted_at is None
-                or session.session_type not in RAG_ELIGIBLE_TYPES
-                or SessionFeedback.objects.filter(session=session).exists()
             ):
                 continue
 
-            SessionFeedback.objects.create(
-                session=session,
-                feedback_text=FALLBACK_FEEDBACK_TEXT,
-                generation_status=SessionFeedback.GenerationStatus.FALLBACK,
-                model_name=None,
-            )
-            session.status = Session.Status.COMPLETED
-            session.completed_at = timezone.now()
-            session.save(update_fields=["status", "completed_at", "updated_at"])
+            if session.session_type not in RAG_ELIGIBLE_TYPES:
+                _mark_completed(session)
+                completed += 1
+                continue
+
+            if not SessionFeedback.objects.filter(session=session).exists():
+                if draft is None:
+                    draft = generate_fallback_draft(session)
+                SessionFeedback.objects.bulk_create(
+                    [
+                        SessionFeedback(
+                            session=session,
+                            feedback_text=draft.feedback_text,
+                            generation_status=draft.generation_status,
+                            model_name=draft.model_name,
+                        )
+                    ],
+                    ignore_conflicts=True,
+                )
+            if not SessionFeedback.objects.filter(session=session).exists():
+                continue
+            _mark_completed(session)
             completed += 1
     return completed

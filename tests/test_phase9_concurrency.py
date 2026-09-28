@@ -12,6 +12,7 @@ from apps.adaptive.services import process_response
 from apps.core.models import SystemSetting
 from apps.curriculum.models import Lesson, QuestionSet
 from apps.feedback.models import SessionFeedback
+from apps.feedback.services import generate_fallback_draft
 from apps.learning.models import Response, Session, SessionItem, StudentPath
 from apps.learning.services.finalization import (
     finalize_locked_session,
@@ -144,7 +145,11 @@ class OrchestratorConcurrencyTests(TransactionTestCase):
         session.submitted_at = timezone.now()
         session.save(update_fields=["status", "submitted_at", "updated_at"])
 
-        counts = self._run_threads(finalize_pending_sessions)
+        counts = self._run_threads(
+            lambda: finalize_pending_sessions(
+                feedback_generator=generate_fallback_draft
+            )
+        )
         self.assertEqual(sum(counts), 1)
         self.assertEqual(SessionFeedback.objects.filter(session=session).count(), 1)
         session.refresh_from_db()

@@ -3,6 +3,7 @@ from django.test.utils import CaptureQueriesContext
 
 from apps.adaptive.models import Decision, DecisionTargetSkill, MasteryEvent
 from apps.feedback.models import SessionFeedback
+from apps.feedback.services import generate_fallback_draft
 from apps.learning.models import Session, StudentPath
 from apps.learning.services.finalization import finalize_pending_sessions
 from apps.learning.services.paths import open_regular_stage
@@ -23,7 +24,10 @@ class OrchestratorTests(Phase9SeededTestCase):
             lesson=lesson,
         )
         self._complete_issued(session)
-        self.assertEqual(finalize_pending_sessions(), 1)
+        self.assertEqual(
+            finalize_pending_sessions(feedback_generator=generate_fallback_draft),
+            1,
+        )
         return session
 
     def test_full_pretest_lessons_activity_posttest_flow_completes(self):
@@ -43,7 +47,10 @@ class OrchestratorTests(Phase9SeededTestCase):
             session_type=Session.SessionType.ACTIVITY,
         )
         self._complete_issued(activity)
-        self.assertEqual(finalize_pending_sessions(), 1)
+        self.assertEqual(
+            finalize_pending_sessions(feedback_generator=generate_fallback_draft),
+            1,
+        )
 
         self.setting.posttest_access_enabled = True
         self.setting.save(update_fields=["posttest_access_enabled"])
@@ -199,7 +206,10 @@ class OrchestratorTests(Phase9SeededTestCase):
     def test_finalize_pending_sessions_writes_fallback_and_completes(self):
         session = self.exercise_session(Session.SessionType.REGULAR)
         self.submit_all(session)
-        self.assertEqual(finalize_pending_sessions(), 1)
+        self.assertEqual(
+            finalize_pending_sessions(feedback_generator=generate_fallback_draft),
+            1,
+        )
         session.refresh_from_db()
         feedback = SessionFeedback.objects.get(session=session)
         self.assertEqual(session.status, Session.Status.COMPLETED)
@@ -210,6 +220,12 @@ class OrchestratorTests(Phase9SeededTestCase):
     def test_finalize_pending_sessions_is_idempotent(self):
         session = self.exercise_session(Session.SessionType.REGULAR)
         self.submit_all(session)
-        self.assertEqual(finalize_pending_sessions(), 1)
-        self.assertEqual(finalize_pending_sessions(), 0)
+        self.assertEqual(
+            finalize_pending_sessions(feedback_generator=generate_fallback_draft),
+            1,
+        )
+        self.assertEqual(
+            finalize_pending_sessions(feedback_generator=generate_fallback_draft),
+            0,
+        )
         self.assertEqual(SessionFeedback.objects.filter(session=session).count(), 1)

@@ -22,7 +22,7 @@ class OpenAIEmbeddingClient:
         api_key = api_key or os.getenv("OPENAI_API_KEY")
         if not api_key:
             raise EmbeddingConfigurationError(
-                "OPENAI_API_KEY is required to build the retrieval index."
+                "OPENAI_API_KEY is required to create embeddings."
             )
         self.client = client or OpenAI(api_key=api_key, max_retries=0)
         self.sleep = sleep
