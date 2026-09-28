@@ -1,4 +1,4 @@
-<div class="assessment-progress" role="status" aria-live="polite">
+<div class="mb-5 grid gap-2 text-sm font-semibold [color:var(--color-text-secondary)] [&_progress]:h-2 [&_progress]:w-full [&_progress]:overflow-hidden [&_progress]:rounded-full [&_progress]:[accent-color:var(--color-primary)]" data-ui="assessment-progress" role="status" aria-live="polite">
   <span>Question {{ current_number }} of {{ total_questions }}</span>
   <progress value="{{ current_number }}" max="{{ total_questions }}">{{ current_number }} of {{ total_questions }}</progress>
 </div>

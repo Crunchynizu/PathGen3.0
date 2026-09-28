@@ -30,10 +30,16 @@ class FrontendContractTests(SimpleTestCase):
         source_files = [root / "input.css", root / "static" / "js" / "app.js"]
         source_files.extend((root / "templates").rglob("*.html"))
         combined = "\n".join(path.read_text(encoding="utf-8") for path in source_files)
+        theme = (root / "static" / "css" / "theme.css").read_text(encoding="utf-8")
+        templates = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in (root / "templates").rglob("*.html")
+        )
         self.assertNotRegex(combined, re.compile(r"#[0-9a-fA-F]{3,8}\b"))
         self.assertNotIn("dark:", combined)
         self.assertNotIn("prefers-color-scheme: dark", combined)
-        self.assertIn("var(--color-", (root / "input.css").read_text(encoding="utf-8"))
+        self.assertIn("var(--color-", theme)
+        self.assertIn("var(--color-", templates)
 
     def test_rendered_base_has_light_meta_and_accessibility_landmarks(self):
         for template_name in ("base.html", "base_main.html", "base_secondary.html", "base_assessment.html"):

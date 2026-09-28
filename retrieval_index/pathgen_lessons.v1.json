@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "built_at": "2026-09-28T00:16:56.023253+00:00",
+    "built_at": "2026-09-28T16:40:40.067102+00:00",
     "chunking": "lesson-blocks-v1",
     "embedding_dim": 1536,
     "embedding_model": "text-embedding-3-small",
@@ -8,9 +8,9 @@
     "overlap_tokens": 50,
     "policy_version": "RAG-RETRIEVAL-V1",
     "source_fingerprints": {
-      "L1": "ce73d24135923ee92cf0b1d0dda1d21a2970f703c82852500565d8d4f11df45c",
-      "L2": "1e3595b4772875ac5a3c623ff6343a1a236e47b2ebcabfacddbc176b1201c91e",
-      "L3": "0bb44c00bf083d2f8027fe82a89416d19c62b05a69fd9e591f06ce805156c771"
+      "L1": "4bdac7824aca445360a21f9c7990d8b7984e82a3428e2b52f8fdaf245229afcb",
+      "L2": "942844c1d99d70e08df7af0faae543202d784daf58da3fbfc29e4580796ace81",
+      "L3": "4d46037db7e8433b976367dab06355e96a8ef8d93d7dc4e8f2d4fdd325ab178f"
     },
     "target_tokens": 350,
     "token_usage": {
@@ -1566,7 +1566,7 @@
         "S1",
         "S5"
       ],
-      "source_fingerprint": "ce73d24135923ee92cf0b1d0dda1d21a2970f703c82852500565d8d4f11df45c",
+      "source_fingerprint": "4bdac7824aca445360a21f9c7990d8b7984e82a3428e2b52f8fdaf245229afcb",
       "text": "Lesson 1 — Understanding and representing integers Skills: S1 + S5 Objectives: 1. Identify integers, opposites, and absolute value. 2. Represent, compare, and order integers on a number line. What is an integer? An integer is a whole number. It can be positive, negative, or zero. It has no fractional part and no decimal. Examples: -8, -3, 0, 5, 12. Not integers: 3/4, 0.6, 12%. We use negative numbers every day. A temperature 3 degrees below zero is -3. A debt of 500 pesos is -500. A diver 6 meters under the sea is at -6. The number line A number line shows integers in order. Zero is in the middle. Positive integers go right. Negative integers go left. Values increase as you move right. So -7 < -2 < 0 < 4. Compare by position, not by digit size. -7 is smaller than -2 because it is farther left. [insert figure: lesson1/integer-number-line] Opposites and absolute value Opposites are two integers the same distance from zero on different sides. -5 and 5 are opposites. Absolute value is the distance from zero. Distance is always positive or zero. We write it with two bars. - |5| = 5 - |-5| = 5 - |0| = 0 [insert figure: lesson1/opposites-example] [insert video: VID-INTEGER-NUMBER-LINE | 1:00-1:50] (optional) Worked example Problem: Is -11 an integer? What is its opposite? What is |-11|? Step 1: -11 has no fraction and no decimal. So it is an integer. Step 2: The opposite of -11 is 11. Same distance, other side of zero. Step 3: |-11| = 11 because -11 is 11 units from zero. Answer: -11 is an integer. Opposite: 11. Absolute value: 11. Common mistake -7 > -3 is wrong. The digit 7 is bigger, but -7 is farther left. Correct: -7 < -3. Ready to practice Continue to the regular exercise for 6 questions covering both skills."
     },
     {
@@ -3114,7 +3114,7 @@
         "S2",
         "S3"
       ],
-      "source_fingerprint": "1e3595b4772875ac5a3c623ff6343a1a236e47b2ebcabfacddbc176b1201c91e",
+      "source_fingerprint": "942844c1d99d70e08df7af0faae543202d784daf58da3fbfc29e4580796ace81",
       "text": "Lesson 2 — Operations with integers Skills: S2 + S3 Objectives: 1. Add and subtract integers. 2. Multiply and divide integers. Zero pairs When you add integers with different signs, a positive chip and a negative chip cancel. Each pair equals zero. Example: -5 + 3. Start with 5 negative chips. Add 3 positive chips. Three pairs cancel. Two negatives remain. -5 + 3 = -2. [insert figure: lesson2/chip-model-zero-pairs] Adding same signs Same signs: add the distances and keep the sign. - (-4) + (-3) = -7 - 4 + 3 = 7 Subtracting Subtracting an integer is the same as adding its opposite. a - b = a + (-b) Example: 4 - (-3) = 4 + 3 = 7. Multiplying and dividing Work with distances first. Then decide the sign. - Same signs -> positive - Different signs -> negative Examples: - (-6) x 4 = -24 - (-6) x (-4) = 24 - (-24) / (-6) = 4 - 24 / (-6) = -4 [insert figure: lesson2/sign-rules] [insert video: VID-INTEGER-ADD-SUBTRACT | 1:20-2:05] (optional) [insert video: VID-INTEGER-MULTIPLY-DIVIDE | 0:45-1:30] (optional) Worked example Problem: Compute (-6) x 4 and (-24) / (-6). Step 1: Signs of (-6) x 4 are different. Result is negative. 6 x 4 = 24. Answer 1: -24. Step 2: Signs of (-24) / (-6) are the same. Result is positive. 24 / 6 = 4. Answer 2: 4. Common mistake (-6) x 4 = 24 is wrong. The signs are different, so the answer is -24. Ready to practice Continue to the regular exercise for 6 questions."
     },
     {
@@ -4662,7 +4662,7 @@
         "S4",
         "S6"
       ],
-      "source_fingerprint": "0bb44c00bf083d2f8027fe82a89416d19c62b05a69fd9e591f06ce805156c771",
+      "source_fingerprint": "4d46037db7e8433b976367dab06355e96a8ef8d93d7dc4e8f2d4fdd325ab178f",
       "text": "Lesson 3 — Application of integers Skills: S4 + S6 Objectives: 1. Evaluate expressions using order of operations. 2. Model signed-change situations. A story about temperature The temperature at 7:00 AM was -7 degrees C. By noon it rose by 8 degrees. The change is +8. Add: -7 + 8 = 1. The new temperature is 1 degree C. Order of operations When an expression has more than one operation: 1. Grouping first: ( ), [ ], { }. 2. Multiply and divide, left to right. 3. Add and subtract, left to right. [insert figure: lesson3/operation-order-steps] Words that mean signs Rise, gain, deposit, up -> positive. Fall, loss, withdrawal, down -> negative. Interpreting the result Always include the unit. Say if the result is positive or negative. Explain what it means. [insert figure: lesson3/temperature-change] [insert video: VID-INTEGER-ORDER-OPERATIONS | 0:40-1:25] (optional) Worked example Problem: Evaluate -3 x (-4) + (-18) / 6 - (-5). Step 1: Do multiplication and division first, left to right. -3 x (-4) = 12 (-18) / 6 = -3 Step 2: Rewrite: 12 + (-3) - (-5). Step 3: Subtract negative = add positive: 12 + (-3) + 5. Step 4: Add left to right: 12 - 3 = 9, then 9 + 5 = 14. Answer: 14. Common mistake Adding before dividing is wrong. In -3 x (-4) + (-18) / 6, division goes before addition. Correct order gives 14. Ready to practice Continue to the regular exercise for 6 questions."
     }
   ]

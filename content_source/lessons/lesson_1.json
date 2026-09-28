@@ -12,6 +12,92 @@
     ],
     "content_schema_version": 1,
     "content": {
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Understanding and representing integers"
+        },
+        {
+          "type": "subheading",
+          "text": "What is an integer?"
+        },
+        {
+          "type": "paragraph",
+          "text": "An integer is a whole number. It can be positive, negative, or zero. It has no fractional part and no decimal."
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            "-8, -3, 0, 5, and 12 are integers.",
+            "3/4, 0.6, and 12% are not integers."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We use negative numbers every day. A temperature 3 degrees below zero is -3. A debt of 500 pesos is -500. A diver 6 meters under the sea is at -6."
+        },
+        {
+          "type": "subheading",
+          "text": "The number line"
+        },
+        {
+          "type": "paragraph",
+          "text": "A number line shows integers in order. Zero is in the middle. Positive integers go right. Negative integers go left."
+        },
+        {
+          "type": "paragraph",
+          "text": "Values increase as you move right, so -7 < -2 < 0 < 4. Compare by position, not by digit size. -7 is smaller than -2 because it is farther left."
+        },
+        {
+          "type": "figure",
+          "image_asset": "lesson/lesson-1/integer-number-line.png",
+          "image_alt": "Number line from -8 to 8 showing integers in order",
+          "caption": "Integers increase from left to right."
+        },
+        {
+          "type": "subheading",
+          "text": "Opposites and absolute value"
+        },
+        {
+          "type": "paragraph",
+          "text": "Opposites are two integers the same distance from zero on different sides. -5 and 5 are opposites."
+        },
+        {
+          "type": "paragraph",
+          "text": "Absolute value is the distance from zero. Distance is always positive or zero. We write it with two bars. |5| = 5, |-5| = 5, |0| = 0."
+        },
+        {
+          "type": "figure",
+          "image_asset": "lesson/lesson-1/opposites-example.png",
+          "image_alt": "Number line showing -5 and 5 as opposites around zero"
+        },
+        {
+          "type": "video",
+          "video_code": "VID-INTEGER-NUMBER-LINE",
+          "segment_start_seconds": 60,
+          "segment_end_seconds": 110
+        },
+        {
+          "type": "worked_example",
+          "title": "Recognizing an integer",
+          "problem": "Is -11 an integer? What is its opposite? What is |-11|?",
+          "steps": [
+            "Step 1: -11 has no fraction and no decimal. So it is an integer.",
+            "Step 2: The opposite of -11 is 11. Same distance, other side of zero.",
+            "Step 3: |-11| = 11 because -11 is 11 units from zero."
+          ],
+          "answer": "-11 is an integer. Opposite: 11. Absolute value: 11."
+        },
+        {
+          "type": "common_mistake",
+          "text": "-7 > -3 is wrong. The digit 7 is bigger, but -7 is farther left. Correct: -7 < -3."
+        },
+        {
+          "type": "callout",
+          "variant": "cta",
+          "text": "Ready to practice. Continue to the regular exercise for 6 questions covering both skills."
+        }
+      ],
       "source_text": "Lesson 1 — Understanding and representing integers\nSkills: S1 + S5\nObjectives:\n1. Identify integers, opposites, and absolute value.\n2. Represent, compare, and order integers on a number line.\nWhat is an integer?\nAn integer is a whole number. It can be positive, negative, or zero. It has no fractional part and\nno decimal.\nExamples: -8, -3, 0, 5, 12.\nNot integers: 3/4, 0.6, 12%.\nWe use negative numbers every day. A temperature 3 degrees below zero is -3. A debt of 500\npesos is -500. A diver 6 meters under the sea is at -6.\nThe number line\nA number line shows integers in order. Zero is in the middle. Positive integers go right. Negative\nintegers go left.\nValues increase as you move right. So -7 < -2 < 0 < 4.\nCompare by position, not by digit size. -7 is smaller than -2 because it is farther left.\n[insert figure: lesson1/integer-number-line]\nOpposites and absolute value\nOpposites are two integers the same distance from zero on different sides. -5 and 5 are opposites.\nAbsolute value is the distance from zero. Distance is always positive or zero. We write it with\ntwo bars.\n-\n|5| = 5\n-\n|-5| = 5\n-\n|0| = 0\n[insert figure: lesson1/opposites-example]\n[insert video: VID-INTEGER-NUMBER-LINE | 1:00-1:50] (optional)\nWorked example\nProblem: Is -11 an integer? What is its opposite? What is |-11|?\nStep 1: -11 has no fraction and no decimal. So it is an integer.\nStep 2: The opposite of -11 is 11. Same distance, other side of zero.\nStep 3: |-11| = 11 because -11 is 11 units from zero.\nAnswer: -11 is an integer. Opposite: 11. Absolute value: 11.\nCommon mistake\n-7 > -3 is wrong. The digit 7 is bigger, but -7 is farther left. Correct: -7 < -3.\nReady to practice\nContinue to the regular exercise for 6 questions covering both skills."
     }
   },

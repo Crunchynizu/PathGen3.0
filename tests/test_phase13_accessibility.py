@@ -2,6 +2,7 @@ import re
 from html.parser import HTMLParser
 from pathlib import Path
 
+from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.test import SimpleTestCase
 
@@ -63,8 +64,13 @@ class Phase13AccessibilityTests(SimpleTestCase):
 
     def test_02_every_base_has_skip_to_content(self):
         base = self.templates["base.html"]
-        self.assertIn('class="skip-link"', base)
-        self.assertIn('href="#main-content"', base)
+        self.assertRegex(
+            base,
+            re.compile(
+                r'<a\b[^>]*href="#main-content"[^>]*>\s*Skip to content\s*</a>',
+                re.I,
+            ),
+        )
         self.assertIn('id="main-content"', base)
 
     def test_03_no_div_is_used_as_an_onclick_control(self):
@@ -79,9 +85,36 @@ class Phase13AccessibilityTests(SimpleTestCase):
             self.assertRegex(canvas, r'aria-label="[^"]+"')
 
     def test_05_every_chart_has_a_table_or_text_alternative(self):
-        chart_partial = self.templates["partials/chart_with_table.html"]
-        self.assertIn("<table", chart_partial)
-        self.assertIn('class="chart-empty" role="status"', chart_partial)
+        rendered = render_to_string(
+            "partials/chart_with_table.html",
+            {
+                "chart": {
+                    "id": "empty-chart",
+                    "title": "Empty chart",
+                    "metric": {
+                        "n": 0,
+                        "cohort": "All students",
+                        "window": "Current",
+                        "version": "v1",
+                        "definition": "No recorded results.",
+                    },
+                    "rows": [],
+                    "headers": ["Skill", "Result"],
+                    "aria_label": "Empty chart",
+                    "config": {},
+                }
+            },
+        )
+        response = HttpResponse(rendered)
+        self.assertContains(response, "<table", html=False)
+        self.assertContains(response, "Not enough evidence for this chart")
+        self.assertRegex(
+            rendered,
+            re.compile(
+                r'<p\b[^>]*role="status"[^>]*>.*Not enough evidence for this chart.*</p>',
+                re.I | re.S,
+            ),
+        )
 
     def test_06_every_form_control_has_a_label_or_aria_label(self):
         failures = []
@@ -116,8 +149,55 @@ class Phase13AccessibilityTests(SimpleTestCase):
             self.templates["partials/status_badge.html"],
         )
         self.assertIn("{{ band|default:", self.templates["partials/skill_band_badge.html"])
-        self.assertIn('class="band-label"', self.templates["student/student_dashboard.html"])
-        self.assertIn('class="evidence-label"', self.templates["student/student_dashboard.html"])
+        rendered = render_to_string(
+            "student/student_dashboard.html",
+            {
+                "request": {
+                    "user": {
+                        "role": "student",
+                        "username": "test-student",
+                        "get_full_name": "Test Student",
+                        "get_role_display": "Student",
+                    },
+                    "resolver_match": {"url_name": "student_dashboard"},
+                },
+                "student_name": "Test Student",
+                "next_step": {"label": "Review", "description": "Keep learning."},
+                "skill_rows": [
+                    {
+                        "code": "S1",
+                        "name": "Skill one",
+                        "state": "np",
+                        "band": "Not proficient yet",
+                        "evidence": "1 evidence item",
+                    },
+                    {
+                        "code": "S2",
+                        "name": "Skill two",
+                        "state": "dev",
+                        "band": "Developing",
+                        "evidence": "2 evidence items",
+                    },
+                    {
+                        "code": "S3",
+                        "name": "Skill three",
+                        "state": "strong",
+                        "band": "Strong",
+                        "evidence": "3 evidence items",
+                    },
+                ],
+            },
+        )
+        response = HttpResponse(rendered)
+        for visible_text in (
+            "Not proficient yet",
+            "Developing",
+            "Strong",
+            "1 evidence item",
+            "2 evidence items",
+            "3 evidence items",
+        ):
+            self.assertContains(response, visible_text)
 
     def test_09_templates_have_no_hardcoded_hex_colors(self):
         hex_color = re.compile(r"#[0-9a-fA-F]{3,8}\b")

@@ -1,16 +1,17 @@
-<header class="mobile-header" data-drawer-background>
-  <button class="icon-button" type="button" data-drawer-open aria-controls="mobile-drawer" aria-expanded="false">
-    <span aria-hidden="true">☰</span><span class="sr-only">Open navigation</span>
+{% load static %}
+<header class="sticky top-0 z-30 flex items-center gap-3 border-b px-4 py-3 lg:hidden [background:var(--color-surface)] [border-color:var(--color-border)] surface-translucent" data-ui="mobile-header" data-drawer-background>
+  <button class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-xl [background:var(--color-bg-subtle)] [color:var(--color-text-secondary)]" data-ui="icon-button" type="button" data-drawer-open aria-controls="mobile-drawer" aria-expanded="false">
+    <i data-lucide="menu" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i><span class="absolute h-px w-px overflow-hidden whitespace-nowrap p-0 [clip:rect(0,_0,_0,_0)] [border:0]" data-ui="sr-only">Open navigation</span>
   </button>
-  <a class="brand" href="/">PathGen</a>
+  <a class="text-xl font-bold tracking-tight [color:var(--color-primary)] [display:inline-flex] [align-items:center] [gap:0.75rem] [&_img]:[flex:0_0_auto] [&_img]:[object-fit:contain]" data-ui="brand" href="/"><img src="{% static 'logo/pathgen.png' %}" width="32" height="32" alt="">PathGen</a>
 </header>
-<div id="mobile-drawer" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation" hidden>
-  <div class="drawer-panel">
-    <div class="drawer-header">
+<div id="mobile-drawer" class="fixed inset-0 z-50 grid grid-cols-[min(85vw,20rem)_1fr] lg:hidden [&[hidden]]:hidden" data-ui="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation" hidden>
+  <div class="min-h-0 overflow-y-auto [background:var(--color-surface)] [box-shadow:var(--shadow-md)]" data-ui="drawer-panel">
+    <div class="flex min-h-16 items-center justify-between border-b px-4 [border-color:var(--color-border)]" data-ui="drawer-header">
       <strong>Navigation</strong>
-      <button class="icon-button" type="button" data-drawer-close aria-label="Close navigation">×</button>
+      <button class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-xl [background:var(--color-bg-subtle)] [color:var(--color-text-secondary)]" data-ui="icon-button" type="button" data-drawer-close aria-label="Close navigation"><i data-lucide="x" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i></button>
     </div>
     {% include "partials/sidebar.html" %}
   </div>
-  <button class="drawer-scrim" type="button" data-drawer-close aria-label="Close navigation"></button>
+  <button class="h-full w-full [background:var(--color-overlay)]" data-ui="drawer-scrim" type="button" data-drawer-close aria-label="Close navigation"></button>
 </div>

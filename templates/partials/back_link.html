@@ -1,1 +1,2 @@
-{% if back_url %}<a class="back-link" href="{{ back_url }}">← {{ back_label|default:"Back" }}</a>{% endif %}
+{% load static %}
+{% if back_url %}<a class="font-semibold underline-offset-4 hover:underline [color:var(--color-text-link)] [display:inline-flex] [min-height:44px] [align-items:center] [gap:0.5rem]" data-ui="back-link" href="{{ back_url }}"><i data-lucide="arrow-left" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i> {{ back_label|default:"Back" }}</a>{% endif %}

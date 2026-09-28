@@ -38,19 +38,34 @@ class Phase13ResponsiveContractTests(SimpleTestCase):
             self.assertIn(f'{name}: "{size}"', self.tailwind)
 
     def test_tables_progressively_become_labelled_cards_on_narrow_screens(self):
-        self.assertIn('@media (max-width: 639px)', self.input_css)
-        self.assertIn(".responsive-table-ready td::before", self.input_css)
-        self.assertIn("content: attr(data-label)", self.input_css)
-        self.assertIn('table.classList.add("responsive-table-ready")', self.app_js)
+        for utility in (
+            "max-sm:[&_thead]:[position:absolute]",
+            "max-sm:[&_tbody]:[display:block]",
+            "max-sm:[&_tr]:[display:block]",
+            "max-sm:[&_td]:[display:grid]",
+            "max-sm:[&_td::before]:[content:attr(data-label)]",
+        ):
+            self.assertIn(f'"{utility}"', self.app_js)
+        self.assertIn("table.classList.add(...responsiveTableClasses)", self.app_js)
         self.assertIn("cell.dataset.label", self.app_js)
 
     def test_filters_use_disclosure_on_base_and_xs(self):
-        self.assertIn('class="filter-disclosure"', self.templates)
-        self.assertIn(".filter-disclosure > summary", self.input_css)
+        self.assertIn('data-ui="filter-disclosure"', self.templates)
+        self.assertIn("max-sm:[&_>_summary]:[display:flex]", self.templates)
+        self.assertIn(
+            "max-sm:[&[open]_>_summary]:[margin-bottom:0.75rem]",
+            self.templates,
+        )
         self.assertIn('window.matchMedia("(max-width: 639px)")', self.app_js)
+        self.assertIn(
+            'document.querySelectorAll("[data-ui~=\'filter-disclosure\']")',
+            self.app_js,
+        )
         self.assertIn("details.open = !compactFilterQuery.matches", self.app_js)
 
     def test_narrow_content_uses_wrapping_and_overflow_guards(self):
-        self.assertIn("overflow-x-auto", self.input_css)
-        self.assertIn("overflow-wrap: anywhere", self.input_css)
-        self.assertIn("max-w-full", self.input_css)
+        self.assertIn("overflow-x-auto", self.templates)
+        self.assertIn("max-sm:[&_td]:[overflow-wrap:anywhere]", self.templates)
+        self.assertIn("[&_img]:[max-width:100%]", self.templates)
+        for breakpoint in ("sm:", "md:", "lg:", "xl:"):
+            self.assertIn(breakpoint, self.templates)

@@ -3,12 +3,13 @@
   "videos": [
     {
       "code": "VID-INTEGER-NUMBER-LINE",
-      "title": "Negative numbers and number line examples",
+      "title": "Negative numbers and number-line examples",
       "source_reference": "1:00-1:50",
       "segment_start_seconds": 60,
       "segment_end_seconds": 110,
       "duration_seconds": 50,
-      "youtube_video_id": null,
+      "youtube_url": "https://www.youtube.com/watch?v=qW-Ce44lI0Q",
+      "youtube_video_id": "qW-Ce44lI0Q",
       "transcript_file": "transcripts/VID-INTEGER-NUMBER-LINE.txt"
     },
     {
@@ -18,7 +19,8 @@
       "segment_start_seconds": 80,
       "segment_end_seconds": 125,
       "duration_seconds": 45,
-      "youtube_video_id": null,
+      "youtube_url": "https://www.youtube.com/watch?v=NQSN00zL5gg",
+      "youtube_video_id": "NQSN00zL5gg",
       "transcript_file": "transcripts/VID-INTEGER-ADD-SUBTRACT.txt"
     },
     {
@@ -28,7 +30,8 @@
       "segment_start_seconds": 45,
       "segment_end_seconds": 90,
       "duration_seconds": 45,
-      "youtube_video_id": null,
+      "youtube_url": "https://www.youtube.com/watch?v=d8lP5tR2R3Q",
+      "youtube_video_id": "d8lP5tR2R3Q",
       "transcript_file": "transcripts/VID-INTEGER-MULTIPLY-DIVIDE.txt"
     },
     {
@@ -38,7 +41,8 @@
       "segment_start_seconds": 40,
       "segment_end_seconds": 85,
       "duration_seconds": 45,
-      "youtube_video_id": null,
+      "youtube_url": "https://www.youtube.com/watch?v=GiSpzFKI5_w",
+      "youtube_video_id": "GiSpzFKI5_w",
       "transcript_file": "transcripts/VID-INTEGER-ORDER-OPERATIONS.txt"
     }
   ],

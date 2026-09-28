@@ -2,47 +2,47 @@
 {% load static %}
 {% block title %}Questions · PathGen{% endblock %}
 {% block secondary_content %}
-  <header class="content-heading">
+  <header class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between [&_[data-ui~=page-copy]]:max-w-3xl" data-ui="content-heading">
     <div>
-      <h1 class="page-title">Published questions</h1>
-      <p class="page-copy">Read-only practice and activity items. Correct answers and protected pre/post content are not displayed.</p>
+      <h1 class="text-3xl font-bold tracking-tight [color:var(--color-text)] max-sm:[font-size:var(--text-2xl)]" data-ui="page-title">Published questions</h1>
+      <p class="mt-2 leading-7 [color:var(--color-text-secondary)] [max-width:65ch]" data-ui="page-copy">Read-only practice and activity items. Correct answers and protected pre/post content are not displayed.</p>
     </div>
-    <span class="status-badge">Answer keys hidden</span>
+    <span class="inline-flex min-h-7 items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold [background:var(--color-primary-subtle)] [color:var(--color-primary-hover)] [max-width:100%] [line-height:var(--leading-normal)] [&_svg]:[width:1rem] [&_svg]:[height:1rem]" data-ui="status-badge"><i data-lucide="info" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i>Answer keys hidden</span>
   </header>
 
-  <nav class="question-filters" aria-label="Filter question sets">
+  <nav class="flex gap-2 overflow-x-auto pb-2 [&_a]:inline-flex [&_a]:min-h-11 [&_a]:shrink-0 [&_a]:items-center [&_a]:rounded-xl [&_a]:px-4 [&_a]:font-semibold [&_a]:no-underline [&_a]:[background:var(--color-surface)] [&_a]:[color:var(--color-text-secondary)] [&_a[aria-current='page']]:[background:var(--color-primary)] [&_a[aria-current='page']]:[color:var(--color-on-primary)]" data-ui="question-filters" aria-label="Filter question sets">
     <a href="{% url 'curriculum:view_questions' %}"{% if not selected_type %} aria-current="page"{% endif %}>All</a>
     {% for value, label in set_types %}
       <a href="?type={{ value }}"{% if selected_type == value %} aria-current="page"{% endif %}>{{ label }}</a>
     {% endfor %}
   </nav>
 
-  <div class="question-set-stack">
+  <div class="space-y-5" data-ui="question-set-stack">
     {% for question_set in question_sets %}
-      <section class="question-set" aria-labelledby="set-{{ question_set.code }}">
-        <header class="question-set-header">
+      <section class="[&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:[color:var(--color-text)] rounded-2xl p-5 sm:p-7 [background:var(--color-surface)] [box-shadow:var(--shadow-sm)] [border:1px_solid_var(--color-border)] [border-radius:var(--radius-lg)]" data-ui="question-set" aria-labelledby="set-{{ question_set.code }}">
+        <header class="[&_p]:mt-2 [&_p]:leading-7 [&_p]:[color:var(--color-text-secondary)] flex flex-col gap-3 border-b pb-5 sm:flex-row sm:items-start sm:justify-between [border-color:var(--color-border)]" data-ui="question-set-header">
           <div>
             <h2 id="set-{{ question_set.code }}">{{ question_set.name }}</h2>
             <p>{{ question_set.get_set_type_display }}{% if question_set.lesson %} · {{ question_set.lesson.title }}{% endif %}{% if question_set.skill %} · {{ question_set.skill.code }}{% endif %}</p>
           </div>
-          <span class="status-badge">{{ question_set.question_count }} questions</span>
+          <span class="inline-flex min-h-7 items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold [background:var(--color-primary-subtle)] [color:var(--color-primary-hover)] [max-width:100%] [line-height:var(--leading-normal)] [&_svg]:[width:1rem] [&_svg]:[height:1rem]" data-ui="status-badge"><i data-lucide="info" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i>{{ question_set.question_count }} questions</span>
         </header>
-        <ol class="question-list">
+        <ol class="divide-y [border-color:var(--color-border)]" data-ui="question-list">
           {% for item in question_set.items.all %}
-            <li class="question-record">
-              <div class="question-meta">
+            <li class="py-6 [&_h3]:mt-3 [&_h3]:max-w-3xl [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:leading-7 [&_h3]:[color:var(--color-text)]" data-ui="question-record">
+              <div class="flex flex-wrap items-center gap-2 text-sm [color:var(--color-text-secondary)] [&_code]:rounded-lg [&_code]:px-2 [&_code]:py-1 [&_code]:[background:var(--color-bg-subtle)] [&_span]:rounded-lg [&_span]:px-2 [&_span]:py-1 [&_span]:[background:var(--color-bg-subtle)]" data-ui="question-meta">
                 <code>{{ item.question.code }}</code>
                 <span>{{ item.question.skill.code }}</span>
                 <span>{{ item.question.get_cognitive_level_display }}</span>
               </div>
               <h3>{{ item.question.prompt }}</h3>
               {% if item.question.image_asset %}
-                <img class="prompt-figure" src="{% static item.question.image_asset %}" alt="{{ item.question.image_alt }}">
+                <img class="mt-4 max-h-72 max-w-full rounded-xl object-contain [background:var(--color-bg-subtle)]" data-ui="prompt-figure" src="{% static item.question.image_asset %}" alt="{{ item.question.image_alt }}">
               {% endif %}
               {% if item.question.presentation_type == "video" %}
-                <p class="media-note">Video reference: {{ item.question.video.title }}</p>
+                <p class="mt-2 leading-7 [color:var(--color-text-secondary)]" data-ui="media-note">Video reference: {{ item.question.video.title }}</p>
               {% endif %}
-              <ol class="choice-list" type="A">
+              <ol class="mt-4 grid max-w-3xl gap-2 pl-8 marker:font-semibold [color:var(--color-text-secondary)] [&_li]:min-h-11 [&_li]:rounded-xl [&_li]:py-2 [&_li]:pl-2 [&_li]:leading-7" data-ui="choice-list" type="A">
                 {% for choice in item.question.choices.all %}<li>{{ choice.text }}</li>{% endfor %}
               </ol>
             </li>

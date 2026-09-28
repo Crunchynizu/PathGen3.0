@@ -18,6 +18,10 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - Never claim completion without verification.
 - Follow `build_order.md` one phase at a time. Stop after each phase.
 - After each phase, report files created, commands run, exit criteria status, and anything you could not complete.
+- Do not use Impeccable, Preline, Geist, or any design skill other than `frontend_skill/SKILL.md`.
+- Do not use browser automation (Playwright, Puppeteer, Selenium, browser MCP) or screenshot tools.
+- Verify UI with the Django test client and structural assertions only. Visual QA is by the user, not the agent.
+- Icons are Lucide, self-hosted as one library file. Never use individual SVG files. Never use `<img>` for icons. Icons inherit `currentColor`.
 
 ## Communication Style
 - Be concise. No fluff. Bullet points over paragraphs.
@@ -54,6 +58,13 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - Vanilla JavaScript only. No React, Vue, Alpine, HTMX.
 - Light mode only. No dark mode, no theme switcher.
 - `AUTH_USER_MODEL = "accounts.User"` before first migrate.
+- Icons are Lucide, self-hosted as one library file at `static/vendor/lucide/lucide.min.js`. Use `<i data-lucide="name"></i>`. Call `lucide.createIcons()` in `app.js` on `DOMContentLoaded`.
+- Never download individual icon SVGs. Never use `<img>` for icons.
+- Videos use real YouTube IDs and timestamps from `content_source/media_manifest.json`. Video elements embed via `youtube-nocookie.com`.
+- Avatars (`student_avatar.png`, `teacher_avatar.png`, `admin_avatar.png`) and logo (`pathgen.png`) are real committed files. Not placeholders.
+- Lesson, exercise, and activity figures are 1x1 transparent placeholders until the user replaces them.
+- Prompt-level figures only. A figure lives on `curriculum_question.image_asset`. Never on a choice.
+- `input.css` is exactly 3 lines: `@tailwind base;`, `@tailwind components;`, `@tailwind utilities;`. No other content.
 
 ## Architecture
 - Build a Django monolith with PostgreSQL and server-rendered templates.
@@ -150,7 +161,7 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - Tailwind through `tools/tailwindcss.exe` and `input.css`.
 - No npm, no Node, no bundler, no PostCSS. No CDN for JavaScript or CSS libraries. The only allowed remote asset is Google Fonts for Inter.
 - Inter font via Google Fonts.
-- Lucide SVG, self-hosted in `static/icon/`.
+- Lucide via self-hosted library: `static/vendor/lucide/lucide.min.js`.
 - Chart.js UMD, self-hosted in `static/vendor/chartjs/`.
 - Vanilla JavaScript only.
 - Read `frontend_skill/SKILL.md` before any frontend work. It is the Apple design reference. Translate every technique into HTML, Tailwind, and vanilla JS. No npm, no Motion, no Framer Motion, no Preline.
@@ -168,6 +179,7 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - Breakpoints: base `<475`, `xs:475`, `sm:640`, `md:768`, `lg:1024`, `xl:1280`, `2xl:1536`.
 - Target WCAG 2.2 AA practices, keyboard use, visible focus, reflow, and 44px touch targets.
 - Every chart requires a server-rendered text or table alternative.
+- Lessons in `pages/student/lesson.html` are rendered as a designed reading experience, not a JSON dump. Each content block type has a distinct visual treatment. Use `theme.css` tokens and Tailwind utilities only. No per-page `<style>` blocks. No Impeccable.
 
 ## Assets and deployment
 - No avatar picker. No stored avatar field on the user model. Avatar is derived from role at render.
@@ -179,7 +191,7 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - Phase 5 copies source avatars and logo into `static/avatar/` and `static/logo/`.
 - Prompt figures live at `static/{lesson,exercise,activity}/<lesson_slug>/<question_code>.png`.
 - No `static/pretest_posttest/` folder. The protected pre/post set has no figures.
-- Use Lucide via self-hosted SVG in `static/icon/`. Do not create icon, illustration, or caption folders.
+- Use Lucide via the self-hosted library at `static/vendor/lucide/lucide.min.js`. Do not create individual icon, illustration, or caption folders.
 - No cloud storage, no user uploads. All avatars, brand mark, prompt figures, and theme CSS are pre-supplied static files committed to the repo.
 - Tailwind output is `static/css/app.css`. Committed to the repo. Rebuild with `tools/tailwindcss.exe -i input.css -o static/css/app.css --minify`.
 - Deploy one Railway Django service with PostgreSQL, Gunicorn, and WhiteNoise.
@@ -195,3 +207,5 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - Test that post-test creates no BKT event.
 - Test every breakpoint, 320px width, keyboard navigation, and 200%/400% zoom.
 - Work is complete only when contracts, authorization, research integrity, accessibility, and relevant tests pass.
+- UI tests must NOT launch a browser or capture screenshots.
+- UI tests may assert HTTP status, template used, context values, `aria-label` attributes, paired tables, absence of hardcoded hex, and absence of `dark:` utilities.

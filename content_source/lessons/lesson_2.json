@@ -12,6 +12,105 @@
     ],
     "content_schema_version": 1,
     "content": {
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Operations with integers"
+        },
+        {
+          "type": "subheading",
+          "text": "Zero pairs"
+        },
+        {
+          "type": "paragraph",
+          "text": "When you add integers with different signs, a positive chip and a negative chip cancel. Each pair equals zero."
+        },
+        {
+          "type": "paragraph",
+          "text": "Example: -5 + 3. Start with 5 negative chips. Add 3 positive chips. Three pairs cancel. Two negatives remain. -5 + 3 = -2."
+        },
+        {
+          "type": "figure",
+          "image_asset": "lesson/lesson-2/chip-model-zero-pairs.png",
+          "image_alt": "Five negative chips and three positive chips with three zero pairs canceling"
+        },
+        {
+          "type": "subheading",
+          "text": "Adding same signs"
+        },
+        {
+          "type": "paragraph",
+          "text": "Same signs: add the distances and keep the sign."
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            "(-4) + (-3) = -7",
+            "4 + 3 = 7"
+          ]
+        },
+        {
+          "type": "subheading",
+          "text": "Subtracting"
+        },
+        {
+          "type": "paragraph",
+          "text": "Subtracting an integer is the same as adding its opposite. a - b = a + (-b). Example: 4 - (-3) = 4 + 3 = 7."
+        },
+        {
+          "type": "subheading",
+          "text": "Multiplying and dividing"
+        },
+        {
+          "type": "paragraph",
+          "text": "Work with distances first. Then decide the sign. Same signs give a positive result. Different signs give a negative result."
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            "(-6) x 4 = -24",
+            "(-6) x (-4) = 24",
+            "(-24) / (-6) = 4",
+            "24 / (-6) = -4"
+          ]
+        },
+        {
+          "type": "figure",
+          "image_asset": "lesson/lesson-2/sign-rules.png",
+          "image_alt": "Sign rules chart for multiplication and division"
+        },
+        {
+          "type": "video",
+          "video_code": "VID-INTEGER-ADD-SUBTRACT",
+          "segment_start_seconds": 80,
+          "segment_end_seconds": 125
+        },
+        {
+          "type": "video",
+          "video_code": "VID-INTEGER-MULTIPLY-DIVIDE",
+          "segment_start_seconds": 45,
+          "segment_end_seconds": 90
+        },
+        {
+          "type": "worked_example",
+          "title": "Choosing the sign",
+          "problem": "Compute (-6) x 4 and (-24) / (-6).",
+          "steps": [
+            "Step 1: Signs of (-6) x 4 are different. Result is negative. 6 x 4 = 24.",
+            "Step 2: Signs of (-24) / (-6) are the same. Result is positive. 24 / 6 = 4."
+          ],
+          "answer": "Answer 1: -24. Answer 2: 4."
+        },
+        {
+          "type": "common_mistake",
+          "text": "(-6) x 4 = 24 is wrong. The signs are different, so the answer is -24."
+        },
+        {
+          "type": "callout",
+          "variant": "cta",
+          "text": "Ready to practice. Continue to the regular exercise for 6 questions."
+        }
+      ],
       "source_text": "Lesson 2 — Operations with integers\nSkills: S2 + S3\nObjectives:\n1. Add and subtract integers.\n2. Multiply and divide integers.\nZero pairs\nWhen you add integers with different signs, a positive chip and a negative chip cancel. Each pair\nequals zero.\nExample: -5 + 3.\nStart with 5 negative chips. Add 3 positive chips. Three pairs cancel. Two negatives remain.\n-5 + 3 = -2.\n[insert figure: lesson2/chip-model-zero-pairs]\nAdding same signs\nSame signs: add the distances and keep the sign.\n-\n(-4) + (-3) = -7\n-\n4 + 3 = 7\nSubtracting\nSubtracting an integer is the same as adding its opposite.\na - b = a + (-b)\nExample: 4 - (-3) = 4 + 3 = 7.\nMultiplying and dividing\nWork with distances first. Then decide the sign.\n-\nSame signs -> positive\n-\nDifferent signs -> negative\nExamples:\n-\n(-6) x 4 = -24\n-\n(-6) x (-4) = 24\n-\n(-24) / (-6) = 4\n-\n24 / (-6) = -4\n[insert figure: lesson2/sign-rules]\n[insert video: VID-INTEGER-ADD-SUBTRACT | 1:20-2:05] (optional)\n[insert video: VID-INTEGER-MULTIPLY-DIVIDE | 0:45-1:30] (optional)\nWorked example\nProblem: Compute (-6) x 4 and (-24) / (-6).\nStep 1: Signs of (-6) x 4 are different. Result is negative. 6 x 4 = 24.\nAnswer 1: -24.\nStep 2: Signs of (-24) / (-6) are the same. Result is positive. 24 / 6 = 4.\nAnswer 2: 4.\nCommon mistake\n(-6) x 4 = 24 is wrong. The signs are different, so the answer is -24.\nReady to practice\nContinue to the regular exercise for 6 questions."
     }
   },

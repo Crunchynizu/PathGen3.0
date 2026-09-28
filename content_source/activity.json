@@ -374,6 +374,10 @@
         "source_figure_reference": null,
         "video_code": "VID-INTEGER-NUMBER-LINE",
         "video_pause_seconds": 110,
+        "visual_config_json": {
+          "segment_start_seconds": 60,
+          "segment_end_seconds": 110
+        },
         "source_answer_basis": "pdf_answer_line"
       },
       {

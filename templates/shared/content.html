@@ -1,39 +1,40 @@
 {% extends "base_secondary.html" %}
+{% load static %}
 {% block title %}Content · PathGen{% endblock %}
 {% block secondary_content %}
-  <header class="content-heading">
+  <header class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between [&_[data-ui~=page-copy]]:max-w-3xl" data-ui="content-heading">
     <div>
-      <h1 class="page-title">Content library</h1>
-      <p class="page-copy">Review the published lessons and practice material available to students. Protected pre-test and post-test items are never shown here.</p>
+      <h1 class="text-3xl font-bold tracking-tight [color:var(--color-text)] max-sm:[font-size:var(--text-2xl)]" data-ui="page-title">Content library</h1>
+      <p class="mt-2 leading-7 [color:var(--color-text-secondary)] [max-width:65ch]" data-ui="page-copy">Review the published lessons and practice material available to students. Protected pre-test and post-test items are never shown here.</p>
     </div>
-    <span class="status-badge">Read only</span>
+    <span class="inline-flex min-h-7 items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold [background:var(--color-primary-subtle)] [color:var(--color-primary-hover)] [max-width:100%] [line-height:var(--leading-normal)] [&_svg]:[width:1rem] [&_svg]:[height:1rem]" data-ui="status-badge"><i data-lucide="info" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i>Read only</span>
   </header>
 
-  <section class="content-destinations" aria-label="Content areas">
-    <article class="content-destination">
+  <section class="grid gap-5 md:grid-cols-2" data-ui="content-destinations" aria-label="Content areas">
+    <article class="flex min-h-64 flex-col justify-between gap-8 rounded-2xl p-6 sm:p-8 [background:var(--color-surface)] [box-shadow:var(--shadow-sm)] [&:first-child]:[background:var(--color-primary-subtle)] [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:[color:var(--color-text)] [&_p:not([data-ui~=content-count])]:mt-2 [&_p:not([data-ui~=content-count])]:leading-7 [&_p:not([data-ui~=content-count])]:[color:var(--color-text-secondary)] [border:1px_solid_var(--color-border)] [border-radius:var(--radius-lg)]" data-ui="content-destination">
       <div>
-        <p class="content-count">{{ lesson_count }}</p>
-        <h2>Lessons</h2>
+        <p class="mb-4 text-4xl font-bold tracking-tight [color:var(--color-primary-hover)]" data-ui="content-count">{{ lesson_count }}</p>
+        <h2><i data-lucide="book-open" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i> Lessons</h2>
         <p>Read the three integer lessons and their ordered skill coverage.</p>
       </div>
-      <a class="primary-button pressable" href="{% url 'curriculum:view_lessons' %}">View Lessons</a>
+      <a class="inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 font-semibold transition-transform active:scale-[0.98] [background:var(--color-primary)] [color:var(--color-on-primary)] [&:hover]:[background:var(--color-primary-hover)] [&:link]:[color:var(--color-on-primary)] [&:visited]:[color:var(--color-on-primary)] [gap:0.5rem] [border-radius:var(--radius-md)] [transition:transform_150ms_ease-out,_opacity_150ms_ease-out] pressable" data-ui="primary-button" href="{% url 'curriculum:view_lessons' %}">View Lessons</a>
     </article>
-    <article class="content-destination">
+    <article class="flex min-h-64 flex-col justify-between gap-8 rounded-2xl p-6 sm:p-8 [background:var(--color-surface)] [box-shadow:var(--shadow-sm)] [&:first-child]:[background:var(--color-primary-subtle)] [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:[color:var(--color-text)] [&_p:not([data-ui~=content-count])]:mt-2 [&_p:not([data-ui~=content-count])]:leading-7 [&_p:not([data-ui~=content-count])]:[color:var(--color-text-secondary)] [border:1px_solid_var(--color-border)] [border-radius:var(--radius-lg)]" data-ui="content-destination">
       <div>
-        <p class="content-count">{{ visible_question_count }}</p>
-        <h2>Questions</h2>
+        <p class="mb-4 text-4xl font-bold tracking-tight [color:var(--color-primary-hover)]" data-ui="content-count">{{ visible_question_count }}</p>
+        <h2><i data-lucide="clipboard-list" class="w-5 h-5 inline-block shrink-0 align-middle" aria-hidden="true"></i> Questions</h2>
         <p>Browse regular, additional, foundational, and activity questions without answer keys.</p>
       </div>
-      <a class="primary-button pressable" href="{% url 'curriculum:view_questions' %}">View Questions</a>
+      <a class="inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 font-semibold transition-transform active:scale-[0.98] [background:var(--color-primary)] [color:var(--color-on-primary)] [&:hover]:[background:var(--color-primary-hover)] [&:link]:[color:var(--color-on-primary)] [&:visited]:[color:var(--color-on-primary)] [gap:0.5rem] [border-radius:var(--radius-md)] [transition:transform_150ms_ease-out,_opacity_150ms_ease-out] pressable" data-ui="primary-button" href="{% url 'curriculum:view_questions' %}">View Questions</a>
     </article>
   </section>
 
-  <section class="content-summary" aria-labelledby="content-summary-title">
+  <section class="[&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:[color:var(--color-text)] [&_p]:mt-2 [&_p]:leading-7 [&_p]:[color:var(--color-text-secondary)] rounded-2xl p-5 sm:p-7 [background:var(--color-surface)] [box-shadow:var(--shadow-sm)] grid gap-6 lg:grid-cols-[1fr_2fr] lg:items-center [border:1px_solid_var(--color-border)] [border-radius:var(--radius-lg)]" data-ui="content-summary" aria-labelledby="content-summary-title">
     <div>
       <h2 id="content-summary-title">Published question mix</h2>
       <p>Pre/post questions are intentionally excluded from these totals.</p>
     </div>
-    <dl class="content-totals">
+    <dl class="grid grid-cols-2 gap-3 sm:grid-cols-4 [&_div]:rounded-xl [&_div]:p-4 [&_div]:[background:var(--color-bg-subtle)] [&_dt]:text-sm [&_dt]:[color:var(--color-text-secondary)] [&_dd]:mt-1 [&_dd]:text-2xl [&_dd]:font-bold [&_dd]:[color:var(--color-text)]" data-ui="content-totals">
       <div><dt>Regular</dt><dd>{{ set_counts.regular|default:0 }}</dd></div>
       <div><dt>Additional</dt><dd>{{ set_counts.additional|default:0 }}</dd></div>
       <div><dt>Foundational</dt><dd>{{ set_counts.foundational|default:0 }}</dd></div>

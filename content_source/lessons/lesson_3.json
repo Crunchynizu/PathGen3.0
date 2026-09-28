@@ -12,6 +12,85 @@
     ],
     "content_schema_version": 1,
     "content": {
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Application of integers"
+        },
+        {
+          "type": "subheading",
+          "text": "A story about temperature"
+        },
+        {
+          "type": "paragraph",
+          "text": "The temperature at 7:00 AM was -7 degrees C. By noon it rose by 8 degrees. The change is +8. Add: -7 + 8 = 1. The new temperature is 1 degree C."
+        },
+        {
+          "type": "subheading",
+          "text": "Order of operations"
+        },
+        {
+          "type": "numbered_list",
+          "items": [
+            "Grouping first: ( ), [ ], { }.",
+            "Multiply and divide, left to right.",
+            "Add and subtract, left to right."
+          ]
+        },
+        {
+          "type": "figure",
+          "image_asset": "lesson/lesson-3/operation-order-steps.png",
+          "image_alt": "Three steps: grouping, multiply and divide, add and subtract"
+        },
+        {
+          "type": "subheading",
+          "text": "Words that mean signs"
+        },
+        {
+          "type": "paragraph",
+          "text": "Rise, gain, deposit, and up mean positive changes. Fall, loss, withdrawal, and down mean negative changes."
+        },
+        {
+          "type": "subheading",
+          "text": "Interpreting the result"
+        },
+        {
+          "type": "paragraph",
+          "text": "Always include the unit. Say if the result is positive or negative. Explain what it means."
+        },
+        {
+          "type": "figure",
+          "image_asset": "lesson/lesson-3/temperature-change.png",
+          "image_alt": "Number line showing start at -7 and endpoint at 1"
+        },
+        {
+          "type": "video",
+          "video_code": "VID-INTEGER-ORDER-OPERATIONS",
+          "segment_start_seconds": 40,
+          "segment_end_seconds": 85
+        },
+        {
+          "type": "worked_example",
+          "title": "Evaluating a mixed expression",
+          "problem": "Evaluate -3 x (-4) + (-18) / 6 - (-5).",
+          "steps": [
+            "Step 1: Do multiplication and division first, left to right. -3 x (-4) = 12. (-18) / 6 = -3.",
+            "Step 2: Rewrite: 12 + (-3) - (-5).",
+            "Step 3: Subtract negative = add positive: 12 + (-3) + 5.",
+            "Step 4: Add left to right: 12 - 3 = 9, then 9 + 5 = 14."
+          ],
+          "answer": "14"
+        },
+        {
+          "type": "common_mistake",
+          "text": "Adding before dividing is wrong. In -3 x (-4) + (-18) / 6, division goes before addition. Correct order gives 14."
+        },
+        {
+          "type": "callout",
+          "variant": "cta",
+          "text": "Ready to practice. Continue to the regular exercise for 6 questions."
+        }
+      ],
       "source_text": "Lesson 3 — Application of integers\nSkills: S4 + S6\nObjectives:\n1. Evaluate expressions using order of operations.\n2. Model signed-change situations.\nA story about temperature\nThe temperature at 7:00 AM was -7 degrees C. By noon it rose by 8 degrees.\nThe change is +8. Add: -7 + 8 = 1.\nThe new temperature is 1 degree C.\nOrder of operations\nWhen an expression has more than one operation:\n1. Grouping first: ( ), [ ], { }.\n2. Multiply and divide, left to right.\n3. Add and subtract, left to right.\n[insert figure: lesson3/operation-order-steps]\nWords that mean signs\nRise, gain, deposit, up -> positive.\nFall, loss, withdrawal, down -> negative.\nInterpreting the result\nAlways include the unit. Say if the result is positive or negative. Explain what it means.\n[insert figure: lesson3/temperature-change]\n[insert video: VID-INTEGER-ORDER-OPERATIONS | 0:40-1:25] (optional)\nWorked example\nProblem: Evaluate -3 x (-4) + (-18) / 6 - (-5).\nStep 1: Do multiplication and division first, left to right.\n-3 x (-4) = 12\n(-18) / 6 = -3\nStep 2: Rewrite: 12 + (-3) - (-5).\nStep 3: Subtract negative = add positive: 12 + (-3) + 5.\nStep 4: Add left to right: 12 - 3 = 9, then 9 + 5 = 14.\nAnswer: 14.\nCommon mistake\nAdding before dividing is wrong. In -3 x (-4) + (-18) / 6, division goes before addition. Correct\norder gives 14.\nReady to practice\nContinue to the regular exercise for 6 questions."
     }
   },

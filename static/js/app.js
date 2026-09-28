@@ -1,4 +1,36 @@
 (() => {
+  const responsiveTableClasses = [
+    "max-sm:[min-width:0]",
+    "max-sm:[&_thead]:[position:absolute]",
+    "max-sm:[&_thead]:[width:1px]",
+    "max-sm:[&_thead]:[height:1px]",
+    "max-sm:[&_thead]:[padding:0]",
+    "max-sm:[&_thead]:[margin:-1px]",
+    "max-sm:[&_thead]:[overflow:hidden]",
+    "max-sm:[&_thead]:[clip:rect(0,_0,_0,_0)]",
+    "max-sm:[&_thead]:[white-space:nowrap]",
+    "max-sm:[&_thead]:[border:0]",
+    "max-sm:[&_tbody]:[display:block]",
+    "max-sm:[&_tbody]:[width:100%]",
+    "max-sm:[&_tr]:[display:block]",
+    "max-sm:[&_tr]:[width:100%]",
+    "max-sm:[&_td]:[display:block]",
+    "max-sm:[&_td]:[width:100%]",
+    "max-sm:[&_tr]:[margin-bottom:0.75rem]",
+    "max-sm:[&_tr]:[overflow:hidden]",
+    "max-sm:[&_tr]:[border:1px_solid_var(--color-border)]",
+    "max-sm:[&_tr]:[border-radius:0.75rem]",
+    "max-sm:[&_tr]:[background:var(--color-surface)]",
+    "max-sm:[&_td]:[display:grid]",
+    "max-sm:[&_td]:[grid-template-columns:minmax(7rem,_40%)_minmax(0,_1fr)]",
+    "max-sm:[&_td]:[gap:0.75rem]",
+    "max-sm:[&_td]:[padding:0.75rem]",
+    "max-sm:[&_td]:[overflow-wrap:anywhere]",
+    "max-sm:[&_td::before]:[content:attr(data-label)]",
+    "max-sm:[&_td::before]:[font-weight:700]",
+    "max-sm:[&_td::before]:[color:var(--color-text-secondary)]",
+  ];
+
   const focusableSelector = [
     "a[href]",
     "button:not([disabled])",
@@ -13,7 +45,7 @@
 
   function focusableElements(container) {
     return [...container.querySelectorAll(focusableSelector)].filter(
-      (element) => !element.hidden && element.getAttribute("aria-hidden") !== "true"
+      (element) => !element.hidden && element.getAttribute("aria-hidden") !== "true" && element.getClientRects().length > 0
     );
   }
 
@@ -37,7 +69,7 @@
   }
 
   function setBackgroundInert(inert) {
-    document.querySelectorAll("[data-drawer-background], .desktop-sidebar").forEach((element) => {
+    document.querySelectorAll("[data-drawer-background], [data-ui~='desktop-sidebar']").forEach((element) => {
       element.inert = inert;
     });
   }
@@ -58,6 +90,11 @@
     const returnTarget = opener;
     opener = null;
     if (returnTarget) requestAnimationFrame(() => returnTarget.focus());
+    if (drawerElement && !drawerElement.hidden) {
+      activeLayer = drawerElement;
+      opener = drawerOpener;
+      document.addEventListener("keydown", trapFocus);
+    }
   }
 
   const drawer = document.querySelector("[data-drawer-open]")?.getAttribute("aria-controls");
@@ -102,7 +139,7 @@
     activateLayer(dialog, null);
   });
 
-  document.querySelectorAll(".table-wrap table").forEach((table) => {
+  document.querySelectorAll("[data-ui~='table-wrap'] table").forEach((table) => {
     const labels = [...table.querySelectorAll("thead th")].map((heading) =>
       heading.textContent.trim()
     );
@@ -111,17 +148,20 @@
         if (!cell.dataset.label) cell.dataset.label = labels[index] || "Value";
       });
     });
-    table.classList.add("responsive-table-ready");
+    table.classList.add(...responsiveTableClasses);
   });
 
   const compactFilterQuery = window.matchMedia("(max-width: 639px)");
   function syncFilterDisclosures() {
-    document.querySelectorAll(".filter-disclosure").forEach((details) => {
+    document.querySelectorAll("[data-ui~='filter-disclosure']").forEach((details) => {
       details.open = !compactFilterQuery.matches;
     });
   }
   syncFilterDisclosures();
   compactFilterQuery.addEventListener?.("change", syncFilterDisclosures);
+  window.matchMedia("(min-width: 1024px)").addEventListener?.("change", (event) => {
+    if (event.matches) closeDrawer();
+  });
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && drawerElement && !drawerElement.hidden) closeDrawer();
@@ -147,47 +187,80 @@
     const frame = shell.querySelector("[data-video-frame]");
     const question = shell.parentElement.querySelector("[data-video-question]");
     const revealButton = shell.querySelector("[data-reveal-question]");
-    const pauseAt = Number(shell.dataset.pauseSeconds || 0);
+    const hasCue = shell.dataset.pauseSeconds !== "" && Number.isFinite(Number(shell.dataset.pauseSeconds));
+    const pauseAt = Number(shell.dataset.pauseSeconds);
+    const origin = "https://www.youtube-nocookie.com";
+    const videoId = shell.dataset.videoId || "";
+    const validId = /^[A-Za-z0-9_-]{11}$/.test(videoId) && !/placeholder|^0{11}$|^x{11}$/i.test(videoId);
     let revealed = false;
     let pollTimer = null;
+
+    function unavailable() {
+      if (pollTimer) window.clearInterval(pollTimer);
+      if (frame) frame.parentElement.hidden = true;
+      shell.querySelector("[data-video-unavailable]").hidden = false;
+    }
 
     function revealQuestion() {
       if (revealed || !question) return;
       revealed = true;
       if (pollTimer) window.clearInterval(pollTimer);
       question.hidden = false;
-      revealButton.hidden = true;
+      if (revealButton) revealButton.hidden = true;
       requestAnimationFrame(() => question.querySelector("input")?.focus());
     }
 
     function sendVideoCommand(func) {
       frame?.contentWindow?.postMessage(
         JSON.stringify({ event: "command", func, args: [] }),
-        "*"
+        origin
       );
     }
 
     window.addEventListener("message", (event) => {
-      if (!frame || event.source !== frame.contentWindow) return;
+      if (!frame || !validId || event.origin !== origin || event.source !== frame.contentWindow) return;
       let payload;
       try {
         payload = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
       } catch (_error) {
         return;
       }
+      if (payload?.event === "onError") { unavailable(); return; }
       const currentTime = payload?.info?.currentTime;
-      if (!revealed && typeof currentTime === "number" && currentTime >= pauseAt) {
+      if (typeof currentTime === "number" && pollTimer) { window.clearInterval(pollTimer); pollTimer = null; }
+      if (question && hasCue && !revealed && typeof currentTime === "number" && currentTime >= pauseAt) {
         sendVideoCommand("pauseVideo");
         revealQuestion();
       }
     });
 
     frame?.addEventListener("load", () => {
-      frame.contentWindow?.postMessage(JSON.stringify({ event: "listening" }), "*");
+      if (!validId) return;
+      let attempts = 0;
+      const listen = () => frame.contentWindow?.postMessage(JSON.stringify({ event: "listening" }), origin);
+      listen();
       pollTimer = window.setInterval(() => {
-        if (!revealed) sendVideoCommand("getCurrentTime");
+        listen();
+        if (++attempts >= 20 || revealed) window.clearInterval(pollTimer);
       }, 500);
     });
-    revealButton?.addEventListener("click", revealQuestion);
+    if (frame && validId) {
+      frame.src = frame.dataset.src + "&origin=" + encodeURIComponent(window.location.origin);
+      frame.parentElement.hidden = false;
+      shell.querySelector("[data-video-unavailable]").hidden = true;
+      shell.querySelector("[data-video-captions]").hidden = false;
+    }
+    revealButton?.addEventListener("click", () => { sendVideoCommand("pauseVideo"); revealQuestion(); });
+    window.addEventListener("pagehide", () => { if (pollTimer) window.clearInterval(pollTimer); }, { once: true });
   });
 })();
+
+window.refreshIcons = function () {
+  if (window.lucide && typeof window.lucide.createIcons === "function") {
+    window.lucide.createIcons();
+  }
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  window.refreshIcons();
+});

@@ -278,6 +278,7 @@ def lesson(request, slug):
         {
             "lesson": lesson_obj,
             "path": path,
+            "videos": Video.objects.all().order_by("code"),
             "is_current": path.current_lesson_id == lesson_obj.pk,
             "can_open_regular": (
                 path.status == StudentPath.Status.LEARNING
