@@ -1,7 +1,10 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.db.models.functions import Coalesce
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.utils import timezone
@@ -11,7 +14,7 @@ from django.views.decorators.http import require_GET, require_http_methods
 from apps.accounts.models import User
 from apps.accounts.permissions import role_required
 from apps.adaptive.bkt import mastery_band
-from apps.adaptive.selectors import follow_up_targets_for_students
+from apps.adaptive.selectors import decisions_for_students, follow_up_targets_for_students
 from apps.classrooms.models import Classroom
 from apps.core import metrics
 from apps.core.dashboard_data import (
@@ -40,6 +43,11 @@ from apps.core.services.settings import (
     current_system_setting,
     update_system_setting,
 )
+from apps.curriculum.selectors import published_lessons
+from apps.learning.models import Session, StudentPath
+
+
+logger = logging.getLogger(__name__)
 
 
 def _setting_context(*, form=None, conflict=False):
@@ -52,7 +60,7 @@ def _setting_context(*, form=None, conflict=False):
     }
 
 
-def _follow_up_rows(students, *, date_from=None, date_to=None, limit=8):
+def _follow_up_rows(students, *, date_from=None, date_to=None, limit=20):
     rows = []
     seen = set()
     for target in follow_up_targets_for_students(
@@ -80,6 +88,38 @@ def _follow_up_rows(students, *, date_from=None, date_to=None, limit=8):
         )
         if len(rows) == limit:
             break
+    student_ids = {row["student"].pk for row in rows}
+    if not student_ids:
+        return rows
+    stages = dict(
+        StudentPath.objects.filter(student_id__in=student_ids).values_list(
+            "student_id", "current_stage"
+        )
+    )
+    stage_labels = dict(StudentPath.Stage.choices)
+    latest_actions = {}
+    for decision in decisions_for_students(
+        students, date_from=date_from, date_to=date_to
+    ).filter(session__student_id__in=student_ids).order_by("-created_at"):
+        latest_actions.setdefault(decision.session.student_id, decision.get_action_display())
+        if len(latest_actions) == len(student_ids):
+            break
+    last_activity = dict(
+        Session.objects.filter(student_id__in=student_ids)
+        .annotate(
+            activity_at=Coalesce(
+                "completed_at", "submitted_at", "started_at", "created_at"
+            )
+        )
+        .order_by("student_id", "-activity_at")
+        .distinct("student_id")
+        .values_list("student_id", "activity_at")
+    )
+    for row in rows:
+        student_id = row["student"].pk
+        row["latest_action"] = latest_actions.get(student_id)
+        row["current_stage"] = stage_labels.get(stages.get(student_id))
+        row["last_activity"] = last_activity.get(student_id)
     return rows
 
 
@@ -106,15 +146,181 @@ def admin_dashboard(request):
         "date_from": filters.date_from,
         "date_to": filters.date_to,
     }
-    active_metric = metrics.active_students(**metric_kwargs)
-    completed_metric = metrics.completed_paths(**metric_kwargs)
-    matched_sample_metric = metrics.matched_prepost_sample(**metric_kwargs)
-    follow_up_metric = metrics.follow_up_needed(**metric_kwargs)
-    gain_metric = metrics.matched_gain(**metric_kwargs)
-    mastery_metric = metrics.bkt_mastery_bands(**metric_kwargs)
-    decision_metric = metrics.q_learning_decisions(**metric_kwargs)
-    duration_metric = metrics.median_elapsed_duration(**metric_kwargs)
-    rag_metric = metrics.rag_reliability(**metric_kwargs)
+    metric_sources = {
+        "active": (metrics.active_students, "Active student accounts in the selected cohort."),
+        "completed": (metrics.completed_paths, "Students whose learning path is complete."),
+        "matched_sample": (metrics.matched_prepost_sample, "Distinct students with both completed tests."),
+        "follow_up": (metrics.follow_up_needed, "Students with persisted follow-up targets."),
+        "gain": (metrics.matched_gain, "Mean scores for students with matched pre/post tests."),
+        "mastery": (metrics.bkt_mastery_bands, "Evidence-bearing BKT skill bands."),
+        "decision": (metrics.q_learning_decisions, "Persisted decisions grouped by lesson and action."),
+        "duration": (metrics.median_elapsed_duration, "Median elapsed session time by stage."),
+        "rag": (metrics.rag_reliability, "Generated and fallback feedback row counts."),
+    }
+    metric_results = {}
+    for name, (calculate, definition) in metric_sources.items():
+        try:
+            metric_results[name] = calculate(**metric_kwargs)
+        except Exception:
+            logger.exception("Admin dashboard metric unavailable: %s", name)
+            metric_results[name] = {
+                "value": None,
+                "cohort": cohort,
+                "n": None,
+                "definition": definition,
+                "window": "Selected date range",
+                "version": metrics.METRICS_VERSION,
+                "insufficient": True,
+                "failed": True,
+            }
+    active_metric = metric_results["active"]
+    completed_metric = metric_results["completed"]
+    matched_sample_metric = metric_results["matched_sample"]
+    follow_up_metric = metric_results["follow_up"]
+    gain_metric = metric_results["gain"]
+    mastery_metric = metric_results["mastery"]
+    decision_metric = metric_results["decision"]
+    duration_metric = metric_results["duration"]
+    rag_metric = metric_results["rag"]
+    charts = [
+        matched_gain_chart(gain_metric),
+        bkt_chart(mastery_metric),
+        decisions_chart(decision_metric),
+        duration_chart(duration_metric),
+        rag_chart(rag_metric),
+    ]
+    gain_series = gain_metric.get("series", {})
+    gain_labels = ["Pre-test average", "Post-test average"]
+    charts[0]["metric"] = {
+        **gain_metric,
+        "definition": "Mean pre-test and post-test score percentages for the same students; matched gain is post-test minus pre-test.",
+    }
+    charts[0]["aria_label"] = (
+        f"Bar chart comparing mean pre-test and post-test score percentages "
+        f"for matched students in {cohort}."
+    )
+    if gain_series:
+        charts[0]["rows"] = [
+            [label, f"{gain_series[label]:.1f}%"] for label in gain_labels
+        ]
+        charts[0]["config"]["data"]["labels"] = gain_labels
+        charts[0]["config"]["data"]["datasets"] = [{
+            "label": "Mean score percentage",
+            "data": [gain_series[label] for label in gain_labels],
+        }]
+        charts[0]["config"]["options"]["scales"]["y"]["max"] = 100
+    skill_names = {}
+    lessons = list(published_lessons())
+    for lesson in lessons:
+        for lesson_skill in lesson.lesson_skills.all():
+            skill_names[lesson_skill.skill.code] = lesson_skill.skill.name
+    band_data = mastery_metric["value"] or {}
+    charts[1]["metric"] = {
+        **mastery_metric,
+        "definition": "Counts of evidence-bearing student-skill records in Needs Practice, Developing, and Strong bands (MASTERY-BANDS-V1).",
+    }
+    charts[1]["aria_label"] = (
+        f"Stacked bar chart of student counts by skill and BKT band for {cohort}."
+    )
+    if band_data:
+        skill_codes = sorted(skill_names)
+        charts[1]["rows"] = [
+            [
+                code,
+                skill_names[code],
+                *(
+                    [band_data[code][key] for key in ("np", "dev", "strong")]
+                    if code in band_data
+                    else ["Not enough evidence"] * 3
+                ),
+            ]
+            for code in skill_codes
+        ]
+        charts[1]["config"]["data"]["labels"] = [
+            skill_names[code] for code in skill_codes
+        ]
+        for dataset, key, label in zip(
+            charts[1]["config"]["data"]["datasets"],
+            ("np", "dev", "strong"),
+            ("Needs Practice", "Developing", "Strong"),
+        ):
+            dataset["label"] = label
+            dataset["data"] = [
+                band_data[code][key] if code in band_data else None
+                for code in skill_codes
+            ]
+        charts[1]["headers"] = [
+            "Skill", "Name", "Needs Practice", "Developing", "Strong"
+        ]
+        charts[1]["config"]["options"]["scales"] = {
+            "x": {"stacked": True},
+            "y": {"stacked": True, "beginAtZero": True},
+        }
+    decision_data = decision_metric["value"] or {}
+    lesson_codes = [lesson.code for lesson in lessons]
+    decision_actions = (
+        "progress", "additional_exercise", "foundational_exercise"
+    )
+    decision_n = sum(
+        decision_data.get(code, {}).get(action, 0)
+        for code in lesson_codes for action in decision_actions
+    )
+    charts[2]["metric"] = {
+        **decision_metric,
+        "n": None if decision_metric.get("failed") else decision_n,
+        "definition": "Persisted decisions for Lessons 1–3, grouped by selected action; whole-course decisions are excluded.",
+    }
+    if decision_n:
+        charts[2]["rows"] = [
+            [
+                f"Lesson {lesson.lesson_order}",
+                *[decision_data.get(lesson.code, {}).get(action, 0) for action in decision_actions],
+            ]
+            for lesson in lessons
+        ]
+        charts[2]["config"]["data"]["labels"] = [
+            f"Lesson {lesson.lesson_order}" for lesson in lessons
+        ]
+        for dataset, action in zip(
+            charts[2]["config"]["data"]["datasets"], decision_actions
+        ):
+            dataset["data"] = [
+                decision_data.get(code, {}).get(action, 0) for code in lesson_codes
+            ]
+    else:
+        charts[2]["rows"] = []
+        charts[2]["config"]["data"]["labels"] = []
+    elapsed_data = duration_metric["value"] or {}
+    stages = [
+        ("Pre-test", Session.SessionType.PRETEST),
+        ("Lesson", None),
+        ("Regular", Session.SessionType.REGULAR),
+        ("Additional", Session.SessionType.ADDITIONAL),
+        ("Foundational", Session.SessionType.FOUNDATIONAL),
+        ("Activity", Session.SessionType.ACTIVITY),
+        ("Post-test", Session.SessionType.POSTTEST),
+    ]
+    if elapsed_data:
+        type_labels = dict(Session.SessionType.choices)
+        charts[3]["rows"] = [
+            [label, f"{elapsed_data[type_labels[session_type]]:.1f} minutes"]
+            if session_type and type_labels[session_type] in elapsed_data
+            else [label, "Unavailable"]
+            for label, session_type in stages
+        ]
+        charts[3]["config"]["data"]["labels"] = [label for label, _ in stages]
+        charts[3]["config"]["data"]["datasets"] = [{
+            "label": "Elapsed session time (minutes)",
+            "data": [
+                elapsed_data.get(type_labels[session_type]) if session_type else None
+                for _, session_type in stages
+            ],
+        }]
+    for chart, metric in zip(
+        charts,
+        (gain_metric, mastery_metric, decision_metric, duration_metric, rag_metric),
+    ):
+        chart["error"] = bool(metric.get("failed"))
     system_student_count = User.objects.filter(role=User.Role.STUDENT).count()
     scoped_student_count = students.count()
     return render(
@@ -133,13 +339,7 @@ def admin_dashboard(request):
             "completed_metric": completed_metric,
             "matched_sample_metric": matched_sample_metric,
             "follow_up_metric": follow_up_metric,
-            "charts": [
-                matched_gain_chart(gain_metric),
-                bkt_chart(mastery_metric),
-                decisions_chart(decision_metric),
-                duration_chart(duration_metric),
-                rag_chart(rag_metric),
-            ],
+            "charts": charts,
             "follow_up_rows": _follow_up_rows(
                 students,
                 date_from=filters.date_from,
