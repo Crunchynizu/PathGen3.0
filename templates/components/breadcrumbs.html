@@ -1,5 +1,12 @@
-{% if breadcrumbs %}
-<nav class="[&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:font-semibold [&_a]:underline-offset-4 [&_a]:[color:var(--color-text-link)] [&_a:hover]:underline [&_ol]:flex [&_ol]:flex-wrap [&_ol]:items-center [&_ol]:gap-2 [&_ol]:text-sm [&_ol]:[color:var(--color-text-secondary)] [&_li:not(:last-child)::after]:ml-2 [&_li:not(:last-child)::after]:[content:'>'] [&_li:not(:last-child)::after]:[color:var(--color-text-muted)]" data-ui="breadcrumbs" aria-label="Breadcrumb">
-  <ol><li><a href="/">Home</a></li>{% for crumb in breadcrumbs %}<li>{% if crumb.url and not forloop.last %}<a href="{{ crumb.url }}">{{ crumb.label }}</a>{% else %}<span aria-current="page">{{ crumb.label }}</span>{% endif %}</li>{% endfor %}</ol>
-</nav>
-{% endif %}
+{% if request.user.role == "admin" %}{% url 'portal:admin_dashboard' as home_url %}{% elif request.user.role == "teacher" %}{% url 'portal:teacher_dashboard' as home_url %}{% else %}{% url 'account:student_dashboard' as home_url %}{% endif %}
+{% with trail=trail|default:breadcrumbs %}{% if trail %}
+<header class="sticky top-0 z-30 -mx-4 px-5 py-3 [background:var(--surface-translucent-bg)] [backdrop-filter:blur(var(--surface-translucent-blur))_saturate(180%)] after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:opacity-0 after:[background:linear-gradient(to_right,transparent,var(--color-border)_20%,var(--color-border)_80%,transparent)] after:transition-opacity after:duration-[240ms] data-[scrolled=true]:after:opacity-100 motion-reduce:after:transition-none sm:-mx-6 lg:-mx-8 lg:px-8 lg:py-[14px] [@media(prefers-reduced-transparency:reduce)]:[background:var(--color-surface)] [@media(prefers-reduced-transparency:reduce)]:[backdrop-filter:none] [@media(prefers-contrast:more)]:[background:var(--color-surface)] [@media(prefers-contrast:more)]:[backdrop-filter:none]" data-ui="crumbs-bar" data-scrolled="false">
+  <nav class="mx-auto flex w-full max-w-full items-center gap-1 overflow-x-auto whitespace-nowrap text-sm [color:var(--color-text-secondary)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Breadcrumb" data-ui="breadcrumbs">
+    <a class="shrink-0 rounded px-[6px] py-1 no-underline [color:var(--color-text-secondary)] hover:[background:var(--color-primary-subtle)] hover:[color:var(--color-text-link)]" href="{{ home_url }}">Home</a>
+    {% for crumb in trail %}
+      <i data-lucide="chevron-right" class="h-3 w-3 shrink-0 opacity-70 [color:var(--color-text-muted)]" aria-hidden="true"></i>
+      {% if crumb.url and not forloop.last %}<a class="shrink-0 rounded px-[6px] py-1 no-underline [color:var(--color-text-secondary)] hover:[background:var(--color-primary-subtle)] hover:[color:var(--color-text-link)]" href="{{ crumb.url }}">{{ crumb.label }}</a>{% else %}<span class="shrink-0 px-[6px] py-1 font-semibold [color:var(--color-text)]" aria-current="page">{{ crumb.label }}</span>{% endif %}
+    {% endfor %}
+  </nav>
+</header>
+{% endif %}{% endwith %}

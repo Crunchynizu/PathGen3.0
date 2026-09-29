@@ -1,3 +1,5 @@
+import re
+
 from django.test import TestCase
 from django.urls import reverse
 
@@ -66,6 +68,11 @@ class PhaseFourPageTests(TestCase):
             ],
             User.Role.STUDENT: ["Dashboard", "My Lesson", "My Account", "Logout"],
         }
+        expected_main = {
+            User.Role.ADMIN: ["Dashboard", "Users", "Classes", "Content", "Overrides", "Audit Logs"],
+            User.Role.TEACHER: ["Dashboard", "My Classes", "Content"],
+            User.Role.STUDENT: ["Dashboard", "My Lesson"],
+        }
         for role, labels in expected.items():
             with self.subTest(role=role):
                 user = make_user(role)
@@ -74,3 +81,14 @@ class PhaseFourPageTests(TestCase):
                 self.assertEqual(response.status_code, 200)
                 for label in labels:
                     self.assertContains(response, label)
+                main_nav = re.search(
+                    r'<nav\b[^>]*aria-label="Main"[^>]*>(.*?)</nav>',
+                    response.content.decode("utf-8"),
+                    re.S,
+                )
+                self.assertIsNotNone(main_nav)
+                visible_destinations = re.findall(
+                    r'>(Dashboard|Users|Classes|My Classes|Content|Overrides|Audit Logs|My Lesson)</a>',
+                    main_nav.group(1),
+                )
+                self.assertEqual(visible_destinations, expected_main[role])

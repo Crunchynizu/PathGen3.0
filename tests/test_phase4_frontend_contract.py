@@ -85,6 +85,36 @@ class FrontendContractTests(SimpleTestCase):
         for requirement in ("Tab", "Escape", ".inert", "returnTarget.focus()", "aria-expanded"):
             self.assertIn(requirement, script)
 
+    def test_shared_navigation_component_contract(self):
+        components = Path(settings.BASE_DIR) / "templates" / "components"
+        sidebar = (components / "sidebar.html").read_text(encoding="utf-8")
+        drawer = (components / "hamburger_menu.html").read_text(encoding="utf-8")
+        crumbs = (components / "breadcrumbs.html").read_text(encoding="utf-8")
+        back = (components / "back_link.html").read_text(encoding="utf-8")
+        script = (Path(settings.BASE_DIR) / "static" / "js" / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn('aria-label="PathGen home"', sidebar)
+        self.assertIn('aria-current="page"', sidebar)
+        self.assertIn('aria-label="Open menu"', drawer)
+        self.assertIn('aria-controls="sidebar"', drawer)
+        self.assertIn('data-drawer-panel', drawer)
+        self.assertIn('data-drawer-scrim', drawer)
+        self.assertNotIn('data-ui="mobile-header"', drawer)
+        self.assertIn('aria-label="Breadcrumb"', crumbs)
+        self.assertIn('aria-current="page"', crumbs)
+        self.assertIn('data-ui="back-link"', back)
+        self.assertIn('data-lucide="arrow-left"', back)
+        for behavior in (
+            "setBackgroundInert(true)",
+            "activateLayer(drawerElement, drawerOpener)",
+            "returnTarget.focus()",
+            "drawerReducedMotion.matches",
+            "pointercancel",
+            "syncScrollEdge",
+            "backLink.click()",
+        ):
+            self.assertIn(behavior, script)
+
     def test_every_post_form_contains_csrf_token(self):
         templates = Path(settings.BASE_DIR) / "templates"
         for path in templates.rglob("*.html"):
