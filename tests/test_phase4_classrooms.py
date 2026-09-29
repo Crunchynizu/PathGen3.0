@@ -68,6 +68,18 @@ class ClassroomLifecycleTests(TestCase):
                 "classroom.reactivated",
             },
         )
+        self.client.force_login(self.admin)
+        invalid = self.client.post(
+            reverse("portal:update_class", args=[classroom.pk]),
+            {"code": "", "name": classroom.name},
+        )
+        self.assertEqual(invalid.status_code, 400)
+        self.assertContains(
+            invalid,
+            f'aria-describedby="class-code-{classroom.pk}-error"',
+            status_code=400,
+        )
+        self.assertContains(invalid, "This field is required.", status_code=400)
 
     def test_assigning_another_teacher_replaces_the_single_current_teacher(self):
         classroom = make_classroom()

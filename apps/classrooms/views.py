@@ -51,7 +51,7 @@ def _admin_classroom(classroom_id):
     return get_object_or_404(Classroom.objects.all(), pk=classroom_id)
 
 
-def _class_management_context(*, create_form=None):
+def _class_management_context(*, create_form=None, update_form=None, update_classroom_id=None):
     current_memberships = StudentMembership.objects.filter(
         left_at__isnull=True
     ).select_related("student")
@@ -69,6 +69,8 @@ def _class_management_context(*, create_form=None):
     return {
         "classrooms": classrooms,
         "create_form": create_form or ClassroomForm(),
+        "update_form": update_form,
+        "update_classroom_id": update_classroom_id,
         "teachers": User.objects.filter(role=User.Role.TEACHER, is_active=True).order_by(
             "last_name", "first_name", "username"
         ),
@@ -110,8 +112,12 @@ def update_class(request, classroom_id):
         update_classroom(actor=request.user, classroom_id=classroom.pk, **form.cleaned_data)
         messages.success(request, "Class updated.")
         return redirect("portal:class_management")
-    messages.error(request, "The class could not be updated.")
-    return redirect("portal:class_management")
+    return render(
+        request,
+        "pages/admin/class_management.html",
+        _class_management_context(update_form=form, update_classroom_id=classroom.pk),
+        status=400,
+    )
 
 
 @role_required(User.Role.ADMIN)

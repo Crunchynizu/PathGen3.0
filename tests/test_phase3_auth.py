@@ -78,7 +78,12 @@ class LoginTests(TestCase):
                 {"username": username, "password": password},
                 REMOTE_ADDR="192.0.2.10",
             )
-            self.assertContains(response, "Invalid username or password.")
+            self.assertContains(
+                response,
+                "Incorrect username or password. Please try again.",
+            )
+            self.assertContains(response, 'role="alert"')
+            self.assertContains(response, 'aria-describedby="login-error"', count=2)
             self.assertEqual(
                 list(response.context["form"].non_field_errors()),
                 ["Invalid username or password."],

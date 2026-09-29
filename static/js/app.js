@@ -42,6 +42,7 @@
 
   let activeLayer = null;
   let opener = null;
+  let modalInertTargets = [];
 
   function focusableElements(container) {
     return [...container.querySelectorAll(focusableSelector)].filter(
@@ -59,7 +60,10 @@
     }
     const first = elements[0];
     const last = elements[elements.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
+    if (!activeLayer.contains(document.activeElement)) {
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    } else if (event.shiftKey && document.activeElement === first) {
       event.preventDefault();
       last.focus();
     } else if (!event.shiftKey && document.activeElement === last) {
@@ -74,9 +78,26 @@
     });
   }
 
+  function inertOutsideDialog(dialog) {
+    modalInertTargets = [];
+    for (let child = dialog; child.parentElement; child = child.parentElement) {
+      for (const sibling of child.parentElement.children) {
+        if (sibling === child) continue;
+        modalInertTargets.push([sibling, sibling.inert]);
+        sibling.inert = true;
+      }
+    }
+  }
+
+  function restoreModalBackground() {
+    modalInertTargets.forEach(([element, wasInert]) => { element.inert = wasInert; });
+    modalInertTargets = [];
+  }
+
   function activateLayer(layer, source) {
     activeLayer = layer;
-    opener = source || document.activeElement;
+    opener = source || (document.activeElement?.closest("dialog") ? null : document.activeElement);
+    if (layer instanceof HTMLDialogElement) inertOutsideDialog(layer);
     document.addEventListener("keydown", trapFocus);
     requestAnimationFrame(() => {
       const first = focusableElements(layer)[0];
@@ -86,6 +107,7 @@
 
   function deactivateLayer() {
     document.removeEventListener("keydown", trapFocus);
+    if (activeLayer instanceof HTMLDialogElement) restoreModalBackground();
     activeLayer = null;
     const returnTarget = opener;
     opener = null;
@@ -130,9 +152,19 @@
   document.querySelectorAll("[data-dialog-close]").forEach((button) => {
     button.addEventListener("click", () => button.closest("dialog")?.close());
   });
+  document.querySelectorAll("[data-dialog-confirm]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const dialog = button.closest("dialog");
+      if (dialog?.dispatchEvent(new CustomEvent("dialogconfirm", { bubbles: true, cancelable: true }))) {
+        dialog.close();
+      }
+    });
+  });
   document.querySelectorAll("dialog").forEach((dialog) => {
     dialog.addEventListener("close", deactivateLayer);
-    dialog.addEventListener("cancel", deactivateLayer);
+    dialog.addEventListener("cancel", (event) => {
+      if (dialog.dataset.escapeClose === "false") event.preventDefault();
+    });
   });
   document.querySelectorAll("dialog[data-auto-open]").forEach((dialog) => {
     dialog.showModal();
@@ -181,6 +213,19 @@
       toggle.classList.toggle("[color:var(--color-primary-hover)]", enabled);
       toggle.classList.toggle("[background:var(--color-bg-subtle)]", !enabled);
       toggle.classList.toggle("[color:var(--color-text-secondary)]", !enabled);
+    });
+  });
+
+  document.querySelectorAll("[data-student-search]").forEach((search) => {
+    const select = search.parentElement.querySelector('select[name="student"]');
+    if (!select) return;
+    search.addEventListener("input", () => {
+      const term = search.value.trim().toLocaleLowerCase();
+      [...select.options].forEach((option) => {
+        if (!option.value) return;
+        option.hidden = !option.textContent.toLocaleLowerCase().includes(term);
+        if (option.hidden && option.selected) select.value = "";
+      });
     });
   });
 

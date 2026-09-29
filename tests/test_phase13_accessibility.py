@@ -119,7 +119,8 @@ class Phase13AccessibilityTests(SimpleTestCase):
                 if not labelled:
                     failures.append((name, attrs.get("name") or attrs.get("id")))
         login = self.templates["pages/account/login.html"]
-        self.assertIn('for="{{ field.id_for_label }}"', login)
+        self.assertIn('for="login-username"', login)
+        self.assertIn('for="login-password"', login)
         self.assertFalse(failures, failures)
 
     def test_07_field_errors_are_tied_with_aria_describedby(self):
@@ -209,11 +210,31 @@ class Phase13AccessibilityTests(SimpleTestCase):
                 'aria-label="' in dialog or 'aria-labelledby="' in dialog,
                 dialog,
             )
+        modal_sources = {
+            name: source for name, source in self.templates.items()
+            if name.startswith("modals/")
+        }
+        self.assertEqual(len(modal_sources), 24)
+        for name, source in modal_sources.items():
+            with self.subTest(modal=name):
+                dialog = re.search(r"<dialog\b[^>]*>", source, re.I | re.S)
+                self.assertIsNotNone(dialog)
+                title_id = re.search(r'aria-labelledby="([^"]+)"', dialog.group())
+                self.assertIsNotNone(title_id)
+                self.assertIn(f'id="{title_id.group(1)}"', source)
+                self.assertIn('data-lucide="x"', source)
+                self.assertIn(">Cancel<", source)
+                submit = source.find('type="submit"')
+                if submit >= 0:
+                    self.assertLess(source.find(">Cancel<"), submit)
 
     def test_13_modal_focus_is_trapped(self):
         self.assertIn("function trapFocus", self.app_js)
         self.assertIn('document.addEventListener("keydown", trapFocus)', self.app_js)
         self.assertIn("activateLayer(dialog, button)", self.app_js)
+        self.assertIn("inertOutsideDialog(dialog)", self.app_js)
+        self.assertIn("restoreModalBackground()", self.app_js)
+        self.assertIn('dialog.dataset.escapeClose === "false"', self.app_js)
 
     def test_14_modal_focus_returns_to_the_opener(self):
         self.assertIn("const returnTarget = opener", self.app_js)
