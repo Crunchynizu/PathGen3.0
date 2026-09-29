@@ -6,6 +6,7 @@ from apps.core.health import health
 urlpatterns = [
     path("", home, name="home"),
     path("account/", include("apps.accounts.urls")),
+    path("admin/", include("apps.core.admin_urls")),
     path("content/", include("apps.curriculum.urls")),
     path("", include("apps.learning.urls")),
     path("", include("apps.core.urls")),

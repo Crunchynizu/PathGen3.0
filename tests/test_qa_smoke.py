@@ -86,6 +86,7 @@ class QAWalkthroughTests(Phase6SeededTestCase):
         "account:update_password",
     }
     ADMIN = {
+        "admin:student_list",
         "account:admin_dashboard", "portal:admin_dashboard", "portal:user_management",
         "portal:create_user", "portal:update_user", "portal:deactivate_user",
         "portal:reactivate_user", "portal:delete_user", "portal:class_management",
@@ -107,7 +108,7 @@ class QAWalkthroughTests(Phase6SeededTestCase):
         "learning:transcript",
     }
     ADMIN_TEACHER = {
-        "curriculum:content", "curriculum:view_lessons", "curriculum:view_questions",
+        "curriculum:content", "curriculum:view_lessons", "curriculum:view_lesson_detail", "curriculum:view_questions",
         "portal:student_progress", "portal:content",
     }
     POST_ONLY = {
@@ -138,6 +139,7 @@ class QAWalkthroughTests(Phase6SeededTestCase):
             "membership_id": self.membership.pk,
             "student_id": self.student.pk,
             "slug": self.first_lesson.slug,
+            "code": self.first_lesson.code,
             "session_type": Session.SessionType.REGULAR,
             "session_id": (
                 completed_session.pk if name == "learning:assessment_result" else active_session.pk
@@ -162,6 +164,7 @@ class QAWalkthroughTests(Phase6SeededTestCase):
             "portal:class_detail": ("classroom_id",),
             "portal:remove_student": ("membership_id",),
             "portal:student_progress": ("student_id",),
+            "curriculum:view_lesson_detail": ("code",),
             "learning:lesson": ("slug",),
             "learning:complete_lesson": ("slug",),
             "learning:exercise_overview": ("session_type", "slug"),

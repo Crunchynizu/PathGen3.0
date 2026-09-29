@@ -65,7 +65,7 @@ class Phase13AccessibilityTests(SimpleTestCase):
             "assessment/assessment.html"
         ]
         page_templates["error/error.html"] = self.templates["error/error.html"]
-        self.assertEqual(len(page_templates), 19)
+        self.assertEqual(len(page_templates), 21)
         for name, source in page_templates.items():
             with self.subTest(template=name):
                 self.assertIn('{% extends "_base.html" %}', source)

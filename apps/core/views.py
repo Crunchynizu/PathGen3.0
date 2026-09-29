@@ -1,4 +1,5 @@
 import logging
+from collections import defaultdict
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -7,6 +8,7 @@ from django.db.models import Q
 from django.db.models.functions import Coalesce
 from django.http import Http404
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_GET, require_http_methods
@@ -14,8 +16,9 @@ from django.views.decorators.http import require_GET, require_http_methods
 from apps.accounts.models import User
 from apps.accounts.permissions import role_required
 from apps.adaptive.bkt import mastery_band
+from apps.adaptive.models import SkillMastery
 from apps.adaptive.selectors import decisions_for_students, follow_up_targets_for_students
-from apps.classrooms.models import Classroom
+from apps.classrooms.models import Classroom, StudentMembership
 from apps.core import metrics
 from apps.core.dashboard_data import (
     BAND_LABELS,
@@ -382,6 +385,97 @@ def student_progress(request, student_id):
             ],
         },
     )
+
+
+@login_required
+@never_cache
+@require_GET
+def student_list(request):
+    if request.user.role != User.Role.ADMIN:
+        raise Http404
+
+    all_students = User.objects.filter(role=User.Role.STUDENT)
+    total_students = all_students.count()
+    query = request.GET.get("q", "").strip()[:150]
+    account_status = request.GET.get("status", "").strip()
+    if account_status not in {"active", "inactive"}:
+        account_status = ""
+    path_status = request.GET.get("path", "").strip()
+    if path_status not in StudentPath.Status.values:
+        path_status = ""
+
+    students = all_students
+    if query:
+        students = students.filter(
+            Q(username__icontains=query)
+            | Q(first_name__icontains=query)
+            | Q(last_name__icontains=query)
+        )
+    if account_status:
+        students = students.filter(is_active=account_status == "active")
+    if path_status:
+        students = students.filter(learning_path__status=path_status)
+    students = students.order_by("last_name", "first_name", "username", "pk")
+    page_obj = Paginator(students, 25).get_page(request.GET.get("page"))
+    page_students = list(page_obj.object_list)
+    student_ids = [student.pk for student in page_students]
+
+    memberships = {}
+    for membership in (
+        StudentMembership.objects.filter(
+            student_id__in=student_ids,
+            left_at__isnull=True,
+            classroom__status=Classroom.Status.ACTIVE,
+        )
+        .select_related("classroom")
+        .order_by("classroom__code")
+    ):
+        memberships.setdefault(membership.student_id, membership)
+    paths = StudentPath.objects.filter(student_id__in=student_ids).in_bulk()
+    mastery_values = defaultdict(list)
+    for student_id, p_known in SkillMastery.objects.filter(
+        student_id__in=student_ids, evidence_count__gt=0
+    ).values_list("student_id", "p_known"):
+        mastery_values[student_id].append(p_known)
+    latest_activity = dict(
+        Session.objects.filter(student_id__in=student_ids)
+        .annotate(activity_at=Coalesce("completed_at", "submitted_at", "started_at", "created_at"))
+        .order_by("student_id", "-activity_at")
+        .distinct("student_id")
+        .values_list("student_id", "activity_at")
+    )
+    follow_up_ids = {
+        target.decision.session.student_id
+        for target in follow_up_targets_for_students(
+            User.objects.filter(pk__in=student_ids)
+        )
+    }
+    band_labels = {"np": "Needs Practice", "dev": "Developing", "strong": "Strong"}
+    rows = []
+    for student in page_students:
+        values = mastery_values.get(student.pk, [])
+        band = mastery_band(sum(values) / len(values)) if values else None
+        rows.append({
+            "student": student,
+            "name": display_name(student),
+            "membership": memberships.get(student.pk),
+            "path": paths.get(student.pk),
+            "mastery_band": band,
+            "mastery_label": band_labels.get(band, "Not enough evidence"),
+            "latest_activity": latest_activity.get(student.pk),
+            "needs_follow_up": student.pk in follow_up_ids,
+            "progress_url": reverse("portal:student_progress", args=[student.pk]),
+        })
+    return render(request, "pages/admin/student_list.html", {
+        "rows": rows,
+        "page_obj": page_obj,
+        "total_students": total_students,
+        "query": query,
+        "account_status": account_status,
+        "path_status": path_status,
+        "path_choices": StudentPath.Status.choices,
+        "filter_active": bool(query or account_status or path_status),
+    })
 
 
 @role_required(User.Role.ADMIN)

@@ -26,7 +26,7 @@ class FrontendContractTests(SimpleTestCase):
             components,
             {"sidebar.html", "hamburger_menu.html", "breadcrumbs.html", "back_link.html"},
         )
-        self.assertEqual(len(page_templates), 17)
+        self.assertEqual(len(page_templates), 19)
         self.assertTrue((templates / "assessment" / "assessment.html").is_file())
         self.assertTrue((templates / "error" / "error.html").is_file())
         self.assertEqual(len(modals), 24)
@@ -70,7 +70,7 @@ class FrontendContractTests(SimpleTestCase):
                 templates / "error" / "error.html",
             ]
         )
-        self.assertEqual(len(pages), 19)
+        self.assertEqual(len(pages), 21)
         for path in pages:
             with self.subTest(path=path):
                 self.assertIn(
