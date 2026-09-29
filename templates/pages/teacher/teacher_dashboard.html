@@ -1,4 +1,5 @@
-{% extends "pages/_base.html" %}
+{% extends "_base.html" %}
+{% block content_width %}[&_main]:max-w-[1160px]{% endblock %}
 {% load static %}
 {% block title %}Teacher Dashboard · PathGen{% endblock %}
 {% block shell %}
@@ -66,4 +67,5 @@
   <dialog aria-labelledby="shell-logout-title" id="shell-logout-dialog" class="m-auto w-[min(92vw,32rem)] rounded-2xl border p-0 [background:var(--color-surface)] [border-color:var(--color-border)] [color:var(--color-text)] [box-shadow:var(--shadow-md)] [&::backdrop]:[background:var(--color-overlay)]"><div class="p-6"><div class="flex items-start justify-between gap-4"><h2 id="shell-logout-title" class="text-xl font-bold">Log out?</h2><button type="button" data-dialog-close aria-label="Close logout confirmation" class="inline-flex min-h-11 min-w-11 items-center justify-center"><i data-lucide="x" aria-hidden="true"></i></button></div><p class="mt-3 [color:var(--color-text-secondary)]">You will need to enter your credentials to return.</p><form method="post" action="{% url 'account:logout' %}" class="mt-5 flex flex-wrap gap-3">{% csrf_token %}<button type="submit" class="min-h-11 rounded-xl px-5 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)]">Log out</button><button type="button" data-dialog-close class="min-h-11 rounded-xl border px-5 [border-color:var(--color-border)]">Cancel</button></form></div></dialog>
 </div>
 {% endblock %}
-{% block scripts %}{% if selected_class %}<script src="{% static 'vendor/chartjs/chart.umd.js' %}"></script><script src="{% static 'js/dashboard_charts.js' %}" defer></script>{% endif %}{% endblock %}
+{% block chartjs %}{% if selected_class %}<script src="{% static 'vendor/chartjs/chart.umd.js' %}"></script>{% endif %}{% endblock %}
+{% block scripts %}{% if selected_class %}<script src="{% static 'js/dashboard_charts.js' %}" defer></script>{% endif %}{% endblock %}

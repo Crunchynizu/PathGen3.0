@@ -110,7 +110,7 @@ class CurriculumSeedAndPageTests(TestCase):
                     response = self.client.get(reverse(route))
                     self.assertEqual(response.status_code, 200)
                     self.assertTemplateUsed(response, template)
-                    self.assertTemplateUsed(response, "pages/_base.html")
+                    self.assertTemplateUsed(response, "_base.html")
 
     def test_student_cannot_browse_staff_content(self):
         self.client.force_login(self.student)

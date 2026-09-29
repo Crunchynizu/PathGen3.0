@@ -54,12 +54,12 @@ class Phase13AccessibilityTests(SimpleTestCase):
         )
 
     def test_01_every_base_template_declares_light_color_scheme(self):
-        base = self.templates["pages/_base.html"]
+        base = self.templates["_base.html"]
         self.assertIn('<meta name="color-scheme" content="only light">', base)
         page_templates = {
             name: source
             for name, source in self.templates.items()
-            if name.startswith("pages/") and name != "pages/_base.html"
+            if name.startswith("pages/")
         }
         page_templates["assessment/assessment.html"] = self.templates[
             "assessment/assessment.html"
@@ -68,10 +68,10 @@ class Phase13AccessibilityTests(SimpleTestCase):
         self.assertEqual(len(page_templates), 19)
         for name, source in page_templates.items():
             with self.subTest(template=name):
-                self.assertIn('{% extends "pages/_base.html" %}', source)
+                self.assertIn('{% extends "_base.html" %}', source)
 
     def test_02_every_base_has_skip_to_content(self):
-        base = self.templates["pages/_base.html"]
+        base = self.templates["_base.html"]
         self.assertRegex(
             base,
             re.compile(

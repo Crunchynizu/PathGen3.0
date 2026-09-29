@@ -8,8 +8,8 @@ from django.test import SimpleTestCase
 class FrontendContractTests(SimpleTestCase):
     def test_exact_base_partial_and_modal_inventory(self):
         templates = Path(settings.BASE_DIR) / "templates"
-        root_bases = list(templates.glob("base*.html"))
-        shared_base = templates / "pages" / "_base.html"
+        root_bases = list(templates.glob("_base.html"))
+        shared_base = templates / "_base.html"
         components = {path.name for path in (templates / "components").glob("*.html")}
         page_templates = [
             path
@@ -18,8 +18,9 @@ class FrontendContractTests(SimpleTestCase):
         ]
         modals = list((templates / "modals").rglob("*.html"))
 
-        self.assertFalse(root_bases)
+        self.assertEqual(root_bases, [shared_base])
         self.assertTrue(shared_base.is_file())
+        self.assertFalse((templates / "pages" / "_base.html").exists())
         self.assertFalse((templates / "partials").exists())
         self.assertEqual(
             components,
@@ -54,7 +55,7 @@ class FrontendContractTests(SimpleTestCase):
 
     def test_rendered_base_has_light_meta_and_accessibility_landmarks(self):
         templates = Path(settings.BASE_DIR) / "templates"
-        base = (templates / "pages" / "_base.html").read_text(encoding="utf-8")
+        base = (templates / "_base.html").read_text(encoding="utf-8")
         self.assertIn('<meta name="color-scheme" content="only light">', base)
         self.assertIn('href="#main-content"', base)
         self.assertIn('id="main-content"', base)
@@ -73,7 +74,7 @@ class FrontendContractTests(SimpleTestCase):
         for path in pages:
             with self.subTest(path=path):
                 self.assertIn(
-                    '{% extends "pages/_base.html" %}',
+                    '{% extends "_base.html" %}',
                     path.read_text(encoding="utf-8"),
                 )
 

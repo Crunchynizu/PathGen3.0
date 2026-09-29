@@ -1,4 +1,4 @@
-{% extends "pages/_base.html" %}
+{% extends "_base.html" %}
 {% block title %}Sign out · PathGen{% endblock %}
 {% block content %}
 <section class="mx-auto mt-10 w-full max-w-[400px] rounded-3xl border p-6 sm:p-8 [background:var(--color-surface)] [border-color:var(--color-border)] [box-shadow:var(--shadow-md)]"><h1>Sign out</h1><p class="mt-2 [color:var(--color-text-secondary)]">Review the confirmation or return to your account.</p><div class="mt-5 flex flex-wrap gap-3"><button class="inline-flex min-h-11 items-center rounded-xl px-5 py-3 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)]" type="button" data-dialog-open="logout-dialog">Review sign out</button><a class="inline-flex min-h-11 items-center rounded-xl border px-5 py-3 font-semibold [border-color:var(--color-border-strong)] [color:var(--color-text-link)]" href="{% url 'account:my_account' %}">Back to account</a></div></section>
