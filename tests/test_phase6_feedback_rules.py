@@ -29,6 +29,11 @@ class FeedbackRuleTests(Phase6SeededTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIsNone(response.context["feedback"])
         self.assertNotContains(response, "Answer saved")
+        saved_response = self.client.get(
+            f"{reverse('learning:assessment_session', args=[session.pk])}?saved=1"
+        )
+        self.assertContains(saved_response, "Answer saved.")
+        self.assertNotContains(saved_response, "Not quite")
 
     def test_regular_context_reveals_immediate_feedback(self):
         lesson = self.lesson(1)
@@ -65,7 +70,7 @@ class FeedbackRuleTests(Phase6SeededTestCase):
         self.assertTemplateUsed(response, "assessment/assessment.html")
         self.assertNotContains(response, "error.html")
 
-    def test_video_question_has_pause_cue_transcript_and_hidden_prompt(self):
+    def test_video_question_has_bounded_cue_transcript_and_optional_watch(self):
         question = Question.objects.get(code="ACT-S5-01")
         session = Session.objects.create(
             student=self.student,
@@ -77,8 +82,11 @@ class FeedbackRuleTests(Phase6SeededTestCase):
         self.client.force_login(self.student)
         response = self.client.get(reverse("learning:assessment_session", args=[session.pk]))
         self.assertContains(response, 'data-pause-seconds="110"')
+        self.assertContains(response, 'start=60&amp;end=110')
         self.assertContains(response, "content_source/transcripts/VID-INTEGER-NUMBER-LINE.txt")
-        self.assertContains(response, "data-video-question hidden")
+        self.assertContains(response, "data-video-question")
+        self.assertNotContains(response, "data-video-question hidden")
+        self.assertContains(response, "Continue to question without watching")
 
     def test_exit_confirmation_does_not_submit_remaining_items(self):
         session = self.make_session_from_set(

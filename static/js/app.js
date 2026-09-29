@@ -167,6 +167,32 @@
     if (event.key === "Escape" && drawerElement && !drawerElement.hidden) closeDrawer();
   });
 
+  document.querySelectorAll("[data-access-form]").forEach((form) => {
+    const toggle = form.querySelector("[data-access-switch]");
+    const value = form.querySelector("[data-switch-value]");
+    const label = form.querySelector("[data-switch-label]");
+    if (!toggle || !value || !label) return;
+    toggle.addEventListener("click", () => {
+      const enabled = toggle.getAttribute("aria-checked") !== "true";
+      toggle.setAttribute("aria-checked", String(enabled));
+      value.value = String(enabled);
+      label.textContent = enabled ? "OPEN" : "CLOSED";
+      toggle.classList.toggle("[background:var(--color-primary-subtle)]", enabled);
+      toggle.classList.toggle("[color:var(--color-primary-hover)]", enabled);
+      toggle.classList.toggle("[background:var(--color-bg-subtle)]", !enabled);
+      toggle.classList.toggle("[color:var(--color-text-secondary)]", !enabled);
+    });
+  });
+
+  document.querySelectorAll("[data-assessment-form]").forEach((form) => {
+    const submit = form.querySelector("[data-answer-submit]");
+    const choices = [...form.querySelectorAll('input[name="choice"]')];
+    if (!submit || !choices.length) return;
+    const sync = () => { submit.disabled = !choices.some((choice) => choice.checked); };
+    choices.forEach((choice) => choice.addEventListener("change", sync));
+    sync();
+  });
+
   document.querySelectorAll("[data-hint-open]").forEach((button) => {
     button.addEventListener("click", () => {
       const panel = button.parentElement.querySelector("[data-hint-panel]");
@@ -183,23 +209,22 @@
   const feedback = document.querySelector("[data-feedback]");
   if (feedback) requestAnimationFrame(() => feedback.focus());
 
-  document.querySelectorAll("[data-video-cue]").forEach((shell) => {
+  function setupVideoCues(root = document) {
+  root.querySelectorAll("[data-video-cue]").forEach((shell) => {
+    if (shell.dataset.videoReady === "true") return;
+    shell.dataset.videoReady = "true";
     const frame = shell.querySelector("[data-video-frame]");
-    const question = shell.parentElement.querySelector("[data-video-question]");
+    const question = shell.closest("form")?.querySelector("[data-video-question]");
     const revealButton = shell.querySelector("[data-reveal-question]");
-    const hasCue = shell.dataset.pauseSeconds !== "" && Number.isFinite(Number(shell.dataset.pauseSeconds));
-    const pauseAt = Number(shell.dataset.pauseSeconds);
+    const start = Number(shell.dataset.segmentStartSeconds);
+    const end = Number(shell.dataset.segmentEndSeconds);
+    const requestedPause = Number(shell.dataset.pauseSeconds);
+    const hasBounds = Number.isFinite(start) && Number.isFinite(end) && end > start;
+    const pauseAt = shell.dataset.pauseSeconds && Number.isFinite(requestedPause)
+      ? Math.max(start, Math.min(requestedPause, end)) : end;
     const origin = "https://www.youtube-nocookie.com";
-    const videoId = shell.dataset.videoId || "";
-    const validId = /^[A-Za-z0-9_-]{11}$/.test(videoId) && !/placeholder|^0{11}$|^x{11}$/i.test(videoId);
     let revealed = false;
     let pollTimer = null;
-
-    function unavailable() {
-      if (pollTimer) window.clearInterval(pollTimer);
-      if (frame) frame.parentElement.hidden = true;
-      shell.querySelector("[data-video-unavailable]").hidden = false;
-    }
 
     function revealQuestion() {
       if (revealed || !question) return;
@@ -210,32 +235,42 @@
       requestAnimationFrame(() => question.querySelector("input")?.focus());
     }
 
-    function sendVideoCommand(func) {
+    function sendVideoCommand(func, args = []) {
       frame?.contentWindow?.postMessage(
-        JSON.stringify({ event: "command", func, args: [] }),
+        JSON.stringify({ event: "command", func, args }),
         origin
       );
     }
 
+    if (!frame || !hasBounds) return;
+    if (question) {
+      question.hidden = true;
+      revealButton?.classList.remove("hidden");
+      window.setTimeout(revealQuestion, 12000);
+    }
+
     window.addEventListener("message", (event) => {
-      if (!frame || !validId || event.origin !== origin || event.source !== frame.contentWindow) return;
+      if (event.origin !== origin || event.source !== frame.contentWindow) return;
       let payload;
       try {
         payload = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
       } catch (_error) {
         return;
       }
-      if (payload?.event === "onError") { unavailable(); return; }
-      const currentTime = payload?.info?.currentTime;
-      if (typeof currentTime === "number" && pollTimer) { window.clearInterval(pollTimer); pollTimer = null; }
-      if (question && hasCue && !revealed && typeof currentTime === "number" && currentTime >= pauseAt) {
+      if (payload?.event === "onError") { revealQuestion(); return; }
+      if (payload?.event === "onReady") {
+        sendVideoCommand("seekTo", [start, true]);
+        sendVideoCommand("pauseVideo");
+      }
+      const currentTime = payload?.info?.currentTime ?? payload?.info?.currentTimeSeconds;
+      if (typeof currentTime === "number" && currentTime >= pauseAt) {
         sendVideoCommand("pauseVideo");
         revealQuestion();
       }
+      if (payload?.event === "onStateChange" && payload.info === 0) revealQuestion();
     });
 
-    frame?.addEventListener("load", () => {
-      if (!validId) return;
+    frame.addEventListener("load", () => {
       let attempts = 0;
       const listen = () => frame.contentWindow?.postMessage(JSON.stringify({ event: "listening" }), origin);
       listen();
@@ -244,15 +279,15 @@
         if (++attempts >= 20 || revealed) window.clearInterval(pollTimer);
       }, 500);
     });
-    if (frame && validId) {
-      frame.src = frame.dataset.src + "&origin=" + encodeURIComponent(window.location.origin);
-      frame.parentElement.hidden = false;
-      shell.querySelector("[data-video-unavailable]").hidden = true;
-      shell.querySelector("[data-video-captions]").hidden = false;
-    }
+    const playerUrl = new URL(frame.src);
+    playerUrl.searchParams.set("origin", window.location.origin);
+    frame.src = playerUrl.toString();
     revealButton?.addEventListener("click", () => { sendVideoCommand("pauseVideo"); revealQuestion(); });
     window.addEventListener("pagehide", () => { if (pollTimer) window.clearInterval(pollTimer); }, { once: true });
   });
+  }
+  window.refreshVideoCues = setupVideoCues;
+  setupVideoCues();
 })();
 
 window.refreshIcons = function () {

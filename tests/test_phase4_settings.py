@@ -12,6 +12,18 @@ class SystemSettingTests(TestCase):
         self.client.force_login(self.admin)
 
     def test_first_update_creates_singleton_with_revision_and_audit(self):
+        short_reason = self.client.post(
+            reverse("portal:override"),
+            {
+                "expected_revision": 0,
+                "setting_name": "study_access",
+                "enabled": "true",
+                "reason": "No",
+            },
+        )
+        self.assertEqual(short_reason.status_code, 400)
+        self.assertFalse(SystemSetting.objects.exists())
+        self.assertFalse(AuditEvent.objects.exists())
         response = self.client.post(
             reverse("portal:override"),
             {
@@ -30,6 +42,11 @@ class SystemSettingTests(TestCase):
         event = AuditEvent.objects.get(action="system_setting.study_access.enabled")
         self.assertEqual(event.actor, self.admin)
         self.assertEqual(event.reason, "Open the study window")
+        page = self.client.get(reverse("portal:override"))
+        self.assertContains(page, 'role="switch"', count=2)
+        self.assertContains(page, 'aria-checked="true"', count=1)
+        self.assertContains(page, 'name="expected_revision" value="1"', count=2)
+        self.assertContains(page, 'minlength="3"', count=2)
 
     def test_stale_revision_returns_409_without_overwriting(self):
         SystemSetting.objects.create(
@@ -51,6 +68,11 @@ class SystemSettingTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 409)
+        self.assertContains(
+            response,
+            "Someone else changed this. Please review and try again.",
+            status_code=409,
+        )
         setting = SystemSetting.objects.get(singleton_key=1)
         self.assertTrue(setting.study_access_enabled)
         self.assertEqual(setting.revision, 4)

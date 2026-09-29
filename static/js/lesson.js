@@ -120,6 +120,8 @@
     source.replaceChildren(fragment);
     source.classList.add(...lessonReadingClasses);
     source.dataset.enhanced = "true";
+    window.refreshIcons?.();
+    window.refreshVideoCues?.(source);
   });
 
   const reader = document.querySelector("[data-lesson-reader]");

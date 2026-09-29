@@ -396,7 +396,7 @@ def override(request):
         try:
             update_system_setting(actor=request.user, **form.cleaned_data)
         except StaleSettingsRevision:
-            form.add_error(None, "These settings changed in another request. Review the current state and try again.")
+            form.add_error(None, "Someone else changed this. Please review and try again.")
             return render(
                 request,
                 "pages/admin/override.html",

@@ -1,3 +1,5 @@
+import json
+from functools import lru_cache
 from pathlib import Path
 
 from django.conf import settings
@@ -50,6 +52,24 @@ ASSESSMENT_TITLES = {
     Session.SessionType.ACTIVITY: "Course activity",
     Session.SessionType.POSTTEST: "Post-test",
 }
+
+
+@lru_cache(maxsize=1)
+def _media_manifest_videos():
+    path = Path(settings.BASE_DIR) / "content_source" / "media_manifest.json"
+    with path.open(encoding="utf-8") as source:
+        return {video["code"]: video for video in json.load(source)["videos"]}
+
+
+def _presented_video(video):
+    manifest = _media_manifest_videos().get(video.code, {})
+    video.embed_available = bool(
+        manifest.get("youtube_video_id")
+        and video.youtube_video_id == manifest["youtube_video_id"]
+    )
+    video.segment_start_seconds = manifest.get("segment_start_seconds")
+    video.segment_end_seconds = manifest.get("segment_end_seconds")
+    return video
 
 
 def _setting():
@@ -278,7 +298,7 @@ def lesson(request, slug):
         {
             "lesson": lesson_obj,
             "path": path,
-            "videos": Video.objects.all().order_by("code"),
+            "videos": [_presented_video(video) for video in Video.objects.all().order_by("code")],
             "is_current": path.current_lesson_id == lesson_obj.pk,
             "can_open_regular": (
                 path.status == StudentPath.Status.LEARNING
@@ -390,14 +410,31 @@ def assessment_session(request, session_id):
             .first()
         )
     total = session.items.count()
+    question = current.question if current else None
+    video = _presented_video(question.video) if question and question.video else None
+    visual = question.visual_config_json or {} if question else {}
+    video_start = visual.get("segment_start_seconds", video.segment_start_seconds if video else None)
+    video_end = visual.get("segment_end_seconds", video.segment_end_seconds if video else None)
+    video_available = bool(
+        video
+        and video.embed_available
+        and isinstance(video_start, int)
+        and isinstance(video_end, int)
+        and 0 <= video_start < video_end
+    )
     context = {
         "mode": "question",
         "assessment_title": ASSESSMENT_TITLES[session.session_type],
         "session": session,
         "session_type": session.session_type,
         "current_item": current,
-        "question": current.question if current else None,
-        "choices": current.question.choices.order_by("display_order") if current else [],
+        "question": question,
+        "choices": question.choices.order_by("display_order") if question else [],
+        "video_start": video_start,
+        "video_end": video_end,
+        "video_available": video_available,
+        "answer_saved": request.GET.get("saved") == "1"
+        and session.session_type in {Session.SessionType.PRETEST, Session.SessionType.POSTTEST},
         "current_number": current.display_order if current else total,
         "total_questions": total,
         "feedback": feedback,
@@ -435,7 +472,8 @@ def submit_assessment_response(request, session_id):
         return redirect(f"{url}?feedback={result.response.pk}")
     if result.session.status == Session.Status.COMPLETED:
         return redirect("learning:assessment_result", session_id=session.pk)
-    return redirect("learning:assessment_session", session_id=session.pk)
+    url = reverse("learning:assessment_session", args=[session.pk])
+    return redirect(f"{url}?saved=1")
 
 
 @role_required(User.Role.STUDENT)

@@ -19,6 +19,6 @@ class OverrideForm(forms.Form):
 
     def clean_reason(self):
         reason = self.cleaned_data["reason"].strip()
-        if not reason:
-            raise forms.ValidationError("A reason is required.")
+        if len(reason) < 3:
+            raise forms.ValidationError("Give a reason of at least 3 characters.")
         return reason
