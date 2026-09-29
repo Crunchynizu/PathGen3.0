@@ -44,6 +44,12 @@
   --danger-bg: #fbe7e6;
   --info:    var(--primary-700);
   --info-bg: var(--primary-50);
+  --color-success-text: #0f5132;
+  --color-warning-text: #7a5500;
+  --color-danger-text: #7a1f1f;
+  --color-danger-hover: #c93736;
+  --color-violet-bg: #efe7ff;
+  --color-violet-text: #4b2a8a;
 
   /* ---- Surfaces & borders ------------------------------------------------ */
   --color-bg:            #ffffff;
@@ -53,6 +59,7 @@
   --color-border:        var(--gray-200);
   --color-border-strong: var(--gray-300);
   --color-focus-ring:    var(--primary-700);
+  --color-overlay:       rgba(21, 24, 27, 0.4);
 
   /* ---- Text --------------------------------------------------------------- */
   --color-text:            var(--gray-900);
@@ -100,6 +107,7 @@
 
   --shadow-sm: 0 1px 2px rgba(21, 24, 27, 0.06);
   --shadow-md: 0 4px 10px rgba(21, 24, 27, 0.08);
+  --shadow-dialog: 0 24px 64px rgba(21, 24, 27, 0.18), 0 4px 16px rgba(21, 24, 27, 0.08);
 
   /* ---- Translucent surface (frosted panels, toolbars) --------------------- */
   --surface-translucent-bg: rgba(255, 255, 255, 0.7);
