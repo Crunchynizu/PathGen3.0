@@ -130,6 +130,26 @@ class ClassroomLifecycleTests(TestCase):
             404,
         )
 
+    def test_shared_class_detail_preserves_admin_and_teacher_scope(self):
+        classroom = make_classroom(teacher=self.teacher)
+        archived = make_classroom(teacher=self.teacher, status=Classroom.Status.ARCHIVED)
+        url = reverse("portal:class_detail", args=[classroom.pk])
+        archived_url = reverse("portal:class_detail", args=[archived.pk])
+
+        self.client.force_login(self.admin)
+        self.assertEqual(self.client.get(url).status_code, 200)
+        self.assertEqual(self.client.get(archived_url).status_code, 200)
+
+        self.client.force_login(self.teacher)
+        self.assertEqual(self.client.get(url).status_code, 200)
+        self.assertEqual(self.client.get(archived_url).status_code, 404)
+
+        self.client.force_login(self.other_teacher)
+        self.assertEqual(self.client.get(url).status_code, 404)
+
+        self.client.force_login(self.student)
+        self.assertEqual(self.client.get(url).status_code, 403)
+
     def test_removal_closes_membership_instead_of_deleting_it(self):
         classroom = make_classroom()
         membership = make_membership(classroom, self.student, self.admin)

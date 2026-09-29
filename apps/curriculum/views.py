@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.http import require_GET
@@ -45,14 +45,38 @@ def content(request):
 @role_required(User.Role.ADMIN, User.Role.TEACHER)
 @require_GET
 def view_lessons(request):
+    visible_set = Q(
+        question_sets__is_published=True,
+        question_sets__set_type__in=[
+            QuestionSet.SetType.REGULAR,
+            QuestionSet.SetType.ADDITIONAL,
+            QuestionSet.SetType.FOUNDATIONAL,
+            QuestionSet.SetType.ACTIVITY,
+        ],
+    )
+    lessons = published_lessons().annotate(
+        question_count=Count(
+            "question_sets__items__question", filter=visible_set, distinct=True,
+        ),
+        video_count=Count(
+            "question_sets__items__question__video",
+            filter=visible_set & Q(question_sets__items__question__video__isnull=False),
+            distinct=True,
+        ),
+        figure_count=Count(
+            "question_sets__items__question",
+            filter=visible_set & Q(question_sets__items__question__image_asset__isnull=False),
+            distinct=True,
+        ),
+    )
     return render(
         request,
-        "pages/shared/view_lessons.html",
+        "pages/shared/view_lesson.html",
         {
             "breadcrumbs": _content_breadcrumbs("Lessons"),
             "back_url": reverse("curriculum:content"),
             "back_label": "Back to Content",
-            "lessons": published_lessons(),
+            "lessons": lessons,
         },
     )
 

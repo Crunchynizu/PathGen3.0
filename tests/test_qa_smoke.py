@@ -199,7 +199,7 @@ class QAWalkthroughTests(Phase6SeededTestCase):
 
     def test_every_named_route_and_role_scope(self):
         role_routes = {
-            User.Role.ADMIN: self.ADMIN | self.ADMIN_TEACHER,
+            User.Role.ADMIN: self.ADMIN | self.ADMIN_TEACHER | {"portal:class_detail"},
             User.Role.TEACHER: self.TEACHER | self.ADMIN_TEACHER,
             User.Role.STUDENT: self.STUDENT,
         }

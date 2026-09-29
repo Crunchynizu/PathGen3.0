@@ -100,7 +100,7 @@ class CurriculumSeedAndPageTests(TestCase):
     def test_admin_and_teacher_content_pages_render(self):
         pages = [
             ("curriculum:content", "pages/shared/content.html"),
-            ("curriculum:view_lessons", "pages/shared/view_lessons.html"),
+            ("curriculum:view_lessons", "pages/shared/view_lesson.html"),
             ("curriculum:view_questions", "pages/shared/view_questions.html"),
         ]
         for user in (self.admin, self.teacher):

@@ -9,9 +9,10 @@ DASHBOARD_TEMPLATES = [
     BASE_DIR / "templates" / "pages" / "admin" / "admin_dashboard.html",
     BASE_DIR / "templates" / "pages" / "teacher" / "teacher_dashboard.html",
     BASE_DIR / "templates" / "pages" / "student" / "student_dashboard.html",
-    BASE_DIR / "templates" / "pages" / "shared" / "view_student_progress.html",
+    BASE_DIR / "templates" / "pages" / "shared" / "view_student_progress_detail.html",
+    BASE_DIR / "templates" / "pages" / "shared" / "view_class_detail.html",
 ]
-CHART_TEMPLATES = DASHBOARD_TEMPLATES[:2]
+CHART_TEMPLATES = [*DASHBOARD_TEMPLATES[:2], DASHBOARD_TEMPLATES[-1]]
 
 
 class Phase12AccessibilityTests(SimpleTestCase):
@@ -28,7 +29,7 @@ class Phase12AccessibilityTests(SimpleTestCase):
         for path in CHART_TEMPLATES:
             with self.subTest(path=path):
                 source = path.read_text()
-                self.assertIn("<table>", source)
+                self.assertIn("<table", source)
                 self.assertIn('data-ui="chart-empty"', source)
                 self.assertIn("<caption", source)
 
@@ -41,7 +42,7 @@ class Phase12AccessibilityTests(SimpleTestCase):
             / "templates"
             / "pages"
             / "shared"
-            / "view_student_progress.html"
+            / "view_student_progress_detail.html"
         ).read_text()
         for source in [student_source, progress_source]:
             self.assertIn("{{ skill.band }}", source)

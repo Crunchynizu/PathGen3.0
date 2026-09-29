@@ -38,7 +38,7 @@ class PhaseFourPageTests(TestCase):
             (reverse("portal:my_classes"), "pages/teacher/my_class.html"),
             (
                 reverse("portal:class_detail", args=[self.classroom.pk]),
-                "pages/teacher/class_detail.html",
+                "pages/shared/view_class_detail.html",
             ),
         ]
         for url, template in pages:
@@ -46,6 +46,14 @@ class PhaseFourPageTests(TestCase):
                 response = self.client.get(url)
                 self.assertEqual(response.status_code, 200)
                 self.assertTemplateUsed(response, template)
+
+    def test_admin_reaches_the_shared_class_detail(self):
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("portal:class_detail", args=[self.classroom.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "pages/shared/view_class_detail.html")
+        self.assertContains(response, "Classes")
+        self.assertEqual(response.context["back_url"], reverse("portal:class_management"))
 
     def test_sidebar_uses_exact_role_labels(self):
         expected = {

@@ -362,7 +362,7 @@ def student_progress(request, student_id):
     data = student_dashboard_data(student)
     return render(
         request,
-        "pages/shared/view_student_progress.html",
+        "pages/shared/view_student_progress_detail.html",
         {
             "student": student,
             "student_name": display_name(student),

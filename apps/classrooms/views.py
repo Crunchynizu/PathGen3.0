@@ -33,7 +33,9 @@ from apps.classrooms.services import (
 from apps.core import metrics
 from apps.core.dashboard_data import (
     BAND_LABELS,
+    bkt_chart,
     chart_spec,
+    decisions_chart,
     display_name,
 )
 from apps.core.selectors import (
@@ -454,25 +456,161 @@ def my_classes(request):
     return render(request, "pages/teacher/my_class.html", {"classrooms": classes})
 
 
-@role_required(User.Role.TEACHER)
+@role_required(User.Role.ADMIN, User.Role.TEACHER)
 @never_cache
 @require_GET
 def class_detail(request, classroom_id):
     classroom = get_scoped_classroom_or_404(actor=request.user, classroom_id=classroom_id)
-    roster = classroom.student_memberships.filter(left_at__isnull=True).select_related(
+    roster = list(classroom.student_memberships.filter(left_at__isnull=True).select_related(
         "student"
-    ).order_by("student__last_name", "student__first_name")
+    ).order_by("student__last_name", "student__first_name"))
+    students = scoped_dashboard_students(request.user, classroom=classroom)
+    cohort = f"Current members of {classroom.code} · {classroom.name}"
+    member_ids = [membership.student_id for membership in roster]
+    paths = {
+        path.student_id: path
+        for path in StudentPath.objects.filter(student_id__in=member_ids).select_related("current_lesson")
+    }
+    status_counts = {status: 0 for status, _label in StudentPath.Status.choices}
+    for path in paths.values():
+        status_counts[path.status] += 1
+    class_size = len(roster)
+    completion_rows = [
+        {
+            "label": label,
+            "count": status_counts[status],
+            "percent": round(status_counts[status] * 100 / class_size) if class_size else 0,
+        }
+        for status, label in StudentPath.Status.choices
+    ]
+    completion_rows.insert(0, {
+        "label": "Not started", "count": class_size - len(paths),
+        "percent": round((class_size - len(paths)) * 100 / class_size) if class_size else 0,
+    })
+
+    bkt_metric = metrics.bkt_mastery_bands(students=students, cohort=cohort)
+    bkt = bkt_chart(bkt_metric, title="BKT distribution by skill")
+    bkt["config"]["options"]["indexAxis"] = "y"
+    bkt["config"]["options"]["scales"] = {
+        "x": {"beginAtZero": True, "stacked": True}, "y": {"stacked": True},
+    }
+    bkt["empty_message"] = "Not enough scored skill evidence yet"
+
+    pairs = metrics._matched_scores(students)
+    gain_by_student = {
+        pair["student_id"]: round(pair["posttest"] - pair["pretest"], 1)
+        for pair in pairs
+    }
+    posttest_elapsed = {}
+    if pairs:
+        for student_id, started_at, completed_at in (
+            Session.objects.filter(
+                student_id__in=gain_by_student,
+                session_type=Session.SessionType.POSTTEST,
+                status=Session.Status.COMPLETED,
+                voided_at__isnull=True,
+                completed_at__isnull=False,
+            ).order_by("student_id", "-completed_at", "-created_at")
+            .distinct("student_id")
+            .values_list("student_id", "started_at", "completed_at")
+        ):
+            if started_at:
+                posttest_elapsed[student_id] = max(0, (completed_at - started_at).total_seconds() / 60)
+    gain_metric = metrics.matched_gain(students=students, cohort=cohort)
+    bubble = chart_spec(
+        chart_id="class-matched-pairs",
+        title="Matched pre/post",
+        metric={**gain_metric, "definition": "Paired scores; bubble size reflects elapsed post-test session time when available."},
+        headers=["Outcome", "Students"],
+        rows=[
+            ["Gained", sum(pair["posttest"] > pair["pretest"] for pair in pairs)],
+            ["No change", sum(pair["posttest"] == pair["pretest"] for pair in pairs)],
+            ["Regressed", sum(pair["posttest"] < pair["pretest"] for pair in pairs)],
+        ] if pairs else [],
+        labels=[],
+        datasets=[{
+            "label": "Matched student",
+            "data": [
+                {
+                    "x": pair["pretest"], "y": pair["posttest"],
+                    "r": max(6, min(20, posttest_elapsed.get(pair["student_id"], 0) / 2)),
+                }
+                for pair in pairs
+            ],
+        }],
+        aria_label=f"Bubble chart of paired pre-test and post-test scores for {cohort}.",
+    )
+    bubble["config"]["type"] = "bubble"
+    bubble["config"]["options"]["scales"] = {
+        "x": {"min": 0, "max": 100, "title": {"display": True, "text": "Pre-test (%)"}},
+        "y": {"min": 0, "max": 100, "title": {"display": True, "text": "Post-test (%)"}},
+    }
+    bubble["empty_message"] = "Not enough matched pre/post data"
+
+    decisions = decisions_chart(
+        metrics.q_learning_decisions(students=students, cohort=cohort),
+        title="Q-Learning decisions",
+    )
+    decisions["empty_message"] = "No adaptive decisions yet"
+    follow_up_metric = metrics.follow_up_needed(students=students, cohort=cohort)
+    follow_up_ids = {
+        target.decision.session.student_id
+        for target in follow_up_targets_for_students(students)
+    }
+    latest_activity = dict(
+        Session.objects.filter(student_id__in=member_ids)
+        .annotate(activity_at=Coalesce("completed_at", "submitted_at", "started_at", "created_at"))
+        .order_by("student_id", "-activity_at")
+        .distinct("student_id")
+        .values_list("student_id", "activity_at")
+    )
+    roster_rows = []
+    for membership in roster:
+        student = membership.student
+        path = paths.get(student.pk)
+        gain = gain_by_student.get(student.pk)
+        roster_rows.append({
+            "student": student,
+            "student_name": display_name(student),
+            "stage": path.get_current_stage_display() if path else "Not started",
+            "gain": f"{gain:+.1f} pp" if gain is not None else None,
+            "gain_state": (
+                "positive" if gain is not None and gain > 0
+                else "negative" if gain is not None and gain < 0
+                else "neutral"
+            ),
+            "follow_up": student.pk in follow_up_ids,
+            "last_activity": latest_activity.get(student.pk),
+        })
+    back_url = reverse(
+        "portal:class_management" if request.user.role == User.Role.ADMIN
+        else "portal:my_classes"
+    )
     return render(
         request,
-        "pages/teacher/class_detail.html",
+        "pages/shared/view_class_detail.html",
         {
             "classroom": classroom,
-            "roster": roster,
+            "roster": roster_rows,
+            "class_size": class_size,
+            "completed_count": status_counts[StudentPath.Status.COMPLETED],
+            "learning_count": sum(status_counts[status] for status in (
+                StudentPath.Status.LEARNING,
+                StudentPath.Status.ACTIVITY_READY,
+                StudentPath.Status.POSTTEST_READY,
+            )),
+            "follow_up_metric": follow_up_metric,
+            "completion_rows": completion_rows,
+            "bkt_chart": bkt,
+            "deeper_charts": [bubble, decisions],
             "breadcrumbs": [
-                {"label": "My Classes", "url": reverse("portal:my_classes")},
+                {
+                    "label": "Classes" if request.user.role == User.Role.ADMIN else "My Classes",
+                    "url": back_url,
+                },
                 {"label": classroom.name, "url": None},
             ],
-            "back_url": reverse("portal:my_classes"),
-            "back_label": "Back to My Classes",
+            "back_url": back_url,
+            "back_label": "Back to Classes" if request.user.role == User.Role.ADMIN else "Back to My Classes",
         },
     )
