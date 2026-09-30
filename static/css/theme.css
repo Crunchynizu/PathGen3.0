@@ -60,6 +60,9 @@
   --color-border-strong: var(--gray-300);
   --color-focus-ring:    var(--primary-700);
   --color-overlay:       rgba(21, 24, 27, 0.4);
+  --color-shell-hover:   rgba(21, 24, 27, 0.05);
+  --color-shell-brand-hover: rgba(21, 24, 27, 0.04);
+  --color-transparent-white: rgba(255, 255, 255, 0);
 
   /* ---- Text --------------------------------------------------------------- */
   --color-text:            var(--gray-900);

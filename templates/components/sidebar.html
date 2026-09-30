@@ -1,50 +1,50 @@
 {% load static %}
 {% if request.user.role == "admin" %}{% url 'portal:admin_dashboard' as home_url %}{% elif request.user.role == "teacher" %}{% url 'portal:teacher_dashboard' as home_url %}{% else %}{% url 'account:student_dashboard' as home_url %}{% endif %}
-<div class="flex h-full min-h-0 flex-col overflow-hidden [background:transparent] lg:[background:var(--color-bg-subtle)]" data-ui="sidebar-inner">
-  <div class="flex shrink-0 items-center justify-between gap-2 pb-3 pl-4 pr-3 pt-4">
-    <a class="inline-flex min-h-9 items-center gap-[10px] rounded-lg px-[6px] py-1 no-underline [color:var(--color-text)] hover:[background:var(--gray-100)]" href="{{ home_url }}" aria-label="PathGen home" data-ui="sidebar-brand">
-      <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] [background:var(--color-accent)] [color:var(--color-text)]" aria-hidden="true"><i data-lucide="route" class="h-4 w-4 [stroke-width:2.5]"></i></span>
-      <span class="hidden text-sm font-semibold tracking-[-0.005em] sm:inline">PathGen</span>
+<div class="sidebar" data-ui="sidebar-inner">
+  <div class="sidebar-header">
+    <a class="brand" href="{{ home_url }}" aria-label="PathGen home" data-ui="sidebar-brand">
+      <span class="brand-mark" aria-hidden="true"><i data-lucide="route"></i></span>
+      <span class="brand-name">PathGen</span>
     </a>
-    <button type="button" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg [color:var(--color-text-muted)] hover:[background:var(--gray-100)] hover:[color:var(--color-text)] active:scale-90 lg:hidden" data-drawer-close aria-label="Close menu"><i data-lucide="x" class="h-[18px] w-[18px]" aria-hidden="true"></i></button>
+    <button type="button" class="icon-btn" data-drawer-close aria-label="Close menu"><i data-lucide="x" aria-hidden="true"></i></button>
   </div>
 
-  <div class="min-h-0 flex-1 overflow-y-auto px-[10px] pb-[10px] pt-1 [&_.sidebar-nav-item]:flex [&_.sidebar-nav-item]:min-h-11 [&_.sidebar-nav-item]:w-full [&_.sidebar-nav-item]:items-center [&_.sidebar-nav-item]:gap-[10px] [&_.sidebar-nav-item]:rounded-lg [&_.sidebar-nav-item]:border-0 [&_.sidebar-nav-item]:bg-transparent [&_.sidebar-nav-item]:px-[10px] [&_.sidebar-nav-item]:py-2 [&_.sidebar-nav-item]:text-left [&_.sidebar-nav-item]:text-sm [&_.sidebar-nav-item]:font-medium [&_.sidebar-nav-item]:no-underline [&_.sidebar-nav-item]:[color:var(--color-text-secondary)] [&_.sidebar-nav-item:hover]:[background:var(--gray-100)] [&_.sidebar-nav-item:hover]:[color:var(--color-text)] [&_.sidebar-nav-item:active]:scale-[0.98] [&_.sidebar-nav-item[aria-current=page]]:font-semibold [&_.sidebar-nav-item[aria-current=page]]:[background:var(--color-primary-subtle)] [&_.sidebar-nav-item[aria-current=page]]:[color:var(--color-primary-hover)] [&_.sidebar-nav-item_svg]:h-4 [&_.sidebar-nav-item_svg]:w-4 [&_.sidebar-nav-item_svg]:shrink-0 motion-reduce:[&_.sidebar-nav-item:active]:transform-none">
-    <nav aria-label="Main">
-    <div class="px-[10px] pb-1 pt-[6px] text-xs font-semibold uppercase tracking-[0.06em] [color:var(--color-text-muted)]">Main</div>
-    <ul class="m-0 list-none p-0 [&_li]:m-0" data-ui="nav-list">
-      {% if request.user.role == "admin" %}
-        <li><a class="sidebar-nav-item" href="{% url 'portal:admin_dashboard' %}"{% if request.resolver_match.url_name == "admin_dashboard" %} aria-current="page"{% endif %}><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a></li>
-        <li><a class="sidebar-nav-item" href="{% url 'portal:user_management' %}"{% if request.resolver_match.url_name == "user_management" %} aria-current="page"{% endif %}><i data-lucide="users" aria-hidden="true"></i>Users</a></li>
-        <li><a class="sidebar-nav-item" href="{% url 'portal:class_management' %}"{% if request.resolver_match.url_name == "class_management" %} aria-current="page"{% endif %}><i data-lucide="school" aria-hidden="true"></i>Classes</a></li>
-        <li><a class="sidebar-nav-item" href="{% url 'admin:student_list' %}"{% if request.resolver_match.namespace == "admin" and request.resolver_match.url_name == "student_list" %} aria-current="page"{% endif %}><i data-lucide="users" aria-hidden="true"></i>Students</a></li>
-        <li><a class="sidebar-nav-item" href="{% url 'portal:content' %}"{% if request.resolver_match.url_name == "content" %} aria-current="page"{% endif %}><i data-lucide="book-open" aria-hidden="true"></i>Content</a></li>
-        <li><a class="sidebar-nav-item" href="{% url 'portal:override' %}"{% if request.resolver_match.url_name == "override" %} aria-current="page"{% endif %}><i data-lucide="toggle-right" aria-hidden="true"></i>Overrides</a></li>
-        <li><a class="sidebar-nav-item" href="{% url 'portal:audit_logs' %}"{% if request.resolver_match.url_name == "audit_logs" %} aria-current="page"{% endif %}><i data-lucide="scroll-text" aria-hidden="true"></i>Audit Logs</a></li>
-      {% elif request.user.role == "teacher" %}
-        <li><a class="sidebar-nav-item" href="{% url 'portal:teacher_dashboard' %}"{% if request.resolver_match.url_name == "teacher_dashboard" %} aria-current="page"{% endif %}><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a></li>
-        <li><a class="sidebar-nav-item" href="{% url 'portal:my_classes' %}"{% if request.resolver_match.url_name == "my_classes" or request.resolver_match.url_name == "class_detail" %} aria-current="page"{% endif %}><i data-lucide="school" aria-hidden="true"></i>My Classes</a></li>
-        <li><a class="sidebar-nav-item" href="{% url 'portal:content' %}"{% if request.resolver_match.url_name == "content" %} aria-current="page"{% endif %}><i data-lucide="book-open" aria-hidden="true"></i>Content</a></li>
-      {% else %}
-        <li><a class="sidebar-nav-item" href="{% url 'account:student_dashboard' %}"{% if request.resolver_match.url_name == "student_dashboard" %} aria-current="page"{% endif %}><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a></li>
-        <li><a class="sidebar-nav-item" href="{% url 'account:my_lesson' %}"{% if request.resolver_match.url_name == "my_lesson" or request.resolver_match.url_name == "lesson" %} aria-current="page"{% endif %}><i data-lucide="graduation-cap" aria-hidden="true"></i>My Lesson</a></li>
-      {% endif %}
-    </ul>
+  <div class="sidebar-nav">
+    <nav class="nav-section" aria-label="Main">
+      <div class="nav-section-label">Main</div>
+      <ul data-ui="nav-list">
+        {% if request.user.role == "admin" %}
+          <li><a class="nav-item" href="{% url 'portal:admin_dashboard' %}"{% if request.resolver_match.url_name == "admin_dashboard" %} aria-current="page"{% endif %}><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a></li>
+          <li><a class="nav-item" href="{% url 'portal:user_management' %}"{% if request.resolver_match.url_name == "user_management" %} aria-current="page"{% endif %}><i data-lucide="users" aria-hidden="true"></i>Users</a></li>
+          <li><a class="nav-item" href="{% url 'portal:class_management' %}"{% if request.resolver_match.url_name == "class_management" %} aria-current="page"{% endif %}><i data-lucide="school" aria-hidden="true"></i>Classes</a></li>
+          <li><a class="nav-item" href="{% url 'admin:student_list' %}"{% if request.resolver_match.namespace == "admin" and request.resolver_match.url_name == "student_list" %} aria-current="page"{% endif %}><i data-lucide="users-round" aria-hidden="true"></i>Students</a></li>
+          <li><a class="nav-item" href="{% url 'portal:content' %}"{% if request.resolver_match.url_name == "content" %} aria-current="page"{% endif %}><i data-lucide="book-open" aria-hidden="true"></i>Content</a></li>
+          <li><a class="nav-item" href="{% url 'portal:override' %}"{% if request.resolver_match.url_name == "override" %} aria-current="page"{% endif %}><i data-lucide="toggle-right" aria-hidden="true"></i>Overrides</a></li>
+          <li><a class="nav-item" href="{% url 'portal:audit_logs' %}"{% if request.resolver_match.url_name == "audit_logs" %} aria-current="page"{% endif %}><i data-lucide="scroll-text" aria-hidden="true"></i>Audit Logs</a></li>
+        {% elif request.user.role == "teacher" %}
+          <li><a class="nav-item" href="{% url 'portal:teacher_dashboard' %}"{% if request.resolver_match.url_name == "teacher_dashboard" %} aria-current="page"{% endif %}><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a></li>
+          <li><a class="nav-item" href="{% url 'portal:my_classes' %}"{% if request.resolver_match.url_name == "my_classes" or request.resolver_match.url_name == "class_detail" %} aria-current="page"{% endif %}><i data-lucide="school" aria-hidden="true"></i>My Classes</a></li>
+          <li><a class="nav-item" href="{% url 'portal:content' %}"{% if request.resolver_match.url_name == "content" %} aria-current="page"{% endif %}><i data-lucide="book-open" aria-hidden="true"></i>Content</a></li>
+        {% else %}
+          <li><a class="nav-item" href="{% url 'account:student_dashboard' %}"{% if request.resolver_match.url_name == "student_dashboard" %} aria-current="page"{% endif %}><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a></li>
+          <li><a class="nav-item" href="{% url 'account:my_lesson' %}"{% if request.resolver_match.url_name == "my_lesson" or request.resolver_match.url_name == "lesson" %} aria-current="page"{% endif %}><i data-lucide="graduation-cap" aria-hidden="true"></i>My Lesson</a></li>
+        {% endif %}
+      </ul>
     </nav>
 
-    <nav class="mt-[14px]" aria-label="Account">
-    <div class="px-[10px] pb-1 pt-[6px] text-xs font-semibold uppercase tracking-[0.06em] [color:var(--color-text-muted)]">Account</div>
-    <ul class="m-0 list-none p-0 [&_li]:m-0" data-ui="nav-list">
-      <li><a class="sidebar-nav-item" href="{% url 'account:my_account' %}"{% if request.resolver_match.url_name == "my_account" %} aria-current="page"{% endif %}><i data-lucide="user" aria-hidden="true"></i>My Account</a></li>
-      <li><button type="button" class="sidebar-nav-item" data-dialog-open="shell-logout-dialog"><i data-lucide="log-out" aria-hidden="true"></i>Logout</button></li>
-    </ul>
+    <nav class="nav-section" aria-label="Account">
+      <div class="nav-section-label">Account</div>
+      <ul data-ui="nav-list">
+        <li><a class="nav-item" href="{% url 'account:my_account' %}"{% if request.resolver_match.url_name == "my_account" %} aria-current="page"{% endif %}><i data-lucide="user" aria-hidden="true"></i>My Account</a></li>
+        <li><button type="button" class="nav-item" data-dialog-open="shell-logout-dialog"><i data-lucide="log-out" aria-hidden="true"></i>Logout</button></li>
+      </ul>
     </nav>
   </div>
 
-  <div class="shrink-0 border-t p-[10px] [border-color:var(--color-border)]" data-ui="sidebar-user">
-    <div class="flex items-center gap-[10px] rounded-lg px-[10px] py-2">
-      <img class="h-8 w-8 shrink-0 rounded-full object-cover" src="{% if request.user.role == 'admin' %}{% static 'avatar/admin_avatar.png' %}{% elif request.user.role == 'teacher' %}{% static 'avatar/teacher_avatar.png' %}{% else %}{% static 'avatar/student_avatar.png' %}{% endif %}" alt="" width="32" height="32" loading="lazy" decoding="async">
-      <span class="flex min-w-0 flex-col leading-[1.25]"><span class="truncate text-sm font-semibold [color:var(--color-text)]">{{ request.user.get_full_name|default:request.user.username }}</span><span class="text-xs [color:var(--color-text-muted)]">{{ request.user.get_role_display }}</span></span>
+  <div class="sidebar-footer" data-ui="sidebar-user">
+    <div class="user-chip">
+      <img class="avatar" src="{% if request.user.role == 'admin' %}{% static 'avatar/admin_avatar.png' %}{% elif request.user.role == 'teacher' %}{% static 'avatar/teacher_avatar.png' %}{% else %}{% static 'avatar/student_avatar.png' %}{% endif %}" alt="" width="32" height="32" loading="lazy" decoding="async">
+      <span class="user-meta"><span class="user-name">{{ request.user.get_full_name|default:request.user.username }}</span><span class="user-role">{{ request.user.get_role_display }}</span></span>
     </div>
   </div>
 </div>

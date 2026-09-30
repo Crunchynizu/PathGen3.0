@@ -1,8 +1,8 @@
-<button type="button" class="fixed left-4 top-4 z-[60] flex h-11 w-11 items-center justify-center rounded-lg border [background:var(--surface-translucent-bg)] [border-color:var(--color-border)] [box-shadow:var(--shadow-sm)] [color:var(--color-text)] [backdrop-filter:blur(var(--surface-translucent-blur))_saturate(180%)] hover:[background:var(--color-surface)] active:scale-[0.94] motion-reduce:active:transform-none lg:hidden [@media(prefers-reduced-transparency:reduce)]:[background:var(--color-surface)] [@media(prefers-reduced-transparency:reduce)]:[backdrop-filter:none]" data-drawer-open aria-label="Open menu" aria-controls="sidebar" aria-expanded="false"><i data-lucide="menu" class="h-5 w-5" aria-hidden="true"></i></button>
-<div class="h-14 lg:hidden" aria-hidden="true" data-drawer-background></div>
-<div id="sidebar" class="pointer-events-none fixed inset-0 z-50 lg:hidden [&[hidden]]:hidden" data-ui="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation" hidden>
-  <button type="button" class="pointer-events-none absolute inset-0 h-full w-full opacity-0 [background:var(--color-text)]" data-drawer-close data-drawer-scrim aria-label="Close menu" tabindex="-1"></button>
-  <div class="relative z-10 h-full w-60 -translate-x-full overflow-hidden border-r [background:var(--surface-translucent-bg)] [border-color:var(--color-border)] [backdrop-filter:blur(40px)_saturate(180%)] [touch-action:pan-y] [will-change:transform] [@media(prefers-reduced-transparency:reduce)]:[background:var(--color-surface)] [@media(prefers-reduced-transparency:reduce)]:[backdrop-filter:none] [@media(prefers-contrast:more)]:[background:var(--color-surface)] [@media(prefers-contrast:more)]:[backdrop-filter:none]" data-drawer-panel>
+<button type="button" class="hamburger" data-drawer-open aria-label="Open menu" aria-controls="sidebar" aria-expanded="false"><i data-lucide="menu" aria-hidden="true"></i></button>
+<div aria-hidden="true" data-drawer-background></div>
+<div id="sidebar" data-ui="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation" hidden>
+  <button type="button" class="scrim" data-drawer-close data-drawer-scrim aria-label="Close menu" tabindex="-1"></button>
+  <div data-drawer-panel>
     {% include "components/sidebar.html" %}
   </div>
 </div>
