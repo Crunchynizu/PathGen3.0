@@ -11,8 +11,8 @@ PathGen 3.0 is a PostgreSQL-backed Django monolith for a fixed Grade 7 integer-l
 5. Run checks: `python manage.py check --settings=config.settings.local`.
 6. Run tests: `python manage.py test --settings=config.settings.test --keepdb`.
 
-Build CSS with the committed standalone Tailwind executable:
+## CSS
 
-```powershell
-tools/tailwindcss.exe -i input.css -o static/css/app.css --minify
-```
+`static/css/theme.css` holds tokens and shared component classes. `static/css/shell.css` styles the sidebar, hamburger, breadcrumbs, and back link. `static/css/modals.css` styles all dialogs. Each page has a stylesheet under `static/css/pages/`.
+
+There is no build step. Edit and commit CSS files directly.

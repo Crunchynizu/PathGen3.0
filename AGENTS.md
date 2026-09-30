@@ -52,7 +52,7 @@ The primary research outcome is matched learning gain: post-test score minus pre
 ## Tech stack hard rules
 - PostgreSQL only. Never SQLite, not even for tests.
 - No npm. No Node. No package.json. No bundler. No PostCSS. No CDN for JavaScript or CSS libraries. The only allowed remote asset is Google Fonts for Inter.
-- Tailwind via `tools/tailwindcss.exe` and `input.css`.
+- Pure CSS. `static/css/theme.css` is the sole token source; `static/css/shell.css` holds the shared shell; `static/css/modals.css` is shared across modals; `static/css/pages/` holds one stylesheet per page. Edit CSS directly; no build step.
 - No Preline, Geist, Impeccable, AWS S3, Redis, Celery, DRF, JWT, or external vector DB.
 - Python 3.12 + Django 5.2.
 - Vanilla JavaScript only. No React, Vue, Alpine, HTMX.
@@ -64,7 +64,6 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - Avatars (`student_avatar.png`, `teacher_avatar.png`, `admin_avatar.png`) and logo (`pathgen.png`) are real committed files. Not placeholders.
 - Lesson, exercise, and activity figures are 1x1 transparent placeholders until the user replaces them.
 - Prompt-level figures only. A figure lives on `curriculum_question.image_asset`. Never on a choice.
-- `input.css` is exactly 3 lines: `@tailwind base;`, `@tailwind components;`, `@tailwind utilities;`. No other content.
 
 ## Architecture
 - Build a Django monolith with PostgreSQL and server-rendered templates.
@@ -158,13 +157,13 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - Provider failure uses deterministic fallback. Session still completes.
 
 ## Frontend
-- Tailwind through `tools/tailwindcss.exe` and `input.css`.
+- CSS files are edited directly and committed. No build step.
 - No npm, no Node, no bundler, no PostCSS. No CDN for JavaScript or CSS libraries. The only allowed remote asset is Google Fonts for Inter.
 - Inter font via Google Fonts.
 - Lucide via self-hosted library: `static/vendor/lucide/lucide.min.js`.
 - Chart.js UMD, self-hosted in `static/vendor/chartjs/`.
 - Vanilla JavaScript only.
-- Read `frontend_skill/SKILL.md` before any frontend work. It is the Apple design reference. Translate every technique into HTML, Tailwind, and vanilla JS. No npm, no Motion, no Framer Motion, no Preline.
+- Read `frontend_skill/SKILL.md` before any frontend work. It is the Apple design reference. Translate every technique into HTML, pure CSS, and vanilla JS. No npm, no Motion, no Framer Motion, no Preline.
 - Keep the principles: response on pointer-down, interruptibility, velocity handoff, momentum projection, rubber-banding, reduced-motion, size-specific tracking.
 - Use `requestAnimationFrame`, Pointer Events, and small inline spring helpers.
 - PathGen is permanently light-mode. No theme switcher.
@@ -179,7 +178,7 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - Breakpoints: base `<475`, `xs:475`, `sm:640`, `md:768`, `lg:1024`, `xl:1280`, `2xl:1536`.
 - Target WCAG 2.2 AA practices, keyboard use, visible focus, reflow, and 44px touch targets.
 - Every chart requires a server-rendered text or table alternative.
-- Lessons in `pages/student/lesson.html` are rendered as a designed reading experience, not a JSON dump. Each content block type has a distinct visual treatment. Use `theme.css` tokens and Tailwind utilities only. No per-page `<style>` blocks. No Impeccable.
+- Lessons in `pages/student/lesson.html` are rendered as a designed reading experience, not a JSON dump. Each content block type has a distinct visual treatment. Use `theme.css` tokens and `static/css/pages/lesson.css`. No per-page `<style>` blocks. No Impeccable.
 
 ## Assets and deployment
 - No avatar picker. No stored avatar field on the user model. Avatar is derived from role at render.
@@ -193,7 +192,7 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - No `static/pretest_posttest/` folder. The protected pre/post set has no figures.
 - Use Lucide via the self-hosted library at `static/vendor/lucide/lucide.min.js`. Do not create individual icon, illustration, or caption folders.
 - No cloud storage, no user uploads. All avatars, brand mark, prompt figures, and theme CSS are pre-supplied static files committed to the repo.
-- Tailwind output is `static/css/app.css`. Committed to the repo. Rebuild with `tools/tailwindcss.exe -i input.css -o static/css/app.css --minify`.
+- Shared and per-page CSS files are committed directly. No build step.
 - Deploy one Railway Django service with PostgreSQL, Gunicorn, and WhiteNoise.
 - Never commit `.env`, secrets, student exports, uploads, caches, or database dumps.
 
