@@ -1,5 +1,9 @@
 {% extends "_base.html" %}
 {% load static %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/pages/student_list.css' %}">
+{% endblock %}
 {% block title %}Students · PathGen{% endblock %}
 {% block content_width %}[&_main]:max-w-[1100px]{% endblock %}
 {% block shell %}

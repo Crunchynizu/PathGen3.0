@@ -1,5 +1,9 @@
 {% extends "_base.html" %}
 {% load static %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/pages/view_lesson.detail.css' %}">
+{% endblock %}
 {% block title %}Lesson {{ lesson.lesson_order|stringformat:"02d" }} · PathGen{% endblock %}
 {% block content_width %}[&_main]:max-w-[780px]{% endblock %}
 {% block shell %}

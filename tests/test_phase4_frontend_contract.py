@@ -39,7 +39,11 @@ class FrontendContractTests(SimpleTestCase):
 
     def test_light_mode_tokens_and_no_raw_component_hex(self):
         root = Path(settings.BASE_DIR)
-        source_files = [root / "input.css", root / "static" / "js" / "app.js"]
+        source_files = [root / "static" / "js" / "app.js"]
+        source_files.extend(
+            path for path in (root / "static" / "css").rglob("*.css")
+            if path.name != "theme.css"
+        )
         source_files.extend((root / "templates").rglob("*.html"))
         combined = "\n".join(path.read_text(encoding="utf-8") for path in source_files)
         theme = (root / "static" / "css" / "theme.css").read_text(encoding="utf-8")
@@ -52,6 +56,31 @@ class FrontendContractTests(SimpleTestCase):
         self.assertNotIn("prefers-color-scheme: dark", combined)
         self.assertIn("var(--color-", theme)
         self.assertIn("var(--color-", templates)
+
+    def test_pure_css_files_are_linked_by_the_base_and_every_page(self):
+        root = Path(settings.BASE_DIR)
+        css_root = root / "static" / "css"
+        base = (root / "templates" / "_base.html").read_text(encoding="utf-8")
+        for shared_name in ("theme.css", "shell.css"):
+            self.assertTrue((css_root / shared_name).is_file())
+            self.assertIn(f"css/{shared_name}", base)
+        self.assertTrue((css_root / "modals.css").is_file())
+        self.assertIn("{% block page_css %}{% endblock %}", base)
+
+        pages = list((root / "templates" / "pages").rglob("*.html"))
+        pages.extend(
+            [root / "templates" / "assessment" / "assessment.html",
+             root / "templates" / "error" / "error.html"]
+        )
+        self.assertEqual(len(pages), 21)
+        self.assertEqual(len(list((css_root / "pages").glob("*.css"))), 21)
+        for template in pages:
+            with self.subTest(template=template):
+                css_file = css_root / "pages" / f"{template.stem}.css"
+                self.assertTrue(css_file.is_file())
+                source = template.read_text(encoding="utf-8")
+                self.assertIn("{% block page_css %}", source)
+                self.assertIn(f"css/pages/{css_file.name}", source)
 
     def test_rendered_base_has_light_meta_and_accessibility_landmarks(self):
         templates = Path(settings.BASE_DIR) / "templates"

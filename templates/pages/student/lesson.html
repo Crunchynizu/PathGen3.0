@@ -1,6 +1,10 @@
 {% extends "_base.html" %}
 {% block content_width %}[&_main]:max-w-[720px]{% endblock %}
 {% load static %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/pages/lesson.css' %}">
+{% endblock %}
 {% block title %}{{ lesson.title }} · PathGen{% endblock %}
 {% block shell %}
 <main id="main-content" class="mx-auto min-h-screen w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">

@@ -1,6 +1,10 @@
 {% extends "_base.html" %}
 {% block content_width %}[&_main]:max-w-[720px]{% endblock %}
 {% load static %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/pages/assessment.css' %}">
+{% endblock %}
 {% block title %}{{ assessment_title }} · PathGen{% endblock %}
 {% block shell %}
 {% firstof session.session_type session_type as assessment_kind %}{% url 'account:student_dashboard' as default_back_url %}{% firstof exit_url dashboard_url default_back_url as assessment_back_url %}

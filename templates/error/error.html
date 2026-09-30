@@ -1,4 +1,9 @@
 {% extends "_base.html" %}
+{% load static %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/pages/error.css' %}">
+{% endblock %}
 {% block content_width %}[&_main]:max-w-[720px]{% endblock %}
 {% block title %}{{ error_title|default:"Something went wrong" }} · PathGen{% endblock %}
 {% block shell %}

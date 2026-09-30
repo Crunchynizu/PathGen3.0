@@ -1,6 +1,10 @@
 {% extends "_base.html" %}
 {% block content_width %}[&_main]:max-w-[780px]{% endblock %}
 {% load static %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/pages/student_dashboard.css' %}">
+{% endblock %}
 {% block title %}Student Dashboard · PathGen{% endblock %}
 {% block shell %}
 <div class="min-h-screen lg:grid lg:grid-cols-[240px_1fr] [background:var(--color-bg-subtle)]" data-ui="app-frame">

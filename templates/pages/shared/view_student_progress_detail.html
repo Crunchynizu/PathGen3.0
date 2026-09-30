@@ -1,5 +1,9 @@
 {% extends "_base.html" %}
 {% load static %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/pages/view_student_progress_detail.css' %}">
+{% endblock %}
 {% block title %}{{ student_name }} · Progress · PathGen{% endblock %}
 {% block shell %}
 <main id="main-content" class="min-h-screen px-4 sm:px-6 lg:px-8 [background:var(--color-bg)] [&_[data-ui=breadcrumbs]]:max-w-[1160px]">

@@ -1,5 +1,9 @@
 {% extends "_base.html" %}
 {% load static %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/pages/login.css' %}">
+{% endblock %}
 {% block title %}Log in · PathGen{% endblock %}
 {% block shell %}
 <main id="main-content" class="grid min-h-screen place-items-center px-4 py-10 [background:var(--color-bg-subtle)]">

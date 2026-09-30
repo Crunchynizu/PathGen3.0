@@ -198,7 +198,7 @@ class Phase13AccessibilityTests(SimpleTestCase):
     def test_11_css_has_no_dark_color_scheme_media_query(self):
         css = "\n".join(
             path.read_text(encoding="utf-8")
-            for path in [BASE_DIR / "input.css", BASE_DIR / "static" / "css" / "theme.css"]
+            for path in (BASE_DIR / "static" / "css").rglob("*.css")
         )
         self.assertNotIn("prefers-color-scheme: dark", css.lower())
 
