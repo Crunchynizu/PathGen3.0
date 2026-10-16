@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>Users · PathGen</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<style>
+:root {
+  color-scheme: only light;
+  --primary-50:  #eafcfd; --primary-100: #d1f6fa; --primary-200: #a3e9f2;
+  --primary-300: #6ed8e9; --primary-400: #38c9de; --primary-500: #0cc0df;
+  --primary-600: #0a9db8; --primary-700: #087b90; --primary-800: #0a5f6f; --primary-900: #0b4a56;
+  --gray-50:  #f8fafb; --gray-100: #eff2f4; --gray-200: #dfe4e8; --gray-300: #c7cfd6;
+  --gray-400: #9aa5b1; --gray-500: #74808d; --gray-600: #57626d; --gray-700: #3f4750;
+  --gray-800: #262b31; --gray-900: #15181b;
+  --success: #1fa860; --success-bg: #e5f7ee;
+  --warning: #e6a319; --warning-bg: #fdf3df;
+  --danger:  #e0403f; --danger-bg:  #fbe7e6;
+  --color-bg:            #ffffff;
+  --color-bg-subtle:     var(--gray-50);
+  --color-surface:       #ffffff;
+  --color-border:        var(--gray-200);
+  --color-border-strong: var(--gray-300);
+  --color-focus-ring:    var(--primary-700);
+  --color-text:            var(--gray-900);
+  --color-text-secondary:  var(--gray-600);
+  --color-text-muted:      var(--gray-500);
+  --color-primary:        var(--primary-600);
+  --color-primary-hover:  var(--primary-700);
+  --color-primary-subtle: var(--primary-50);
+  --color-on-primary:     #ffffff;
+  --color-accent:         var(--primary-500);
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --text-xs: 0.75rem; --text-sm: 0.875rem; --text-base: 1rem;
+  --text-lg: 1.125rem; --text-xl: 1.25rem; --text-2xl: 1.5rem; --text-3xl: 2rem;
+  --leading-tight: 1.2; --leading-normal: 1.5;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(21, 24, 27, 0.06);
+  --shadow-md: 0 4px 10px rgba(21, 24, 27, 0.08);
+  --surface-translucent-bg:   rgba(255, 255, 255, 0.7);
+  --surface-translucent-blur: 20px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; min-height: 100%; }
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+:root { --sidebar-width: 240px; }
+
+.hamburger {
+  position: fixed; top: 16px; left: 16px; z-index: 60;
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--surface-translucent-bg);
+  backdrop-filter: blur(var(--surface-translucent-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--surface-translucent-blur)) saturate(180%);
+  box-shadow: var(--shadow-sm);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text); cursor: pointer;
+  transition: transform 120ms var(--ease-out), background 200ms ease, opacity 200ms ease;
+  will-change: transform, opacity;
+}
+.hamburger:hover { background: var(--color-surface); }
+.hamburger:active { transform: scale(0.94); }
+.hamburger svg { width: 20px; height: 20px; }
+
+.scrim {
+  position: fixed; inset: 0; z-index: 40;
+  background: var(--gray-900); opacity: 0;
+  pointer-events: none; will-change: opacity;
+}
+
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-width); z-index: 50;
+  background: var(--surface-translucent-bg);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-right: 1px solid var(--color-border);
+  display: flex; flex-direction: column;
+  transform: translateX(calc(-1 * var(--sidebar-width)));
+  will-change: transform; touch-action: pan-y; overflow: hidden;
+}
+.sidebar-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; padding: 16px 12px 12px 16px; flex-shrink: 0;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--color-text);
+  padding: 4px 6px; border-radius: var(--radius-md);
+  transition: background 150ms ease;
+}
+.brand:hover { background: rgba(21, 24, 27, 0.04); }
+.brand-mark {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--color-accent);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-900); flex-shrink: 0;
+}
+.brand-mark svg { width: 16px; height: 16px; stroke-width: 2.5; }
+.brand-name { font-size: var(--text-sm); font-weight: 600; letter-spacing: -0.005em; }
+
+.icon-btn {
+  width: 36px; height: 36px; border-radius: var(--radius-md); border: none;
+  background: transparent; color: var(--color-text-muted);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+  transition: background 150ms ease, color 150ms ease, transform 100ms var(--ease-out);
+}
+.icon-btn:hover { background: rgba(21, 24, 27, 0.05); color: var(--color-text); }
+.icon-btn:active { transform: scale(0.9); }
+.icon-btn svg { width: 18px; height: 18px; }
+
+.sidebar-nav {
+  flex: 1; overflow-y: auto;
+  padding: 4px 10px 10px;
+  -webkit-overflow-scrolling: touch;
+}
+.nav-section { margin-top: 14px; }
+.nav-section:first-child { margin-top: 0; }
+.nav-section-label {
+  font-size: var(--text-xs); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-text-muted); padding: 6px 10px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  text-decoration: none; border: none; background: transparent;
+  width: 100%; text-align: left;
+  font-family: inherit; font-size: var(--text-sm); font-weight: 500;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, transform 120ms var(--ease-out);
+}
+.nav-item:hover { background: rgba(21, 24, 27, 0.05); color: var(--color-text); }
+.nav-item:active { transform: scale(0.98); }
+.nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+.nav-item[aria-current="page"] {
+  background: var(--color-primary-subtle);
+  color: var(--color-primary); font-weight: 600;
+}
+.nav-item[aria-current="page"] svg { color: var(--color-primary); }
+
+.sidebar-footer {
+  padding: 10px; border-top: 1px solid var(--color-border); flex-shrink: 0;
+}
+.user-chip {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 150ms ease, transform 120ms var(--ease-out);
+}
+.user-chip:hover { background: rgba(21, 24, 27, 0.05); }
+.user-chip:active { transform: scale(0.98); }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--primary-100); color: var(--primary-800);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-xs); font-weight: 600;
+  letter-spacing: 0.02em; flex-shrink: 0;
+}
+.user-meta { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.user-name {
+  font-size: var(--text-sm); font-weight: 600; color: var(--color-text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.user-role {
+  font-size: var(--text-xs); color: var(--color-text-muted);
+  text-transform: capitalize;
+}
+
+.content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 20px 96px;
+}
+
+.page-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.page-header-text { min-width: 0; flex: 1; }
+.page-header h1 {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+.page-header .subtitle {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 62ch;
+}
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 9px 15px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font: inherit; font-size: var(--text-sm); font-weight: 600;
+  cursor: pointer;
+  transition: background 150ms ease, transform 100ms var(--ease-out),
+              border-color 150ms ease, color 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn:disabled:active { transform: none; }
+.btn svg { width: 14px; height: 14px; }
+
+.btn-ghost {
+  background: transparent; color: var(--color-text);
+  border-color: var(--color-border);
+}
+.btn-ghost:hover { background: var(--color-bg-subtle); border-color: var(--color-border-strong); }
+
+.btn-ghost-sm {
+  padding: 6px 10px;
+  font-size: var(--text-xs);
+  border-radius: var(--radius-sm);
+  gap: 4px;
+}
+.btn-ghost-sm svg { width: 12px; height: 12px; }
+.btn-ghost-sm.danger { color: var(--danger); border-color: #f0c3c2; }
+.btn-ghost-sm.danger:hover { background: var(--danger-bg); border-color: #e8a8a7; }
+
+.btn-primary {
+  background: var(--color-primary); color: var(--color-on-primary);
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover { background: var(--color-primary-hover); }
+
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: #c93736; }
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-search {
+  position: relative;
+  flex: 1 1 240px;
+  min-width: 0;
+}
+.filter-search svg {
+  position: absolute;
+  left: 11px; top: 50%;
+  transform: translateY(-50%);
+  width: 15px; height: 15px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+.filter-search input {
+  width: 100%;
+  padding: 9px 12px 9px 34px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.filter-search input:hover { border-color: var(--color-border-strong); }
+.filter-search input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-subtle);
+}
+
+.filter-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font: inherit; font-size: var(--text-sm); font-weight: 500;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease, transform 100ms var(--ease-out);
+  white-space: nowrap;
+}
+.filter-toggle:hover { background: var(--color-bg-subtle); color: var(--color-text); border-color: var(--color-border-strong); }
+.filter-toggle:active { transform: scale(0.97); }
+.filter-toggle svg { width: 14px; height: 14px; }
+.filter-toggle .badge-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 10px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.filter-toggle .badge-count[hidden] { display: none; }
+
+.filters {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
+  margin-bottom: 16px;
+}
+.filters.is-open { display: flex; }
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 640px) {
+  .filter-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.filter-field {
+  display: flex; flex-direction: column; gap: 5px;
+  min-width: 0;
+}
+.filter-field label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+.filter-field select,
+.filter-field input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.filter-field select:hover,
+.filter-field input:hover { border-color: var(--color-border-strong); }
+.filter-field select:focus,
+.filter-field input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-subtle);
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+  margin-top: 4px;
+}
+
+.results-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  padding: 0 4px 8px;
+  flex-wrap: wrap;
+}
+.results-meta strong { color: var(--color-text); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.user-row {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--color-surface);
+  transition: background 120ms ease;
+}
+.user-row:hover { background: var(--color-bg-subtle); }
+
+.user-row[data-status="inactive"] {
+  background: var(--gray-50);
+}
+.user-row[data-status="inactive"] .user-avatar,
+.user-row[data-status="inactive"] .user-name,
+.user-row[data-status="inactive"] .user-username {
+  opacity: 0.6;
+}
+
+/* Delete only on inactive rows */
+.user-row[data-status="active"] [data-open="m-users-delete"] { display: none; }
+
+.user-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--primary-100);
+  color: var(--primary-800);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.user-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.user-avatar[data-role="teacher"] { background: #efe7ff; color: #4b2a8a; }
+.user-avatar[data-role="admin"]   { background: #fde7e6; color: #7a1f1f; }
+
+.user-main { min-width: 0; }
+
+.user-name-line {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.user-name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.005em;
+  overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user-username {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.user-meta-line {
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.user-meta-line .meta-item {
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.user-meta-line .meta-item svg {
+  width: 12px; height: 12px;
+  flex-shrink: 0;
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.badge[data-role="admin"]   { background: #fde7e6; color: #7a1f1f; }
+.badge[data-role="teacher"] { background: #efe7ff; color: #4b2a8a; }
+.badge[data-role="student"] { background: var(--primary-100); color: var(--primary-800); }
+
+.badge-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+.badge-status .status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+}
+.user-row[data-status="active"] .badge-status {
+  background: var(--success-bg);
+  border-color: #bde5cd;
+  color: #0f5132;
+}
+.user-row[data-status="active"] .badge-status .status-dot {
+  background: var(--success);
+}
+.user-row[data-status="inactive"] .badge-status {
+  background: var(--danger-bg);
+  border-color: #f0c3c2;
+  color: #7a1f1f;
+}
+.user-row[data-status="inactive"] .badge-status .status-dot {
+  background: var(--danger);
+}
+
+.user-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.empty {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 64px 24px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  text-align: center;
+}
+.empty.is-visible { display: flex; }
+.empty-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 4px;
+}
+.empty-icon svg { width: 22px; height: 22px; }
+.empty-title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+.empty-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 44ch;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 4px 0;
+  flex-wrap: wrap;
+}
+.page-info {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.page-info strong { color: var(--color-text); font-weight: 600; }
+.page-controls { display: flex; gap: 6px; }
+
+dialog {
+  border: none; padding: 0; margin: auto;
+  width: min(460px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(21, 24, 27, 0.18), 0 4px 16px rgba(21, 24, 27, 0.08);
+}
+dialog::backdrop {
+  background: rgba(21, 24, 27, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+dialog[open] { animation: modal-in 280ms var(--ease-out); }
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+dialog.is-closing { animation: modal-out 160ms cubic-bezier(0.4, 0, 1, 1) forwards; }
+@keyframes modal-out { to { opacity: 0; transform: translateY(4px) scale(0.98); } }
+
+.m-body { display: flex; flex-direction: column; max-height: inherit; }
+.m-head { padding: 20px 20px 12px; }
+.m-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  margin: 0 0 4px;
+}
+.m-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+.m-fields {
+  padding: 8px 20px 16px;
+  display: flex; flex-direction: column; gap: 14px;
+  overflow-y: auto;
+}
+.m-actions {
+  padding: 12px 20px;
+  display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+.field label .req { color: var(--danger); margin-left: 2px; }
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 9px 11px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.field input:hover,
+.field select:hover,
+.field textarea:hover { border-color: var(--color-border-strong); }
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-subtle);
+}
+.field input:disabled {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+.field textarea {
+  resize: vertical;
+  min-height: 76px;
+  line-height: 1.5;
+}
+.field .hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 400px) {
+  .field-row { grid-template-columns: 1fr; }
+}
+
+.m-info {
+  display: flex; gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-subtle);
+  color: var(--primary-900);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+.m-info svg {
+  width: 16px; height: 16px;
+  flex-shrink: 0; margin-top: 2px;
+  color: var(--primary-700);
+}
+.m-info code {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  background: rgba(12, 192, 223, 0.14);
+}
+
+.m-warn {
+  display: flex; gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--danger-bg);
+  color: #7a1f1f;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+.m-warn svg {
+  width: 16px; height: 16px;
+  flex-shrink: 0; margin-top: 2px;
+  color: var(--danger);
+}
+
+.input-wrap { position: relative; display: flex; align-items: center; }
+.input-wrap input { padding-right: 44px; }
+.password-toggle {
+  position: absolute;
+  right: 6px; top: 50%;
+  transform: translateY(-50%);
+  width: 30px; height: 30px;
+  border-radius: var(--radius-sm);
+  border: none; background: transparent;
+  color: var(--color-text-muted);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.password-toggle:hover { background: var(--color-bg-subtle); color: var(--color-text); }
+.password-toggle svg { width: 15px; height: 15px; }
+
+@media (min-width: 640px) {
+  .content { padding: 96px 24px 96px; }
+  .user-row { padding: 16px 20px; gap: 16px; }
+}
+@media (min-width: 768px) {
+  .filters { display: flex; }
+  .filter-toggle { display: none; }
+}
+@media (min-width: 1024px) {
+  body { padding-left: var(--sidebar-width); }
+  .hamburger, .scrim { display: none; }
+  .sidebar {
+    transform: none;
+    background: var(--color-bg-subtle);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .sidebar-header #closeBtn { display: none; }
+  .content { padding: 48px 32px 96px; }
+}
+
+@media (max-width: 639.98px) {
+  .user-row {
+    grid-template-columns: 36px 1fr;
+    grid-template-areas:
+      "avatar main"
+      "actions actions";
+    row-gap: 12px;
+  }
+  .user-avatar { grid-area: avatar; width: 36px; height: 36px; font-size: var(--text-xs); }
+  .user-main { grid-area: main; }
+  .user-actions {
+    grid-area: actions;
+    padding-top: 10px;
+    border-top: 1px dashed var(--color-border);
+    justify-content: flex-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  .hamburger:active, .nav-item:active, .btn:active, .user-chip:active, .icon-btn:active, .filter-toggle:active {
+    transform: none !important; opacity: 0.75;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .sidebar, .hamburger { background: var(--color-surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  dialog::backdrop { background: rgba(21, 24, 27, 0.5); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  :root { --color-border: var(--gray-400); --color-text-secondary: var(--gray-700); --color-text-muted: var(--gray-600); }
+  .sidebar, .hamburger { background: var(--color-surface); backdrop-filter: none; -webkit-backdrop-filter: none; border-color: var(--color-border-strong); }
+  .user-list { border-color: var(--color-border-strong); }
+}
+</style>
+</head>
+
+<body data-role="admin">
+
+<button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+  <i data-lucide="menu" aria-hidden="true"></i>
+</button>
+
+<div class="scrim" id="scrim" aria-hidden="true"></div>
+
+<aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+
+  <div class="sidebar-header">
+    <a href="admin_dashboard.html" class="brand" aria-label="PathGen home">
+      <span class="brand-mark" aria-hidden="true"><i data-lucide="route"></i></span>
+      <span class="brand-name">PathGen</span>
+    </a>
+    <button class="icon-btn" id="closeBtn" aria-label="Close menu">
+      <i data-lucide="x" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <a href="admin_dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a>
+      <a href="user_management.html" class="nav-item" aria-current="page"><i data-lucide="users" aria-hidden="true"></i>Users</a>
+      <a href="classmanagement.html" class="nav-item"><i data-lucide="school" aria-hidden="true"></i>Classes</a>
+      <a href="student_list.html" class="nav-item"><i data-lucide="users-round" aria-hidden="true"></i>Students</a>
+      <a href="content.html" class="nav-item"><i data-lucide="book-open" aria-hidden="true"></i>Content</a>
+      <a href="overrides.html" class="nav-item"><i data-lucide="toggle-right" aria-hidden="true"></i>Overrides</a>
+      <a href="audit_logs.html" class="nav-item"><i data-lucide="scroll-text" aria-hidden="true"></i>Audit Logs</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Account</div>
+      <a href="my_account.html" class="nav-item"><i data-lucide="user" aria-hidden="true"></i>My Account</a>
+      <button type="button" class="nav-item"><i data-lucide="log-out" aria-hidden="true"></i>Logout</button>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-chip" role="button" tabindex="0">
+      <span class="avatar" aria-hidden="true">JD</span>
+      <span class="user-meta">
+        <span class="user-name">Jane Doe</span>
+        <span class="user-role">admin</span>
+      </span>
+    </div>
+  </div>
+
+</aside>
+
+<main class="content">
+
+  <header class="page-header">
+    <div class="page-header-text">
+      <h1>Users</h1>
+      <p class="subtitle">
+        Manage teacher and student accounts. Usernames and roles are immutable after creation.
+      </p>
+    </div>
+    <button type="button" class="btn btn-primary" data-open="m-users-create">
+      <i data-lucide="user-plus" aria-hidden="true"></i>
+      Add user
+    </button>
+  </header>
+
+  <div class="filter-bar">
+    <div class="filter-search">
+      <i data-lucide="search" aria-hidden="true"></i>
+      <input
+        type="search"
+        id="userSearch"
+        placeholder="Search name, username, or email…"
+        autocomplete="off"
+        aria-label="Search users">
+    </div>
+    <button
+      type="button"
+      class="filter-toggle"
+      id="filterToggle"
+      aria-expanded="false"
+      aria-controls="filters">
+      <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+      Filters
+      <span class="badge-count" id="filterCount" hidden>0</span>
+    </button>
+  </div>
+
+  <form class="filters" id="filters" aria-label="User filters">
+    <div class="filter-grid">
+      <div class="filter-field">
+        <label for="f-role">Role</label>
+        <select id="f-role">
+          <option value="">All roles</option>
+          <option value="teacher">Teacher</option>
+          <option value="student">Student</option>
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label for="f-status">Status</label>
+        <select id="f-status">
+          <option value="">All statuses</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label for="f-class">Class</label>
+        <select id="f-class">
+          <option value="">All classes</option>
+          <option>Grade 7 — Section A</option>
+          <option>Grade 7 — Section B</option>
+          <option>Grade 7 — Section C</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-actions">
+      <button type="button" class="btn btn-ghost" id="resetFilters">
+        <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+        Reset
+      </button>
+      <button type="submit" class="btn btn-primary">
+        <i data-lucide="check" aria-hidden="true"></i>
+        Apply
+      </button>
+    </div>
+  </form>
+
+  <div class="results-meta">
+    <span>Showing <strong>1–6</strong> of <strong>84</strong> users</span>
+    <span>Sorted by name A–Z</span>
+  </div>
+
+  <div class="user-list" id="userList" role="list">
+
+    <!-- 1 — active teacher -->
+    <div class="user-row" data-status="active" data-role="teacher" role="listitem"
+         data-name="Maria Santos" data-username="msantos" data-email="msantos@example.com">
+      <span class="user-avatar" data-role="teacher" aria-hidden="true">MS</span>
+      <div class="user-main">
+        <div class="user-name-line">
+          <span class="user-name">Maria Santos</span>
+          <code class="user-username">msantos</code>
+          <span class="badge" data-role="teacher">Teacher</span>
+          <span class="badge-status"><span class="status-dot" aria-hidden="true"></span>Active</span>
+        </div>
+        <div class="user-meta-line">
+          <span class="meta-item"><i data-lucide="mail" aria-hidden="true"></i>msantos@example.com</span>
+          <span class="meta-item"><i data-lucide="school" aria-hidden="true"></i>2 classes</span>
+        </div>
+      </div>
+      <div class="user-actions">
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-update">Edit</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reset-password">Reset password</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reset-sessions">Reset sessions</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm danger" data-open="m-users-deactivate">Deactivate</button>
+      </div>
+    </div>
+
+    <!-- 2 — active student -->
+    <div class="user-row" data-status="active" data-role="student" role="listitem"
+         data-name="Juan Dela Cruz" data-username="jdelacruz" data-email="jdelacruz@example.com">
+      <span class="user-avatar" data-role="student" aria-hidden="true">JD</span>
+      <div class="user-main">
+        <div class="user-name-line">
+          <span class="user-name">Juan Dela Cruz</span>
+          <code class="user-username">jdelacruz</code>
+          <span class="badge" data-role="student">Student</span>
+          <span class="badge-status"><span class="status-dot" aria-hidden="true"></span>Active</span>
+        </div>
+        <div class="user-meta-line">
+          <span class="meta-item"><i data-lucide="mail" aria-hidden="true"></i>jdelacruz@example.com</span>
+          <span class="meta-item"><i data-lucide="school" aria-hidden="true"></i>Grade 7 — Section A</span>
+        </div>
+      </div>
+      <div class="user-actions">
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-update">Edit</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reset-password">Reset password</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reset-sessions">Reset sessions</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm danger" data-open="m-users-deactivate">Deactivate</button>
+      </div>
+    </div>
+
+    <!-- 3 — active student, no class -->
+    <div class="user-row" data-status="active" data-role="student" role="listitem"
+         data-name="Rosa Lim" data-username="rlim" data-email="rlim@example.com">
+      <span class="user-avatar" data-role="student" aria-hidden="true">RL</span>
+      <div class="user-main">
+        <div class="user-name-line">
+          <span class="user-name">Rosa Lim</span>
+          <code class="user-username">rlim</code>
+          <span class="badge" data-role="student">Student</span>
+          <span class="badge-status"><span class="status-dot" aria-hidden="true"></span>Active</span>
+        </div>
+        <div class="user-meta-line">
+          <span class="meta-item"><i data-lucide="mail" aria-hidden="true"></i>rlim@example.com</span>
+          <span class="meta-item"><i data-lucide="school" aria-hidden="true"></i>No class — learning enabled</span>
+        </div>
+      </div>
+      <div class="user-actions">
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-update">Edit</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reset-password">Reset password</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reset-sessions">Reset sessions</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm danger" data-open="m-users-deactivate">Deactivate</button>
+      </div>
+    </div>
+
+    <!-- 4 — active student -->
+    <div class="user-row" data-status="active" data-role="student" role="listitem"
+         data-name="Ken Tanaka" data-username="ktanaka" data-email="ktanaka@example.com">
+      <span class="user-avatar" data-role="student" aria-hidden="true">KT</span>
+      <div class="user-main">
+        <div class="user-name-line">
+          <span class="user-name">Ken Tanaka</span>
+          <code class="user-username">ktanaka</code>
+          <span class="badge" data-role="student">Student</span>
+          <span class="badge-status"><span class="status-dot" aria-hidden="true"></span>Active</span>
+        </div>
+        <div class="user-meta-line">
+          <span class="meta-item"><i data-lucide="mail" aria-hidden="true"></i>ktanaka@example.com</span>
+          <span class="meta-item"><i data-lucide="school" aria-hidden="true"></i>Grade 7 — Section B</span>
+        </div>
+      </div>
+      <div class="user-actions">
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-update">Edit</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reset-password">Reset password</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reset-sessions">Reset sessions</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm danger" data-open="m-users-deactivate">Deactivate</button>
+      </div>
+    </div>
+
+    <!-- 5 — inactive student -->
+    <div class="user-row" data-status="inactive" data-role="student" role="listitem"
+         data-name="Mika Bautista" data-username="mbautista" data-email="mbautista@example.com">
+      <span class="user-avatar" data-role="student" aria-hidden="true">MB</span>
+      <div class="user-main">
+        <div class="user-name-line">
+          <span class="user-name">Mika Bautista</span>
+          <code class="user-username">mbautista</code>
+          <span class="badge" data-role="student">Student</span>
+          <span class="badge-status"><span class="status-dot" aria-hidden="true"></span>Inactive</span>
+        </div>
+        <div class="user-meta-line">
+          <span class="meta-item"><i data-lucide="mail" aria-hidden="true"></i>mbautista@example.com</span>
+          <span class="meta-item"><i data-lucide="user-x" aria-hidden="true"></i>Deactivated 2026-09-12</span>
+        </div>
+      </div>
+      <div class="user-actions">
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-update">Edit</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reset-password">Reset password</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reactivate">Reactivate</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm danger" data-open="m-users-delete">Delete</button>
+      </div>
+    </div>
+
+    <!-- 6 — inactive teacher -->
+    <div class="user-row" data-status="inactive" data-role="teacher" role="listitem"
+         data-name="Ana Cruz" data-username="acruz" data-email="acruz@example.com">
+      <span class="user-avatar" data-role="teacher" aria-hidden="true">AC</span>
+      <div class="user-main">
+        <div class="user-name-line">
+          <span class="user-name">Ana Cruz</span>
+          <code class="user-username">acruz</code>
+          <span class="badge" data-role="teacher">Teacher</span>
+          <span class="badge-status"><span class="status-dot" aria-hidden="true"></span>Inactive</span>
+        </div>
+        <div class="user-meta-line">
+          <span class="meta-item"><i data-lucide="mail" aria-hidden="true"></i>acruz@example.com</span>
+          <span class="meta-item"><i data-lucide="user-x" aria-hidden="true"></i>Deactivated 2026-08-30</span>
+        </div>
+      </div>
+      <div class="user-actions">
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-update">Edit</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reset-password">Reset password</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm" data-open="m-users-reactivate">Reactivate</button>
+        <button type="button" class="btn btn-ghost btn-ghost-sm danger" data-open="m-users-delete">Delete</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="empty" id="userEmpty">
+    <span class="empty-icon" aria-hidden="true"><i data-lucide="users" aria-hidden="true"></i></span>
+    <p class="empty-title">No matching users</p>
+    <p class="empty-desc">
+      Try a different search term or filter. Users are never deleted from this list — deactivation is the normal lifecycle.
+    </p>
+  </div>
+
+  <nav class="pagination" aria-label="Pagination">
+    <span class="page-info">Page <strong>1</strong> of <strong>14</strong></span>
+    <div class="page-controls">
+      <button type="button" class="btn btn-ghost" disabled>
+        <i data-lucide="chevron-left" aria-hidden="true"></i>
+        Previous
+      </button>
+      <button type="button" class="btn btn-ghost">
+        Next
+        <i data-lucide="chevron-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </nav>
+
+</main>
+
+
+<dialog id="m-users-create" aria-labelledby="m-users-create-title">
+  <form method="post" class="m-body" action="#">
+    <input type="hidden" name="action" value="create_user">
+    <header class="m-head">
+      <h2 id="m-users-create-title" class="m-title">Create user</h2>
+      <p class="m-desc">Usernames and roles are immutable after creation.</p>
+    </header>
+    <div class="m-fields">
+      <div class="field">
+        <label for="cu-username">Username <span class="req">*</span></label>
+        <input id="cu-username" name="username" type="text" autocomplete="off"
+               autocapitalize="off" spellcheck="false" required>
+        <p class="hint">Letters, digits, and underscores. Cannot be changed later.</p>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="cu-first">First name</label>
+          <input id="cu-first" name="first_name" type="text" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="cu-last">Last name</label>
+          <input id="cu-last" name="last_name" type="text" autocomplete="off">
+        </div>
+      </div>
+      <div class="field">
+        <label for="cu-email">Email</label>
+        <input id="cu-email" name="email" type="email" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="cu-role">Role <span class="req">*</span></label>
+        <select id="cu-role" name="role" required>
+          <option value="">Choose a role…</option>
+          <option value="teacher">Teacher</option>
+          <option value="student">Student</option>
+        </select>
+        <p class="hint">Admin accounts are created only via the <code>bootstrap_admin</code> command — never here.</p>
+      </div>
+      <div class="field">
+        <label for="cu-password">Temporary password <span class="req">*</span></label>
+        <div class="input-wrap">
+          <input id="cu-password" name="password" type="password"
+                 autocomplete="new-password" required>
+          <button type="button" class="password-toggle"
+                  data-toggle-pw="cu-password"
+                  aria-label="Show password" aria-pressed="false">
+            <i data-lucide="eye" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="hint">The user should change this after first sign in.</p>
+      </div>
+    </div>
+    <div class="m-actions">
+      <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+      <button type="submit" class="btn btn-primary">Create user</button>
+    </div>
+  </form>
+</dialog>
+
+
+<dialog id="m-users-update" aria-labelledby="m-users-update-title">
+  <form method="post" class="m-body" action="#">
+    <input type="hidden" name="action" value="update_user">
+    <header class="m-head">
+      <h2 id="m-users-update-title" class="m-title">Edit user</h2>
+      <p class="m-desc">Update name and email. Username and role cannot change.</p>
+    </header>
+    <div class="m-fields">
+      <div class="field">
+        <label>Username</label>
+        <input type="text" id="uu-username" value="msantos" disabled>
+      </div>
+      <div class="field">
+        <label>Role</label>
+        <input type="text" id="uu-role" value="Teacher" disabled>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="uu-first">First name</label>
+          <input id="uu-first" name="first_name" type="text" value="Maria">
+        </div>
+        <div class="field">
+          <label for="uu-last">Last name</label>
+          <input id="uu-last" name="last_name" type="text" value="Santos">
+        </div>
+      </div>
+      <div class="field">
+        <label for="uu-email">Email</label>
+        <input id="uu-email" name="email" type="email" value="msantos@example.com">
+      </div>
+    </div>
+    <div class="m-actions">
+      <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+      <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</dialog>
+
+
+<dialog id="m-users-deactivate" data-destructive="true" aria-labelledby="m-users-deactivate-title">
+  <form method="post" class="m-body" action="#">
+    <input type="hidden" name="action" value="deactivate_user">
+    <header class="m-head">
+      <h2 id="m-users-deactivate-title" class="m-title">Deactivate account</h2>
+      <p class="m-desc">The account will be locked and all active sessions invalidated.</p>
+    </header>
+    <div class="m-fields">
+      <div class="m-warn">
+        <i data-lucide="alert-triangle" aria-hidden="true"></i>
+        <span>
+          <strong id="deactivate-target">This user</strong> will lose access immediately.
+          History is preserved and the account can be reactivated later.
+        </span>
+      </div>
+      <div class="field">
+        <label for="ud-reason">Reason <span class="req">*</span></label>
+        <textarea id="ud-reason" name="reason"
+                  placeholder="Explain why this account is being deactivated…" required></textarea>
+        <p class="hint">Recorded in the audit log. Visible to admins only.</p>
+      </div>
+    </div>
+    <div class="m-actions">
+      <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+      <button type="submit" class="btn btn-danger">Deactivate</button>
+    </div>
+  </form>
+</dialog>
+
+
+<dialog id="m-users-reactivate" aria-labelledby="m-users-reactivate-title">
+  <form method="post" class="m-body" action="#">
+    <input type="hidden" name="action" value="reactivate_user">
+    <header class="m-head">
+      <h2 id="m-users-reactivate-title" class="m-title">Reactivate account</h2>
+      <p class="m-desc">The account will become active again. Lifecycle fields are cleared.</p>
+    </header>
+    <div class="m-fields">
+      <div class="m-info">
+        <i data-lucide="info" aria-hidden="true"></i>
+        <span>
+          Reactivation does not bypass <strong>Study Access</strong>. Students return to their previous
+          path state and can resume from where they left off.
+        </span>
+      </div>
+    </div>
+    <div class="m-actions">
+      <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+      <button type="submit" class="btn btn-primary">Reactivate</button>
+    </div>
+  </form>
+</dialog>
+
+
+<dialog id="m-users-delete" data-destructive="true" data-confirm-name="jdelacruz"
+        aria-labelledby="m-users-delete-title">
+  <form method="post" class="m-body" action="#">
+    <input type="hidden" name="action" value="delete_user">
+    <header class="m-head">
+      <h2 id="m-users-delete-title" class="m-title">Delete account permanently</h2>
+      <p class="m-desc">Only for an already-inactive, unused mistake with no protected history.</p>
+    </header>
+    <div class="m-fields">
+      <div class="m-warn">
+        <i data-lucide="alert-octagon" aria-hidden="true"></i>
+        <span>
+          This <strong>cannot be undone</strong>. If protected history exists, the request is rejected
+          and anonymization is offered instead.
+        </span>
+      </div>
+      <div class="field">
+        <label for="delete-confirm-input">
+          Type <code id="delete-confirm-name">jdelacruz</code> to confirm <span class="req">*</span>
+        </label>
+        <input id="delete-confirm-input" type="text" autocomplete="off"
+               autocapitalize="off" spellcheck="false" placeholder="jdelacruz">
+      </div>
+      <div class="field">
+        <label for="ud-delete-reason">Reason <span class="req">*</span></label>
+        <textarea id="ud-delete-reason" name="reason"
+                  placeholder="Explain why this record must be removed…" required></textarea>
+      </div>
+    </div>
+    <div class="m-actions">
+      <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+      <button type="submit" class="btn btn-danger" id="deleteConfirmBtn" disabled>Delete permanently</button>
+    </div>
+  </form>
+</dialog>
+
+
+<!-- Reset password -->
+<dialog id="m-users-reset-password" aria-labelledby="m-users-reset-password-title">
+  <form method="post" class="m-body" action="#">
+    <input type="hidden" name="action" value="reset_password">
+    <input type="hidden" name="user_id" id="rp-user-id" value="">
+
+    <header class="m-head">
+      <h2 id="m-users-reset-password-title" class="m-title">Reset password</h2>
+      <p class="m-desc">
+        Set a new temporary password for <strong id="rp-target-name">this user</strong>.
+      </p>
+    </header>
+    <div class="m-fields">
+      <div class="m-warn">
+        <i data-lucide="alert-triangle" aria-hidden="true"></i>
+        <span>
+          The user's current password cannot be recovered. This issues a
+          <strong>new</strong> password and signs them out of all devices.
+        </span>
+      </div>
+      <div class="field">
+        <label for="rp-new">New temporary password <span class="req">*</span></label>
+        <div class="input-wrap">
+          <input id="rp-new" name="new_password" type="text"
+                 autocomplete="off" autocapitalize="off" spellcheck="false"
+                 minlength="12" required
+                 style="font-family:var(--font-mono);letter-spacing:0.04em;">
+          <button type="button" class="password-toggle" data-toggle-pw="rp-new"
+                  aria-label="Show password" aria-pressed="false">
+            <i data-lucide="eye" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="hint">Minimum 12 characters. Give this to the user directly — the system cannot show it again.</p>
+      </div>
+      <div class="field">
+        <label for="rp-reason">Reason <span class="req">*</span></label>
+        <textarea id="rp-reason" name="reason"
+                  placeholder="e.g. Student forgot their password and requested a reset" required></textarea>
+        <p class="hint">Recorded in the audit log. Visible to admins only.</p>
+      </div>
+    </div>
+    <div class="m-actions">
+      <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+      <button type="submit" class="btn btn-primary">
+        <i data-lucide="key-round" aria-hidden="true"></i>
+        Reset password
+      </button>
+    </div>
+  </form>
+</dialog>
+
+
+<!-- Reset sessions -->
+<dialog id="m-users-reset-sessions" aria-labelledby="m-users-reset-sessions-title">
+  <form method="post" class="m-body" action="#">
+    <input type="hidden" name="action" value="reset_sessions">
+    <input type="hidden" name="user_id" id="rs-user-id" value="">
+
+    <header class="m-head">
+      <h2 id="m-users-reset-sessions-title" class="m-title">Reset active sessions</h2>
+      <p class="m-desc">Invalidate all sessions for <strong id="rs-target-name">this user</strong>. They must sign in again.</p>
+    </header>
+    <div class="m-fields">
+      <div class="m-info">
+        <i data-lucide="info" aria-hidden="true"></i>
+        <span>
+          This does not change the password. To force a credential reset, use
+          <strong>Reset password</strong> instead.
+        </span>
+      </div>
+    </div>
+    <div class="m-actions">
+      <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+      <button type="submit" class="btn btn-primary">Reset sessions</button>
+    </div>
+  </form>
+</dialog>
+
+
+<script>
+class Spring {
+  constructor(value, { damping = 1, response = 0.4, onUpdate } = {}) {
+    this.value = value; this.velocity = 0; this.target = value;
+    this.onUpdate = onUpdate; this.raf = null;
+    this.stiffness    = (2 * Math.PI / response) ** 2;
+    this.dampingCoeff = 4 * Math.PI * damping / response;
+  }
+  setTarget(target, velocity = 0) {
+    this.target = target; this.velocity = velocity;
+    if (!this.raf) this._start();
+  }
+  stop() { if (this.raf) cancelAnimationFrame(this.raf); this.raf = null; }
+  _start() {
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = Math.min((now - last) / 1000, 0.064); last = now;
+      const force = -this.stiffness * (this.value - this.target);
+      const damp  = -this.dampingCoeff * this.velocity;
+      this.velocity += (force + damp) * dt;
+      this.value    += this.velocity * dt;
+      this.onUpdate(this.value, this.velocity);
+      if (Math.abs(this.velocity) < 0.5 && Math.abs(this.value - this.target) < 0.5) {
+        this.value = this.target; this.velocity = 0;
+        this.onUpdate(this.value, 0);
+        this.raf = null; return;
+      }
+      this.raf = requestAnimationFrame(tick);
+    };
+    this.raf = requestAnimationFrame(tick);
+  }
+}
+const project = (v, d = 0.998) => (v / 1000) * d / (1 - d);
+const rubberband = (o, dim, c = 0.55) => (o * dim * c) / (dim + c * Math.abs(o));
+
+const WIDTH = 240;
+const sidebar   = document.getElementById('sidebar');
+const scrim     = document.getElementById('scrim');
+const hamburger = document.getElementById('hamburger');
+const closeBtn  = document.getElementById('closeBtn');
+const content   = document.querySelector('.content');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const desktop       = matchMedia('(min-width: 1024px)');
+
+const spring = new Spring(-WIDTH, {
+  damping: 0.8, response: 0.3,
+  onUpdate: (x) => {
+    sidebar.style.transform = `translateX(${x}px)`;
+    const open = Math.max(0, Math.min(1, 1 - Math.abs(x) / WIDTH));
+    scrim.style.opacity = open * 0.4;
+    scrim.style.pointerEvents = open > 0.02 ? 'auto' : 'none';
+    hamburger.style.opacity = 1 - open;
+    hamburger.style.pointerEvents = open > 0.5 ? 'none' : 'auto';
+  }
+});
+
+let isOpen = false;
+let releaseFocusTrap = null;
+
+function animateTo(target, velocity = 0) {
+  if (reducedMotion.matches) {
+    spring.stop();
+    spring.value = target; spring.velocity = 0;
+    spring.onUpdate(target, 0);
+  } else spring.setTarget(target, velocity);
+}
+function trapFocus() {
+  const f = sidebar.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+  if (!f.length) return () => {};
+  const first = f[0], last = f[f.length - 1];
+  const onKey = (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); closeSidebar(); return; }
+    if (e.key !== 'Tab') return;
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  };
+  sidebar.addEventListener('keydown', onKey);
+  setTimeout(() => first.focus(), 60);
+  return () => sidebar.removeEventListener('keydown', onKey);
+}
+function openSidebar() {
+  if (desktop.matches || isOpen) return;
+  isOpen = true;
+  hamburger.setAttribute('aria-expanded', 'true');
+  content?.setAttribute('inert', '');
+  animateTo(0);
+  releaseFocusTrap = trapFocus();
+}
+function closeSidebar(v = 0) {
+  if (desktop.matches || !isOpen) return;
+  isOpen = false;
+  hamburger.setAttribute('aria-expanded', 'false');
+  content?.removeAttribute('inert');
+  animateTo(-WIDTH, v);
+  releaseFocusTrap?.(); releaseFocusTrap = null;
+  hamburger.focus({ preventScroll: true });
+}
+hamburger.addEventListener('click', openSidebar);
+closeBtn.addEventListener('click', () => closeSidebar());
+scrim.addEventListener('click', () => closeSidebar());
+
+function applyLayout() {
+  spring.stop();
+  if (desktop.matches) {
+    sidebar.style.transform = 'none';
+    scrim.style.opacity = '0';
+    scrim.style.pointerEvents = 'none';
+    hamburger.style.opacity = '0';
+    hamburger.style.pointerEvents = 'none';
+    content?.removeAttribute('inert');
+    releaseFocusTrap?.(); releaseFocusTrap = null;
+    isOpen = false;
+  } else {
+    spring.value = -WIDTH; spring.velocity = 0;
+    spring.onUpdate(-WIDTH, 0);
+    isOpen = false;
+  }
+}
+(desktop.addEventListener ? desktop.addEventListener('change', applyLayout) : desktop.addListener(applyLayout));
+applyLayout();
+
+let drag = null;
+sidebar.addEventListener('pointerdown', (e) => {
+  if (desktop.matches) return;
+  if (e.target.closest('a, button')) return;
+  drag = {
+    id: e.pointerId, startX: e.clientX, startY: e.clientY,
+    startValue: spring.value,
+    history: [{ x: e.clientX, t: performance.now() }],
+    active: false,
+  };
+  sidebar.setPointerCapture(e.pointerId);
+  spring.stop();
+});
+sidebar.addEventListener('pointermove', (e) => {
+  if (!drag || drag.id !== e.pointerId) return;
+  const dx = e.clientX - drag.startX;
+  const dy = e.clientY - drag.startY;
+  if (!drag.active) {
+    if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+    if (Math.abs(dy) > Math.abs(dx)) { drag = null; return; }
+    drag.active = true;
+  }
+  let x = drag.startValue + dx;
+  if (x > 0) x = rubberband(x, WIDTH);
+  else if (x < -WIDTH) x = -WIDTH - rubberband(-WIDTH - x, WIDTH);
+  spring.value = x; spring.onUpdate(x);
+  drag.history.push({ x: e.clientX, t: performance.now() });
+  if (drag.history.length > 6) drag.history.shift();
+});
+const endDrag = (e) => {
+  if (!drag || drag.id !== e.pointerId) return;
+  if (!drag.active) { drag = null; return; }
+  const h = drag.history;
+  const first = h[0], last = h[h.length - 1];
+  const dt = (last.t - first.t) / 1000;
+  const velocity = dt > 0 ? (last.x - first.x) / dt : 0;
+  const projected = spring.value + project(velocity);
+  const target = Math.abs(velocity) > 500
+    ? (velocity < 0 ? -WIDTH : 0)
+    : (projected < -WIDTH / 2 ? -WIDTH : 0);
+  isOpen = target === 0;
+  if (isOpen) { content?.setAttribute('inert', ''); releaseFocusTrap = trapFocus(); }
+  else { content?.removeAttribute('inert'); releaseFocusTrap?.(); releaseFocusTrap = null; }
+  animateTo(target, velocity);
+  drag = null;
+};
+sidebar.addEventListener('pointerup', endDrag);
+sidebar.addEventListener('pointercancel', endDrag);
+
+document.addEventListener('pointerdown', (e) => {
+  if (desktop.matches || isOpen || e.clientX > 24) return;
+  if (e.target.closest('a, button, input, textarea')) return;
+  const id = e.pointerId, startX = e.clientX, startY = e.clientY;
+  let active = false;
+  const history = [{ x: startX, t: performance.now() }];
+  spring.stop();
+  const onMove = (ev) => {
+    if (ev.pointerId !== id) return;
+    const dx = ev.clientX - startX, dy = ev.clientY - startY;
+    if (!active) {
+      if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+      if (Math.abs(dy) > Math.abs(dx) || dx < 0) { cleanup(); return; }
+      active = true;
+    }
+    let x = -WIDTH + dx;
+    if (x > 0) x = rubberband(x, WIDTH);
+    spring.value = x; spring.onUpdate(x);
+    history.push({ x: ev.clientX, t: performance.now() });
+    if (history.length > 6) history.shift();
+  };
+  const onUp = (ev) => {
+    if (ev.pointerId !== id) return;
+    if (!active) { cleanup(); return; }
+    const first = history[0], last = history[history.length - 1];
+    const dt = (last.t - first.t) / 1000;
+    const velocity = dt > 0 ? (last.x - first.x) / dt : 0;
+    const projected = spring.value + project(velocity);
+    const target = Math.abs(velocity) > 500
+      ? (velocity > 0 ? 0 : -WIDTH)
+      : (projected > -WIDTH / 2 ? 0 : -WIDTH);
+    isOpen = target === 0;
+    if (isOpen) { hamburger.setAttribute('aria-expanded', 'true'); content?.setAttribute('inert', ''); releaseFocusTrap = trapFocus(); }
+    animateTo(target, velocity);
+    cleanup();
+  };
+  const cleanup = () => {
+    document.removeEventListener('pointermove', onMove);
+    document.removeEventListener('pointerup', onUp);
+    document.removeEventListener('pointercancel', onUp);
+  };
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp);
+  document.addEventListener('pointercancel', onUp);
+});
+
+const filterToggle = document.getElementById('filterToggle');
+const filters = document.getElementById('filters');
+const filterCount = document.getElementById('filterCount');
+
+filterToggle.addEventListener('click', () => {
+  const open = filters.classList.toggle('is-open');
+  filterToggle.setAttribute('aria-expanded', String(open));
+});
+
+function updateFilterCount() {
+  let n = 0;
+  if (document.getElementById('f-role').value) n++;
+  if (document.getElementById('f-status').value) n++;
+  if (document.getElementById('f-class').value) n++;
+  filterCount.textContent = n;
+  filterCount.hidden = n === 0;
+}
+['f-role','f-status','f-class'].forEach((id) => {
+  document.getElementById(id).addEventListener('change', updateFilterCount);
+});
+updateFilterCount();
+
+document.getElementById('resetFilters').addEventListener('click', () => {
+  document.getElementById('f-role').value = '';
+  document.getElementById('f-status').value = '';
+  document.getElementById('f-class').value = '';
+  updateFilterCount();
+});
+
+filters.addEventListener('submit', (e) => {
+  e.preventDefault();
+  filterToggle.setAttribute('aria-expanded', 'false');
+  filters.classList.remove('is-open');
+});
+
+const userSearch = document.getElementById('userSearch');
+const userList   = document.getElementById('userList');
+const userEmpty  = document.getElementById('userEmpty');
+const rows = Array.from(userList.querySelectorAll('.user-row'));
+
+userSearch.addEventListener('input', () => {
+  const q = userSearch.value.trim().toLowerCase();
+  let visible = 0;
+  rows.forEach((row) => {
+    const text = row.textContent.toLowerCase();
+    const match = !q || text.includes(q);
+    row.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  userEmpty.classList.toggle('is-visible', visible === 0);
+  userList.style.display = visible === 0 ? 'none' : '';
+});
+
+function openDialog(dlg) {
+  dlg.classList.remove('is-closing');
+  dlg.showModal();
+  requestAnimationFrame(() => {
+    const t = dlg.querySelector('input:not([disabled]):not([type="hidden"]), textarea, select') ||
+              dlg.querySelector('.btn-primary, .btn-danger');
+    t?.focus({ preventScroll: true });
+  });
+}
+function closeDialog(dlg) {
+  if (dlg.classList.contains('is-closing')) return;
+  dlg.classList.add('is-closing');
+  setTimeout(() => {
+    dlg.close();
+    dlg.classList.remove('is-closing');
+  }, 160);
+}
+
+document.querySelectorAll('[data-open]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const dlg = document.getElementById(btn.dataset.open);
+    if (!dlg) return;
+
+    const row = btn.closest('.user-row');
+    if (row) {
+      const name = row.dataset.name || '';
+      const username = row.dataset.username || '';
+      const email = row.dataset.email || '';
+      const role = row.dataset.role || '';
+
+      if (dlg.id === 'm-users-update') {
+        const [first, ...rest] = name.split(' ');
+        dlg.querySelector('#uu-username').value = username;
+        dlg.querySelector('#uu-role').value = role.charAt(0).toUpperCase() + role.slice(1);
+        dlg.querySelector('#uu-first').value = first || '';
+        dlg.querySelector('#uu-last').value = rest.join(' ') || '';
+        dlg.querySelector('#uu-email').value = email;
+      }
+
+      if (dlg.id === 'm-users-deactivate') {
+        const t = dlg.querySelector('#deactivate-target');
+        if (t) t.textContent = `${name} (${username})`;
+      }
+
+      if (dlg.id === 'm-users-delete') {
+        dlg.dataset.confirmName = username;
+        const code = dlg.querySelector('#delete-confirm-name');
+        if (code) code.textContent = username;
+        const input = dlg.querySelector('#delete-confirm-input');
+        if (input) {
+          input.value = '';
+          input.placeholder = username;
+        }
+        const confirmBtn = dlg.querySelector('#deleteConfirmBtn');
+        if (confirmBtn) confirmBtn.disabled = true;
+      }
+
+      if (dlg.id === 'm-users-reset-password') {
+        const t = dlg.querySelector('#rp-target-name');
+        if (t) t.textContent = `${name} (${username})`;
+        const userId = dlg.querySelector('#rp-user-id');
+        if (userId) userId.value = username;
+        const pw = dlg.querySelector('#rp-new');
+        if (pw) pw.value = '';
+        const reason = dlg.querySelector('#rp-reason');
+        if (reason) reason.value = '';
+      }
+
+      if (dlg.id === 'm-users-reset-sessions') {
+        const t = dlg.querySelector('#rs-target-name');
+        if (t) t.textContent = `${name} (${username})`;
+        const userId = dlg.querySelector('#rs-user-id');
+        if (userId) userId.value = username;
+      }
+    }
+
+    openDialog(dlg);
+  });
+});
+
+document.querySelectorAll('[data-close]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const dlg = btn.closest('dialog');
+    if (dlg) closeDialog(dlg);
+  });
+});
+
+document.querySelectorAll('dialog').forEach((dlg) => {
+  dlg.addEventListener('cancel', (e) => {
+    e.preventDefault();
+    if (dlg.dataset.destructive === 'true') {
+      const body = dlg.querySelector('.m-body');
+      body.style.animation = 'none';
+      void body.offsetWidth;
+      body.style.animation = 'shake 240ms cubic-bezier(0.36, 0.07, 0.19, 0.97)';
+      setTimeout(() => body.style.animation = '', 260);
+      return;
+    }
+    closeDialog(dlg);
+  });
+  dlg.addEventListener('click', (e) => {
+    if (e.target !== dlg) return;
+    if (dlg.dataset.destructive === 'true') return;
+    closeDialog(dlg);
+  });
+});
+
+document.querySelectorAll('[data-toggle-pw]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const input = document.getElementById(btn.dataset.togglePw);
+    if (!input) return;
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    btn.setAttribute('aria-pressed', String(!showing));
+    btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+    btn.innerHTML = `<i data-lucide="${showing ? 'eye' : 'eye-off'}" aria-hidden="true"></i>`;
+    if (window.lucide) lucide.createIcons();
+    input.focus({ preventScroll: true });
+  });
+});
+
+(() => {
+  const dlg = document.getElementById('m-users-delete');
+  if (!dlg) return;
+  const input = dlg.querySelector('#delete-confirm-input');
+  const btn = dlg.querySelector('#deleteConfirmBtn');
+
+  input.addEventListener('input', () => {
+    btn.disabled = input.value.trim() !== dlg.dataset.confirmName;
+  });
+
+  dlg.addEventListener('close', () => {
+    input.value = '';
+    btn.disabled = true;
+  });
+})();
+
+document.querySelectorAll('dialog form').forEach((form) => {
+  form.addEventListener('submit', (e) => {
+    const reason = form.querySelector('textarea[name="reason"][required]');
+    if (reason) {
+      e.preventDefault();
+      const v = reason.value.trim();
+      if (!v) {
+        reason.style.borderColor = 'var(--danger)';
+        reason.style.boxShadow = '0 0 0 3px var(--danger-bg)';
+        reason.focus({ preventScroll: true });
+        reason.addEventListener('input', () => {
+          reason.style.borderColor = '';
+          reason.style.boxShadow = '';
+        }, { once: true });
+        return;
+      }
+    }
+    e.preventDefault();
+    const dlg = form.closest('dialog');
+    if (dlg) closeDialog(dlg);
+  });
+});
+
+if (!document.getElementById('shake-keyframes')) {
+  const style = document.createElement('style');
+  style.id = 'shake-keyframes';
+  style.textContent = `@keyframes shake {
+    10%, 90% { transform: translateX(-2px); }
+    20%, 80% { transform: translateX(3px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+  }`;
+  document.head.appendChild(style);
+}
+
+lucide.createIcons();
+</script>
+</body>
+</html>

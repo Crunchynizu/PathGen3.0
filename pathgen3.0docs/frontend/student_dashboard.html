@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>My Dashboard · PathGen</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<style>
+:root{color-scheme:only light;--primary-50:#eafcfd;--primary-100:#d1f6fa;--primary-200:#a3e9f2;--primary-300:#6ed8e9;--primary-400:#38c9de;--primary-500:#0cc0df;--primary-600:#0a9db8;--primary-700:#087b90;--primary-800:#0a5f6f;--primary-900:#0b4a56;--gray-50:#f8fafb;--gray-100:#eff2f4;--gray-200:#dfe4e8;--gray-300:#c7cfd6;--gray-400:#9aa5b1;--gray-500:#74808d;--gray-600:#57626d;--gray-700:#3f4750;--gray-800:#262b31;--gray-900:#15181b;--success:#1fa860;--success-bg:#e5f7ee;--warning:#e6a319;--warning-bg:#fdf3df;--danger:#e0403f;--danger-bg:#fbe7e6;--color-bg:#ffffff;--color-bg-subtle:var(--gray-50);--color-surface:#ffffff;--color-border:var(--gray-200);--color-border-strong:var(--gray-300);--color-focus-ring:var(--primary-700);--color-text:var(--gray-900);--color-text-secondary:var(--gray-600);--color-text-muted:var(--gray-500);--color-primary:var(--primary-600);--color-primary-hover:var(--primary-700);--color-primary-subtle:var(--primary-50);--color-on-primary:#ffffff;--color-accent:var(--primary-500);--font-sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--text-xs:0.75rem;--text-sm:0.875rem;--text-base:1rem;--text-lg:1.125rem;--text-xl:1.25rem;--text-2xl:1.5rem;--text-3xl:2rem;--leading-tight:1.2;--leading-normal:1.5;--radius-sm:4px;--radius-md:8px;--radius-lg:12px;--shadow-sm:0 1px 2px rgba(21,24,27,0.06);--shadow-md:0 4px 10px rgba(21,24,27,0.08);--surface-translucent-bg:rgba(255,255,255,0.7);--surface-translucent-blur:20px;--ease-out:cubic-bezier(0.22,1,0.36,1);--sidebar-width:240px}
+*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100%}
+body{background:var(--color-bg);color:var(--color-text);font-family:var(--font-sans);font-size:var(--text-base);line-height:var(--leading-normal);font-optical-sizing:auto;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* SHELL */
+.hamburger{position:fixed;top:16px;left:16px;z-index:60;width:44px;height:44px;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--surface-translucent-bg);backdrop-filter:blur(var(--surface-translucent-blur)) saturate(180%);-webkit-backdrop-filter:blur(var(--surface-translucent-blur)) saturate(180%);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;color:var(--color-text);cursor:pointer;transition:transform 120ms var(--ease-out),background 200ms ease,opacity 200ms ease}
+.hamburger:hover{background:var(--color-surface)}.hamburger:active{transform:scale(0.94)}.hamburger svg{width:20px;height:20px}
+.scrim{position:fixed;inset:0;z-index:40;background:var(--gray-900);opacity:0;pointer-events:none}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-width);z-index:50;background:var(--surface-translucent-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border-right:1px solid var(--color-border);display:flex;flex-direction:column;transform:translateX(calc(-1 * var(--sidebar-width)));touch-action:pan-y;overflow:hidden}
+.sidebar-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 12px 12px 16px;flex-shrink:0}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--color-text);padding:4px 6px;border-radius:var(--radius-md)}
+.brand:hover{background:rgba(21,24,27,0.04)}
+.brand-mark{width:28px;height:28px;border-radius:7px;background:var(--color-accent);display:flex;align-items:center;justify-content:center;color:var(--gray-900);flex-shrink:0}
+.brand-mark svg{width:16px;height:16px;stroke-width:2.5}
+.brand-name{font-size:var(--text-sm);font-weight:600}
+.icon-btn{width:36px;height:36px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.icon-btn:hover{background:rgba(21,24,27,0.05);color:var(--color-text)}.icon-btn svg{width:18px;height:18px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:4px 10px 10px}
+.nav-section{margin-top:14px}.nav-section:first-child{margin-top:0}
+.nav-section-label{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-muted);padding:6px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-md);color:var(--color-text-secondary);text-decoration:none;border:none;background:transparent;width:100%;text-align:left;font-family:inherit;font-size:var(--text-sm);font-weight:500;cursor:pointer;transition:background 120ms ease,color 120ms ease}
+.nav-item:hover{background:rgba(21,24,27,0.05);color:var(--color-text)}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+.nav-item[aria-current="page"]{background:var(--color-primary-subtle);color:var(--color-primary);font-weight:600}
+.nav-item[aria-current="page"] svg{color:var(--color-primary)}
+.sidebar-footer{padding:10px;border-top:1px solid var(--color-border);flex-shrink:0}
+.user-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-md);cursor:pointer}
+.user-chip:hover{background:rgba(21,24,27,0.05)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary-100);color:var(--primary-800);display:flex;align-items:center;justify-content:center;font-size:var(--text-xs);font-weight:600;flex-shrink:0}
+.user-meta{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.user-name{font-size:var(--text-sm);font-weight:600;color:var(--color-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:var(--text-xs);color:var(--color-text-muted);text-transform:capitalize}
+
+/* CONTENT */
+.content{max-width:780px;margin:0 auto;padding:80px 20px 96px}
+
+/* Page header */
+.page-header{margin-bottom:22px}
+.page-header h1{font-size:var(--text-3xl);line-height:var(--leading-tight);letter-spacing:-0.02em;font-weight:700;margin:0 0 6px}
+.page-header .subtitle{font-size:var(--text-base);color:var(--color-text-secondary);margin:0;max-width:62ch}
+.page-header .class-line{display:inline-flex;align-items:center;gap:6px;font-size:var(--text-sm);color:var(--color-text-muted);margin-top:8px}
+.page-header .class-line svg{width:13px;height:13px}
+
+/* NEXT STEP — dominant hero card */
+.next-step{
+  position:relative;
+  overflow:hidden;
+  padding:26px 24px;
+  border-radius:var(--radius-lg);
+  background:linear-gradient(135deg,var(--primary-500) 0%,var(--primary-700) 100%);
+  color:#fff;
+  margin-bottom:24px;
+  box-shadow:0 8px 24px rgba(10,157,184,0.22);
+}
+.next-step::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:rgba(255,255,255,0.08);border-radius:50%}
+.next-step::after{content:'';position:absolute;bottom:-60px;right:60px;width:110px;height:110px;background:rgba(255,255,255,0.05);border-radius:50%}
+.next-step-inner{position:relative;z-index:1}
+.next-step-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;opacity:0.95;background:rgba(255,255,255,0.18);padding:4px 10px;border-radius:999px;margin-bottom:12px}
+.next-step-eyebrow svg{width:12px;height:12px}
+.next-step-title{font-size:var(--text-xl);font-weight:700;letter-spacing:-0.015em;line-height:1.25;margin:0 0 6px}
+.next-step-desc{font-size:var(--text-sm);line-height:1.55;opacity:0.92;margin:0 0 20px;max-width:52ch}
+.next-step-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:var(--radius-md);background:#fff;color:var(--primary-800);font:inherit;font-size:var(--text-sm);font-weight:700;border:none;cursor:pointer;text-decoration:none;min-height:44px;box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:transform 100ms var(--ease-out),box-shadow 150ms ease;-webkit-tap-highlight-color:transparent}
+.next-step-btn:hover{box-shadow:0 4px 12px rgba(0,0,0,0.16)}
+.next-step-btn:active{transform:scale(0.97)}
+.next-step-btn svg{width:15px;height:15px;transition:transform 200ms var(--ease-out)}
+.next-step-btn:hover svg{transform:translateX(2px)}
+
+/* Section card */
+.section-card{border-radius:var(--radius-lg);border:1px solid var(--color-border);background:var(--color-surface);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:16px}
+.section-head{padding:16px 18px;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.section-title{font-size:var(--text-sm);font-weight:600;letter-spacing:-0.01em;display:flex;align-items:center;gap:8px}
+.section-title svg{width:15px;height:15px;color:var(--color-text-muted)}
+.section-desc{font-size:12px;color:var(--color-text-muted);margin-top:4px;line-height:1.5}
+.section-body{padding:18px}
+
+/* Six-stage stepper (compact) */
+.path-steps{display:flex;flex-wrap:wrap;gap:6px}
+.path-step{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:6px 11px;border-radius:999px;background:var(--color-bg-subtle);color:var(--color-text-muted);white-space:nowrap;border:1px solid var(--color-border)}
+.path-step svg{width:13px;height:13px}
+.path-step[data-state="completed"]{background:var(--success-bg);color:#0f5132;border-color:#bde5cd}
+.path-step[data-state="current"]{background:var(--color-primary-subtle);color:var(--primary-800);border-color:var(--primary-200);box-shadow:0 0 0 2px rgba(12,192,223,0.15)}
+.path-step[data-state="available"]{background:var(--color-surface);color:var(--color-text-secondary);border-color:var(--color-border-strong)}
+.path-step[data-state="locked"]{opacity:0.7}
+
+/* Six-skill bands */
+.skill-rows{display:flex;flex-direction:column;gap:10px}
+.skill-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:12px 14px;border-radius:var(--radius-md);background:var(--color-bg-subtle);border:1px solid var(--color-border)}
+.skill-name{font-size:var(--text-sm);font-weight:600;color:var(--color-text);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.skill-code{font-family:var(--font-mono);font-size:11px;color:var(--color-text-muted);margin-left:6px;font-weight:600;letter-spacing:0.02em}
+
+/* Band track: three segments; the current band's segment is filled */
+.band-track{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:8px;max-width:200px}
+.band-seg{height:6px;border-radius:3px;background:var(--color-border);transition:background 200ms ease}
+.band-track[data-band="np"] .band-seg:nth-child(1){background:var(--danger)}
+.band-track[data-band="dev"] .band-seg:nth-child(2){background:var(--warning)}
+.band-track[data-band="strong"] .band-seg:nth-child(3){background:var(--success)}
+.band-track[data-band="none"] .band-seg{background:var(--color-border);opacity:0.7}
+
+/* Band pill */
+.band-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.03em;white-space:nowrap;flex-shrink:0}
+.band-pill svg{width:12px;height:12px}
+.band-pill[data-band="np"]{background:var(--danger-bg);color:#7a1f1f;border:1px solid #f0c3c2}
+.band-pill[data-band="dev"]{background:var(--warning-bg);color:#7a5500;border:1px solid #f0d998}
+.band-pill[data-band="strong"]{background:var(--success-bg);color:#0f5132;border:1px solid #bde5cd}
+.band-pill[data-band="none"]{background:var(--color-bg-subtle);color:var(--color-text-muted);border:1px solid var(--color-border)}
+
+/* Your Next Focus */
+.focus-body{padding:18px;font-size:var(--text-sm);line-height:1.65;color:var(--color-text-secondary)}
+.focus-body strong{color:var(--color-text);font-weight:600}
+.focus-empty{padding:24px 18px;text-align:center;font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.6}
+.focus-empty svg{width:32px;height:32px;color:var(--color-text-muted);margin-bottom:8px;opacity:0.6}
+
+/* Recent results */
+.result-rows{display:flex;flex-direction:column;gap:1px;background:var(--color-border)}
+.result-row{display:grid;grid-template-columns:36px 1fr auto;gap:14px;align-items:center;padding:14px 18px;background:var(--color-surface);transition:background 120ms ease}
+.result-row:hover{background:var(--color-bg-subtle)}
+.result-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.result-icon svg{width:17px;height:17px}
+.result-icon.green{background:var(--success-bg);color:#0f5132}
+.result-icon.blue{background:var(--color-primary-subtle);color:var(--primary-700)}
+.result-icon.amber{background:var(--warning-bg);color:#7a5500}
+.result-icon.red{background:var(--danger-bg);color:#7a1f1f}
+.result-main{min-width:0}
+.result-title{font-size:var(--text-sm);font-weight:600;color:var(--color-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.result-meta{font-size:11px;color:var(--color-text-muted);margin-top:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.result-meta svg{width:11px;height:11px;flex-shrink:0}
+.result-score{font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.result-score.high{color:#0f5132}
+.result-score.medium{color:#7a5500}
+.result-score.low{color:#7a1f1f}
+.result-score.none{color:var(--color-text-muted);font-weight:600;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.04em}
+
+/* Empty state general */
+.empty-inline{padding:28px 18px;text-align:center;font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.6}
+.empty-inline svg{width:28px;height:28px;color:var(--color-text-muted);opacity:0.6;margin-bottom:8px}
+
+/* Policy banner (closed access / locked posttest) */
+.policy-banner{display:flex;gap:12px;padding:16px 18px;border-radius:var(--radius-lg);border:1px solid #f0d998;background:var(--warning-bg);color:#5a3f00;font-size:var(--text-sm);line-height:1.55;margin-bottom:24px}
+.policy-banner svg{width:18px;height:18px;flex-shrink:0;margin-top:2px;color:var(--warning)}
+.policy-banner strong{font-weight:600;color:#7a5500}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:var(--radius-md);border:1px solid transparent;font:inherit;font-size:var(--text-sm);font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background 150ms ease,transform 100ms var(--ease-out),border-color 150ms ease,color 150ms ease;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(0.97)}
+.btn svg{width:14px;height:14px}
+.btn-ghost{background:transparent;color:var(--color-text);border-color:var(--color-border)}
+.btn-ghost:hover{background:var(--color-bg-subtle);border-color:var(--color-border-strong)}
+.btn-ghost-sm{padding:6px 10px;font-size:var(--text-xs);border-radius:var(--radius-sm);gap:4px}
+.btn-ghost-sm svg{width:12px;height:12px}
+
+/* Breakpoints */
+@media(min-width:640px){.content{padding:96px 24px 96px}.next-step{padding:30px 28px}}
+@media(min-width:1024px){body{padding-left:var(--sidebar-width)}.hamburger,.scrim{display:none}.sidebar{transform:none;background:var(--color-bg-subtle);backdrop-filter:none;-webkit-backdrop-filter:none}.sidebar-header #closeBtn{display:none}.content{padding:48px 32px 96px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0.01ms !important;animation-duration:0.01ms !important}.hamburger:active,.nav-item:active,.btn:active,.next-step-btn:active{transform:none !important;opacity:0.8}.next-step-btn:hover svg{transform:none}}
+@media(prefers-reduced-transparency:reduce){.sidebar,.hamburger{background:var(--color-surface);backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-contrast:more){:root{--color-border:var(--gray-400)}.sidebar,.hamburger{background:var(--color-surface);backdrop-filter:none;-webkit-backdrop-filter:none;border-color:var(--color-border-strong)}.next-step{background:var(--primary-700)}}
+</style>
+</head>
+<body data-role="student">
+
+<button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+  <i data-lucide="menu" aria-hidden="true"></i>
+</button>
+<div class="scrim" id="scrim" aria-hidden="true"></div>
+
+<aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+  <div class="sidebar-header">
+    <a href="#" class="brand" aria-label="PathGen home">
+      <span class="brand-mark" aria-hidden="true"><i data-lucide="route"></i></span>
+      <span class="brand-name">PathGen</span>
+    </a>
+    <button class="icon-btn" id="closeBtn" aria-label="Close menu"><i data-lucide="x" aria-hidden="true"></i></button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <a href="#" class="nav-item" aria-current="page"><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a>
+      <a href="my_lesson.html" class="nav-item"><i data-lucide="graduation-cap" aria-hidden="true"></i>My Lesson</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Account</div>
+      <a href="#" class="nav-item"><i data-lucide="user" aria-hidden="true"></i>My Account</a>
+      <button type="button" class="nav-item"><i data-lucide="log-out" aria-hidden="true"></i>Logout</button>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-chip" role="button" tabindex="0">
+      <span class="avatar" aria-hidden="true">MS</span>
+      <span class="user-meta">
+        <span class="user-name">Maria Santos</span>
+        <span class="user-role">student</span>
+      </span>
+    </div>
+  </div>
+</aside>
+
+<main class="content">
+
+  <!-- ============================================================ HEADER -->
+  <header class="page-header">
+    <h1>Hi, Maria!</h1>
+    <p class="subtitle">Keep going — you're making real progress.</p>
+    <span class="class-line">
+      <i data-lucide="school" aria-hidden="true"></i>
+      Grade 7 — Mabini
+    </span>
+  </header>
+
+  <!-- ============================================================ NEXT STEP — DOMINANT -->
+  <!-- In Django: driven by learning_student_path.current_stage + status -->
+  <section class="next-step" aria-labelledby="nextStepTitle">
+    <div class="next-step-inner">
+      <span class="next-step-eyebrow">
+        <i data-lucide="flag" aria-hidden="true"></i>
+        Your next step
+      </span>
+      <h2 id="nextStepTitle" class="next-step-title">Continue Lesson 1</h2>
+      <p class="next-step-desc">
+        You're partway through the regular exercise. Pick up right where you left off — 4 questions left.
+      </p>
+      <a href="assessment.html" class="next-step-btn">
+        Continue
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================ YOUR PATH — 6-stage stepper -->
+  <section class="section-card" aria-labelledby="pathTitle">
+    <div class="section-head">
+      <div>
+        <h2 id="pathTitle" class="section-title">
+          <i data-lucide="route" aria-hidden="true"></i>
+          Your path
+        </h2>
+        <p class="section-desc">Six stages from pretest to post-test. Completed steps can be reviewed.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="path-steps" role="list">
+        <span class="path-step" data-state="completed" role="listitem">
+          <i data-lucide="check-circle-2" aria-hidden="true"></i>
+          Pretest
+        </span>
+        <span class="path-step" data-state="current" role="listitem" aria-current="step">
+          <i data-lucide="circle-dot" aria-hidden="true"></i>
+          Lesson 1
+        </span>
+        <span class="path-step" data-state="available" role="listitem">
+          <i data-lucide="circle" aria-hidden="true"></i>
+          Lesson 2
+        </span>
+        <span class="path-step" data-state="locked" role="listitem">
+          <i data-lucide="lock" aria-hidden="true"></i>
+          Lesson 3
+        </span>
+        <span class="path-step" data-state="locked" role="listitem">
+          <i data-lucide="lock" aria-hidden="true"></i>
+          Activity
+        </span>
+        <span class="path-step" data-state="locked" role="listitem">
+          <i data-lucide="lock" aria-hidden="true"></i>
+          Post-test
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ YOUR SKILLS — BANDS ONLY -->
+  <!-- Rule: no raw p_known, no percentages. Bands only. -->
+  <section class="section-card" aria-labelledby="skillsTitle">
+    <div class="section-head">
+      <div>
+        <h2 id="skillsTitle" class="section-title">
+          <i data-lucide="target" aria-hidden="true"></i>
+          Your skills
+        </h2>
+        <p class="section-desc">How each skill is going. "Not enough evidence" means you haven't practised it yet.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="skill-rows">
+
+        <div class="skill-row">
+          <div>
+            <div class="skill-name">Identify integers<span class="skill-code">S1</span></div>
+            <div class="band-track" data-band="strong" aria-hidden="true">
+              <span class="band-seg"></span><span class="band-seg"></span><span class="band-seg"></span>
+            </div>
+          </div>
+          <span class="band-pill" data-band="strong">
+            <i data-lucide="award" aria-hidden="true"></i>
+            Strong
+          </span>
+        </div>
+
+        <div class="skill-row">
+          <div>
+            <div class="skill-name">Add &amp; subtract<span class="skill-code">S2</span></div>
+            <div class="band-track" data-band="dev" aria-hidden="true">
+              <span class="band-seg"></span><span class="band-seg"></span><span class="band-seg"></span>
+            </div>
+          </div>
+          <span class="band-pill" data-band="dev">
+            <i data-lucide="trending-up" aria-hidden="true"></i>
+            Developing
+          </span>
+        </div>
+
+        <div class="skill-row">
+          <div>
+            <div class="skill-name">Multiply &amp; divide<span class="skill-code">S3</span></div>
+            <div class="band-track" data-band="dev" aria-hidden="true">
+              <span class="band-seg"></span><span class="band-seg"></span><span class="band-seg"></span>
+            </div>
+          </div>
+          <span class="band-pill" data-band="dev">
+            <i data-lucide="trending-up" aria-hidden="true"></i>
+            Developing
+          </span>
+        </div>
+
+        <div class="skill-row">
+          <div>
+            <div class="skill-name">Order of operations<span class="skill-code">S4</span></div>
+            <div class="band-track" data-band="np" aria-hidden="true">
+              <span class="band-seg"></span><span class="band-seg"></span><span class="band-seg"></span>
+            </div>
+          </div>
+          <span class="band-pill" data-band="np">
+            <i data-lucide="flag" aria-hidden="true"></i>
+            Needs practice
+          </span>
+        </div>
+
+        <div class="skill-row">
+          <div>
+            <div class="skill-name">Number line<span class="skill-code">S5</span></div>
+            <div class="band-track" data-band="np" aria-hidden="true">
+              <span class="band-seg"></span><span class="band-seg"></span><span class="band-seg"></span>
+            </div>
+          </div>
+          <span class="band-pill" data-band="np">
+            <i data-lucide="flag" aria-hidden="true"></i>
+            Needs practice
+          </span>
+        </div>
+
+        <div class="skill-row">
+          <div>
+            <div class="skill-name">Signed change<span class="skill-code">S6</span></div>
+            <div class="band-track" data-band="strong" aria-hidden="true">
+              <span class="band-seg"></span><span class="band-seg"></span><span class="band-seg"></span>
+            </div>
+          </div>
+          <span class="band-pill" data-band="strong">
+            <i data-lucide="award" aria-hidden="true"></i>
+            Strong
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ YOUR NEXT FOCUS -->
+  <!-- Source: latest applicable feedback_session_feedback.feedback_text -->
+  <section class="section-card" aria-labelledby="focusTitle">
+    <div class="section-head">
+      <div>
+        <h2 id="focusTitle" class="section-title">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+          Your next focus
+        </h2>
+        <p class="section-desc">A note from your last completed session.</p>
+      </div>
+    </div>
+    <div class="focus-body">
+      <p>
+        Great work on <strong>signed change</strong> — you nailed the temperature problems.
+        For your next regular exercise, pay attention to <strong>order of operations</strong>:
+        handle the multiplication before the addition, and watch the sign when you subtract a negative.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================ RECENT RESULTS -->
+  <section class="section-card" aria-labelledby="resultsTitle">
+    <div class="section-head">
+      <div>
+        <h2 id="resultsTitle" class="section-title">
+          <i data-lucide="clock" aria-hidden="true"></i>
+          Recent results
+        </h2>
+        <p class="section-desc">Your last few sessions. Submitted answers stay locked.</p>
+      </div>
+    </div>
+    <div class="result-rows">
+
+      <div class="result-row">
+        <span class="result-icon green" aria-hidden="true"><i data-lucide="check-circle-2"></i></span>
+        <div class="result-main">
+          <div class="result-title">Regular exercise · Lesson 1</div>
+          <div class="result-meta">
+            <i data-lucide="clock" aria-hidden="true"></i>
+            Today · 10:30 AM
+          </div>
+        </div>
+        <span class="result-score high">5 / 6</span>
+      </div>
+
+      <div class="result-row">
+        <span class="result-icon amber" aria-hidden="true"><i data-lucide="refresh-circle"></i></span>
+        <div class="result-main">
+          <div class="result-title">Foundational exercise · Number line</div>
+          <div class="result-meta">
+            <i data-lucide="clock" aria-hidden="true"></i>
+            Yesterday · 08:45 PM
+          </div>
+        </div>
+        <span class="result-score medium">2 / 3</span>
+      </div>
+
+      <div class="result-row">
+        <span class="result-icon green" aria-hidden="true"><i data-lucide="check-circle-2"></i></span>
+        <div class="result-main">
+          <div class="result-title">Lesson 1 · Reading</div>
+          <div class="result-meta">
+            <i data-lucide="clock" aria-hidden="true"></i>
+            Yesterday · 08:20 PM
+          </div>
+        </div>
+        <span class="result-score none">Read</span>
+      </div>
+
+      <div class="result-row">
+        <span class="result-icon blue" aria-hidden="true"><i data-lucide="clipboard-check"></i></span>
+        <div class="result-main">
+          <div class="result-title">Pretest</div>
+          <div class="result-meta">
+            <i data-lucide="clock" aria-hidden="true"></i>
+            Aug 01 · 09:00 AM
+          </div>
+        </div>
+        <span class="result-score none">Complete</span>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+class Spring{constructor(v,{damping=1,response=0.4,onUpdate}={}){this.value=v;this.velocity=0;this.target=v;this.onUpdate=onUpdate;this.raf=null;this.stiffness=(2*Math.PI/response)**2;this.dampingCoeff=4*Math.PI*damping/response}
+  setTarget(t,v=0){this.target=t;this.velocity=v;if(!this.raf)this._start()}
+  stop(){if(this.raf)cancelAnimationFrame(this.raf);this.raf=null}
+  _start(){let last=performance.now();const tick=(now)=>{const dt=Math.min((now-last)/1000,0.064);last=now;const force=-this.stiffness*(this.value-this.target);const damp=-this.dampingCoeff*this.velocity;this.velocity+=(force+damp)*dt;this.value+=this.velocity*dt;this.onUpdate(this.value,this.velocity);if(Math.abs(this.velocity)<0.5&&Math.abs(this.value-this.target)<0.5){this.value=this.target;this.velocity=0;this.onUpdate(this.value,0);this.raf=null;return}this.raf=requestAnimationFrame(tick)};this.raf=requestAnimationFrame(tick)}}
+const WIDTH=240,sidebar=document.getElementById('sidebar'),scrim=document.getElementById('scrim'),hamburger=document.getElementById('hamburger'),closeBtn=document.getElementById('closeBtn'),content=document.querySelector('.content');
+const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)'),desktop=matchMedia('(min-width: 1024px)');
+const spring=new Spring(-WIDTH,{damping:0.8,response:0.3,onUpdate:(x)=>{sidebar.style.transform=`translateX(${x}px)`;const open=Math.max(0,Math.min(1,1-Math.abs(x)/WIDTH));scrim.style.opacity=open*0.4;scrim.style.pointerEvents=open>0.02?'auto':'none';hamburger.style.opacity=1-open;hamburger.style.pointerEvents=open>0.5?'none':'auto'}});
+let isOpen=false,releaseFocusTrap=null;
+function animateTo(t,v=0){if(reducedMotion.matches){spring.stop();spring.value=t;spring.velocity=0;spring.onUpdate(t,0)}else spring.setTarget(t,v)}
+function trapFocus(){const f=sidebar.querySelectorAll('a[href], button:not([disabled])');if(!f.length)return()=>{};const first=f[0],last=f[f.length-1];const onKey=(e)=>{if(e.key==='Escape'){e.preventDefault();closeSidebar();return}if(e.key!=='Tab')return;if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}};sidebar.addEventListener('keydown',onKey);setTimeout(()=>first.focus(),60);return()=>sidebar.removeEventListener('keydown',onKey)}
+function openSidebar(){if(desktop.matches||isOpen)return;isOpen=true;hamburger.setAttribute('aria-expanded','true');content?.setAttribute('inert','');animateTo(0);releaseFocusTrap=trapFocus()}
+function closeSidebar(){if(desktop.matches||!isOpen)return;isOpen=false;hamburger.setAttribute('aria-expanded','false');content?.removeAttribute('inert');animateTo(-WIDTH);releaseFocusTrap?.();releaseFocusTrap=null;hamburger.focus({preventScroll:true})}
+hamburger.addEventListener('click',openSidebar);closeBtn.addEventListener('click',closeSidebar);scrim.addEventListener('click',closeSidebar);
+function applyLayout(){spring.stop();if(desktop.matches){sidebar.style.transform='none';scrim.style.opacity='0';scrim.style.pointerEvents='none';hamburger.style.opacity='0';hamburger.style.pointerEvents='none';content?.removeAttribute('inert');releaseFocusTrap?.();releaseFocusTrap=null;isOpen=false}else{spring.value=-WIDTH;spring.velocity=0;spring.onUpdate(-WIDTH,0);isOpen=false}}
+(desktop.addEventListener?desktop.addEventListener('change',applyLayout):desktop.addListener(applyLayout));applyLayout();
+lucide.createIcons();
+</script>
+</body>
+</html>

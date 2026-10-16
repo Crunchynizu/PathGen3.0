@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>Dashboard · PathGen</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+<!-- PROTOTYPE ONLY: replace with {% static 'vendor/lucide/lucide.min.js' %} in Django -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<style>
+/* ============================================================
+   REPLACE THIS BLOCK WITH:
+   <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+   ============================================================ */
+:root {
+  color-scheme: only light;
+
+  --primary-50:  #eafcfd;
+  --primary-100: #d1f6fa;
+  --primary-200: #a3e9f2;
+  --primary-300: #6ed8e9;
+  --primary-400: #38c9de;
+  --primary-500: #0cc0df;
+  --primary-600: #0a9db8;
+  --primary-700: #087b90;
+  --primary-800: #0a5f6f;
+  --primary-900: #0b4a56;
+
+  --gray-50:  #f8fafb;
+  --gray-100: #eff2f4;
+  --gray-200: #dfe4e8;
+  --gray-300: #c7cfd6;
+  --gray-400: #9aa5b1;
+  --gray-500: #74808d;
+  --gray-600: #57626d;
+  --gray-700: #3f4750;
+  --gray-800: #262b31;
+  --gray-900: #15181b;
+
+  --success: #1fa860;   --success-bg: #e5f7ee;
+  --warning: #e6a319;   --warning-bg: #fdf3df;
+  --danger:  #e0403f;   --danger-bg:  #fbe7e6;
+  --info:    var(--primary-700);
+  --info-bg: var(--primary-50);
+
+  --color-bg:            #ffffff;
+  --color-bg-subtle:     var(--gray-50);
+  --color-surface:       #ffffff;
+  --color-surface-raised:#ffffff;
+  --color-border:        var(--gray-200);
+  --color-border-strong: var(--gray-300);
+  --color-focus-ring:    var(--primary-700);
+
+  --color-text:            var(--gray-900);
+  --color-text-secondary:  var(--gray-600);
+  --color-text-muted:      var(--gray-500);
+  --color-text-inverse:    #ffffff;
+  --color-text-link:       var(--primary-700);
+  --color-text-link-hover: var(--primary-800);
+  --color-text-cyan:       #0A8298;
+
+  --color-primary:        var(--primary-600);
+  --color-primary-hover:  var(--primary-700);
+  --color-primary-active: var(--primary-800);
+  --color-primary-subtle: var(--primary-50);
+  --color-on-primary:     #ffffff;
+
+  --color-accent:         var(--primary-500);
+  --color-accent-hover:   var(--primary-600);
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  2rem;
+
+  --leading-tight:  1.2;
+  --leading-normal: 1.5;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 1px 2px rgba(21, 24, 27, 0.06);
+  --shadow-md: 0 4px 10px rgba(21, 24, 27, 0.08);
+
+  --surface-translucent-bg:   rgba(255, 255, 255, 0.7);
+  --surface-translucent-blur: 20px;
+  --surface-translucent-edge: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================================
+   SHELL — layout only. Not part of theme.css.
+   ============================================================ */
+:root {
+  --sidebar-width: 240px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; min-height: 100%; }
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  letter-spacing: 0;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ---- Hamburger (mobile only) ---- */
+.hamburger {
+  position: fixed; top: 16px; left: 16px; z-index: 60;
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--surface-translucent-bg);
+  backdrop-filter: blur(var(--surface-translucent-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--surface-translucent-blur)) saturate(180%);
+  box-shadow: var(--shadow-sm);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text); cursor: pointer;
+  transition: transform 120ms var(--ease-out), background 200ms ease, opacity 200ms ease;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform, opacity;
+}
+.hamburger:hover { background: var(--color-surface); }
+.hamburger:active { transform: scale(0.94); }
+.hamburger svg { width: 20px; height: 20px; }
+
+/* ---- Scrim (mobile only) ---- */
+.scrim {
+  position: fixed; inset: 0; z-index: 40;
+  background: var(--gray-900); opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* ---- Sidebar ---- */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-width); z-index: 50;
+  background: var(--surface-translucent-bg);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-right: 1px solid var(--color-border);
+  display: flex; flex-direction: column;
+  transform: translateX(calc(-1 * var(--sidebar-width)));
+  will-change: transform;
+  touch-action: pan-y;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+  padding: 16px 12px 12px 16px;
+  flex-shrink: 0;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--color-text);
+  padding: 4px 6px; border-radius: var(--radius-md);
+  transition: background 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.brand:hover { background: rgba(21, 24, 27, 0.04); }
+.brand-mark {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--color-accent);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text); flex-shrink: 0;
+}
+.brand-mark svg { width: 16px; height: 16px; stroke-width: 2.5; }
+.brand-name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.icon-btn {
+  width: 36px; height: 36px; border-radius: var(--radius-md); border: none;
+  background: transparent; color: var(--color-text-muted);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease, transform 100ms var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+.icon-btn:hover { background: rgba(21, 24, 27, 0.05); color: var(--color-text); }
+.icon-btn:active { transform: scale(0.9); }
+.icon-btn svg { width: 18px; height: 18px; }
+
+/* ---- Nav ---- */
+.sidebar-nav {
+  flex: 1; overflow-y: auto;
+  padding: 4px 10px 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav-section { margin-top: 14px; }
+.nav-section:first-child { margin-top: 0; }
+
+.nav-section-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  padding: 6px 10px 4px;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, transform 120ms var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-item:hover { background: rgba(21, 24, 27, 0.05); color: var(--color-text); }
+.nav-item:active { transform: scale(0.98); }
+.nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.nav-item[aria-current="page"] {
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.nav-item[aria-current="page"] svg { color: var(--color-primary); }
+
+/* Role-based nav visibility */
+[data-role-group] { display: none; }
+body[data-role="admin"]   [data-role-group="admin"]   { display: block; }
+body[data-role="teacher"] [data-role-group="teacher"] { display: block; }
+body[data-role="student"] [data-role-group="student"] { display: block; }
+
+/* ---- Footer ---- */
+.sidebar-footer {
+  padding: 10px;
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+.user-chip {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 150ms ease, transform 120ms var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.user-chip:hover { background: rgba(21, 24, 27, 0.05); }
+.user-chip:active { transform: scale(0.98); }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--primary-100);
+  color: var(--primary-800);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+.user-meta { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.user-name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.user-role {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: capitalize;
+}
+
+/* ---- Content ---- */
+.content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 20px 64px;
+}
+
+.page-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; margin-bottom: 24px;
+}
+.page-header h1 {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+.page-header .subtitle {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 150ms ease, transform 100ms var(--ease-out), box-shadow 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover { background: var(--color-primary-hover); }
+.btn svg { width: 16px; height: 16px; }
+
+/* ---- Panel / Card ---- */
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.panel-body { padding: 16px; }
+.panel h3 {
+  font-size: var(--text-base);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin: 0 0 4px;
+}
+.panel p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ---- Prototype role switcher (remove in Django) ---- */
+.role-switch {
+  position: fixed; top: 16px; right: 16px; z-index: 70;
+  display: flex; gap: 2px;
+  padding: 3px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--text-xs);
+}
+.role-switch button {
+  border: none; background: transparent; cursor: pointer;
+  padding: 5px 10px;
+  border-radius: calc(var(--radius-md) - 2px);
+  font: inherit; font-size: var(--text-xs); font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: capitalize;
+  transition: background 120ms ease, color 120ms ease;
+}
+.role-switch button[aria-pressed="true"] {
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+}
+
+/* ============================================================
+   BREAKPOINTS (spec: base <475, xs 475, sm 640, md 768, lg 1024)
+   ============================================================ */
+@media (min-width: 475px) {}
+@media (min-width: 640px) {}
+@media (min-width: 768px) {}
+
+/* lg — DESKTOP: sidebar persistent, hamburger gone */
+@media (min-width: 1024px) {
+  body { padding-left: var(--sidebar-width); }
+
+  .hamburger { display: none; }
+  .scrim { display: none; }
+
+  .sidebar {
+    transform: none;
+    background: var(--color-bg-subtle);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .sidebar-header #closeBtn { display: none; }
+
+  .content { padding: 48px 32px 64px; }
+}
+
+@media (min-width: 1280px) {}
+@media (min-width: 1536px) {}
+
+/* ---- Reduced motion / transparency / contrast ---- */
+@media (prefers-reduced-motion: reduce) {
+  .hamburger, .nav-item, .btn, .user-chip, .icon-btn {
+    transition-duration: 0.01ms !important;
+  }
+  .hamburger:active, .nav-item:active, .btn:active, .icon-btn:active {
+    transform: none !important;
+    opacity: 0.75;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .sidebar, .hamburger {
+    background: var(--color-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+@media (prefers-contrast: more) {
+  :root {
+    --color-border: var(--gray-400);
+    --color-text-secondary: var(--gray-700);
+    --color-text-muted: var(--gray-600);
+  }
+  .sidebar, .hamburger {
+    background: var(--color-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-color: var(--color-border-strong);
+  }
+}
+</style>
+</head>
+
+<!-- In Django: <body data-role="{{ user.role }}"> -->
+<body data-role="admin">
+
+<!-- Prototype-only role switcher. Delete when porting to Django. -->
+<div class="role-switch" role="group" aria-label="Prototype role preview">
+  <button type="button" data-set-role="admin"   aria-pressed="true">Admin</button>
+  <button type="button" data-set-role="teacher" aria-pressed="false">Teacher</button>
+  <button type="button" data-set-role="student" aria-pressed="false">Student</button>
+</div>
+
+<button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+  <i data-lucide="menu" aria-hidden="true"></i>
+</button>
+
+<div class="scrim" id="scrim" aria-hidden="true"></div>
+
+<aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+
+  <div class="sidebar-header">
+    <a href="#" class="brand" aria-label="PathGen home">
+      <span class="brand-mark" aria-hidden="true">
+        <i data-lucide="route"></i>
+      </span>
+      <span class="brand-name">PathGen</span>
+    </a>
+    <button class="icon-btn" id="closeBtn" aria-label="Close menu">
+      <i data-lucide="x" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+
+    <!-- MAIN — role-specific -->
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+
+      <!-- ADMIN -->
+      <div data-role-group="admin">
+        <a href="#" class="nav-item" aria-current="page">
+          <i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="users" aria-hidden="true"></i>Users
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="school" aria-hidden="true"></i>Classes
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="users-round" aria-hidden="true"></i>Students
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="book-open" aria-hidden="true"></i>Content
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="toggle-right" aria-hidden="true"></i>Overrides
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="scroll-text" aria-hidden="true"></i>Audit Logs
+        </a>
+      </div>
+
+      <!-- TEACHER -->
+      <div data-role-group="teacher">
+        <a href="#" class="nav-item" aria-current="page">
+          <i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="school" aria-hidden="true"></i>My Classes
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="book-open" aria-hidden="true"></i>Content
+        </a>
+      </div>
+
+      <!-- STUDENT -->
+      <div data-role-group="student">
+        <a href="#" class="nav-item" aria-current="page">
+          <i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="graduation-cap" aria-hidden="true"></i>My Lesson
+        </a>
+      </div>
+    </div>
+
+    <!-- ACCOUNT — same for everyone -->
+    <div class="nav-section">
+      <div class="nav-section-label">Account</div>
+      <a href="#" class="nav-item">
+        <i data-lucide="user" aria-hidden="true"></i>My Account
+      </a>
+      <button type="button" class="nav-item">
+        <i data-lucide="log-out" aria-hidden="true"></i>Logout
+      </button>
+    </div>
+
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-chip" role="button" tabindex="0">
+      <!-- In Django: <img src="{% static 'avatar/admin_avatar.png' %}" alt="" class="avatar"> -->
+      <span class="avatar" aria-hidden="true">JD</span>
+      <span class="user-meta">
+        <span class="user-name">Jane Doe</span>
+        <span class="user-role" id="roleLabel">admin</span>
+      </span>
+    </div>
+  </div>
+
+</aside>
+
+<main class="content">
+  <header class="page-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p class="subtitle">Sample page content inside the main shell.</p>
+    </div>
+    <a href="#" class="btn btn-primary">
+      <i data-lucide="plus" aria-hidden="true"></i>Action
+    </a>
+  </header>
+
+  <section class="panel"><div class="panel-body">
+    <h3>Panel title</h3>
+    <p>This is where the page-specific content lives. The shell handles navigation; the page handles meaning.</p>
+  </div></section>
+
+  <section class="panel"><div class="panel-body">
+    <h3>Another panel</h3>
+    <p>Duplicate the panel pattern as needed. The shell doesn't care about how many you stack.</p>
+  </div></section>
+</main>
+
+<script>
+/* ------------------------------------------------------------------
+   Spring — Apple's damping + response, translated to stiffness/damping
+   ------------------------------------------------------------------ */
+class Spring {
+  constructor(value, { damping = 1, response = 0.4, onUpdate } = {}) {
+    this.value = value; this.velocity = 0; this.target = value;
+    this.onUpdate = onUpdate; this.raf = null;
+    this.stiffness    = (2 * Math.PI / response) ** 2;
+    this.dampingCoeff = 4 * Math.PI * damping / response;
+  }
+  setTarget(target, velocity = 0) {
+    this.target = target; this.velocity = velocity;
+    if (!this.raf) this._start();
+  }
+  stop() { if (this.raf) cancelAnimationFrame(this.raf); this.raf = null; }
+  _start() {
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = Math.min((now - last) / 1000, 0.064); last = now;
+      const force = -this.stiffness * (this.value - this.target);
+      const damp  = -this.dampingCoeff * this.velocity;
+      this.velocity += (force + damp) * dt;
+      this.value    += this.velocity * dt;
+      this.onUpdate(this.value, this.velocity);
+      if (Math.abs(this.velocity) < 0.5 && Math.abs(this.value - this.target) < 0.5) {
+        this.value = this.target; this.velocity = 0;
+        this.onUpdate(this.value, 0);
+        this.raf = null; return;
+      }
+      this.raf = requestAnimationFrame(tick);
+    };
+    this.raf = requestAnimationFrame(tick);
+  }
+}
+
+/* Apple's exponential-decay momentum projection */
+const project = (v, d = 0.998) => (v / 1000) * d / (1 - d);
+/* Rubber-banding at boundaries */
+const rubberband = (o, dim, c = 0.55) => (o * dim * c) / (dim + c * Math.abs(o));
+
+/* ------------------------------------------------------------------ */
+const WIDTH = 240;
+const sidebar   = document.getElementById('sidebar');
+const scrim     = document.getElementById('scrim');
+const hamburger = document.getElementById('hamburger');
+const closeBtn  = document.getElementById('closeBtn');
+const content   = document.querySelector('.content');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const desktop       = matchMedia('(min-width: 1024px)');
+
+const spring = new Spring(-WIDTH, {
+  damping: 0.8, response: 0.3,
+  onUpdate: (x) => {
+    sidebar.style.transform = `translateX(${x}px)`;
+    const open = Math.max(0, Math.min(1, 1 - Math.abs(x) / WIDTH));
+    scrim.style.opacity = open * 0.4;
+    scrim.style.pointerEvents = open > 0.02 ? 'auto' : 'none';
+    hamburger.style.opacity = 1 - open;
+    hamburger.style.pointerEvents = open > 0.5 ? 'none' : 'auto';
+  }
+});
+
+let isOpen = false;
+let releaseFocusTrap = null;
+
+function animateTo(target, velocity = 0) {
+  if (reducedMotion.matches) {
+    spring.stop();
+    spring.value = target; spring.velocity = 0;
+    spring.onUpdate(target, 0);
+  } else {
+    spring.setTarget(target, velocity);
+  }
+}
+
+function trapFocus() {
+  const focusables = sidebar.querySelectorAll(
+    'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  );
+  if (!focusables.length) return () => {};
+  const first = focusables[0];
+  const last  = focusables[focusables.length - 1];
+
+  const onKey = (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); closeSidebar(); return; }
+    if (e.key !== 'Tab') return;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  };
+  sidebar.addEventListener('keydown', onKey);
+  setTimeout(() => first.focus(), 60);
+  return () => sidebar.removeEventListener('keydown', onKey);
+}
+
+function openSidebar() {
+  if (desktop.matches || isOpen) return;
+  isOpen = true;
+  hamburger.setAttribute('aria-expanded', 'true');
+  content?.setAttribute('inert', '');
+  animateTo(0);
+  releaseFocusTrap = trapFocus();
+}
+function closeSidebar(v = 0) {
+  if (desktop.matches || !isOpen) return;
+  isOpen = false;
+  hamburger.setAttribute('aria-expanded', 'false');
+  content?.removeAttribute('inert');
+  animateTo(-WIDTH, v);
+  releaseFocusTrap?.();
+  releaseFocusTrap = null;
+  hamburger.focus({ preventScroll: true });
+}
+
+hamburger.addEventListener('click', openSidebar);
+closeBtn.addEventListener('click', () => closeSidebar());
+scrim.addEventListener('click', () => closeSidebar());
+
+/* Layout switch: mobile drawer ↔ desktop persistent sidebar */
+function applyLayout() {
+  spring.stop();
+  if (desktop.matches) {
+    sidebar.style.transform = 'none';
+    scrim.style.opacity = '0';
+    scrim.style.pointerEvents = 'none';
+    hamburger.style.opacity = '0';
+    hamburger.style.pointerEvents = 'none';
+    content?.removeAttribute('inert');
+    releaseFocusTrap?.();
+    releaseFocusTrap = null;
+    isOpen = false;
+  } else {
+    spring.value = -WIDTH; spring.velocity = 0;
+    spring.onUpdate(-WIDTH, 0);
+    isOpen = false;
+  }
+}
+(desktop.addEventListener ? desktop.addEventListener('change', applyLayout) : desktop.addListener(applyLayout));
+applyLayout();
+
+/* Drag-to-dismiss */
+let drag = null;
+sidebar.addEventListener('pointerdown', (e) => {
+  if (desktop.matches) return;
+  if (e.target.closest('a, button')) return;
+  drag = {
+    id: e.pointerId, startX: e.clientX, startY: e.clientY,
+    startValue: spring.value,
+    history: [{ x: e.clientX, t: performance.now() }],
+    active: false,
+  };
+  sidebar.setPointerCapture(e.pointerId);
+  spring.stop();
+});
+sidebar.addEventListener('pointermove', (e) => {
+  if (!drag || drag.id !== e.pointerId) return;
+  const dx = e.clientX - drag.startX;
+  const dy = e.clientY - drag.startY;
+  if (!drag.active) {
+    if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+    if (Math.abs(dy) > Math.abs(dx)) { drag = null; return; }
+    drag.active = true;
+  }
+  let x = drag.startValue + dx;
+  if (x > 0) x = rubberband(x, WIDTH);
+  else if (x < -WIDTH) x = -WIDTH - rubberband(-WIDTH - x, WIDTH);
+  spring.value = x; spring.onUpdate(x);
+  drag.history.push({ x: e.clientX, t: performance.now() });
+  if (drag.history.length > 6) drag.history.shift();
+});
+const endDrag = (e) => {
+  if (!drag || drag.id !== e.pointerId) return;
+  if (!drag.active) { drag = null; return; }
+  const h = drag.history;
+  const first = h[0], last = h[h.length - 1];
+  const dt = (last.t - first.t) / 1000;
+  const velocity = dt > 0 ? (last.x - first.x) / dt : 0;
+  const projected = spring.value + project(velocity);
+  let target;
+  if (Math.abs(velocity) > 500) target = velocity < 0 ? -WIDTH : 0;
+  else target = projected < -WIDTH / 2 ? -WIDTH : 0;
+  if (target === 0) { isOpen = true; content?.setAttribute('inert', ''); releaseFocusTrap = trapFocus(); }
+  else { isOpen = false; content?.removeAttribute('inert'); releaseFocusTrap?.(); releaseFocusTrap = null; }
+  animateTo(target, velocity);
+  drag = null;
+};
+sidebar.addEventListener('pointerup', endDrag);
+sidebar.addEventListener('pointercancel', endDrag);
+
+/* Edge swipe to open */
+document.addEventListener('pointerdown', (e) => {
+  if (desktop.matches || isOpen || e.clientX > 24) return;
+  if (e.target.closest('a, button, input, textarea')) return;
+  const id = e.pointerId, startX = e.clientX, startY = e.clientY;
+  let active = false;
+  const history = [{ x: startX, t: performance.now() }];
+  spring.stop();
+
+  const onMove = (ev) => {
+    if (ev.pointerId !== id) return;
+    const dx = ev.clientX - startX, dy = ev.clientY - startY;
+    if (!active) {
+      if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+      if (Math.abs(dy) > Math.abs(dx) || dx < 0) { cleanup(); return; }
+      active = true;
+    }
+    let x = -WIDTH + dx;
+    if (x > 0) x = rubberband(x, WIDTH);
+    spring.value = x; spring.onUpdate(x);
+    history.push({ x: ev.clientX, t: performance.now() });
+    if (history.length > 6) history.shift();
+  };
+  const onUp = (ev) => {
+    if (ev.pointerId !== id) return;
+    if (!active) { cleanup(); return; }
+    const first = history[0], last = history[history.length - 1];
+    const dt = (last.t - first.t) / 1000;
+    const velocity = dt > 0 ? (last.x - first.x) / dt : 0;
+    const projected = spring.value + project(velocity);
+    const target = Math.abs(velocity) > 500
+      ? (velocity > 0 ? 0 : -WIDTH)
+      : (projected > -WIDTH / 2 ? 0 : -WIDTH);
+    isOpen = target === 0;
+    if (isOpen) {
+      hamburger.setAttribute('aria-expanded', 'true');
+      content?.setAttribute('inert', '');
+      releaseFocusTrap = trapFocus();
+    }
+    animateTo(target, velocity);
+    cleanup();
+  };
+  const cleanup = () => {
+    document.removeEventListener('pointermove', onMove);
+    document.removeEventListener('pointerup', onUp);
+    document.removeEventListener('pointercancel', onUp);
+  };
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp);
+  document.addEventListener('pointercancel', onUp);
+});
+
+/* ------------------------------------------------------------------
+   PROTOTYPE ONLY — role switcher. Delete when porting to Django.
+   ------------------------------------------------------------------ */
+const roleLabel = document.getElementById('roleLabel');
+document.querySelectorAll('.role-switch button').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const role = btn.dataset.setRole;
+    document.body.dataset.role = role;
+    document.querySelectorAll('.role-switch button').forEach((b) =>
+      b.setAttribute('aria-pressed', b.dataset.setRole === role ? 'true' : 'false')
+    );
+    if (roleLabel) roleLabel.textContent = role;
+  });
+});
+
+lucide.createIcons();
+</script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>Content · PathGen</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<style>
+:root{color-scheme:only light;--primary-50:#eafcfd;--primary-100:#d1f6fa;--primary-200:#a3e9f2;--primary-300:#6ed8e9;--primary-400:#38c9de;--primary-500:#0cc0df;--primary-600:#0a9db8;--primary-700:#087b90;--primary-800:#0a5f6f;--primary-900:#0b4a56;--gray-50:#f8fafb;--gray-100:#eff2f4;--gray-200:#dfe4e8;--gray-300:#c7cfd6;--gray-400:#9aa5b1;--gray-500:#74808d;--gray-600:#57626d;--gray-700:#3f4750;--gray-800:#262b31;--gray-900:#15181b;--success:#1fa860;--success-bg:#e5f7ee;--warning:#e6a319;--warning-bg:#fdf3df;--danger:#e0403f;--danger-bg:#fbe7e6;--color-bg:#ffffff;--color-bg-subtle:var(--gray-50);--color-surface:#ffffff;--color-border:var(--gray-200);--color-border-strong:var(--gray-300);--color-focus-ring:var(--primary-700);--color-text:var(--gray-900);--color-text-secondary:var(--gray-600);--color-text-muted:var(--gray-500);--color-primary:var(--primary-600);--color-primary-hover:var(--primary-700);--color-primary-subtle:var(--primary-50);--color-on-primary:#ffffff;--color-accent:var(--primary-500);--font-sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--text-xs:.75rem;--text-sm:.875rem;--text-base:1rem;--text-lg:1.125rem;--text-xl:1.25rem;--text-2xl:1.5rem;--text-3xl:2rem;--leading-tight:1.2;--leading-normal:1.5;--radius-sm:4px;--radius-md:8px;--radius-lg:12px;--shadow-sm:0 1px 2px rgba(21,24,27,.06);--shadow-md:0 4px 10px rgba(21,24,27,.08);--surface-translucent-bg:rgba(255,255,255,.7);--surface-translucent-blur:20px;--ease-out:cubic-bezier(.22,1,.36,1);--sidebar-width:240px}
+*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100%}
+body{background:var(--color-bg);color:var(--color-text);font-family:var(--font-sans);font-size:var(--text-base);line-height:var(--leading-normal);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.hamburger{position:fixed;top:16px;left:16px;z-index:60;width:44px;height:44px;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--surface-translucent-bg);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;color:var(--color-text);cursor:pointer}
+.hamburger:hover{background:var(--color-surface)}.hamburger:active{transform:scale(.94)}.hamburger svg{width:20px;height:20px}
+.scrim{position:fixed;inset:0;z-index:40;background:var(--gray-900);opacity:0;pointer-events:none}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-width);z-index:50;background:var(--surface-translucent-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border-right:1px solid var(--color-border);display:flex;flex-direction:column;transform:translateX(calc(-1 * var(--sidebar-width)));touch-action:pan-y;overflow:hidden}
+.sidebar-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 12px 12px 16px;flex-shrink:0}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--color-text);padding:4px 6px;border-radius:var(--radius-md)}.brand:hover{background:rgba(21,24,27,.04)}
+.brand-mark{width:28px;height:28px;border-radius:7px;background:var(--color-accent);display:flex;align-items:center;justify-content:center;color:var(--gray-900);flex-shrink:0}.brand-mark svg{width:16px;height:16px;stroke-width:2.5}
+.brand-name{font-size:var(--text-sm);font-weight:600}
+.icon-btn{width:36px;height:36px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer}.icon-btn:hover{background:rgba(21,24,27,.05);color:var(--color-text)}.icon-btn svg{width:18px;height:18px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:4px 10px 10px}
+.nav-section{margin-top:14px}.nav-section:first-child{margin-top:0}
+.nav-section-label{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-muted);padding:6px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-md);color:var(--color-text-secondary);text-decoration:none;border:none;background:transparent;width:100%;text-align:left;font-family:inherit;font-size:var(--text-sm);font-weight:500;cursor:pointer;transition:background 120ms ease,color 120ms ease}
+.nav-item:hover{background:rgba(21,24,27,.05);color:var(--color-text)}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+.nav-item[aria-current="page"]{background:var(--color-primary-subtle);color:var(--color-primary);font-weight:600}
+.nav-item[aria-current="page"] svg{color:var(--color-primary)}
+[data-role-group]{display:none}
+body[data-role="admin"] [data-role-group="admin"]{display:block}
+body[data-role="teacher"] [data-role-group="teacher"]{display:block}
+body[data-role="student"] [data-role-group="student"]{display:block}
+.sidebar-footer{padding:10px;border-top:1px solid var(--color-border);flex-shrink:0}
+.user-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-md);cursor:pointer}.user-chip:hover{background:rgba(21,24,27,.05)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary-100);color:var(--primary-800);display:flex;align-items:center;justify-content:center;font-size:var(--text-xs);font-weight:600;flex-shrink:0}
+.user-meta{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.user-name{font-size:var(--text-sm);font-weight:600;color:var(--color-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:var(--text-xs);color:var(--color-text-muted);text-transform:capitalize}
+
+.content{max-width:780px;margin:0 auto;padding:80px 20px 96px}
+.page-header{margin-bottom:24px}
+.page-header h1{font-size:var(--text-3xl);line-height:var(--leading-tight);letter-spacing:-.02em;font-weight:700;margin:0 0 6px}
+.page-header .subtitle{font-size:var(--text-base);color:var(--color-text-secondary);margin:0;max-width:62ch}
+.readonly-banner{display:flex;gap:10px;padding:12px 14px;border-radius:var(--radius-md);background:var(--color-bg-subtle);border:1px solid var(--color-border);color:var(--color-text-secondary);font-size:var(--text-sm);line-height:1.5;margin-bottom:28px}
+.readonly-banner svg{width:16px;height:16px;flex-shrink:0;margin-top:2px;color:var(--color-text-muted)}
+
+.destinations{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:640px){.destinations{grid-template-columns:1fr 1fr}}
+.dest-card{position:relative;display:flex;flex-direction:column;padding:22px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:var(--color-surface);box-shadow:var(--shadow-sm);text-decoration:none;color:inherit;transition:border-color 200ms ease,box-shadow 200ms ease,transform 200ms var(--ease-out);overflow:hidden}
+.dest-card:hover{border-color:var(--color-border-strong);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.dest-card:active{transform:translateY(0)}
+.dest-icon{width:44px;height:44px;border-radius:12px;background:var(--color-primary-subtle);color:var(--primary-700);display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:background 200ms ease,color 200ms ease}
+.dest-icon svg{width:22px;height:22px}
+.dest-card:hover .dest-icon{background:var(--color-primary);color:var(--color-on-primary)}
+.dest-title{font-size:var(--text-lg);font-weight:600;letter-spacing:-.015em;line-height:1.25;margin:0 0 6px;color:var(--color-text)}
+.dest-desc{font-size:var(--text-sm);line-height:1.55;color:var(--color-text-secondary);margin:0 0 20px;flex:1}
+.dest-stats{display:flex;gap:18px;padding:12px 0 0;border-top:1px solid var(--color-border);margin-bottom:14px}
+.dest-stat{display:flex;flex-direction:column;gap:2px;min-width:0}
+.dest-stat-value{font-size:var(--text-lg);font-weight:700;letter-spacing:-.02em;line-height:1;color:var(--color-text);font-variant-numeric:tabular-nums}
+.dest-stat-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-muted);white-space:nowrap}
+.dest-cta{display:flex;align-items:center;gap:6px;font-size:var(--text-sm);font-weight:600;color:var(--color-primary);transition:gap 200ms var(--ease-out)}
+.dest-cta svg{width:15px;height:15px;transition:transform 200ms var(--ease-out)}
+.dest-card:hover .dest-cta{gap:10px}
+.dest-card:hover .dest-cta svg{transform:translateX(2px)}
+.foot-note{margin-top:28px;padding-top:18px;border-top:1px solid var(--color-border);display:flex;align-items:flex-start;gap:8px;font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.55}
+.foot-note svg{width:13px;height:13px;flex-shrink:0;margin-top:2px}
+.foot-note code{font-family:var(--font-mono);font-size:11px;padding:1px 5px;border-radius:var(--radius-sm);background:var(--color-bg-subtle);border:1px solid var(--color-border);color:var(--color-text-secondary)}
+
+@media(min-width:640px){.content{padding:96px 24px 96px}.dest-card{padding:24px}}
+@media(min-width:1024px){body{padding-left:var(--sidebar-width)}.hamburger,.scrim{display:none}.sidebar{transform:none;background:var(--color-bg-subtle);backdrop-filter:none;-webkit-backdrop-filter:none}.sidebar-header #closeBtn{display:none}.content{padding:48px 32px 96px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms !important}.dest-card:hover{transform:none}.dest-card:hover .dest-cta{gap:6px}.dest-card:hover .dest-cta svg{transform:none}}
+@media(prefers-reduced-transparency:reduce){.sidebar,.hamburger{background:var(--color-surface);backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-contrast:more){:root{--color-border:var(--gray-400)}.sidebar,.hamburger{background:var(--color-surface);backdrop-filter:none;-webkit-backdrop-filter:none}.dest-card{border-color:var(--color-border-strong)}}
+</style>
+</head>
+<body data-role="admin">
+
+<button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+  <i data-lucide="menu" aria-hidden="true"></i>
+</button>
+<div class="scrim" id="scrim" aria-hidden="true"></div>
+
+<aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+  <div class="sidebar-header">
+    <a href="#" class="brand" aria-label="PathGen home">
+      <span class="brand-mark" aria-hidden="true"><i data-lucide="route"></i></span>
+      <span class="brand-name">PathGen</span>
+    </a>
+    <button class="icon-btn" id="closeBtn" aria-label="Close menu"><i data-lucide="x" aria-hidden="true"></i></button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <div data-role-group="admin">
+        <a href="admin_dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a>
+        <a href="user_management.html" class="nav-item"><i data-lucide="users" aria-hidden="true"></i>Users</a>
+        <a href="classmanagement.html" class="nav-item"><i data-lucide="school" aria-hidden="true"></i>Classes</a>
+        <a href="student_list.html" class="nav-item"><i data-lucide="users-round" aria-hidden="true"></i>Students</a>
+        <a href="content.html" class="nav-item" aria-current="page"><i data-lucide="book-open" aria-hidden="true"></i>Content</a>
+        <a href="overrides.html" class="nav-item"><i data-lucide="toggle-right" aria-hidden="true"></i>Overrides</a>
+        <a href="audit_logs.html" class="nav-item"><i data-lucide="scroll-text" aria-hidden="true"></i>Audit Logs</a>
+      </div>
+      <div data-role-group="teacher">
+        <a href="teacher_dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a>
+        <a href="my_classes.html" class="nav-item"><i data-lucide="school" aria-hidden="true"></i>My Classes</a>
+        <a href="content.html" class="nav-item" aria-current="page"><i data-lucide="book-open" aria-hidden="true"></i>Content</a>
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Account</div>
+      <a href="my_account.html" class="nav-item"><i data-lucide="user" aria-hidden="true"></i>My Account</a>
+      <button type="button" class="nav-item"><i data-lucide="log-out" aria-hidden="true"></i>Logout</button>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-chip" role="button" tabindex="0">
+      <span class="avatar" aria-hidden="true">JD</span>
+      <span class="user-meta">
+        <span class="user-name">Jane Doe</span>
+        <span class="user-role">admin</span>
+      </span>
+    </div>
+  </div>
+</aside>
+
+<main class="content">
+
+  <header class="page-header">
+    <h1>Content</h1>
+    <p class="subtitle">Browse the published curriculum. This view is read-only and identical for admins and teachers.</p>
+  </header>
+
+  <div class="readonly-banner" role="note">
+    <i data-lucide="lock" aria-hidden="true"></i>
+    <span>Curriculum is imported through <code>seed_curriculum</code> and cannot be edited from the app. Protected pre/post items are never shown here.</span>
+  </div>
+
+  <div class="destinations">
+
+    <!-- Lessons — now links to view_lesson.html -->
+    <a href="view_lesson.html" class="dest-card" aria-label="Browse lessons">
+      <span class="dest-icon" aria-hidden="true"><i data-lucide="book-open"></i></span>
+      <h2 class="dest-title">Lessons</h2>
+      <p class="dest-desc">The three Grade 7 integer lessons, ordered. Each lesson maps to two of the six core skills and includes worked examples, common mistakes, and optional videos.</p>
+      <div class="dest-stats">
+        <div class="dest-stat"><span class="dest-stat-value">3</span><span class="dest-stat-label">Lessons</span></div>
+        <div class="dest-stat"><span class="dest-stat-value">6</span><span class="dest-stat-label">Skills</span></div>
+        <div class="dest-stat"><span class="dest-stat-value">4</span><span class="dest-stat-label">Videos</span></div>
+      </div>
+      <span class="dest-cta">View lessons <i data-lucide="arrow-right" aria-hidden="true"></i></span>
+    </a>
+
+    <!-- Questions — now links to view_questions.html -->
+    <a href="view_questions.html" class="dest-card" aria-label="Browse questions">
+      <span class="dest-icon" aria-hidden="true"><i data-lucide="list-checks"></i></span>
+      <h2 class="dest-title">Questions</h2>
+      <p class="dest-desc">All exercise and activity items by lesson and skill. Each has four A–D choices and one keyed answer. Pre/post items are excluded from this view.</p>
+      <div class="dest-stats">
+        <div class="dest-stat"><span class="dest-stat-value">64</span><span class="dest-stat-label">Questions</span></div>
+        <div class="dest-stat"><span class="dest-stat-value">4</span><span class="dest-stat-label">Types</span></div>
+        <div class="dest-stat"><span class="dest-stat-value">6</span><span class="dest-stat-label">Skills</span></div>
+      </div>
+      <span class="dest-cta">View questions <i data-lucide="arrow-right" aria-hidden="true"></i></span>
+    </a>
+
+  </div>
+
+  <div class="foot-note">
+    <i data-lucide="info" aria-hidden="true"></i>
+    <span>Question types shown here: <code>regular</code>, <code>additional</code>, <code>foundational</code>, and <code>activity</code>. The protected pre/post set is never exposed from the Content area.</span>
+  </div>
+
+</main>
+
+<script>
+class Spring{constructor(v,{damping=1,response=.4,onUpdate}={}){this.value=v;this.velocity=0;this.target=v;this.onUpdate=onUpdate;this.raf=null;this.stiffness=(2*Math.PI/response)**2;this.dampingCoeff=4*Math.PI*damping/response}
+  setTarget(t,v=0){this.target=t;this.velocity=v;if(!this.raf)this._start()}
+  stop(){if(this.raf)cancelAnimationFrame(this.raf);this.raf=null}
+  _start(){let last=performance.now();const tick=(now)=>{const dt=Math.min((now-last)/1000,.064);last=now;const force=-this.stiffness*(this.value-this.target);const damp=-this.dampingCoeff*this.velocity;this.velocity+=(force+damp)*dt;this.value+=this.velocity*dt;this.onUpdate(this.value,this.velocity);if(Math.abs(this.velocity)<.5&&Math.abs(this.value-this.target)<.5){this.value=this.target;this.velocity=0;this.onUpdate(this.value,0);this.raf=null;return}this.raf=requestAnimationFrame(tick)};this.raf=requestAnimationFrame(tick)}}
+const WIDTH=240,sidebar=document.getElementById('sidebar'),scrim=document.getElementById('scrim'),hamburger=document.getElementById('hamburger'),closeBtn=document.getElementById('closeBtn'),content=document.querySelector('.content');
+const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)'),desktop=matchMedia('(min-width: 1024px)');
+const spring=new Spring(-WIDTH,{damping:.8,response:.3,onUpdate:(x)=>{sidebar.style.transform=`translateX(${x}px)`;const open=Math.max(0,Math.min(1,1-Math.abs(x)/WIDTH));scrim.style.opacity=open*.4;scrim.style.pointerEvents=open>.02?'auto':'none';hamburger.style.opacity=1-open;hamburger.style.pointerEvents=open>.5?'none':'auto'}});
+let isOpen=false,releaseFocusTrap=null;
+function animateTo(t,v=0){if(reducedMotion.matches){spring.stop();spring.value=t;spring.velocity=0;spring.onUpdate(t,0)}else spring.setTarget(t,v)}
+function trapFocus(){const f=sidebar.querySelectorAll('a[href], button:not([disabled])');if(!f.length)return()=>{};const first=f[0],last=f[f.length-1];const onKey=(e)=>{if(e.key==='Escape'){e.preventDefault();closeSidebar();return}if(e.key!=='Tab')return;if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}};sidebar.addEventListener('keydown',onKey);setTimeout(()=>first.focus(),60);return()=>sidebar.removeEventListener('keydown',onKey)}
+function openSidebar(){if(desktop.matches||isOpen)return;isOpen=true;hamburger.setAttribute('aria-expanded','true');content?.setAttribute('inert','');animateTo(0);releaseFocusTrap=trapFocus()}
+function closeSidebar(){if(desktop.matches||!isOpen)return;isOpen=false;hamburger.setAttribute('aria-expanded','false');content?.removeAttribute('inert');animateTo(-WIDTH);releaseFocusTrap?.();releaseFocusTrap=null;hamburger.focus({preventScroll:true})}
+hamburger.addEventListener('click',openSidebar);closeBtn.addEventListener('click',closeSidebar);scrim.addEventListener('click',closeSidebar);
+function applyLayout(){spring.stop();if(desktop.matches){sidebar.style.transform='none';scrim.style.opacity='0';scrim.style.pointerEvents='none';hamburger.style.opacity='0';hamburger.style.pointerEvents='none';content?.removeAttribute('inert');releaseFocusTrap?.();releaseFocusTrap=null;isOpen=false}else{spring.value=-WIDTH;spring.velocity=0;spring.onUpdate(-WIDTH,0);isOpen=false}}
+(desktop.addEventListener?desktop.addEventListener('change',applyLayout):desktop.addListener(applyLayout));applyLayout();
+lucide.createIcons();
+</script>
+</body>
+</html>

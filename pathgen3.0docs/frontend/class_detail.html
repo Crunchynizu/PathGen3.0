@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>Class detail · PathGen</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<style>
+:root{color-scheme:only light;
+  --primary-50:#eafcfd;--primary-100:#d1f6fa;--primary-200:#a3e9f2;--primary-300:#6ed8e9;--primary-400:#38c9de;--primary-500:#0cc0df;--primary-600:#0a9db8;--primary-700:#087b90;--primary-800:#0a5f6f;--primary-900:#0b4a56;
+  --gray-50:#f8fafb;--gray-100:#eff2f4;--gray-200:#dfe4e8;--gray-300:#c7cfd6;--gray-400:#9aa5b1;--gray-500:#74808d;--gray-600:#57626d;--gray-700:#3f4750;--gray-800:#262b31;--gray-900:#15181b;
+  --success:#1fa860;--success-bg:#e5f7ee;--warning:#e6a319;--warning-bg:#fdf3df;--danger:#e0403f;--danger-bg:#fbe7e6;
+  --color-bg:#ffffff;--color-bg-subtle:var(--gray-50);--color-surface:#ffffff;--color-border:var(--gray-200);--color-border-strong:var(--gray-300);--color-focus-ring:var(--primary-700);
+  --color-text:var(--gray-900);--color-text-secondary:var(--gray-600);--color-text-muted:var(--gray-500);
+  --color-primary:var(--primary-600);--color-primary-hover:var(--primary-700);--color-primary-subtle:var(--primary-50);--color-on-primary:#ffffff;--color-accent:var(--primary-500);
+  --font-sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --text-xs:.75rem;--text-sm:.875rem;--text-base:1rem;--text-lg:1.125rem;--text-xl:1.25rem;--text-2xl:1.5rem;--text-3xl:2rem;
+  --leading-tight:1.2;--leading-normal:1.5;
+  --radius-sm:4px;--radius-md:8px;--radius-lg:12px;
+  --shadow-sm:0 1px 2px rgba(21,24,27,.06);--shadow-md:0 4px 10px rgba(21,24,27,.08);
+  --surface-translucent-bg:rgba(255,255,255,.7);--surface-translucent-blur:20px;
+  --ease-out:cubic-bezier(0.22,1,0.36,1)}
+*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100%}
+body{background:var(--color-bg);color:var(--color-text);font-family:var(--font-sans);font-size:var(--text-base);line-height:var(--leading-normal);-webkit-font-smoothing:antialiased}
+
+.crumbs-bar{position:sticky;top:0;z-index:30;padding:12px 20px;background:var(--surface-translucent-bg);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%)}
+.crumbs-bar::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(to right,transparent,var(--color-border) 20%,var(--color-border) 80%,transparent);opacity:0;transition:opacity 240ms ease}
+.crumbs-bar.scrolled::after{opacity:1}
+.breadcrumbs{display:flex;align-items:center;gap:4px;max-width:1160px;margin:0 auto;font-size:var(--text-sm);color:var(--color-text-secondary);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.breadcrumbs::-webkit-scrollbar{display:none}
+.breadcrumbs a{color:var(--color-text-secondary);text-decoration:none;padding:4px 6px;border-radius:var(--radius-sm);transition:color 120ms ease,background 120ms ease}
+.breadcrumbs a:hover{color:var(--color-primary-hover);background:var(--color-primary-subtle)}
+.crumb-sep{width:12px;height:12px;color:var(--color-text-muted);flex-shrink:0;opacity:.7}
+.crumb-current{color:var(--color-text);font-weight:600;padding:4px 6px}
+
+.content{max-width:1160px;margin:0 auto;padding:40px 20px 96px}
+
+.class-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 24px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:var(--color-surface);box-shadow:var(--shadow-sm);margin-bottom:24px;flex-wrap:wrap}
+.class-header-main{min-width:0;flex:1}
+.class-header h1{font-size:var(--text-3xl);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:0 0 6px}
+.class-header-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:var(--text-sm);color:var(--color-text-secondary);margin-top:6px}
+.class-header-meta span{display:inline-flex;align-items:center;gap:5px}
+.class-header-meta svg{width:13px;height:13px;color:var(--color-text-muted)}
+.class-header-meta .code{font-family:var(--font-mono);font-size:11px;padding:1px 6px;border-radius:var(--radius-sm);background:var(--color-bg-subtle);border:1px solid var(--color-border);color:var(--color-text-secondary)}
+
+.summary-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+@media(min-width:768px){.summary-tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{padding:16px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:var(--color-surface)}
+.tile-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-muted);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.tile-label svg{width:12px;height:12px}
+.tile-value{font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.tile-sub{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:4px}
+.tile.primary{background:linear-gradient(135deg,var(--color-primary-subtle) 0%,var(--color-surface) 100%);border-color:var(--primary-200)}
+.tile.success{background:linear-gradient(135deg,var(--success-bg) 0%,var(--color-surface) 100%);border-color:#bde5cd}
+
+.chart-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:24px}
+@media(min-width:768px){.chart-grid{grid-template-columns:1fr 1fr}}
+.chart-card{border-radius:var(--radius-lg);border:1px solid var(--color-border);background:var(--color-surface);overflow:hidden;box-shadow:var(--shadow-sm)}
+.chart-card-header{padding:16px 18px 12px;border-bottom:1px solid var(--color-border)}
+.chart-card-title{font-size:var(--text-sm);font-weight:600;display:flex;align-items:center;gap:8px}
+.chart-card-title svg{width:15px;height:15px;color:var(--color-text-muted)}
+.chart-card-desc{font-size:12px;color:var(--color-text-secondary);margin-top:4px;line-height:1.5}
+.chart-card-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--color-text-muted);margin-top:8px;font-variant-numeric:tabular-nums}
+.chart-card-meta strong{color:var(--color-text-secondary);font-weight:600}
+.chart-card-body{position:relative;padding:16px 18px;height:280px}
+.chart-table{margin:0 18px 16px;border:1px solid var(--color-border);border-radius:var(--radius-md);overflow:hidden}
+.chart-table table{width:100%;border-collapse:collapse;font-size:12px}
+.chart-table th,.chart-table td{padding:7px 12px;text-align:left;border-bottom:1px solid var(--color-border)}
+.chart-table tr:last-child td{border-bottom:none}
+.chart-table th{background:var(--color-bg-subtle);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-muted)}
+.chart-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+
+.analysis-toggle{display:block;margin-bottom:24px;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-surface);overflow:hidden;box-shadow:var(--shadow-sm)}
+.analysis-toggle > summary{padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:var(--text-sm);font-weight:600;color:var(--color-text);list-style:none;background:var(--color-bg-subtle);transition:background 150ms ease}
+.analysis-toggle > summary::-webkit-details-marker{display:none}
+.analysis-toggle > summary::after{content:'';width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform 240ms var(--ease-out);margin-left:auto;flex-shrink:0}
+.analysis-toggle[open] > summary::after{transform:rotate(-135deg)}
+.analysis-toggle > summary:hover{background:var(--color-border)}
+.analysis-toggle > summary svg{width:16px;height:16px;color:var(--color-text-muted)}
+.analysis-toggle > summary .badge{margin-left:8px}
+.analysis-toggle[open] > summary{border-bottom:1px solid var(--color-border)}
+.analysis-toggle > .analysis-body{padding:20px;display:grid;gap:16px;background:var(--color-surface)}
+.analysis-toggle > .analysis-body .chart-card{box-shadow:none}
+
+.funnel{padding:20px 22px}
+.funnel-step{display:flex;align-items:center;gap:14px;padding:12px 0}
+.funnel-step + .funnel-step{border-top:1px dashed var(--color-border)}
+.funnel-label{font-size:var(--text-sm);font-weight:600;min-width:130px}
+.funnel-bar-wrap{flex:1;height:32px;background:var(--color-bg-subtle);border-radius:var(--radius-md);overflow:hidden;position:relative}
+.funnel-bar{height:100%;border-radius:var(--radius-md);background:var(--color-primary);display:flex;align-items:center;padding:0 12px;color:#fff;font-size:12px;font-weight:600;transition:width 400ms var(--ease-out);font-variant-numeric:tabular-nums}
+.funnel-bar.l0{background:#c7cfd6}
+.funnel-bar.l1{background:#38c9de}
+.funnel-bar.l2{background:#0a9db8}
+.funnel-bar.l3{background:#0a5f6f}
+.funnel-bar.l4{background:#1fa860}
+.funnel-count{font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums;min-width:36px;text-align:right}
+
+.roster-card{border-radius:var(--radius-lg);border:1px solid var(--color-border);background:var(--color-surface);overflow:hidden;box-shadow:var(--shadow-sm)}
+.table-card-header{padding:16px 18px;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.table-card-title{font-size:var(--text-sm);font-weight:600;display:flex;align-items:center;gap:8px}
+.table-card-title svg{width:15px;height:15px;color:var(--color-text-muted)}
+.table-card-desc{font-size:12px;color:var(--color-text-muted);margin-top:4px}
+.table-scroll{overflow-x:auto}
+.ui-table{width:100%;border-collapse:collapse;min-width:700px;font-size:13px}
+.ui-table th,.ui-table td{padding:11px 18px;text-align:left;border-bottom:1px solid var(--color-border)}
+.ui-table th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-muted);background:var(--color-bg-subtle);white-space:nowrap}
+.ui-table td{color:var(--color-text);vertical-align:middle}
+.ui-table tbody tr:last-child td{border-bottom:none}
+.ui-table tbody tr:hover td{background:var(--color-bg-subtle)}
+
+.student-cell{display:flex;align-items:center;gap:10px;font-weight:600}
+.student-avatar{width:30px;height:30px;border-radius:50%;background:var(--primary-100);color:var(--primary-800);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.student-avatar.v2{background:#efe7ff;color:#4b2a8a}
+.student-avatar.v3{background:#fef3e7;color:#a15700}
+.student-avatar.v4{background:var(--success-bg);color:#0f5132}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;line-height:1.4;white-space:nowrap;border:1px solid transparent}
+.badge-success{background:var(--success-bg);color:#0f5132;border-color:#bde5cd}
+.badge-warning{background:var(--warning-bg);color:#7a5500;border-color:#f0d998}
+.badge-danger{background:var(--danger-bg);color:#7a1f1f;border-color:#f0c3c2}
+.badge-muted{background:var(--color-bg-subtle);color:var(--color-text-secondary);border-color:var(--color-border)}
+.code{font-family:var(--font-mono);font-size:11px;padding:1px 6px;border-radius:var(--radius-sm);background:var(--color-bg-subtle);border:1px solid var(--color-border);color:var(--color-text-secondary)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:var(--radius-md);border:1px solid transparent;font:inherit;font-size:var(--text-sm);font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background 150ms ease,transform 100ms var(--ease-out),border-color 150ms ease}
+.btn:active{transform:scale(.97)}
+.btn svg{width:14px;height:14px}
+.btn-ghost{background:transparent;color:var(--color-text);border-color:var(--color-border)}
+.btn-ghost:hover{background:var(--color-bg-subtle);border-color:var(--color-border-strong)}
+.btn-ghost-sm{padding:6px 10px;font-size:var(--text-xs);border-radius:var(--radius-sm);gap:4px}
+.btn-ghost-sm svg{width:12px;height:12px}
+
+@media(min-width:640px){.content{padding:56px 24px 96px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms !important}.funnel-bar{transition:none}}
+@media(prefers-reduced-transparency:reduce){.crumbs-bar{background:var(--color-bg);backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-contrast:more){:root{--color-border:var(--gray-400)}.crumbs-bar{background:var(--color-bg);backdrop-filter:none;-webkit-backdrop-filter:none}}
+</style>
+</head>
+<body>
+
+<header class="crumbs-bar" id="crumbsBar">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="#">Home</a>
+    <i data-lucide="chevron-right" class="crumb-sep" aria-hidden="true"></i>
+    <a href="#">My Classes</a>
+    <i data-lucide="chevron-right" class="crumb-sep" aria-hidden="true"></i>
+    <span class="crumb-current" aria-current="page">Grade 7 — Mabini</span>
+  </nav>
+</header>
+
+<main class="content">
+
+  <header class="class-header">
+    <div class="class-header-main">
+      <h1>Grade 7 — Mabini</h1>
+      <div class="class-header-meta">
+        <span><span class="code">G7-MATH-A</span></span>
+        <span><i data-lucide="user-check" aria-hidden="true"></i>Maria Santos</span>
+        <span><i data-lucide="users" aria-hidden="true"></i>30 students</span>
+        <span><i data-lucide="calendar" aria-hidden="true"></i>Created Sep 1</span>
+      </div>
+    </div>
+    <a href="teacher_dashboard.html" class="btn btn-ghost"><i data-lucide="arrow-left" aria-hidden="true"></i>Back to dashboard</a>
+  </header>
+
+  <div class="summary-tiles">
+    <div class="tile primary">
+      <div class="tile-label"><i data-lucide="users" aria-hidden="true"></i>Class size</div>
+      <div class="tile-value">30</div>
+      <div class="tile-sub">open memberships</div>
+    </div>
+    <div class="tile success">
+      <div class="tile-label"><i data-lucide="check-circle-2" aria-hidden="true"></i>Completed</div>
+      <div class="tile-value">18</div>
+      <div class="tile-sub">60% of class</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label"><i data-lucide="activity" aria-hidden="true"></i>Learning</div>
+      <div class="tile-value">9</div>
+      <div class="tile-sub">currently in progress</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label"><i data-lucide="flag" aria-hidden="true"></i>Follow-up</div>
+      <div class="tile-value">3</div>
+      <div class="tile-sub">unresolved targets</div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title"><i data-lucide="layers" aria-hidden="true"></i>BKT distribution by skill</div>
+        <div class="chart-card-desc">Student count per band, per skill, scoped to this class.</div>
+        <div class="chart-card-meta">
+          <span><strong>Class</strong> G7-Mabini</span>
+          <span><strong>N</strong> 30</span>
+          <span><strong>Definition</strong> band counts</span>
+        </div>
+      </div>
+      <div class="chart-card-body">
+        <canvas id="chartBKT" aria-label="Horizontal stacked bar chart of BKT band counts per skill"></canvas>
+      </div>
+      <div class="chart-table">
+        <table>
+          <thead><tr><th>Skill</th><th class="num">Needs practice</th><th class="num">Developing</th><th class="num">Strong</th></tr></thead>
+          <tbody>
+            <tr><td>S1</td><td class="num">2</td><td class="num">7</td><td class="num">21</td></tr>
+            <tr><td>S2</td><td class="num">4</td><td class="num">10</td><td class="num">16</td></tr>
+            <tr><td>S3</td><td class="num">6</td><td class="num">9</td><td class="num">15</td></tr>
+            <tr><td>S4</td><td class="num">7</td><td class="num">8</td><td class="num">15</td></tr>
+            <tr><td>S5</td><td class="num">9</td><td class="num">7</td><td class="num">14</td></tr>
+            <tr><td>S6</td><td class="num">3</td><td class="num">6</td><td class="num">21</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title"><i data-lucide="filter" aria-hidden="true"></i>Completion funnel</div>
+        <div class="chart-card-desc">How many students reach each stage of the fixed journey.</div>
+        <div class="chart-card-meta">
+          <span><strong>Class</strong> G7-Mabini</span>
+          <span><strong>N</strong> 30</span>
+          <span><strong>Definition</strong> count at or past each stage</span>
+        </div>
+      </div>
+      <div class="funnel">
+        <div class="funnel-step">
+          <div class="funnel-label">Pretest</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar l0" style="width:100%"><span>Reached</span></div></div>
+          <div class="funnel-count">30</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">Lesson 1</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar l1" style="width:100%"></div></div>
+          <div class="funnel-count">30</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">Lesson 2</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar l2" style="width:83%"></div></div>
+          <div class="funnel-count">25</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">Lesson 3</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar l2" style="width:70%"></div></div>
+          <div class="funnel-count">21</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">Activity</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar l3" style="width:63%"></div></div>
+          <div class="funnel-count">19</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">Posttest</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar l4" style="width:60%"></div></div>
+          <div class="funnel-count">18</div>
+        </div>
+      </div>
+      <div class="chart-table">
+        <table>
+          <thead><tr><th>Stage</th><th class="num">Reached</th><th class="num">% of class</th></tr></thead>
+          <tbody>
+            <tr><td>Pretest</td><td class="num">30</td><td class="num">100%</td></tr>
+            <tr><td>Lesson 1</td><td class="num">30</td><td class="num">100%</td></tr>
+            <tr><td>Lesson 2</td><td class="num">25</td><td class="num">83%</td></tr>
+            <tr><td>Lesson 3</td><td class="num">21</td><td class="num">70%</td></tr>
+            <tr><td>Activity</td><td class="num">19</td><td class="num">63%</td></tr>
+            <tr><td>Posttest</td><td class="num">18</td><td class="num">60%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <details class="analysis-toggle">
+    <summary>
+      <i data-lucide="line-chart" aria-hidden="true"></i>
+      Show deeper analysis
+      <span class="badge badge-muted">2 charts</span>
+    </summary>
+    <div class="analysis-body">
+
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div class="chart-card-title"><i data-lucide="git-compare" aria-hidden="true"></i>Matched pre/post (bubble)</div>
+          <div class="chart-card-desc">Each bubble is one student. X = pretest, Y = posttest, size = elapsed session time.</div>
+          <div class="chart-card-meta">
+            <span><strong>Cohort</strong> matched only</span>
+            <span><strong>N</strong> 22</span>
+            <span><strong>Definition</strong> paired scores, sized by minutes</span>
+          </div>
+        </div>
+        <div class="chart-card-body">
+          <canvas id="chartBubble" aria-label="Bubble chart of pre vs post scores sized by duration"></canvas>
+        </div>
+        <div class="chart-table">
+          <table>
+            <thead><tr><th>Segment</th><th class="num">Students</th></tr></thead>
+            <tbody>
+              <tr><td>Above diagonal (gained)</td><td class="num">19</td></tr>
+              <tr><td>On diagonal (no change)</td><td class="num">1</td></tr>
+              <tr><td>Below diagonal (regressed)</td><td class="num">2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div class="chart-card-title"><i data-lucide="git-branch" aria-hidden="true"></i>Q-Learning decisions</div>
+          <div class="chart-card-desc">Action counts for this class. Denominator = all decisions issued to members.</div>
+          <div class="chart-card-meta">
+            <span><strong>Class</strong> G7-Mabini</span>
+            <span><strong>N</strong> 74</span>
+            <span><strong>Definition</strong> count per action</span>
+          </div>
+        </div>
+        <div class="chart-card-body">
+          <canvas id="chartQ" aria-label="Bar chart of Q-Learning action counts"></canvas>
+        </div>
+        <div class="chart-table">
+          <table>
+            <thead><tr><th>Action</th><th class="num">Count</th><th class="num">Share</th></tr></thead>
+            <tbody>
+              <tr><td>Progress</td><td class="num">48</td><td class="num">64.9%</td></tr>
+              <tr><td>Additional exercise</td><td class="num">15</td><td class="num">20.3%</td></tr>
+              <tr><td>Foundational</td><td class="num">11</td><td class="num">14.9%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </details>
+
+  <div class="roster-card">
+    <div class="table-card-header">
+      <div>
+        <div class="table-card-title"><i data-lucide="users" aria-hidden="true"></i>Roster</div>
+        <div class="table-card-desc">Read-only. Monitoring only — class membership never gates learning.</div>
+      </div>
+      <span class="badge badge-muted">30 students</span>
+    </div>
+    <div class="table-scroll">
+      <table class="ui-table">
+        <thead>
+          <tr><th>Student</th><th>Stage</th><th>Matched gain</th><th>Follow-up</th><th>Last activity</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="student-cell"><span class="student-avatar">MS</span>Maria Santos</div></td>
+            <td>Lesson 1 · regular</td>
+            <td><span class="badge badge-success">+43 pp</span></td>
+            <td><span class="badge badge-danger">Flagged</span></td>
+            <td>Today 10:42</td>
+            <td><a href="view_student_progress.html" class="btn btn-ghost btn-ghost-sm">View</a></td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><span class="student-avatar v2">JC</span>Juan Cruz</div></td>
+            <td>Lesson 2 · additional</td>
+            <td><span class="badge badge-success">+38 pp</span></td>
+            <td><span class="badge badge-danger">Flagged</span></td>
+            <td>Today 10:15</td>
+            <td><a href="view_student_progress.html" class="btn btn-ghost btn-ghost-sm">View</a></td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><span class="student-avatar v3">AR</span>Ana Reyes</div></td>
+            <td>Lesson 3 · foundational</td>
+            <td><span class="badge badge-success">+31 pp</span></td>
+            <td><span class="badge badge-danger">Flagged</span></td>
+            <td>Today 09:50</td>
+            <td><a href="view_student_progress.html" class="btn btn-ghost btn-ghost-sm">View</a></td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><span class="student-avatar v4">PB</span>Pedro Bautista</div></td>
+            <td>Completed</td>
+            <td><span class="badge badge-success">+52 pp</span></td>
+            <td>—</td>
+            <td>Yesterday</td>
+            <td><a href="view_student_progress.html" class="btn btn-ghost btn-ghost-sm">View</a></td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><span class="student-avatar">LT</span>Liza Torres</div></td>
+            <td>Completed</td>
+            <td><span class="badge badge-success">+61 pp</span></td>
+            <td>—</td>
+            <td>Yesterday</td>
+            <td><a href="view_student_progress.html" class="btn btn-ghost btn-ghost-sm">View</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const crumbsBar=document.getElementById('crumbsBar');
+window.addEventListener('scroll',()=>crumbsBar.classList.toggle('scrolled',window.scrollY>4),{passive:true});
+
+Chart.defaults.font.family="'Inter', system-ui, sans-serif";
+Chart.defaults.font.size=11;
+Chart.defaults.color='#57626d';
+Chart.defaults.borderColor='#eff2f4';
+Chart.defaults.plugins.legend.labels.usePointStyle=true;
+Chart.defaults.plugins.legend.labels.boxWidth=6;
+Chart.defaults.plugins.legend.labels.padding=12;
+Chart.defaults.plugins.tooltip.backgroundColor='#15181b';
+Chart.defaults.plugins.tooltip.padding=10;
+Chart.defaults.plugins.tooltip.cornerRadius=6;
+
+new Chart(document.getElementById('chartBKT'),{
+  type:'bar',
+  data:{labels:['S1','S2','S3','S4','S5','S6'],datasets:[
+      {label:'Needs practice',data:[2,4,6,7,9,3],backgroundColor:'#e0403f',borderRadius:3,barThickness:22},
+      {label:'Developing',data:[7,10,9,8,7,6],backgroundColor:'#e6a319',borderRadius:3,barThickness:22},
+      {label:'Strong',data:[21,16,15,15,14,21],backgroundColor:'#1fa860',borderRadius:3,barThickness:22}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    scales:{x:{stacked:true,beginAtZero:true,grid:{color:'#eff2f4',drawBorder:false}},y:{stacked:true,grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},
+    plugins:{tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.x}`}}}}
+});
+
+const bubbleData=[
+  {x:20,y:60,r:14},{x:35,y:75,r:18},{x:42,y:82,r:16},{x:28,y:70,r:12},
+  {x:15,y:58,r:10},{x:50,y:88,r:20},{x:38,y:78,r:15},{x:30,y:55,r:13},
+  {x:45,y:90,r:19},{x:22,y:62,r:11},{x:48,y:85,r:17},{x:33,y:72,r:14},
+  {x:55,y:92,r:22},{x:25,y:65,r:12},{x:40,y:80,r:16},{x:12,y:52,r:9},
+  {x:44,y:86,r:18},{x:36,y:74,r:13},{x:29,y:68,r:11},{x:52,y:89,r:21},
+  {x:18,y:55,r:10},{x:46,y:83,r:15}
+];
+new Chart(document.getElementById('chartBubble'),{
+  type:'bubble',
+  data:{datasets:[{label:'Student',data:bubbleData,backgroundColor:'rgba(10,157,184,0.55)',borderColor:'#0a9db8',borderWidth:1}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{x:{min:0,max:100,title:{display:true,text:'Pretest (%)',font:{size:11}},grid:{color:'#eff2f4',drawBorder:false}},
+      y:{min:0,max:100,title:{display:true,text:'Posttest (%)',font:{size:11}},grid:{color:'#eff2f4',drawBorder:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`Pre ${ctx.raw.x}% → Post ${ctx.raw.y}%`}}}}
+});
+
+new Chart(document.getElementById('chartQ'),{
+  type:'bar',
+  data:{labels:['Progress','Additional','Foundational'],
+    datasets:[{data:[48,15,11],backgroundColor:['#1fa860','#0a9db8','#e6a319'],borderRadius:6,barThickness:52}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{beginAtZero:true,grid:{color:'#eff2f4',drawBorder:false}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y} decisions`}}}}
+});
+
+lucide.createIcons();
+</script>
+</body>
+</html>

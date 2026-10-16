@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>Sign in · PathGen</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<style>
+/* === REPLACE WITH <link rel="stylesheet" href="{% static 'css/theme.css' %}"> === */
+:root {
+  color-scheme: only light;
+  --primary-50:  #eafcfd; --primary-100: #d1f6fa; --primary-200: #a3e9f2;
+  --primary-300: #6ed8e9; --primary-400: #38c9de; --primary-500: #0cc0df;
+  --primary-600: #0a9db8; --primary-700: #087b90; --primary-800: #0a5f6f; --primary-900: #0b4a56;
+  --gray-50:  #f8fafb; --gray-100: #eff2f4; --gray-200: #dfe4e8; --gray-300: #c7cfd6;
+  --gray-400: #9aa5b1; --gray-500: #74808d; --gray-600: #57626d; --gray-700: #3f4750;
+  --gray-800: #262b31; --gray-900: #15181b;
+  --danger: #e0403f; --danger-bg: #fbe7e6;
+  --color-bg:            #ffffff;
+  --color-bg-subtle:     var(--gray-50);
+  --color-surface:       #ffffff;
+  --color-border:        var(--gray-200);
+  --color-border-strong: var(--gray-300);
+  --color-focus-ring:    var(--primary-700);
+  --color-text:            var(--gray-900);
+  --color-text-secondary:  var(--gray-600);
+  --color-text-muted:      var(--gray-500);
+  --color-primary:        var(--primary-600);
+  --color-primary-hover:  var(--primary-700);
+  --color-primary-subtle: var(--primary-50);
+  --color-on-primary:     #ffffff;
+  --color-accent:         var(--primary-500);
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --text-xs: 0.75rem; --text-sm: 0.875rem; --text-base: 1rem;
+  --text-lg: 1.125rem; --text-xl: 1.25rem; --text-2xl: 1.5rem; --text-3xl: 2rem;
+  --leading-tight: 1.2; --leading-normal: 1.5;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(21, 24, 27, 0.06);
+  --shadow-md: 0 4px 10px rgba(21, 24, 27, 0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; min-height: 100%; }
+body {
+  background: var(--color-bg-subtle);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  min-height: 100dvh;
+}
+
+.login {
+  width: 100%; max-width: 400px;
+}
+
+.brand-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.brand-mark {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--color-accent);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text);
+}
+.brand-mark svg { width: 22px; height: 22px; stroke-width: 2.5; }
+.brand-name {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 28px;
+}
+
+.card h1 {
+  font-size: var(--text-xl);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+.card .subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 24px;
+}
+
+/* Error region above form */
+.error-region {
+  display: none;
+  align-items: flex-start; gap: 8px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  border-radius: var(--radius-md);
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+.error-region.is-visible { display: flex; }
+.error-region svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+.field input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font: inherit;
+  font-size: var(--text-base);
+  color: var(--color-text);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.field input:hover { border-color: var(--color-border-strong); }
+.field input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-subtle);
+}
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+  padding: 11px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 150ms ease, transform 100ms cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.98); }
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--shadow-sm);
+  margin-top: 8px;
+}
+.btn-primary:hover { background: var(--color-primary-hover); }
+.btn svg { width: 16px; height: 16px; }
+
+.footnote {
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
+@media (prefers-contrast: more) {
+  :root { --color-border: var(--gray-400); }
+}
+</style>
+</head>
+<body>
+
+<main class="login">
+
+  <div class="brand-row">
+    <!-- In Django: <img src="{% static 'logo/pathgen.png' %}" alt="PathGen" width="40" height="40"> -->
+    <span class="brand-mark" aria-hidden="true">
+      <i data-lucide="route"></i>
+    </span>
+    <span class="brand-name">PathGen</span>
+  </div>
+
+  <div class="card">
+    <h1>Sign in</h1>
+    <p class="subtitle">Use the account provided by your school administrator.</p>
+
+    <div class="error-region" id="errorRegion" role="alert">
+      <i data-lucide="alert-circle" aria-hidden="true"></i>
+      <span>Invalid username or password.</span>
+    </div>
+
+    <form method="post" novalidate>
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" required autofocus>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Sign in <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+    </form>
+  </div>
+
+  <p class="footnote">Grade 7 Mathematics · Adaptive Learning</p>
+
+</main>
+
+<script>
+  lucide.createIcons();
+</script>
+</body>
+</html>

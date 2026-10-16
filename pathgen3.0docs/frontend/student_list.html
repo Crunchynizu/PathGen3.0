@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>Students · PathGen</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<style>
+/* === REPLACE WITH <link rel="stylesheet" href="{% static 'css/theme.css' %}"> === */
+:root{color-scheme:only light;--primary-50:#eafcfd;--primary-100:#d1f6fa;--primary-200:#a3e9f2;--primary-300:#6ed8e9;--primary-400:#38c9de;--primary-500:#0cc0df;--primary-600:#0a9db8;--primary-700:#087b90;--primary-800:#0a5f6f;--primary-900:#0b4a56;--gray-50:#f8fafb;--gray-100:#eff2f4;--gray-200:#dfe4e8;--gray-300:#c7cfd6;--gray-400:#9aa5b1;--gray-500:#74808d;--gray-600:#57626d;--gray-700:#3f4750;--gray-800:#262b31;--gray-900:#15181b;--success:#1fa860;--success-bg:#e5f7ee;--warning:#e6a319;--warning-bg:#fdf3df;--danger:#e0403f;--danger-bg:#fbe7e6;--color-bg:#ffffff;--color-bg-subtle:var(--gray-50);--color-surface:#ffffff;--color-border:var(--gray-200);--color-border-strong:var(--gray-300);--color-focus-ring:var(--primary-700);--color-text:var(--gray-900);--color-text-secondary:var(--gray-600);--color-text-muted:var(--gray-500);--color-primary:var(--primary-600);--color-primary-hover:var(--primary-700);--color-primary-subtle:var(--primary-50);--color-on-primary:#ffffff;--color-accent:var(--primary-500);--font-sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--text-xs:0.75rem;--text-sm:0.875rem;--text-base:1rem;--text-lg:1.125rem;--text-xl:1.25rem;--text-2xl:1.5rem;--text-3xl:2rem;--leading-tight:1.2;--leading-normal:1.5;--radius-sm:4px;--radius-md:8px;--radius-lg:12px;--shadow-sm:0 1px 2px rgba(21,24,27,0.06);--shadow-md:0 4px 10px rgba(21,24,27,0.08);--surface-translucent-bg:rgba(255,255,255,0.7);--surface-translucent-blur:20px;--ease-out:cubic-bezier(0.22,1,0.36,1);--sidebar-width:240px}
+*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100%}
+body{background:var(--color-bg);color:var(--color-text);font-family:var(--font-sans);font-size:var(--text-base);line-height:var(--leading-normal);font-optical-sizing:auto;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* SHELL */
+.hamburger{position:fixed;top:16px;left:16px;z-index:60;width:44px;height:44px;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--surface-translucent-bg);backdrop-filter:blur(var(--surface-translucent-blur)) saturate(180%);-webkit-backdrop-filter:blur(var(--surface-translucent-blur)) saturate(180%);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;color:var(--color-text);cursor:pointer;transition:transform 120ms var(--ease-out),background 200ms ease,opacity 200ms ease}
+.hamburger:hover{background:var(--color-surface)}.hamburger:active{transform:scale(0.94)}.hamburger svg{width:20px;height:20px}
+.scrim{position:fixed;inset:0;z-index:40;background:var(--gray-900);opacity:0;pointer-events:none}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-width);z-index:50;background:var(--surface-translucent-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border-right:1px solid var(--color-border);display:flex;flex-direction:column;transform:translateX(calc(-1 * var(--sidebar-width)));touch-action:pan-y;overflow:hidden}
+.sidebar-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 12px 12px 16px;flex-shrink:0}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--color-text);padding:4px 6px;border-radius:var(--radius-md)}
+.brand:hover{background:rgba(21,24,27,0.04)}
+.brand-mark{width:28px;height:28px;border-radius:7px;background:var(--color-accent);display:flex;align-items:center;justify-content:center;color:var(--gray-900);flex-shrink:0}
+.brand-mark svg{width:16px;height:16px;stroke-width:2.5}
+.brand-name{font-size:var(--text-sm);font-weight:600}
+.icon-btn{width:36px;height:36px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.icon-btn:hover{background:rgba(21,24,27,0.05);color:var(--color-text)}.icon-btn svg{width:18px;height:18px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:4px 10px 10px}
+.nav-section{margin-top:14px}.nav-section:first-child{margin-top:0}
+.nav-section-label{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-muted);padding:6px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-md);color:var(--color-text-secondary);text-decoration:none;border:none;background:transparent;width:100%;text-align:left;font-family:inherit;font-size:var(--text-sm);font-weight:500;cursor:pointer;transition:background 120ms ease,color 120ms ease}
+.nav-item:hover{background:rgba(21,24,27,0.05);color:var(--color-text)}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+.nav-item[aria-current="page"]{background:var(--color-primary-subtle);color:var(--color-primary);font-weight:600}
+.nav-item[aria-current="page"] svg{color:var(--color-primary)}
+.sidebar-footer{padding:10px;border-top:1px solid var(--color-border);flex-shrink:0}
+.user-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-md);cursor:pointer}
+.user-chip:hover{background:rgba(21,24,27,0.05)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary-100);color:var(--primary-800);display:flex;align-items:center;justify-content:center;font-size:var(--text-xs);font-weight:600;flex-shrink:0}
+.user-meta{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.user-name{font-size:var(--text-sm);font-weight:600;color:var(--color-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:var(--text-xs);color:var(--color-text-muted);text-transform:capitalize}
+
+/* CONTENT */
+.content{max-width:1100px;margin:0 auto;padding:80px 20px 96px}
+.page-header{margin-bottom:20px}
+.page-header h1{font-size:var(--text-3xl);line-height:var(--leading-tight);letter-spacing:-0.02em;font-weight:700;margin:0 0 6px}
+.page-header .subtitle{font-size:var(--text-base);color:var(--color-text-secondary);margin:0;max-width:62ch}
+
+.readonly-banner{display:flex;gap:10px;padding:12px 14px;border-radius:var(--radius-md);background:var(--color-bg-subtle);border:1px solid var(--color-border);color:var(--color-text-secondary);font-size:var(--text-sm);line-height:1.5;margin-bottom:24px}
+.readonly-banner svg{width:16px;height:16px;flex-shrink:0;margin-top:2px;color:var(--color-text-muted)}
+.readonly-banner strong{color:var(--color-text);font-weight:600}
+
+/* Filter bar */
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-search{position:relative;flex:1 1 240px;min-width:0}
+.filter-search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--color-text-muted);pointer-events:none}
+.filter-search input{width:100%;padding:9px 12px 9px 34px;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--color-surface);font:inherit;font-size:var(--text-sm);color:var(--color-text);transition:border-color 150ms ease,box-shadow 150ms ease}
+.filter-search input:hover{border-color:var(--color-border-strong)}
+.filter-search input:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px var(--color-primary-subtle)}
+
+.filter-toggle{display:inline-flex;align-items:center;gap:6px;padding:9px 12px;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-secondary);font:inherit;font-size:var(--text-sm);font-weight:500;cursor:pointer;white-space:nowrap;transition:background 150ms ease,border-color 150ms ease,color 150ms ease,transform 100ms var(--ease-out)}
+.filter-toggle:hover{background:var(--color-bg-subtle);color:var(--color-text);border-color:var(--color-border-strong)}
+.filter-toggle:active{transform:scale(0.97)}
+.filter-toggle svg{width:14px;height:14px}
+.filter-toggle .badge-count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--color-primary);color:var(--color-on-primary);font-size:10px;font-weight:700;font-variant-numeric:tabular-nums}
+.filter-toggle .badge-count[hidden]{display:none}
+
+.filters{display:none;flex-direction:column;gap:12px;padding:16px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:var(--color-bg-subtle);margin-bottom:16px}
+.filters.is-open{display:flex}
+.filter-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:640px){.filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:900px){.filter-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.filter-field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.filter-field label{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--color-text-muted)}
+.filter-field select{width:100%;padding:8px 10px;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--color-surface);font:inherit;font-size:var(--text-sm);color:var(--color-text)}
+.filter-field select:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px var(--color-primary-subtle)}
+.filter-actions{display:flex;gap:8px;justify-content:flex-end;padding-top:12px;border-top:1px solid var(--color-border);margin-top:4px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:var(--radius-md);border:1px solid transparent;font:inherit;font-size:var(--text-sm);font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background 150ms ease,transform 100ms var(--ease-out),border-color 150ms ease,color 150ms ease;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(0.97)}
+.btn svg{width:14px;height:14px}
+.btn-ghost{background:transparent;color:var(--color-text);border-color:var(--color-border)}
+.btn-ghost:hover{background:var(--color-bg-subtle);border-color:var(--color-border-strong)}
+.btn-primary{background:var(--color-primary);color:var(--color-on-primary);box-shadow:var(--shadow-sm)}
+.btn-primary:hover{background:var(--color-primary-hover)}
+.btn-sm{padding:7px 12px;font-size:var(--text-xs);border-radius:var(--radius-sm);gap:5px}
+.btn-sm svg{width:12px;height:12px}
+
+/* Results meta */
+.results-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:var(--text-xs);color:var(--color-text-muted);padding:0 4px 8px;flex-wrap:wrap}
+.results-meta strong{color:var(--color-text);font-weight:600;font-variant-numeric:tabular-nums}
+
+/* Student list */
+.student-list{display:flex;flex-direction:column;gap:1px;background:var(--color-border);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
+
+.student-row{display:grid;grid-template-columns:44px 1fr auto;gap:16px;align-items:center;padding:16px 20px;background:var(--color-surface);transition:background 120ms ease}
+.student-row:hover{background:var(--color-bg-subtle)}
+.student-row[data-status="inactive"]{background:var(--gray-50)}
+.student-row[data-status="inactive"] .student-avatar,
+.student-row[data-status="inactive"] .student-name,
+.student-row[data-status="inactive"] .student-username{opacity:0.6}
+
+/* Avatar */
+.student-avatar{width:44px;height:44px;border-radius:50%;background:var(--primary-100);color:var(--primary-800);display:flex;align-items:center;justify-content:center;font-size:var(--text-sm);font-weight:600;letter-spacing:0.02em;flex-shrink:0;overflow:hidden}
+.student-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Main */
+.student-main{min-width:0}
+.student-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.student-name{font-size:var(--text-sm);font-weight:600;letter-spacing:-0.005em;color:var(--color-text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.student-username{font-family:var(--font-mono);font-size:11px;color:var(--color-text-muted);padding:1px 6px;border-radius:var(--radius-sm);background:var(--color-bg-subtle);border:1px solid var(--color-border);white-space:nowrap}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap}
+.badge .dot{width:6px;height:6px;border-radius:50%}
+.badge[data-tone="danger"]{background:var(--danger-bg);color:#7a1f1f}
+.badge[data-tone="danger"] .dot{background:var(--danger)}
+.badge[data-tone="warning"]{background:var(--warning-bg);color:#7a5500}
+.badge[data-tone="warning"] .dot{background:var(--warning)}
+.badge[data-tone="success"]{background:var(--success-bg);color:#0f5132}
+.badge[data-tone="success"] .dot{background:var(--success)}
+.badge[data-tone="neutral"]{background:var(--color-bg-subtle);border:1px solid var(--color-border);color:var(--color-text-secondary)}
+.badge[data-tone="primary"]{background:var(--color-primary-subtle);color:var(--primary-800)}
+.badge[data-tone="primary"] .dot{background:var(--color-primary)}
+
+/* Meta line */
+.student-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:var(--text-xs);color:var(--color-text-muted)}
+.student-meta .meta-item{display:inline-flex;align-items:center;gap:4px}
+.student-meta .meta-item svg{width:12px;height:12px;flex-shrink:0}
+.student-meta strong{color:var(--color-text-secondary);font-weight:600}
+
+/* Skills summary — small BKT band chips */
+.skills-summary{display:flex;align-items:center;gap:3px;margin-top:6px}
+.skill-dot{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:8px;font-weight:700;border:1px solid}
+.skill-dot[data-band="np"]{background:var(--danger-bg);color:#7a1f1f;border-color:#f0c3c2}
+.skill-dot[data-band="dev"]{background:var(--warning-bg);color:#7a5500;border-color:#f0d998}
+.skill-dot[data-band="strong"]{background:var(--success-bg);color:#0f5132;border-color:#bde5cd}
+.skill-dot[data-band="none"]{background:var(--color-bg-subtle);color:var(--color-text-muted);border-color:var(--color-border)}
+.skills-label-sm{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--color-text-muted);margin-right:4px;align-self:center}
+
+/* Actions */
+.student-actions{display:flex;gap:6px;flex-shrink:0;align-items:center}
+
+/* Empty state */
+.empty{display:none;flex-direction:column;align-items:center;gap:10px;padding:64px 24px;background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);text-align:center}
+.empty.is-visible{display:flex}
+.empty-icon{width:52px;height:52px;border-radius:50%;background:var(--color-bg-subtle);color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+.empty-icon svg{width:22px;height:22px}
+.empty-title{font-size:var(--text-base);font-weight:600;color:var(--color-text);margin:0}
+.empty-desc{font-size:var(--text-sm);color:var(--color-text-secondary);margin:0;max-width:48ch}
+
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 4px 0;flex-wrap:wrap}
+.page-info{font-size:var(--text-sm);color:var(--color-text-secondary);font-variant-numeric:tabular-nums}
+.page-info strong{color:var(--color-text);font-weight:600}
+.page-controls{display:flex;gap:6px}
+
+@media(min-width:640px){.content{padding:96px 24px 96px}.student-row{padding:18px 24px;gap:18px}}
+@media(min-width:768px){.filters{display:flex}.filter-toggle{display:none}}
+@media(min-width:1024px){body{padding-left:var(--sidebar-width)}.hamburger,.scrim{display:none}.sidebar{transform:none;background:var(--color-bg-subtle);backdrop-filter:none;-webkit-backdrop-filter:none}.sidebar-header #closeBtn{display:none}.content{padding:48px 32px 96px}}
+@media(max-width:639.98px){
+  .student-row{grid-template-columns:40px 1fr;grid-template-areas:"avatar main" "actions actions";row-gap:12px}
+  .student-avatar{grid-area:avatar;width:40px;height:40px}
+  .student-main{grid-area:main}
+  .student-actions{grid-area:actions;padding-top:10px;border-top:1px dashed var(--color-border);justify-content:flex-end}
+  .student-actions .btn{flex:1}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0.01ms !important;animation-duration:0.01ms !important}.hamburger:active,.nav-item:active,.btn:active,.filter-toggle:active{transform:none !important;opacity:0.75}}
+@media(prefers-reduced-transparency:reduce){.sidebar,.hamburger{background:var(--color-surface);backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-contrast:more){:root{--color-border:var(--gray-400)}.sidebar,.hamburger{background:var(--color-surface);backdrop-filter:none;-webkit-backdrop-filter:none;border-color:var(--color-border-strong)}}
+</style>
+</head>
+<body data-role="admin">
+
+<button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+  <i data-lucide="menu" aria-hidden="true"></i>
+</button>
+<div class="scrim" id="scrim" aria-hidden="true"></div>
+
+<aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+  <div class="sidebar-header">
+    <a href="#" class="brand" aria-label="PathGen home">
+      <span class="brand-mark" aria-hidden="true"><i data-lucide="route"></i></span>
+      <span class="brand-name">PathGen</span>
+    </a>
+    <button class="icon-btn" id="closeBtn" aria-label="Close menu"><i data-lucide="x" aria-hidden="true"></i></button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <a href="#" class="nav-item"><i data-lucide="layout-dashboard" aria-hidden="true"></i>Dashboard</a>
+      <a href="#" class="nav-item"><i data-lucide="users" aria-hidden="true"></i>Users</a>
+      <a href="#" class="nav-item"><i data-lucide="school" aria-hidden="true"></i>Classes</a>
+      <a href="#" class="nav-item" aria-current="page"><i data-lucide="users-round" aria-hidden="true"></i>Students</a>
+      <a href="#" class="nav-item"><i data-lucide="book-open" aria-hidden="true"></i>Content</a>
+      <a href="#" class="nav-item"><i data-lucide="toggle-right" aria-hidden="true"></i>Overrides</a>
+      <a href="#" class="nav-item"><i data-lucide="scroll-text" aria-hidden="true"></i>Audit Logs</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Account</div>
+      <a href="#" class="nav-item"><i data-lucide="user" aria-hidden="true"></i>My Account</a>
+      <button type="button" class="nav-item"><i data-lucide="log-out" aria-hidden="true"></i>Logout</button>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-chip" role="button" tabindex="0">
+      <span class="avatar" aria-hidden="true">JD</span>
+      <span class="user-meta">
+        <span class="user-name">Jane Doe</span>
+        <span class="user-role">admin</span>
+      </span>
+    </div>
+  </div>
+</aside>
+
+<main class="content">
+
+  <header class="page-header">
+    <h1>Students</h1>
+    <p class="subtitle">Every active student across all classes. Monitoring only — lifecycle changes happen in Users.</p>
+  </header>
+
+  <div class="readonly-banner" role="note">
+    <i data-lucide="info" aria-hidden="true"></i>
+    <span>
+      This view never edits evidence. To deactivate an account, use
+      <strong>Users</strong>. To change a class roster, use <strong>Classes</strong>.
+    </span>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div class="filter-search">
+      <i data-lucide="search" aria-hidden="true"></i>
+      <input type="search" id="studentSearch" placeholder="Search name or username…" autocomplete="off" aria-label="Search students">
+    </div>
+    <button type="button" class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filters">
+      <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+      Filters
+      <span class="badge-count" id="filterCount" hidden>0</span>
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <form class="filters" id="filters" aria-label="Student filters">
+    <div class="filter-grid">
+      <div class="filter-field">
+        <label for="f-class">Class</label>
+        <select id="f-class">
+          <option value="">All classes</option>
+          <option value="G7-MATH-A">Grade 7 — Section A</option>
+          <option value="G7-MATH-B">Grade 7 — Section B</option>
+          <option value="G7-MATH-C">Grade 7 — Section C</option>
+          <option value="none">No class</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-path">Path state</label>
+        <select id="f-path">
+          <option value="">All states</option>
+          <option value="pretest_required">Pretest required</option>
+          <option value="learning">Learning</option>
+          <option value="activity_ready">Activity ready</option>
+          <option value="posttest_ready">Posttest ready</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-followup">Follow-up</label>
+        <select id="f-followup">
+          <option value="">All</option>
+          <option value="yes">Needs follow-up</option>
+          <option value="no">No follow-up</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-status">Account</label>
+        <select id="f-status">
+          <option value="">All</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button type="button" class="btn btn-ghost" id="resetFilters">
+        <i data-lucide="rotate-ccw" aria-hidden="true"></i>Reset
+      </button>
+      <button type="submit" class="btn btn-primary"><i data-lucide="check" aria-hidden="true"></i>Apply</button>
+    </div>
+  </form>
+
+  <!-- Results meta -->
+  <div class="results-meta">
+    <span>Showing <strong id="shownCount">6</strong> of <strong>84</strong> students</span>
+    <span>Sorted by name A–Z</span>
+  </div>
+
+  <!-- Student list -->
+  <div class="student-list" id="studentList" role="list">
+
+    <!-- 1 — active, in class, needs follow-up, has 2 NP skills -->
+    <div class="student-row" data-status="active" data-class="G7-MATH-A" data-path="learning" data-followup="yes" role="listitem"
+         data-name="Juan Dela Cruz" data-username="jdelacruz">
+      <span class="student-avatar" aria-hidden="true">JD</span>
+      <div class="student-main">
+        <div class="student-head">
+          <span class="student-name">Juan Dela Cruz</span>
+          <code class="student-username">jdelacruz</code>
+          <span class="badge" data-tone="primary"><span class="dot" aria-hidden="true"></span>Learning</span>
+          <span class="badge" data-tone="danger"><span class="dot" aria-hidden="true"></span>Follow-up</span>
+        </div>
+        <div class="student-meta">
+          <span class="meta-item"><i data-lucide="school" aria-hidden="true"></i>Grade 7 — Section A</span>
+          <span class="meta-item"><i data-lucide="clock" aria-hidden="true"></i>Active 2h ago</span>
+          <span class="meta-item"><i data-lucide="activity" aria-hidden="true"></i><strong>2 fails</strong> on S1</span>
+        </div>
+        <div class="skills-summary">
+          <span class="skills-label-sm">Skills</span>
+          <span class="skill-dot" data-band="np" title="S1: Needs Practice">S1</span>
+          <span class="skill-dot" data-band="dev" title="S2: Developing">S2</span>
+          <span class="skill-dot" data-band="none" title="S3: Not enough evidence">S3</span>
+          <span class="skill-dot" data-band="none" title="S4: Not enough evidence">S4</span>
+          <span class="skill-dot" data-band="strong" title="S5: Strong">S5</span>
+          <span class="skill-dot" data-band="none" title="S6: Not enough evidence">S6</span>
+        </div>
+      </div>
+      <div class="student-actions">
+        <a href="view_student_progress.html" class="btn btn-ghost btn-sm">
+          <i data-lucide="line-chart" aria-hidden="true"></i>
+          View progress
+        </a>
+      </div>
+    </div>
+
+    <!-- 2 — active, in class, needs follow-up -->
+    <div class="student-row" data-status="active" data-class="G7-MATH-A" data-path="learning" data-followup="yes" role="listitem"
+         data-name="Rosa Lim" data-username="rlim">
+      <span class="student-avatar" aria-hidden="true">RL</span>
+      <div class="student-main">
+        <div class="student-head">
+          <span class="student-name">Rosa Lim</span>
+          <code class="student-username">rlim</code>
+          <span class="badge" data-tone="primary"><span class="dot" aria-hidden="true"></span>Learning</span>
+          <span class="badge" data-tone="danger"><span class="dot" aria-hidden="true"></span>Follow-up</span>
+        </div>
+        <div class="student-meta">
+          <span class="meta-item"><i data-lucide="school" aria-hidden="true"></i>Grade 7 — Section A</span>
+          <span class="meta-item"><i data-lucide="clock" aria-hidden="true"></i>Active 5h ago</span>
+          <span class="meta-item"><i data-lucide="activity" aria-hidden="true"></i><strong>1 fail</strong> on S4</span>
+        </div>
+        <div class="skills-summary">
+          <span class="skills-label-sm">Skills</span>
+          <span class="skill-dot" data-band="dev" title="S1: Developing">S1</span>
+          <span class="skill-dot" data-band="strong" title="S2: Strong">S2</span>
+          <span class="skill-dot" data-band="strong" title="S3: Strong">S3</span>
+          <span class="skill-dot" data-band="np" title="S4: Needs Practice">S4</span>
+          <span class="skill-dot" data-band="strong" title="S5: Strong">S5</span>
+          <span class="skill-dot" data-band="dev" title="S6: Developing">S6</span>
+        </div>
+      </div>
+      <div class="student-actions">
+        <a href="view_student_progress.html" class="btn btn-ghost btn-sm">
+          <i data-lucide="line-chart" aria-hidden="true"></i>
+          View progress
+        </a>
+      </div>
+    </div>
+
+    <!-- 3 — active, in class, no follow-up, healthy -->
+    <div class="student-row" data-status="active" data-class="G7-MATH-B" data-path="activity_ready" data-followup="no" role="listitem"
+         data-name="Ken Tanaka" data-username="ktanaka">
+      <span class="student-avatar" aria-hidden="true">KT</span>
+      <div class="student-main">
+        <div class="student-head">
+          <span class="student-name">Ken Tanaka</span>
+          <code class="student-username">ktanaka</code>
+          <span class="badge" data-tone="primary"><span class="dot" aria-hidden="true"></span>Activity ready</span>
+        </div>
+        <div class="student-meta">
+          <span class="meta-item"><i data-lucide="school" aria-hidden="true"></i>Grade 7 — Section B</span>
+          <span class="meta-item"><i data-lucide="clock" aria-hidden="true"></i>Active yesterday</span>
+        </div>
+        <div class="skills-summary">
+          <span class="skills-label-sm">Skills</span>
+          <span class="skill-dot" data-band="strong" title="S1: Strong">S1</span>
+          <span class="skill-dot" data-band="strong" title="S2: Strong">S2</span>
+          <span class="skill-dot" data-band="dev" title="S3: Developing">S3</span>
+          <span class="skill-dot" data-band="strong" title="S4: Strong">S4</span>
+          <span class="skill-dot" data-band="strong" title="S5: Strong">S5</span>
+          <span class="skill-dot" data-band="dev" title="S6: Developing">S6</span>
+        </div>
+      </div>
+      <div class="student-actions">
+        <a href="view_student_progress.html" class="btn btn-ghost btn-sm">
+          <i data-lucide="line-chart" aria-hidden="true"></i>
+          View progress
+        </a>
+      </div>
+    </div>
+
+    <!-- 4 — active, NO CLASS, learning, no follow-up -->
+    <div class="student-row" data-status="active" data-class="none" data-path="learning" data-followup="no" role="listitem"
+         data-name="Mika Bautista" data-username="mbautista">
+      <span class="student-avatar" aria-hidden="true">MB</span>
+      <div class="student-main">
+        <div class="student-head">
+          <span class="student-name">Mika Bautista</span>
+          <code class="student-username">mbautista</code>
+          <span class="badge" data-tone="primary"><span class="dot" aria-hidden="true"></span>Learning</span>
+          <span class="badge" data-tone="neutral">No class</span>
+        </div>
+        <div class="student-meta">
+          <span class="meta-item"><i data-lucide="user-x" aria-hidden="true"></i><strong>No class</strong> — learning works normally</span>
+          <span class="meta-item"><i data-lucide="clock" aria-hidden="true"></i>Active 2d ago</span>
+        </div>
+        <div class="skills-summary">
+          <span class="skills-label-sm">Skills</span>
+          <span class="skill-dot" data-band="dev" title="S1: Developing">S1</span>
+          <span class="skill-dot" data-band="np" title="S2: Needs Practice">S2</span>
+          <span class="skill-dot" data-band="np" title="S3: Needs Practice">S3</span>
+          <span class="skill-dot" data-band="none" title="S4: Not enough evidence">S4</span>
+          <span class="skill-dot" data-band="dev" title="S5: Developing">S5</span>
+          <span class="skill-dot" data-band="none" title="S6: Not enough evidence">S6</span>
+        </div>
+      </div>
+      <div class="student-actions">
+        <a href="view_student_progress.html" class="btn btn-ghost btn-sm">
+          <i data-lucide="line-chart" aria-hidden="true"></i>
+          View progress
+        </a>
+      </div>
+    </div>
+
+    <!-- 5 — active, in class, completed -->
+    <div class="student-row" data-status="active" data-class="G7-MATH-A" data-path="completed" data-followup="no" role="listitem"
+         data-name="Ana Reyes" data-username="areyes">
+      <span class="student-avatar" aria-hidden="true">AR</span>
+      <div class="student-main">
+        <div class="student-head">
+          <span class="student-name">Ana Reyes</span>
+          <code class="student-username">areyes</code>
+          <span class="badge" data-tone="success"><span class="dot" aria-hidden="true"></span>Completed</span>
+        </div>
+        <div class="student-meta">
+          <span class="meta-item"><i data-lucide="school" aria-hidden="true"></i>Grade 7 — Section A</span>
+          <span class="meta-item"><i data-lucide="clock" aria-hidden="true"></i>Active 1w ago</span>
+          <span class="meta-item"><i data-lucide="award" aria-hidden="true"></i><strong>Matched</strong> pre/post recorded</span>
+        </div>
+        <div class="skills-summary">
+          <span class="skills-label-sm">Skills</span>
+          <span class="skill-dot" data-band="strong" title="S1: Strong">S1</span>
+          <span class="skill-dot" data-band="strong" title="S2: Strong">S2</span>
+          <span class="skill-dot" data-band="strong" title="S3: Strong">S3</span>
+          <span class="skill-dot" data-band="strong" title="S4: Strong">S4</span>
+          <span class="skill-dot" data-band="strong" title="S5: Strong">S5</span>
+          <span class="skill-dot" data-band="strong" title="S6: Strong">S6</span>
+        </div>
+      </div>
+      <div class="student-actions">
+        <a href="view_student_progress.html" class="btn btn-ghost btn-sm">
+          <i data-lucide="line-chart" aria-hidden="true"></i>
+          View progress
+        </a>
+      </div>
+    </div>
+
+    <!-- 6 — inactive, muted -->
+    <div class="student-row" data-status="inactive" data-class="G7-MATH-B" data-path="learning" data-followup="yes" role="listitem"
+         data-name="Sam Ocampo" data-username="socampo">
+      <span class="student-avatar" aria-hidden="true">SO</span>
+      <div class="student-main">
+        <div class="student-head">
+          <span class="student-name">Sam Ocampo</span>
+          <code class="student-username">socampo</code>
+          <span class="badge" data-tone="neutral"><span class="dot" aria-hidden="true"></span>Inactive</span>
+          <span class="badge" data-tone="danger"><span class="dot" aria-hidden="true"></span>Follow-up</span>
+        </div>
+        <div class="student-meta">
+          <span class="meta-item"><i data-lucide="school" aria-hidden="true"></i>Grade 7 — Section B</span>
+          <span class="meta-item"><i data-lucide="user-x" aria-hidden="true"></i>Deactivated 2026-09-12</span>
+        </div>
+        <div class="skills-summary">
+          <span class="skills-label-sm">Skills</span>
+          <span class="skill-dot" data-band="np" title="S1: Needs Practice">S1</span>
+          <span class="skill-dot" data-band="np" title="S2: Needs Practice">S2</span>
+          <span class="skill-dot" data-band="dev" title="S3: Developing">S3</span>
+          <span class="skill-dot" data-band="none" title="S4: Not enough evidence">S4</span>
+          <span class="skill-dot" data-band="dev" title="S5: Developing">S5</span>
+          <span class="skill-dot" data-band="none" title="S6: Not enough evidence">S6</span>
+        </div>
+      </div>
+      <div class="student-actions">
+        <a href="view_student_progress.html" class="btn btn-ghost btn-sm">
+          <i data-lucide="line-chart" aria-hidden="true"></i>
+          View progress
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty" id="studentEmpty">
+    <span class="empty-icon" aria-hidden="true"><i data-lucide="users-round"></i></span>
+    <p class="empty-title">No matching students</p>
+    <p class="empty-desc">Try a different search or filter. Students are never removed from this list — deactivation is the normal lifecycle.</p>
+  </div>
+
+  <!-- Pagination -->
+  <nav class="pagination" aria-label="Pagination">
+    <span class="page-info">Page <strong>1</strong> of <strong>14</strong></span>
+    <div class="page-controls">
+      <button type="button" class="btn btn-ghost" disabled><i data-lucide="chevron-left" aria-hidden="true"></i>Previous</button>
+      <button type="button" class="btn btn-ghost">Next<i data-lucide="chevron-right" aria-hidden="true"></i></button>
+    </div>
+  </nav>
+
+</main>
+
+<script>
+/* Shell */
+class Spring{constructor(v,{damping=1,response=0.4,onUpdate}={}){this.value=v;this.velocity=0;this.target=v;this.onUpdate=onUpdate;this.raf=null;this.stiffness=(2*Math.PI/response)**2;this.dampingCoeff=4*Math.PI*damping/response}
+  setTarget(t,v=0){this.target=t;this.velocity=v;if(!this.raf)this._start()}
+  stop(){if(this.raf)cancelAnimationFrame(this.raf);this.raf=null}
+  _start(){let last=performance.now();const tick=(now)=>{const dt=Math.min((now-last)/1000,0.064);last=now;const force=-this.stiffness*(this.value-this.target);const damp=-this.dampingCoeff*this.velocity;this.velocity+=(force+damp)*dt;this.value+=this.velocity*dt;this.onUpdate(this.value,this.velocity);if(Math.abs(this.velocity)<0.5&&Math.abs(this.value-this.target)<0.5){this.value=this.target;this.velocity=0;this.onUpdate(this.value,0);this.raf=null;return}this.raf=requestAnimationFrame(tick)};this.raf=requestAnimationFrame(tick)}}
+const WIDTH=240,sidebar=document.getElementById('sidebar'),scrim=document.getElementById('scrim'),hamburger=document.getElementById('hamburger'),closeBtn=document.getElementById('closeBtn'),content=document.querySelector('.content');
+const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)'),desktop=matchMedia('(min-width: 1024px)');
+const spring=new Spring(-WIDTH,{damping:0.8,response:0.3,onUpdate:(x)=>{sidebar.style.transform=`translateX(${x}px)`;const open=Math.max(0,Math.min(1,1-Math.abs(x)/WIDTH));scrim.style.opacity=open*0.4;scrim.style.pointerEvents=open>0.02?'auto':'none';hamburger.style.opacity=1-open;hamburger.style.pointerEvents=open>0.5?'none':'auto'}});
+let isOpen=false,releaseFocusTrap=null;
+function animateTo(t,v=0){if(reducedMotion.matches){spring.stop();spring.value=t;spring.velocity=0;spring.onUpdate(t,0)}else spring.setTarget(t,v)}
+function trapFocus(){const f=sidebar.querySelectorAll('a[href], button:not([disabled])');if(!f.length)return()=>{};const first=f[0],last=f[f.length-1];const onKey=(e)=>{if(e.key==='Escape'){e.preventDefault();closeSidebar();return}if(e.key!=='Tab')return;if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}};sidebar.addEventListener('keydown',onKey);setTimeout(()=>first.focus(),60);return()=>sidebar.removeEventListener('keydown',onKey)}
+function openSidebar(){if(desktop.matches||isOpen)return;isOpen=true;hamburger.setAttribute('aria-expanded','true');content?.setAttribute('inert','');animateTo(0);releaseFocusTrap=trapFocus()}
+function closeSidebar(){if(desktop.matches||!isOpen)return;isOpen=false;hamburger.setAttribute('aria-expanded','false');content?.removeAttribute('inert');animateTo(-WIDTH);releaseFocusTrap?.();releaseFocusTrap=null;hamburger.focus({preventScroll:true})}
+hamburger.addEventListener('click',openSidebar);closeBtn.addEventListener('click',closeSidebar);scrim.addEventListener('click',closeSidebar);
+function applyLayout(){spring.stop();if(desktop.matches){sidebar.style.transform='none';scrim.style.opacity='0';scrim.style.pointerEvents='none';hamburger.style.opacity='0';hamburger.style.pointerEvents='none';content?.removeAttribute('inert');releaseFocusTrap?.();releaseFocusTrap=null;isOpen=false}else{spring.value=-WIDTH;spring.velocity=0;spring.onUpdate(-WIDTH,0);isOpen=false}}
+(desktop.addEventListener?desktop.addEventListener('change',applyLayout):desktop.addListener(applyLayout));applyLayout();
+
+/* Filters */
+const filterToggle=document.getElementById('filterToggle'),filters=document.getElementById('filters'),filterCount=document.getElementById('filterCount');
+filterToggle.addEventListener('click',()=>{const open=filters.classList.toggle('is-open');filterToggle.setAttribute('aria-expanded',String(open))});
+function updateFilterCount(){let n=0;['f-class','f-path','f-followup','f-status'].forEach((id)=>{if(document.getElementById(id).value)n++});filterCount.textContent=n;filterCount.hidden=n===0}
+['f-class','f-path','f-followup','f-status'].forEach((id)=>document.getElementById(id).addEventListener('change',()=>{updateFilterCount();applyFilters()}));
+updateFilterCount();
+document.getElementById('resetFilters').addEventListener('click',()=>{['f-class','f-path','f-followup','f-status'].forEach((id)=>document.getElementById(id).value='');document.getElementById('studentSearch').value='';updateFilterCount();applyFilters()});
+filters.addEventListener('submit',(e)=>{e.preventDefault();filterToggle.setAttribute('aria-expanded','false');filters.classList.remove('is-open');applyFilters()});
+
+/* Search + filter */
+const search=document.getElementById('studentSearch'),studentList=document.getElementById('studentList'),studentEmpty=document.getElementById('studentEmpty'),shownCount=document.getElementById('shownCount');
+search.addEventListener('input',applyFilters);
+function applyFilters(){
+  const q=search.value.trim().toLowerCase();
+  const cls=document.getElementById('f-class').value;
+  const path=document.getElementById('f-path').value;
+  const fu=document.getElementById('f-followup').value;
+  const status=document.getElementById('f-status').value;
+  let visible=0;
+  studentList.querySelectorAll('.student-row').forEach((row)=>{
+    const text=row.textContent.toLowerCase();
+    const match=
+      (!q||text.includes(q))&&
+      (!cls||row.dataset.class===cls)&&
+      (!path||row.dataset.path===path)&&
+      (!fu||row.dataset.followup===fu)&&
+      (!status||row.dataset.status===status);
+    row.style.display=match?'':'none';
+    if(match)visible++;
+  });
+  studentEmpty.classList.toggle('is-visible',visible===0);
+  studentList.style.display=visible===0?'none':'';
+  shownCount.textContent=visible;
+}
+
+lucide.createIcons();
+</script>
+</body>
+</html>

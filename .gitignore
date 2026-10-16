@@ -1,35 +1,4 @@
-# Secrets
-.env
-*.env
-.env.*
-!.env.example
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.venv/
-venv/
-env/
-.pytest_cache/
-.coverage
-htmlcov/
-*.log
-
-# Django
-db.sqlite3
-db.sqlite3-journal
-staticfiles/
-static/dist/
-media/
-
-# Node (none in this stack, but safe)
-node_modules/
-
 # OS
 .DS_Store
 Thumbs.db
-
-# Lucide subset build (scripts/build_lucide_subset.mjs)
-.lucide-build/
+desktop.ini
