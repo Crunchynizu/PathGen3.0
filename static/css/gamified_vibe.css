@@ -1,0 +1,277 @@
+/* ==========================================================================
+   gamified_vibe — EXPERIMENT (2026-10-04). Game *feel*, no game mechanics.
+   No points, stars, badges, streaks, rewards or leaderboards: only the look and
+   motion of a game UI (ink outlines, chunky press-down buttons, sticker icons,
+   bouncy entrances, a trail-like path, candy-striped progress).
+
+   Scope: student dashboard, My Lesson, lesson pages, and the exercise/Activity screens
+   (regular, additional, foundational, activity). The pre-test and post-test are NOT
+   touched, so they stay identical to each other (research validity).
+
+   ROLLBACK: delete this file and the one <link> line for it in templates/_base.html.
+   (Tokens live here, not in theme.css, so the experiment stays in one file.)
+   ========================================================================== */
+
+.sd-page, .ml-page, .ls-page {
+  --gv-ink: rgb(29 53 87);
+  --gv-ink-soft: rgb(29 53 87 / 0.18);
+  --gv-sun: rgb(255 209 102);
+  --gv-sun-deep: rgb(240 180 50);
+  --gv-pop: 0 6px 0 var(--gv-ink);
+  --gv-pop-sm: 0 4px 0 var(--gv-ink);
+  --gv-pop-xs: 0 3px 0 var(--gv-ink);
+  --gv-radius: 24px;
+  --gv-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---- Backdrop: slowly drifting math symbols over the colour washes ---- */
+body:has(:is(.sd-page, .ml-page, .ls-page))::before {
+  content: ""; position: fixed; inset: -60px; z-index: -1; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='rgba(29,53,87,0.07)' font-family='Arial,sans-serif' font-weight='700'%3E%3Ctext x='18' y='52' font-size='40'%3E%2B%3C/text%3E%3Ctext x='150' y='40' font-size='34'%3E%E2%88%92%3C/text%3E%3Ctext x='92' y='120' font-size='38'%3E%C3%97%3C/text%3E%3Ctext x='196' y='150' font-size='36'%3E%C3%B7%3C/text%3E%3Ctext x='30' y='196' font-size='30'%3E%E2%88%923%3C/text%3E%3Ctext x='132' y='222' font-size='28'%3E%7C%E2%88%925%7C%3C/text%3E%3C/g%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  animation: gv-drift 60s linear infinite;
+}
+@keyframes gv-drift { to { background-position: 240px 240px; } }
+
+/* ---- Bouncy entrance: page blocks pop in one after another ---- */
+:is(.sd-page, .ml-page) > *, .ls-lesson > *, .ml-path > .ml-step {
+  animation: gv-pop-in 520ms var(--gv-bounce) both;
+}
+:is(.sd-page, .ml-page) > *:nth-child(2), .ls-lesson > *:nth-child(2), .ml-path > .ml-step:nth-child(2) { animation-delay: 70ms; }
+:is(.sd-page, .ml-page) > *:nth-child(3), .ls-lesson > *:nth-child(3), .ml-path > .ml-step:nth-child(3) { animation-delay: 140ms; }
+:is(.sd-page, .ml-page) > *:nth-child(4), .ls-lesson > *:nth-child(4), .ml-path > .ml-step:nth-child(4) { animation-delay: 210ms; }
+:is(.sd-page, .ml-page) > *:nth-child(5), .ml-path > .ml-step:nth-child(5) { animation-delay: 280ms; }
+:is(.sd-page, .ml-page) > *:nth-child(n+6), .ml-path > .ml-step:nth-child(n+6) { animation-delay: 350ms; }
+@keyframes gv-pop-in { from { opacity: 0; transform: translateY(18px) scale(0.96); } to { opacity: 1; transform: none; } }
+
+/* ---- Ink outlines + solid offset shadows on every block ---- */
+.sd-page :is(.sd-greeting, .sd-section[data-tone-card], .sd-next),
+.ml-page :is(.ml-header, .ml-card, .ml-progress),
+.ls-page :is(.ls-hero, .ls-section) {
+  border: 3px solid var(--gv-ink); border-radius: var(--gv-radius); box-shadow: var(--gv-pop);
+}
+.ml-page .ml-step[data-state="locked"] .ml-card { border-style: dashed; border-color: var(--gv-ink-soft); box-shadow: none; }
+.sd-page .sd-section[data-tone-card] .sd-section-head,
+.ml-page .ml-card-top,
+.ls-page .ls-section-head { border-bottom: 3px solid var(--gv-ink); }
+.ls-page .ls-section-head { border-radius: calc(var(--gv-radius) - 3px) calc(var(--gv-radius) - 3px) 0 0; }
+.ml-page .ml-step[data-state="locked"] .ml-card-top { border-bottom: 2px dashed var(--gv-ink-soft); }
+
+/* Inner items: thinner ink, small pop shadow, lift on hover */
+.sd-page :is(.sd-skill, .sd-result, .sd-focus-note),
+.ml-page :is(.ml-action, .ml-part),
+.ls-page :is(.ls-list li, .ls-example, .ls-widget, .ls-mistake, .ls-tip) {
+  border: 2px solid var(--gv-ink); border-radius: 16px; box-shadow: var(--gv-pop-xs);
+}
+.sd-page .sd-skill { border-left-width: 8px; }
+.sd-page .sd-skill[data-band="np"] { border-left-color: var(--danger); }
+.sd-page .sd-skill[data-band="dev"] { border-left-color: var(--warning); }
+.sd-page .sd-skill[data-band="strong"] { border-left-color: var(--success); }
+.ml-page .ml-part[data-state="locked"] { border-style: dashed; border-color: var(--gv-ink-soft); box-shadow: none; }
+:is(.sd-page .sd-result, .ml-page .ml-action) { transition: transform 160ms var(--gv-bounce), box-shadow 160ms ease; }
+:is(.sd-page .sd-result, .ml-page .ml-action):hover { transform: translateY(-3px) rotate(-0.6deg); box-shadow: 0 6px 0 var(--gv-ink); }
+:is(.sd-page .sd-result, .ml-page .ml-action):active { transform: translateY(3px); box-shadow: 0 0 0 var(--gv-ink); }
+
+/* ---- Sticker icons: ink outline, slight tilt, wiggle on hover ---- */
+:is(.sd-page, .ml-page, .ls-page) :is(.ui-tone-icon, .ml-icon, .ls-section-icon, .ls-practice-badge) {
+  border: 2px solid var(--gv-ink); box-shadow: var(--gv-pop-xs); transform: rotate(-6deg);
+  transition: transform 220ms var(--gv-bounce);
+}
+:is(.sd-section, .ml-card, .ls-section):hover :is(.ui-tone-icon, .ml-icon, .ls-section-icon) { transform: rotate(4deg) scale(1.08); }
+:is(.sd-page, .ml-page) .ui-chip, .ls-page .ls-hero-meta span { border: 2px solid var(--gv-ink); }
+
+/* ---- Chunky press-down buttons ---- */
+:is(.ml-page, .ls-page) .ui-btn {
+  border: 3px solid var(--gv-ink); border-radius: 16px; box-shadow: var(--gv-pop-sm);
+  font-weight: 800; transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+}
+:is(.ml-page, .ls-page) .ui-btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--gv-ink); }
+:is(.ml-page, .ls-page) .ui-btn-primary { background: var(--color-primary); }
+.sd-page .sd-next-btn, .sd-page .sd-next-btn:link, .sd-page .sd-next-btn:visited {
+  border: 3px solid var(--gv-ink); border-radius: 16px; background: var(--gv-sun); color: var(--gv-ink);
+  font-size: var(--text-lg); font-weight: 800; box-shadow: var(--gv-pop-sm);
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+}
+.sd-page .sd-next-btn:hover { background: var(--gv-sun-deep); color: var(--gv-ink); }
+.sd-page .sd-next-btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--gv-ink); }
+.sd-page .sd-next-btn svg { animation: gv-nudge 1.4s ease-in-out infinite; }
+@keyframes gv-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+
+/* ---- Next-step card: living gradient ---- */
+.sd-page .sd-next {
+  background: linear-gradient(120deg, var(--primary-700), var(--primary-900), var(--primary-600), var(--primary-800));
+  background-size: 300% 300%; animation: gv-pop-in 520ms var(--gv-bounce) both, gv-shift 12s ease-in-out infinite;
+}
+@keyframes gv-shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.sd-page .sd-next-eyebrow { border: 2px solid rgb(255 255 255 / 0.5); }
+.sd-page .sd-float span { opacity: 0.2; }
+
+/* ---- Candy-striped progress bars with an ink rim ---- */
+:is(.sd-page, .ml-page) .ui-progress-bar { height: 16px; border: 2px solid var(--gv-ink); background: var(--color-surface); }
+.sd-page .sd-next-progress .ui-progress-bar { border-color: rgb(255 255 255 / 0.85); background: rgb(255 255 255 / 0.2); }
+:is(.sd-page, .ml-page) .ui-progress-bar > span {
+  background-color: var(--success);
+  background-image: repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.28) 0 8px, transparent 8px 16px);
+  background-size: 22px 22px;
+  animation: ui-grow 900ms cubic-bezier(0.22, 1, 0.36, 1) both, gv-stripes 1.2s linear infinite;
+}
+.sd-page .sd-next-progress .ui-progress-bar > span { background-color: var(--gv-sun); }
+@keyframes gv-stripes { to { background-position: 22px 0; } }
+.sd-page .sd-track span { height: 12px; border: 2px solid var(--gv-ink); border-radius: 6px; }
+.sd-page .sd-track span { background-color: var(--color-surface); }
+.sd-page .sd-skill[data-band="np"] .sd-track span:nth-child(1),
+.sd-page .sd-skill[data-band="dev"] .sd-track span:nth-child(-n+2),
+.sd-page .sd-skill[data-band="strong"] .sd-track span {
+  background-image: repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.3) 0 5px, transparent 5px 10px);
+}
+
+/* ---- Journey (dashboard): big ink nodes on a trail; current one hops ---- */
+.sd-page .sd-stop-node { width: 50px; height: 50px; border: 3px solid var(--gv-ink); box-shadow: var(--gv-pop-xs); }
+.sd-page .sd-stop[data-state="locked"] .sd-stop-node { border-color: var(--gv-ink-soft); box-shadow: none; }
+.sd-page .sd-stop::before { top: 22px; height: 8px; background: repeating-linear-gradient(90deg, var(--gv-ink-soft) 0 8px, transparent 8px 14px); }
+.sd-page .sd-stop[data-state="completed"]::before, .sd-page .sd-stop[data-state="current"]::before { background: var(--success); box-shadow: inset 0 0 0 2px var(--gv-ink); }
+.sd-page .sd-stop[data-state="current"] .sd-stop-node { animation: gv-hop 1.6s ease-in-out infinite; box-shadow: 0 0 0 5px var(--gv-sun), var(--gv-pop-xs); }
+@keyframes gv-hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-7px); } 60% { transform: translateY(-7px); } }
+.sd-page .sd-stop-label { font-weight: 800; }
+
+/* ---- Path (My Lesson): trail line, ink nodes, current one hops ---- */
+.ml-page .ml-node { width: 40px; height: 40px; left: -46px; border: 3px solid var(--gv-ink); box-shadow: var(--gv-pop-xs); }
+.ml-page .ml-step[data-state="locked"] .ml-node { border-color: var(--gv-ink-soft); box-shadow: none; }
+.ml-page .ml-step:not(:last-child)::before { width: 8px; left: -30px; background: repeating-linear-gradient(180deg, var(--gv-ink-soft) 0 10px, transparent 10px 18px); }
+.ml-page .ml-step[data-state="completed"]:not(:last-child)::before { background: var(--success); box-shadow: inset 0 0 0 2px var(--gv-ink); }
+.ml-page .ml-step[data-state="current"] .ml-node { animation: gv-hop 1.6s ease-in-out infinite; box-shadow: 0 0 0 5px var(--gv-sun), var(--gv-pop-xs); }
+.ml-page .ml-step[data-state="current"] .ml-card { box-shadow: var(--gv-pop), 0 0 0 6px var(--gv-sun); }
+.ml-page .ml-part[data-state="current"] { box-shadow: var(--gv-pop-xs), 0 0 0 4px var(--gv-sun); }
+.ml-page .ml-legend-node { border: 2px solid var(--gv-ink); }
+
+/* ---- Lesson pages ---- */
+.ls-page .ls-hero h1 { font-size: var(--text-3xl); letter-spacing: -0.03em; }
+.ls-page .ls-hero-eyebrow {
+  padding: 4px 12px; border: 2px solid var(--gv-ink); border-radius: var(--radius-full);
+  background: var(--color-surface); box-shadow: var(--gv-pop-xs); transform: rotate(-2deg);
+}
+.ls-page .ls-hero-shape { opacity: 0.3; border: 3px solid var(--gv-ink); }
+.ls-page .ls-dot::before { height: 12px; border: 2px solid var(--gv-ink); background: var(--color-surface); box-shadow: none; }
+.ls-page .ls-dot[data-state="seen"]::before { background: var(--accent); opacity: 1; }
+.ls-page .ls-dot[data-state="current"]::before { background: var(--gv-sun); animation: gv-blink 1.4s ease-in-out infinite; }
+@keyframes gv-blink { 50% { transform: translateY(-50%) scaleY(1.35); } }
+.ls-page .ls-section.is-entering { animation: gv-pop-in 420ms var(--gv-bounce); }
+.ls-page .lw-badge { border: 2px solid var(--gv-ink); box-shadow: var(--gv-pop-xs); animation: gv-wiggle 2.6s ease-in-out infinite; }
+@keyframes gv-wiggle { 0%, 88%, 100% { transform: rotate(0); } 92% { transform: rotate(-6deg); } 96% { transform: rotate(5deg); } }
+.ls-page .ls-num { border: 2px solid var(--gv-ink); }
+.ls-page .ls-tag { border: 2px solid var(--gv-ink); }
+.ls-page .ls-practice-badge { width: 76px; height: 76px; animation: gv-hop 1.8s ease-in-out infinite; }
+.ls-page .ls-pager { border-top: 3px solid var(--gv-ink); }
+
+/* Calm mode: no motion at all for students who ask their device for less */
+@media (prefers-reduced-motion: reduce) {
+  body:has(:is(.sd-page, .ml-page, .ls-page))::before,
+  :is(.sd-page, .ml-page, .ls-page) *,
+  :is(.sd-page, .ml-page) > *, .ls-lesson > * { animation: none !important; transition: none !important; }
+  :is(.sd-page, .ml-page, .ls-page) :is(.ui-tone-icon, .ml-icon, .ls-section-icon) { transform: none; }
+}
+
+/* ==========================================================================
+   Exercises + Activity (never pre/post: those kinds are not in this selector)
+   ========================================================================== */
+body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"])) {
+  --gv-ink: rgb(29 53 87);
+  --gv-ink-soft: rgb(29 53 87 / 0.18);
+  --gv-sun: rgb(255 209 102);
+  --gv-pop: 0 6px 0 var(--gv-ink);
+  --gv-pop-sm: 0 4px 0 var(--gv-ink);
+  --gv-pop-xs: 0 3px 0 var(--gv-ink);
+  --gv-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  background-color: var(--student-bg);
+  background-image:
+    radial-gradient(circle at 0% 0%, var(--student-wash-a), transparent 42%),
+    radial-gradient(circle at 100% 35%, var(--student-wash-b), transparent 38%),
+    radial-gradient(circle at 0% 100%, var(--student-wash-c), transparent 45%),
+    radial-gradient(var(--student-dot) 1.3px, transparent 1.6px);
+  background-size: auto, auto, auto, 22px 22px;
+  background-attachment: fixed;
+}
+body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]))::before {
+  content: ""; position: fixed; inset: -60px; z-index: -1; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='rgba(29,53,87,0.07)' font-family='Arial,sans-serif' font-weight='700'%3E%3Ctext x='18' y='52' font-size='40'%3E%2B%3C/text%3E%3Ctext x='150' y='40' font-size='34'%3E%E2%88%92%3C/text%3E%3Ctext x='92' y='120' font-size='38'%3E%C3%97%3C/text%3E%3Ctext x='196' y='150' font-size='36'%3E%C3%B7%3C/text%3E%3Ctext x='30' y='196' font-size='30'%3E%E2%88%923%3C/text%3E%3Ctext x='132' y='222' font-size='28'%3E%7C%E2%88%925%7C%3C/text%3E%3C/g%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  animation: gv-drift 60s linear infinite;
+}
+
+/* Top bar: ink-rimmed exit button and a candy-striped progress bar */
+body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"])) .as-top { border-bottom: 3px solid var(--gv-ink); }
+body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"])) .as-exit { border: 2px solid var(--gv-ink); border-radius: 14px; box-shadow: var(--gv-pop-xs); color: var(--gv-ink); }
+body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"])) .as-exit:active { transform: translateY(3px); box-shadow: none; }
+body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"])) .as-progress-label { font-weight: 700; color: var(--gv-ink); }
+body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"])) .as-progress progress { height: 16px; border: 2px solid var(--gv-ink); background: var(--color-surface); }
+body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"])) .as-progress progress::-webkit-progress-bar { background: var(--color-surface); }
+body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"])) .as-progress progress::-webkit-progress-value {
+  background-color: var(--success);
+  background-image: repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.3) 0 8px, transparent 8px 16px);
+}
+body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"])) .as-progress progress::-moz-progress-bar {
+  background-color: var(--success);
+  background-image: repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.3) 0 8px, transparent 8px 16px);
+}
+
+/* Cards: ink outline, offset shadow, bouncy entrance */
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) > .as-card {
+  border: 3px solid var(--gv-ink); border-radius: 24px; box-shadow: var(--gv-pop);
+  animation: gv-pop-in 480ms var(--gv-bounce) both;
+}
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-kind-icon {
+  border: 2px solid var(--gv-ink); box-shadow: var(--gv-pop-xs); transform: rotate(-6deg);
+  background: var(--gv-sun); color: var(--gv-ink);
+}
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-result .as-kind-icon { animation: gv-hop 1.8s ease-in-out infinite; }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-kind-chip { border: 2px solid var(--gv-ink); background: var(--gv-sun); color: var(--gv-ink); transform: rotate(-2deg); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-facts li { background: var(--color-surface); border: 2px solid var(--gv-ink-soft); }
+
+/* Choices: chunky tiles that pop in one by one and press down when picked */
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice {
+  border: 2px solid var(--gv-ink); border-radius: 16px; box-shadow: var(--gv-pop-xs);
+  animation: gv-pop-in 420ms var(--gv-bounce) backwards; /* backwards, not both: a held end state would block the hover/press transforms */
+  transition: transform 140ms var(--gv-bounce), box-shadow 120ms ease, background 120ms ease;
+}
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choices > :nth-child(2) { animation-delay: 60ms; }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choices > :nth-child(3) { animation-delay: 120ms; }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choices > :nth-child(4) { animation-delay: 180ms; }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choices:not(.as-choices-locked) .as-choice:hover { transform: translateY(-2px); box-shadow: 0 5px 0 var(--gv-ink); border-color: var(--gv-ink); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice:has(input:checked) { transform: translateY(3px); box-shadow: 0 0 0 var(--gv-ink); border-color: var(--gv-ink); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-letter { border: 2px solid var(--gv-ink); background: var(--color-surface); color: var(--gv-ink); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice:has(input:checked) .as-letter { background: var(--color-primary); border-color: var(--gv-ink); color: var(--color-on-primary); }
+/* Answered: keep the green/red meaning, add the ink frame */
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result="picked-correct"], .as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result="correct"] { border-color: var(--gv-ink); background: var(--success-bg); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result="picked-wrong"] { border-color: var(--gv-ink); background: var(--danger-bg); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result="picked-correct"] { animation: as-pop 420ms var(--gv-bounce); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result="picked-wrong"] { animation: as-shake 420ms ease-in-out; }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result="correct"] { animation: as-glow 900ms ease-out 250ms both; }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result="other"] { animation: none; }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result] .as-letter { border-color: var(--gv-ink); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result="picked-correct"] .as-letter, .as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result="correct"] .as-letter { background: var(--success); color: var(--color-on-primary); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice[data-result="picked-wrong"] .as-letter { background: var(--danger); color: var(--color-on-primary); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-choice-tag { border: 2px solid var(--gv-ink); }
+
+/* Feedback panel: framed bubble; the icon pops with a ring on a right answer */
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-explain { border: 3px solid var(--gv-ink); border-radius: 20px; box-shadow: var(--gv-pop-sm); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-explain-icon { border: 2px solid var(--gv-ink); box-shadow: var(--gv-pop-xs); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-explain[data-correct="true"] .as-explain-icon { animation: as-pop 480ms var(--gv-bounce) 260ms both, gv-ring 900ms ease-out 500ms; }
+@keyframes gv-ring { from { box-shadow: var(--gv-pop-xs), 0 0 0 0 rgb(31 168 96 / 0.55); } to { box-shadow: var(--gv-pop-xs), 0 0 0 16px rgb(31 168 96 / 0); } }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-why { border: 2px solid var(--gv-ink-soft); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-hint { border: 2px solid var(--gv-ink); box-shadow: var(--gv-pop-xs); }
+
+/* Buttons */
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .ui-btn {
+  border: 3px solid var(--gv-ink); border-radius: 16px; box-shadow: var(--gv-pop-sm); font-weight: 800;
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+}
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .ui-btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--gv-ink); }
+
+/* Result: ink-rimmed score ring */
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-score { border: 3px solid var(--gv-ink); box-shadow: var(--gv-pop-sm); }
+.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-score-inner { border: 3px solid var(--gv-ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  body:has(.as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]))::before, .as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) *, .as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) > .as-card { animation: none !important; transition: none !important; }
+  .as-page:is([data-kind="regular"], [data-kind="additional"], [data-kind="foundational"], [data-kind="activity"]) .as-kind-icon { transform: none; }
+}

@@ -1,5 +1,4 @@
 {% extends "_base.html" %}
-{% block content_width %}[&_main]:max-w-[780px]{% endblock %}
 {% load static %}
 
 {% block page_css %}
@@ -7,40 +6,133 @@
 {% endblock %}
 {% block title %}Student Dashboard · PathGen{% endblock %}
 {% block shell %}
-<div class="min-h-screen lg:grid lg:grid-cols-[240px_1fr] [background:var(--color-bg-subtle)]" data-ui="app-frame">
-  <aside class="fixed inset-y-0 left-0 hidden w-60 border-r lg:block [background:var(--color-surface)] [border-color:var(--color-border)]" aria-label="Primary navigation">{% include "components/sidebar.html" %}</aside>
+<div>
+  <aside aria-label="Primary navigation">{% include "components/sidebar.html" %}</aside>
   {% include "components/hamburger_menu.html" %}
-  <div class="min-w-0 lg:col-start-2" data-drawer-background>
-    <main id="main-content" class="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
-      {% if messages %}<div class="space-y-3" aria-live="polite">{% for message in messages %}<p class="rounded-xl border p-4 text-sm [background:var(--color-primary-subtle)] [border-color:var(--color-border)]" role="status">{{ message }}</p>{% endfor %}</div>{% endif %}
-      <header class="flex flex-col gap-5 rounded-2xl border p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8 [background:var(--color-surface)] [border-color:var(--color-border)]" data-ui="dashboard-hero">
-        <div class="flex items-center gap-4"><img src="{% static 'avatar/student_avatar.png' %}" alt="" class="h-12 w-12 shrink-0 rounded-full object-cover" width="48" height="48"><div><p class="text-xs font-bold uppercase tracking-wider [color:var(--color-text-cyan)]">Your dashboard</p><h1 class="mt-1 text-3xl font-bold tracking-tight [color:var(--color-text)]">Hello, {{ student_name }}</h1></div></div>
-        {% if membership %}<div class="rounded-xl border px-4 py-3 [background:var(--color-bg-subtle)] [border-color:var(--color-border)]" aria-label="Current class"><p class="text-xs font-semibold uppercase tracking-wider [color:var(--color-text-secondary)]">Your class</p><p class="mt-1 font-semibold">{{ membership.classroom.code }} · {{ membership.classroom.name }}</p></div>{% endif %}
+  <div data-drawer-background>
+    <main id="main-content" class="content sd-page" data-ui="student-dashboard">
+      {% if messages %}<div class="ui-messages" aria-live="polite">{% for message in messages %}<p class="ui-alert" data-tone="info" role="status"><i data-lucide="info" aria-hidden="true"></i><span>{{ message }}</span></p>{% endfor %}</div>{% endif %}
+
+      <header class="sd-greeting" data-ui="dashboard-hero">
+        <img src="{% static 'avatar/student_avatar.png' %}" alt="" class="sd-avatar" width="52" height="52">
+        <div class="sd-greeting-text">
+          <p class="ui-eyebrow">Your dashboard</p>
+          <h1>Hi, {{ student_name }}!</h1>
+          {% if membership %}<p class="sd-class" aria-label="Current class"><i data-lucide="school" aria-hidden="true"></i>{{ membership.classroom.code }} · {{ membership.classroom.name }}</p>{% else %}<p class="sd-class">Let's keep learning today.</p>{% endif %}
+        </div>
       </header>
 
-      <section class="relative overflow-hidden rounded-3xl border p-6 sm:p-8 lg:p-10 [background:var(--color-primary-subtle)] [border-color:var(--color-primary)]" data-ui="next-step-card" aria-labelledby="next-step-heading">
-        <div class="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between"><div class="max-w-2xl"><p class="text-xs font-bold uppercase tracking-wider [color:var(--color-text-cyan)]">Your next step</p><h2 id="next-step-heading" class="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{{ next_step.label }}</h2><p class="mt-3 leading-7 [color:var(--color-text-secondary)]">{{ next_step.description }}</p>{% if not path %}<p class="mt-2 text-sm [color:var(--color-text-secondary)]">Path setup pending. Your learning path begins with the pre-test.</p>{% endif %}</div>
-          {% if next_step.url %}<a href="{{ next_step.url }}" class="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl px-6 py-3 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)] hover:[background:var(--color-primary-hover)]">Continue<i data-lucide="arrow-right" class="h-5 w-5" aria-hidden="true"></i></a>
-          {% else %}<span class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 font-semibold [background:var(--color-surface)] [border-color:var(--color-border)]"><i data-lucide="info" class="h-5 w-5" aria-hidden="true"></i>No action available yet</span>{% endif %}</div>
+      <section class="sd-next" data-ui="next-step-card" aria-labelledby="next-step-heading">
+        <span class="sd-next-shape sd-next-shape-a" aria-hidden="true"></span>
+        <span class="sd-next-shape sd-next-shape-b" aria-hidden="true"></span>
+        <span class="sd-float" aria-hidden="true"><span>−3</span><span>+5</span><span>×</span><span>÷</span><span>|−7|</span></span>
+        <div class="sd-next-inner">
+          <p class="sd-next-eyebrow"><i data-lucide="flag" aria-hidden="true"></i>Your next step</p>
+          <h2 id="next-step-heading">{{ next_step.label }}</h2>
+          <p class="sd-next-desc">{{ next_step.description }}</p>
+          {% if not path and "Path setup pending" not in next_step.description %}<p class="sd-next-desc">Path setup pending. Your learning path begins with the pre-test.</p>{% endif %}
+          {% if next_step.url %}<a href="{{ next_step.url }}" class="sd-next-btn">Let's go<i data-lucide="arrow-right" aria-hidden="true"></i></a>
+          {% else %}<p class="sd-next-wait"><i data-lucide="hourglass" aria-hidden="true"></i>Nothing to start right now</p>{% endif %}
+          {% if stops_total %}
+          <div class="ui-progress sd-next-progress">
+            <p class="ui-progress-label"><span>Your progress</span><strong>{{ stops_done }} of {{ stops_total }} stops done</strong></p>
+            <div class="ui-progress-bar" role="progressbar" aria-label="Course progress" aria-valuemin="0" aria-valuemax="{{ stops_total }}" aria-valuenow="{{ stops_done }}"><span style="width: {% widthratio stops_done stops_total 100 %}%"></span></div>
+          </div>
+          {% endif %}
+        </div>
       </section>
 
-      <section class="rounded-2xl border p-5 sm:p-6 [background:var(--color-surface)] [border-color:var(--color-border)]" aria-labelledby="learning-path-heading"><div class="flex flex-wrap items-end justify-between gap-3"><div><p class="text-xs font-bold uppercase tracking-wider [color:var(--color-text-cyan)]">Six stages · three lessons</p><h2 id="learning-path-heading" class="mt-1 text-xl font-bold">Your learning path</h2></div><a href="{% url 'account:my_lesson' %}" class="inline-flex min-h-11 items-center font-semibold [color:var(--color-text-link)]">Open My Lesson</a></div>
-        <ol class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3" aria-label="Pretest, Lesson 1, Lesson 2, Lesson 3, Activity, Posttest" data-ui="dashboard-path">
-          {% for step in path_steps %}<li class="min-w-0 rounded-xl border p-4 [background:var(--color-bg-subtle)] [border-color:var(--color-border)]" data-state="{{ step.state }}"><div class="flex items-start gap-3"><span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full [background:var(--color-surface)] [color:var(--color-primary)]" aria-hidden="true">{% if step.state == 'completed' %}<i data-lucide="circle-check" class="h-5 w-5" aria-hidden="true"></i>{% elif step.state == 'current' %}<i data-lucide="circle-dot" class="h-5 w-5" aria-hidden="true"></i>{% elif step.state == 'available' %}<i data-lucide="circle" class="h-5 w-5" aria-hidden="true"></i>{% else %}<i data-lucide="lock-keyhole" class="h-5 w-5" aria-hidden="true"></i>{% endif %}</span><div class="min-w-0 flex-1"><h3 class="font-semibold">{{ step.label }}</h3>{% if step.detail %}<p class="mt-1 text-sm [color:var(--color-text-secondary)]">{{ step.detail }}</p>{% endif %}<p class="mt-1 text-sm font-medium capitalize [color:var(--color-text-secondary)]">{{ step.state }}</p>{% if step.locked_reason %}<p class="mt-1 text-sm [color:var(--color-text-secondary)]">{{ step.locked_reason }}</p>{% endif %}{% if step.url %}<a href="{{ step.url }}" class="mt-2 inline-flex min-h-11 items-center font-semibold [color:var(--color-text-link)]"{% if step.state == 'current' %} aria-current="step"{% endif %}>Open {{ step.label }}</a>{% endif %}</div></div></li>
-          {% empty %}<li class="rounded-xl border p-4 [border-color:var(--color-border)]">Your path is being prepared.</li>{% endfor %}
+      <section class="ui-card sd-section" data-tone-card aria-labelledby="learning-path-heading">
+        <div class="sd-section-head">
+          <div>
+            <h2 id="learning-path-heading"><span class="ui-tone-icon" aria-hidden="true"><i data-lucide="map"></i></span>Your learning path</h2>
+            <p>Six stops from pre-test to post-test.</p>
+          </div>
+          <a href="{% url 'account:my_lesson' %}" class="sd-link">My Lesson<i data-lucide="chevron-right" aria-hidden="true"></i></a>
+        </div>
+        <ol class="sd-journey" aria-label="Pretest, Lesson 1, Lesson 2, Lesson 3, Activity, Posttest" data-ui="dashboard-path">
+          {% for step in path_steps %}
+          <li class="sd-stop" data-state="{{ step.state }}"{% if step.state == 'current' %} aria-current="step"{% endif %}>
+            {% if step.url %}<a class="sd-stop-hit" href="{{ step.url }}">{% else %}<span class="sd-stop-hit">{% endif %}
+              <span class="sd-stop-node" aria-hidden="true">{% if step.state == 'completed' %}<i data-lucide="check"></i>{% elif step.state == 'current' %}<i data-lucide="play"></i>{% elif step.state == 'available' %}<i data-lucide="circle"></i>{% else %}<i data-lucide="lock-keyhole"></i>{% endif %}</span>
+              <span class="sd-stop-label">{{ step.label }}</span>
+              <span class="sr-only">{% if step.detail %}: {{ step.detail }}{% endif %} — {% if step.state == 'completed' %}done{% elif step.state == 'current' %}you are here{% elif step.state == 'available' %}open{% else %}locked{% if step.locked_reason %}. {{ step.locked_reason }}{% endif %}{% endif %}</span>
+            {% if step.url %}</a>{% else %}</span>{% endif %}
+          </li>
+          {% empty %}<li class="sd-empty" data-ui="chart-empty" role="status">Your path is being prepared.</li>
+          {% endfor %}
         </ol>
+        <ul class="sd-legend" aria-hidden="true">
+          <li><span class="sd-legend-dot" data-state="completed"></span>Done</li>
+          <li><span class="sd-legend-dot" data-state="current"></span>You are here</li>
+          <li><span class="sd-legend-dot" data-state="locked"></span>Locked</li>
+        </ul>
       </section>
 
-      <section class="rounded-2xl border p-5 sm:p-6 [background:var(--color-surface)] [border-color:var(--color-border)]" aria-labelledby="skills-heading"><div><p class="text-xs font-bold uppercase tracking-wider [color:var(--color-text-cyan)]">Six skills</p><h2 id="skills-heading" class="mt-1 text-xl font-bold">Skill progress</h2><p class="mt-2 text-sm [color:var(--color-text-secondary)]">Bands reflect scored evidence, not a score percentage.</p></div>
-        <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3" data-ui="skill-band-grid">{% for skill in skill_rows %}<article class="rounded-xl border p-4 [background:var(--color-bg-subtle)] [border-color:var(--color-border)]" data-band="{{ skill.state }}"><p class="text-xs font-bold uppercase tracking-wider [color:var(--color-text-cyan)]">{{ skill.code }}</p><h3 class="mt-1 font-semibold">{{ skill.name }}</h3><p class="mt-3 flex items-center gap-2 font-semibold" data-ui="band-label">{% if skill.state == 'strong' %}<i data-lucide="circle-check" class="h-5 w-5 [color:var(--color-success)]" aria-hidden="true"></i>{% elif skill.state == 'dev' %}<i data-lucide="circle-dot" class="h-5 w-5 [color:var(--color-warning)]" aria-hidden="true"></i>{% elif skill.state == 'np' %}<i data-lucide="alert-triangle" class="h-5 w-5 [color:var(--color-primary)]" aria-hidden="true"></i>{% else %}<i data-lucide="info" class="h-5 w-5 [color:var(--color-text-secondary)]" aria-hidden="true"></i>{% endif %}{{ skill.band }}</p><div class="mt-3 h-2 overflow-hidden rounded-full [background:var(--color-border)]" role="img" aria-label="{{ skill.name }}: {{ skill.band }}"><div class="h-full rounded-full {% if skill.state == 'strong' %}w-full [background:var(--color-success)]{% elif skill.state == 'dev' %}w-2/3 [background:var(--color-warning)]{% elif skill.state == 'np' %}w-1/3 [background:var(--color-primary)]{% else %}w-0{% endif %}"></div></div><p class="mt-3 text-sm [color:var(--color-text-secondary)]" data-ui="evidence-label">{{ skill.evidence }}</p></article>{% empty %}<p class="rounded-xl border p-4 [border-color:var(--color-border)]">Skills are not available yet.</p>{% endfor %}</div>
+      <section class="ui-card sd-section" data-tone-card="violet" aria-labelledby="skills-heading">
+        <div class="sd-section-head">
+          <div>
+            <h2 id="skills-heading"><span class="ui-tone-icon" aria-hidden="true"><i data-lucide="target"></i></span>Your skills</h2>
+            <p>How each skill is going, based on your answers.</p>
+          </div>
+        </div>
+        <div class="sd-skills" data-ui="skill-band-grid">
+          {% for skill in skill_rows %}
+          <article class="sd-skill" data-band="{{ skill.state }}">
+            <div class="sd-skill-top">
+              <h3>{{ skill.name }}<span class="sd-skill-code">{{ skill.code }}</span></h3>
+              <p class="sd-band" data-ui="band-label">{% if skill.state == 'strong' %}<i data-lucide="award" aria-hidden="true"></i>{% elif skill.state == 'dev' %}<i data-lucide="trending-up" aria-hidden="true"></i>{% elif skill.state == 'np' %}<i data-lucide="flag" aria-hidden="true"></i>{% else %}<i data-lucide="circle-dashed" aria-hidden="true"></i>{% endif %}{{ skill.band }}</p>
+            </div>
+            <div class="sd-track" role="img" aria-label="{{ skill.name }}: {{ skill.band }}"><span></span><span></span><span></span></div>
+            <p class="sd-evidence" data-ui="evidence-label">{{ skill.evidence }}</p>
+          </article>
+          {% empty %}<p class="sd-empty" data-ui="chart-empty" role="status">Skills are not available yet.</p>
+          {% endfor %}
+        </div>
       </section>
 
-      <section class="rounded-2xl border p-5 sm:p-6 [background:var(--color-surface)] [border-color:var(--color-border)]" aria-labelledby="focus-heading"><p class="text-xs font-bold uppercase tracking-wider [color:var(--color-text-cyan)]">Your next focus</p><h2 id="focus-heading" class="mt-1 text-xl font-bold">What to work on next</h2>{% if latest_feedback %}<blockquote class="mt-4 border-l-4 pl-4 leading-7 [border-color:var(--color-primary)] [color:var(--color-text-secondary)]">{{ latest_feedback.feedback_text }}</blockquote>{% else %}<p class="mt-4 rounded-xl border p-4 [background:var(--color-bg-subtle)] [border-color:var(--color-border)]" data-ui="chart-empty" role="status">Complete your next step to receive focused feedback. Your current step is {{ next_step.label }}.</p>{% endif %}</section>
+      <section class="ui-card sd-section sd-focus" data-tone-card="amber" aria-labelledby="focus-heading">
+        <div class="sd-section-head">
+          <div>
+            <h2 id="focus-heading"><span class="ui-tone-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>What to work on next</h2>
+            <p>A note from your last finished practice.</p>
+          </div>
+        </div>
+        {% if latest_feedback %}<blockquote class="sd-focus-note"><span class="sd-focus-from"><i data-lucide="message-circle-heart" aria-hidden="true"></i>Tip for you</span>{{ latest_feedback.feedback_text|linebreaksbr }}</blockquote>
+        {% else %}<p class="sd-empty" data-ui="chart-empty" role="status"><i data-lucide="message-circle-heart" aria-hidden="true"></i>Finish your next practice to get a tip here. Your current step is {{ next_step.label }}.</p>{% endif %}
+      </section>
 
-      <section id="recent-results" class="rounded-2xl border p-5 sm:p-6 [background:var(--color-surface)] [border-color:var(--color-border)]" aria-labelledby="results-heading"><p class="text-xs font-bold uppercase tracking-wider [color:var(--color-text-cyan)]">Your evidence</p><h2 id="results-heading" class="mt-1 text-xl font-bold">Recent results</h2>{% if recent_results %}<div class="mt-5 overflow-x-auto max-sm:[&_td]:[overflow-wrap:anywhere]" data-ui="table-wrap"><table><caption class="sr-only">Your recently completed sessions</caption><thead><tr><th scope="col">Session</th><th scope="col">Date</th><th scope="col">Score</th><th scope="col">View</th></tr></thead><tbody>{% for result in recent_results %}<tr><td>{{ result.type }}{% if result.lesson != 'Whole course' %} · {{ result.lesson }}{% endif %}</td><td><time datetime="{{ result.completed_at|date:'c' }}">{{ result.completed_at|date:"M j, Y" }}</time></td><td>{{ result.score }}</td><td><a href="{% url 'learning:assessment_result' result.id %}" class="inline-flex min-h-11 items-center font-semibold [color:var(--color-text-link)]">View result</a></td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="mt-4 rounded-xl border p-4 [background:var(--color-bg-subtle)] [border-color:var(--color-border)]" data-ui="chart-empty" role="status">No completed results yet. Your next step will start your learning record.</p>{% endif %}</section>
+      <section id="recent-results" class="ui-card sd-section" data-tone-card="green" aria-labelledby="results-heading">
+        <div class="sd-section-head">
+          <div>
+            <h2 id="results-heading"><span class="ui-tone-icon" aria-hidden="true"><i data-lucide="clipboard-check"></i></span>Recent results</h2>
+            <p>Your finished sessions. Answers stay locked.</p>
+          </div>
+        </div>
+        {% if recent_results %}
+        <ul class="sd-results">
+          {% for result in recent_results %}
+          <li>
+            <a class="sd-result" href="{% url 'learning:assessment_result' result.id %}">
+              <span class="sd-result-icon" aria-hidden="true"><i data-lucide="clipboard-check"></i></span>
+              <span class="sd-result-main">
+                <span class="sd-result-title">{{ result.type }}{% if result.lesson != 'Whole course' %} · {{ result.lesson }}{% endif %}</span>
+                <span class="sd-result-date"><time datetime="{{ result.completed_at|date:'c' }}">{{ result.completed_at|date:"M j, Y" }}</time></span>
+              </span>
+              <span class="sd-result-score"><span class="sr-only">Score </span>{{ result.score }}</span>
+              <i class="sd-result-go" data-lucide="chevron-right" aria-hidden="true"></i>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}<p class="sd-empty" data-ui="chart-empty" role="status"><i data-lucide="sprout" aria-hidden="true"></i>No finished sessions yet. Your next step starts your learning record.</p>{% endif %}
+      </section>
     </main>
-    <footer class="px-4 py-5 text-center text-sm [color:var(--color-text-muted)]">PathGen · Grade 7 Mathematics</footer>
   </div>
-  <dialog aria-labelledby="shell-logout-title" id="shell-logout-dialog" class="m-auto w-[min(92vw,32rem)] rounded-2xl border p-0 [background:var(--color-surface)] [border-color:var(--color-border)] [color:var(--color-text)] [box-shadow:var(--shadow-md)] [&::backdrop]:[background:var(--color-overlay)]"><div class="p-6"><div class="flex items-start justify-between gap-4"><h2 id="shell-logout-title" class="text-xl font-bold">Log out?</h2><button type="button" data-dialog-close aria-label="Close logout confirmation" class="inline-flex min-h-11 min-w-11 items-center justify-center"><i data-lucide="x" aria-hidden="true"></i></button></div><p class="mt-3 [color:var(--color-text-secondary)]">You will need to enter your credentials to return.</p><form method="post" action="{% url 'account:logout' %}" class="mt-5 flex flex-wrap gap-3">{% csrf_token %}<button type="submit" class="min-h-11 rounded-xl px-5 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)]">Log out</button><button type="button" data-dialog-close class="min-h-11 rounded-xl border px-5 [border-color:var(--color-border)]">Cancel</button></form></div></dialog>
+  <dialog aria-labelledby="shell-logout-title" id="shell-logout-dialog" class="ui-dialog" data-ui="modal-dialog">
+    <div class="ui-dialog-head"><div><p class="ui-eyebrow">Account</p><h2 id="shell-logout-title">Log out?</h2></div><button class="ui-icon-btn" type="button" data-dialog-close aria-label="Close logout confirmation"><i data-lucide="x" aria-hidden="true"></i></button></div>
+    <div class="ui-dialog-body"><p>You will need to enter your username and password to come back.</p></div>
+    <form class="ui-dialog-actions" method="post" action="{% url 'account:logout' %}">{% csrf_token %}<button class="ui-btn ui-btn-secondary" type="button" data-dialog-close>Cancel</button><button class="ui-btn ui-btn-primary" type="submit">Log out</button></form>
+  </dialog>
 </div>
 {% endblock %}

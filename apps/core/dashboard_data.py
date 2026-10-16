@@ -7,6 +7,7 @@ from apps.adaptive.bkt import mastery_band
 from apps.adaptive.models import Decision, SkillMastery
 from apps.core.services.settings import current_system_setting
 from apps.curriculum.models import Lesson, Skill
+from apps.curriculum.units import group_by_unit, unit_state
 from apps.feedback.models import SessionFeedback
 from apps.learning.models import Session, StudentPath
 
@@ -41,7 +42,7 @@ def session_result_rows(sessions, *, limit=None):
         {
             "id": session.pk,
             "type": session.get_session_type_display(),
-            "lesson": session.lesson.code if session.lesson else "Whole course",
+            "lesson": session.lesson.display_label if session.lesson else "Whole course",
             "score": f"{session.correct_count}/{session.total_count}",
             "completed_at": session.completed_at,
         }
@@ -250,6 +251,7 @@ def student_dashboard_data(student):
         current=path is None or path.status == StudentPath.Status.PRETEST_REQUIRED,
         unlocked=study_open,
     )]
+    part_steps = []
     for row in lesson_rows:
         if row["state"] == "completed":
             state = "completed"
@@ -259,11 +261,20 @@ def student_dashboard_data(student):
             state = "available"
         else:
             state = "locked"
+        part_steps.append({"lesson": row["lesson"], "state": state})
+    # one stop per lesson students see; Lesson 2's parts share a stop that opens the part in focus
+    for unit in group_by_unit(part_steps, lesson=lambda step: step["lesson"]):
+        parts = unit["items"]
+        state = unit_state([part["state"] for part in parts])
+        focus = next((part for part in parts if part["state"] == "current"), None) or next(
+            (part for part in reversed(parts) if part["state"] != "locked"), parts[0]
+        )
+        lesson = focus["lesson"]
         path_steps.append({
-            "label": f"Lesson {row['lesson'].lesson_order}",
-            "detail": row["lesson"].title,
+            "label": f"Lesson {unit['unit_number']}",
+            "detail": f"{lesson.display_label}: {lesson.title}" if unit["has_parts"] else lesson.title,
             "state": state,
-            "url": reverse("learning:lesson", kwargs={"slug": row["lesson"].slug})
+            "url": reverse("learning:lesson", kwargs={"slug": lesson.slug})
                    if state != "locked" and study_open else None,
         })
     path_steps.append(assessment_step(
@@ -365,12 +376,18 @@ def bkt_chart(metric, *, chart_id="bkt-bands", title="BKT mastery by skill"):
     )
 
 
+def lesson_display_labels():
+    """Lesson code -> "Lesson 2.1" style label (decision metrics are keyed by code)."""
+    return {lesson.code: lesson.display_label for lesson in Lesson.objects.all()}
+
+
 def decisions_chart(metric, *, chart_id="decisions", title="Q-Learning decisions by lesson"):
     value = metric["value"] or {}
     labels = list(value)
+    names = lesson_display_labels()
     rows = [
         [
-            lesson,
+            names.get(lesson, lesson),
             actions.get("progress", 0),
             actions.get("additional_exercise", 0),
             actions.get("foundational_exercise", 0),
@@ -383,7 +400,7 @@ def decisions_chart(metric, *, chart_id="decisions", title="Q-Learning decisions
         metric=metric,
         headers=["Lesson", "Progress", "Additional exercise", "Foundational exercise"],
         rows=rows,
-        labels=labels,
+        labels=[names.get(label, label) for label in labels],
         datasets=[
             {"label": "Progress", "data": [value[label].get("progress", 0) for label in labels]},
             {"label": "Additional exercise", "data": [value[label].get("additional_exercise", 0) for label in labels]},

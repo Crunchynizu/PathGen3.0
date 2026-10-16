@@ -1,1 +1,31 @@
-/* view_class_detail — styles for templates/pages/shared/view_class_detail.html */
+/* view_class_detail — styles for templates/pages/shared/view_class_detail.html (shared kit in theme.css) */
+[data-ui~="secondary-content"].st-page { padding: 0; border: 0; box-shadow: none; background: none; }
+.cd-meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
+.cd-charts { display: grid; gap: 16px; }
+@media (min-width: 900px) { .cd-charts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.cd-charts > * { min-width: 0; }
+.cd-chart-head { display: grid; gap: 4px; }
+.cd-chart-head :is(h2, h3) { display: flex; align-items: center; gap: 8px; margin: 0; font-size: var(--text-base); font-weight: 700; }
+.cd-chart-head :is(h2, h3) svg { width: 18px; height: 18px; color: var(--color-primary); }
+.cd-chart-head p { margin: 0; }
+.cd-canvas { position: relative; height: 240px; }
+.cd-table { border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+
+.cd-bars { display: grid; gap: 10px; }
+.cd-bar { display: grid; grid-template-columns: minmax(110px, 30%) minmax(0, 1fr) 32px; align-items: center; gap: 10px; font-size: var(--text-sm); }
+.cd-bar progress { width: 100%; height: 12px; appearance: none; -webkit-appearance: none; border: 0; border-radius: var(--radius-full); background: var(--gray-100); overflow: hidden; }
+.cd-bar progress::-webkit-progress-bar { background: var(--gray-100); border-radius: var(--radius-full); }
+.cd-bar progress::-webkit-progress-value { background: var(--color-primary); border-radius: var(--radius-full); }
+.cd-bar progress::-moz-progress-bar { background: var(--color-primary); border-radius: var(--radius-full); }
+.cd-bar-count { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.cd-deeper > summary {
+  display: flex; align-items: center; gap: 10px; padding: 14px 18px; cursor: pointer; list-style: none;
+  font-size: var(--text-sm); font-weight: 700; color: var(--color-text);
+}
+.cd-deeper > summary::-webkit-details-marker { display: none; }
+.cd-deeper > summary svg { width: 18px; height: 18px; color: var(--color-primary); }
+.cd-deeper > summary .cd-chevron { margin-left: auto; color: var(--color-text-muted); transition: transform 150ms ease; }
+.cd-deeper[open] > summary { border-bottom: 1px solid var(--color-border); }
+.cd-deeper[open] > summary .cd-chevron { transform: rotate(180deg); }
+.cd-deeper-body { padding: 16px 18px; background: var(--color-bg-subtle); }

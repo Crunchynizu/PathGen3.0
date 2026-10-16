@@ -84,6 +84,9 @@ class Command(BaseCommand):
                     {
                         "slug": record["slug"],
                         "lesson_order": record["lesson_order"],
+                        "unit_number": record["unit_number"],
+                        "part_number": record["part_number"],
+                        "unit_title": record["unit_title"],
                         "title": record["title"],
                         "summary": record["summary"],
                         "content_json": record["content"],

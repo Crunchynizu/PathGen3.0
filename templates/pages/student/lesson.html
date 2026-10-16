@@ -1,5 +1,4 @@
 {% extends "_base.html" %}
-{% block content_width %}[&_main]:max-w-[720px]{% endblock %}
 {% load static %}
 
 {% block page_css %}
@@ -7,33 +6,132 @@
 {% endblock %}
 {% block title %}{{ lesson.title }} · PathGen{% endblock %}
 {% block shell %}
-<main id="main-content" class="mx-auto min-h-screen w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
-  {% if messages %}<div class="mb-6 space-y-4" aria-live="polite">{% for message in messages %}<div class="rounded-xl border px-4 py-3 [background:var(--color-surface)] [border-color:var(--color-border)]" role="status">{{ message }}</div>{% endfor %}</div>{% endif %}
-  {% include "components/breadcrumbs.html" %}
-  <article class="mx-auto mt-6 grid max-w-[65ch] gap-8" data-ui="lesson-viewer" data-lesson-reader>
-    <header id="lesson-top" class="rounded-3xl border p-6 sm:p-8 [background:var(--color-surface)] [border-color:var(--color-border)] [box-shadow:var(--shadow-sm)]"><p class="mb-2 text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">Lesson {{ lesson.lesson_order }}</p><h1 class="text-3xl font-bold leading-tight tracking-[-0.02em] [color:var(--color-text)] sm:text-4xl">{{ lesson.title }}</h1><p class="mt-4 max-w-[65ch] leading-7 [color:var(--color-text-secondary)]">{{ lesson.summary }}</p><div class="mt-6 grid gap-2 text-sm font-semibold [color:var(--color-text-secondary)] [&_progress]:h-2 [&_progress]:w-full [&_progress]:rounded-full [&_progress]:[accent-color:var(--color-primary)]" data-ui="reading-progress" hidden data-reading-progress><label for="lesson-progress">Reading progress <span data-reading-percent>0%</span></label><progress id="lesson-progress" value="0" max="100">0%</progress></div></header>
-    <div class="max-w-[65ch] [color:var(--color-text)] [&_>_*_+_*]:mt-6 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:tracking-[-0.015em] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:leading-snug [&_p]:max-w-[65ch] [&_p]:leading-6 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6 [&_ul]:space-y-2" data-ui="lesson-reading" data-lesson-content>
-      {% if lesson.content_json.blocks %}
-        {% for block in lesson.content_json.blocks|default:lesson.content_json %}
-          {% if block.type == "heading" %}<h2>{{ block.text }}</h2>
-          {% elif block.type == "subheading" %}<h3>{{ block.text }}</h3>
-          {% elif block.type == "paragraph" %}<p class="max-w-[65ch] leading-6">{{ block.text }}</p>
-          {% elif block.type == "bullet_list" or block.type == "bullets" %}<ul>{% for item in block.items %}<li class="flex items-start gap-2"><i data-lucide="check" class="mt-0.5 h-5 w-5 shrink-0 [color:var(--color-primary)]" aria-hidden="true"></i><span>{{ item }}</span></li>{% endfor %}</ul>
-          {% elif block.type == "numbered_list" %}<ol>{% for item in block.items %}<li>{{ item }}</li>{% endfor %}</ol>
-          {% elif block.type == "figure" %}<figure class="rounded-2xl border p-4 [background:var(--color-surface)] [border-color:var(--color-border)]">{% if block.image_asset %}<img class="mx-auto max-h-96 rounded-xl object-contain" src="{% static block.image_asset %}" alt="{% if block.image_alt %}{{ block.image_alt }}{% elif block.caption %}{{ block.caption }}{% else %}Lesson figure{% endif %}" loading="lazy" decoding="async">{% else %}<div class="grid min-h-48 place-items-center rounded-xl [background:var(--color-bg-subtle)]" role="img" aria-label="{% if block.image_alt %}{{ block.image_alt }}{% elif block.caption %}{{ block.caption }}{% else %}Lesson figure{% endif %}"><i data-lucide="image" class="h-8 w-8 [color:var(--color-text-muted)]" aria-hidden="true"></i></div>{% endif %}<figcaption class="mt-3 text-sm [color:var(--color-text-secondary)]">{% if block.caption %}{{ block.caption }}{% elif block.image_alt %}{{ block.image_alt }}{% else %}Lesson figure{% endif %}</figcaption></figure>
-          {% elif block.type == "video" %}{% for video in videos %}{% if video.code == block.video_code %}<section class="grid gap-4 rounded-2xl border p-5 [background:var(--color-bg-subtle)] [border-color:var(--color-border)]" data-video-cue data-video-code="{{ video.code }}" data-video-id="{% if video.embed_available %}{{ video.youtube_video_id }}{% endif %}" data-segment-start-seconds="{{ block.segment_start_seconds|default:video.segment_start_seconds }}" data-segment-end-seconds="{{ block.segment_end_seconds|default:video.segment_end_seconds }}" data-pause-seconds="{{ block.segment_end_seconds|default:video.segment_end_seconds }}"><div><p class="mb-2 text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">Video</p><h3>{{ video.title }}</h3><p class="text-sm [color:var(--color-text-secondary)]">{{ video.duration_seconds }} seconds</p></div>{% if video.embed_available %}<div class="aspect-video overflow-hidden rounded-xl [background:var(--color-text)]"><iframe class="h-full w-full border-0" title="{{ video.title }}" src="https://www.youtube-nocookie.com/embed/{{ video.youtube_video_id }}?start={{ block.segment_start_seconds|default:video.segment_start_seconds }}&amp;end={{ block.segment_end_seconds|default:video.segment_end_seconds }}&amp;enablejsapi=1&amp;cc_load_policy=1" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" data-video-frame></iframe></div><a class="inline-flex min-h-11 items-center [color:var(--color-text-link)]" href="https://www.youtube.com/watch?v={{ video.youtube_video_id }}&amp;cc_load_policy=1" target="_blank" rel="noopener">Open video with captions</a>{% else %}<div class="grid justify-items-start gap-2 rounded-xl border p-6 [background:var(--color-surface)] [border-color:var(--color-border)]"><i data-lucide="video" aria-hidden="true"></i><strong>Video not yet available</strong><p>Continue with the lesson text and transcript.</p></div>{% endif %}<a class="inline-flex min-h-11 items-center font-semibold [color:var(--color-text-link)]" href="{% url 'learning:transcript' video.code %}" target="_blank" rel="noopener">Open transcript</a></section>{% endif %}{% endfor %}
-          {% elif block.type == "worked_example" %}<section class="rounded-2xl border p-6 [background:var(--color-surface)] [border-color:var(--color-border)]" data-ui="lesson-example"><p class="mb-2 text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">Worked example</p><h2>{{ block.title|default:"Worked example" }}</h2>{% if block.problem %}<p class="font-mono font-semibold [overflow-wrap:anywhere]">{{ block.problem }}</p>{% endif %}{% if block.text %}<p class="font-mono [overflow-wrap:anywhere]">{{ block.text }}</p>{% endif %}{% if block.steps %}<ol class="font-mono">{% for step in block.steps %}<li>{{ step }}</li>{% endfor %}</ol>{% endif %}{% if block.answer %}<p class="border-t pt-4 font-mono font-semibold [border-color:var(--color-border)] [overflow-wrap:anywhere]">Answer: {{ block.answer }}</p>{% endif %}</section>
-          {% elif block.type == "common_mistake" %}<section class="rounded-2xl border p-6 [background:var(--color-warning-subtle)] [border-color:var(--color-warning)]" data-ui="lesson-warning"><h2 class="flex items-center gap-2"><i data-lucide="alert-triangle" aria-hidden="true"></i>{{ block.title|default:"Common mistake" }}</h2><p>{{ block.text }}</p></section>
-          {% elif block.type == "callout" or block.type == "tip" %}<section class="rounded-2xl border p-6 [background:var(--color-primary-subtle)] [border-color:var(--color-border)]" data-ui="lesson-callout"><h2 class="flex items-center gap-2"><i data-lucide="info" aria-hidden="true"></i>{{ block.title|default:"Good to know" }}</h2><p>{{ block.text }}</p>{% if block.variant == "cta" and can_open_regular %}<form class="mt-5" method="post" action="{% url 'learning:complete_lesson' lesson.slug %}">{% csrf_token %}<button class="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)] hover:[background:var(--color-primary-hover)]" type="submit">Start regular exercise<i data-lucide="arrow-right" aria-hidden="true"></i></button></form>{% endif %}</section>{% endif %}
-        {% endfor %}
-      {% elif lesson.content_json.source_text %}<div data-lesson-source data-static-root="{% get_static_prefix %}">{{ lesson.content_json.source_text }}</div>
-      {% endif %}
+{% include "components/breadcrumbs.html" %}
+<main id="main-content" class="content ls-page" data-lesson="{{ lesson.unit_number }}">
+  {% if messages %}<div class="ui-messages" aria-live="polite">{% for message in messages %}<p class="ui-alert" data-tone="warning" role="status"><i data-lucide="alert-triangle" aria-hidden="true"></i><span>{{ message }}</span></p>{% endfor %}</div>{% endif %}
+  <article class="ls-lesson" data-ui="lesson-viewer" data-lesson-reader data-lesson-key="{{ lesson.slug }}">
+    <header id="lesson-top" class="ls-hero">
+      <span class="ls-hero-shape" aria-hidden="true"></span>
+      <p class="ls-hero-eyebrow"><i data-lucide="book-open" aria-hidden="true"></i>{{ lesson.display_label }}{% if not lesson.part_number and unit_count %} of {{ unit_count }}{% endif %}</p>
+      <h1>{{ lesson.title }}</h1>
+      <p class="ls-hero-summary">{{ lesson.summary }}</p>
+      {% if sections %}<p class="ls-hero-meta"><span><i data-lucide="layers" aria-hidden="true"></i>{{ sections|length|add:1 }} short parts</span><span><i data-lucide="hand" aria-hidden="true"></i>Tap Next to move on</span></p>{% endif %}
+    </header>
+
+    {% if sections %}
+    <ol class="ls-dots" data-lesson-dots aria-label="Lesson parts" hidden>
+      {% for section in sections %}<li><button type="button" class="ls-dot" data-lesson-dot="{{ forloop.counter0 }}" aria-label="Part {{ forloop.counter }}: {{ section.title|default:lesson.title }}"></button></li>{% endfor %}
+      <li><button type="button" class="ls-dot" data-lesson-dot="{{ sections|length }}" aria-label="Ready to practice"></button></li>
+    </ol>
+
+    <div class="ls-sections" data-ui="lesson-reading" data-lesson-content>
+      {% for section in sections %}
+      <section class="ls-section" data-lesson-section data-kind="{{ section.kind }}" aria-labelledby="lesson-part-{{ forloop.counter }}">
+        <header class="ls-section-head">
+          <span class="ls-section-icon" aria-hidden="true">{% if section.kind == "example" %}<i data-lucide="pencil-line"></i>{% elif section.kind == "mistake" %}<i data-lucide="alert-triangle"></i>{% else %}<i data-lucide="lightbulb"></i>{% endif %}</span>
+          <div>
+            <p class="ls-part">Part {{ forloop.counter }}</p>
+            <h2 id="lesson-part-{{ forloop.counter }}" tabindex="-1">{{ section.title|default:lesson.title }}</h2>
+          </div>
+        </header>
+        <div class="ls-section-body">
+          {% for block in section.blocks %}
+            {% if block.type == "paragraph" %}<p>{{ block.text }}</p>
+            {% elif block.type == "bullet_list" or block.type == "bullets" %}<ul class="ls-list">{% for item in block.items %}<li><i data-lucide="check" aria-hidden="true"></i><span>{{ item }}</span></li>{% endfor %}</ul>
+            {% elif block.type == "numbered_list" %}<ol class="ls-numbered">{% for item in block.items %}<li><span class="ls-num" aria-hidden="true">{{ forloop.counter }}</span><span>{{ item }}</span></li>{% endfor %}</ol>
+            {% elif block.type == "figure" and block.widget %}
+              {% with w=block.widget %}
+              <figure class="ls-figure ls-widget" data-widget="{{ w.kind }}"{% if w.mode %} data-mode="{{ w.mode }}"{% endif %}{% if w.start is not None %} data-start="{{ w.start }}"{% endif %}{% if w.change %} data-change="{{ w.change }}"{% endif %}{% if w.negatives %} data-negatives="{{ w.negatives }}" data-positives="{{ w.positives }}"{% endif %}>
+                <p class="lw-badge"><i data-lucide="hand" aria-hidden="true"></i>Try it</p>
+                <div class="lw-stage" data-widget-stage>
+                  {% if w.kind == "signs" %}
+                  <div class="lw-signs" role="table" aria-label="Sign rules for multiplying and dividing">
+                    <div role="row" class="lw-signs-row lw-signs-head"><span role="columnheader" class="lw-signs-corner">×&nbsp;or&nbsp;÷</span><span role="columnheader">positive</span><span role="columnheader">negative</span></div>
+                    <div role="row" class="lw-signs-row"><span role="rowheader">positive</span>{% for cell in w.cells %}{% if cell.row == "+" %}<span role="cell" class="lw-sign-cell" data-sign="{% if cell.sign == '+' %}pos{% else %}neg{% endif %}"><strong class="lw-sign">{% if cell.sign == "+" %}positive{% else %}negative{% endif %}</strong><span class="lw-sign-ex">{{ cell.example }}</span></span>{% endif %}{% endfor %}</div>
+                    <div role="row" class="lw-signs-row"><span role="rowheader">negative</span>{% for cell in w.cells %}{% if cell.row == "-" %}<span role="cell" class="lw-sign-cell" data-sign="{% if cell.sign == '+' %}pos{% else %}neg{% endif %}"><strong class="lw-sign">{% if cell.sign == "+" %}positive{% else %}negative{% endif %}</strong><span class="lw-sign-ex">{{ cell.example }}</span></span>{% endif %}{% endfor %}</div>
+                  </div>
+                  <p class="lw-note">Division follows the same sign rules.</p>
+                  {% elif w.kind == "order" %}
+                  <p class="lw-expr">{{ w.expression }}</p>
+                  <ol class="lw-steps" data-reveal-group data-reveal-label="Show step">
+                    {% for step in w.steps %}<li class="lw-step" data-reveal-item><p class="lw-step-rule">{{ step.rule }}</p><p class="lw-step-work">{{ step.work }}</p><p class="lw-step-result">{{ step.result }}</p></li>{% endfor %}
+                  </ol>
+                  {% else %}
+                  <p class="lw-fallback">{% firstof block.image_alt block.caption 'Lesson figure' %}</p>
+                  {% endif %}
+                </div>
+                <figcaption>{% firstof block.caption block.image_alt 'Lesson figure' %}</figcaption>
+              </figure>
+              {% endwith %}
+            {% elif block.type == "figure" %}
+              {% if block.is_placeholder %}
+              <figure class="ls-figure">
+                <div class="ui-figure-missing" role="img" aria-label="{% firstof block.image_alt block.caption 'Lesson figure' %}"><i data-lucide="image" aria-hidden="true"></i><strong>Picture coming soon</strong><span>{% firstof block.image_alt block.caption 'Lesson figure' %}</span></div>
+                {% if block.caption %}<figcaption>{{ block.caption }}</figcaption>{% endif %}
+              </figure>
+              {% else %}
+              <figure class="ls-figure">
+                <img src="{% static block.image_asset %}" alt="{% firstof block.image_alt block.caption 'Lesson figure' %}" loading="lazy" decoding="async">
+                <figcaption>{% firstof block.caption block.image_alt 'Lesson figure' %}</figcaption>
+              </figure>
+              {% endif %}
+            {% elif block.type == "video" %}
+              {% with video=block.video %}{% if video %}
+              <div class="ls-video" data-video-cue data-video-code="{{ video.code }}" data-video-id="{% if video.embed_available %}{{ video.youtube_video_id }}{% endif %}" data-segment-start-seconds="{{ block.segment_start_seconds|default:video.segment_start_seconds }}" data-segment-end-seconds="{{ block.segment_end_seconds|default:video.segment_end_seconds }}" data-pause-seconds="{{ block.segment_end_seconds|default:video.segment_end_seconds }}">
+                <p class="ls-video-label"><i data-lucide="play-circle" aria-hidden="true"></i>Watch · {{ video.title }}</p>
+                {% if video.embed_available %}
+                <div class="ls-video-frame"><iframe title="{{ video.title }}" src="https://www.youtube-nocookie.com/embed/{{ video.youtube_video_id }}?start={{ block.segment_start_seconds|default:video.segment_start_seconds }}&amp;end={{ block.segment_end_seconds|default:video.segment_end_seconds }}&amp;enablejsapi=1&amp;cc_load_policy=1" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" data-video-frame></iframe></div>
+                <div class="ls-video-links"><a href="https://www.youtube.com/watch?v={{ video.youtube_video_id }}&amp;cc_load_policy=1" target="_blank" rel="noopener"><i data-lucide="captions" aria-hidden="true"></i>Open video with captions</a><a href="{% url 'learning:transcript' video.code %}" target="_blank" rel="noopener"><i data-lucide="file-text" aria-hidden="true"></i>Open transcript</a></div>
+                {% else %}
+                <div class="ui-figure-missing" role="status"><i data-lucide="video-off" aria-hidden="true"></i><strong>Video not yet available</strong><span>Keep reading, or open the transcript.</span></div>
+                <div class="ls-video-links"><a href="{% url 'learning:transcript' video.code %}" target="_blank" rel="noopener"><i data-lucide="file-text" aria-hidden="true"></i>Open transcript</a></div>
+                {% endif %}
+              </div>
+              {% endif %}{% endwith %}
+            {% elif block.type == "worked_example" %}
+              <div class="ls-example" data-ui="lesson-example" data-reveal-group data-reveal-label="Show step" data-reveal-final="Show the answer">
+                {% if block.title %}<p class="ls-example-title">{{ block.title }}</p>{% endif %}
+                {% if block.problem %}<p class="ls-problem"><span class="ls-tag">Problem</span>{{ block.problem }}</p>{% endif %}
+                {% if block.text %}<p class="ls-problem">{{ block.text }}</p>{% endif %}
+                <p class="lw-think" data-reveal-hint hidden><i data-lucide="brain" aria-hidden="true"></i>Try it in your head first, then check one step at a time.</p>
+                {% if block.steps %}<ol class="ls-numbered ls-worked-steps">{% for step in block.steps %}<li data-reveal-item><span class="ls-num" aria-hidden="true">{{ forloop.counter }}</span><span>{{ step }}</span></li>{% endfor %}</ol>{% endif %}
+                {% if block.answer %}<p class="ls-answer" data-reveal-item data-reveal-answer><i data-lucide="circle-check" aria-hidden="true"></i><span><strong>Answer:</strong> {{ block.answer }}</span></p>{% endif %}
+              </div>
+            {% elif block.type == "common_mistake" %}
+              <div class="ls-mistake" data-ui="lesson-warning" data-spot-mistake>
+                <p class="ls-mistake-label"><i data-lucide="alert-triangle" aria-hidden="true"></i>{{ block.title|default:"Common mistake" }}</p>
+                <p data-mistake-text>{{ block.text }}</p>
+              </div>
+            {% elif block.type == "callout" or block.type == "tip" %}
+              <div class="ls-tip" data-ui="lesson-callout"><i data-lucide="lightbulb" aria-hidden="true"></i><div>{% if block.title %}<strong>{{ block.title }}</strong>{% endif %}<p>{{ block.text }}</p></div></div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+      {% endfor %}
+
+      <section class="ls-section ls-practice" id="lesson-practice" data-lesson-section data-kind="practice" aria-labelledby="lesson-practice-title">
+        <span class="ls-practice-badge" aria-hidden="true"><i data-lucide="rocket"></i></span>
+        <h2 id="lesson-practice-title" tabindex="-1">{% if can_open_regular %}Ready to practice{% else %}Nice reading!{% endif %}</h2>
+        {% if can_open_regular %}
+        <p>Use what you just learned. The regular exercise has 6 questions, one at a time, and you'll see right away if each answer is correct.</p>
+        <form method="post" action="{% url 'learning:complete_lesson' lesson.slug %}">{% csrf_token %}<button class="ui-btn ui-btn-primary ui-btn-block" type="submit">Continue to regular exercise<i data-lucide="arrow-right" aria-hidden="true"></i></button></form>
+        {% else %}
+        <p>You can come back to this lesson anytime. Your next step is waiting in My Lesson.</p>
+        <a class="ui-btn ui-btn-secondary ui-btn-block" href="{% url 'account:my_lesson' %}"><i data-lucide="map" aria-hidden="true"></i>Back to My Lesson</a>
+        {% endif %}
+      </section>
     </div>
-    {% if can_open_regular %}<section class="rounded-2xl border p-6 [background:var(--color-primary-subtle)] [border-color:var(--color-border)]" id="lesson-practice"><h2>Ready to practice</h2><p class="mt-2 leading-6 [color:var(--color-text-secondary)]">Use what you have learned in the regular exercise.</p><form class="mt-5" method="post" action="{% url 'learning:complete_lesson' lesson.slug %}">{% csrf_token %}<button class="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)] hover:[background:var(--color-primary-hover)]" type="submit">Continue to regular exercise<i data-lucide="arrow-right" aria-hidden="true"></i></button></form></section>{% endif %}
-    <footer class="border-t pt-6 [border-color:var(--color-border)]"><nav class="flex flex-wrap justify-between gap-3" aria-label="Lesson sections" data-lesson-navigation hidden><button class="inline-flex min-h-11 items-center gap-2 rounded-xl border px-4 font-semibold [background:var(--color-surface)] [border-color:var(--color-border-strong)]" type="button" data-lesson-prev><i data-lucide="arrow-left" aria-hidden="true"></i>Previous</button><button class="inline-flex min-h-11 items-center gap-2 rounded-xl border px-4 font-semibold [background:var(--color-surface)] [border-color:var(--color-border-strong)]" type="button" data-lesson-next>Next<i data-lucide="arrow-right" aria-hidden="true"></i></button></nav></footer>
+
+    <nav class="ls-pager" aria-label="Lesson parts navigation" data-lesson-navigation hidden>
+      <button class="ui-btn ui-btn-secondary" type="button" data-lesson-prev><i data-lucide="arrow-left" aria-hidden="true"></i>Back</button>
+      <p class="ls-pager-count" aria-live="polite"><span data-lesson-count>1</span> / {{ sections|length|add:1 }}</p>
+      <button class="ui-btn ui-btn-primary" type="button" data-lesson-next>Next<i data-lucide="arrow-right" aria-hidden="true"></i></button>
+    </nav>
+    {% elif lesson.content_json.source_text %}
+    <div class="ls-section ls-source" data-lesson-content>{{ lesson.content_json.source_text|linebreaks }}</div>
+    {% endif %}
   </article>
-  {% for video in videos %}<template data-lesson-video="{{ video.code }}"><section class="grid gap-4 rounded-2xl border p-5 [background:var(--color-bg-subtle)] [border-color:var(--color-border)]" data-video-cue data-video-code="{{ video.code }}" data-video-id="{% if video.embed_available %}{{ video.youtube_video_id }}{% endif %}" data-segment-start-seconds="{{ video.segment_start_seconds }}" data-segment-end-seconds="{{ video.segment_end_seconds }}" data-pause-seconds="{{ video.segment_end_seconds }}"><h3>{{ video.title }}</h3><p>{{ video.duration_seconds }} seconds</p>{% if video.embed_available %}<div class="aspect-video overflow-hidden rounded-xl [background:var(--color-text)]"><iframe class="h-full w-full border-0" title="{{ video.title }}" src="https://www.youtube-nocookie.com/embed/{{ video.youtube_video_id }}?start={{ video.segment_start_seconds }}&amp;end={{ video.segment_end_seconds }}&amp;enablejsapi=1&amp;cc_load_policy=1" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" data-video-frame></iframe></div><a class="inline-flex min-h-11 items-center [color:var(--color-text-link)]" href="https://www.youtube.com/watch?v={{ video.youtube_video_id }}&amp;cc_load_policy=1" target="_blank" rel="noopener">Open video with captions</a>{% else %}<div class="grid justify-items-start gap-2 rounded-xl border p-6 [background:var(--color-surface)] [border-color:var(--color-border)]"><i data-lucide="video" aria-hidden="true"></i><strong>Video not yet available</strong><p>Continue with the lesson text and transcript.</p></div>{% endif %}<a class="inline-flex min-h-11 items-center [color:var(--color-text-link)]" href="{% url 'learning:transcript' video.code %}" target="_blank" rel="noopener">Open transcript</a></section></template>{% endfor %}
 </main>
-<footer class="px-4 py-5 text-center text-sm [color:var(--color-text-muted)]"><p>PathGen · Grade 7 Mathematics</p></footer>
 {% endblock %}
 {% block scripts %}<script src="{% static 'js/lesson.js' %}" defer></script>{% endblock %}

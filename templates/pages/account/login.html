@@ -6,15 +6,52 @@
 {% endblock %}
 {% block title %}Log in · PathGen{% endblock %}
 {% block shell %}
-<main id="main-content" class="grid min-h-screen place-items-center px-4 py-10 [background:var(--color-bg-subtle)]">
-  <section class="w-full max-w-[400px] rounded-3xl border p-6 sm:p-8 [background:var(--color-surface)] [border-color:var(--color-border)] [box-shadow:var(--shadow-md)]" aria-labelledby="login-heading">
-    <div class="mb-7 grid justify-items-center gap-2 text-center"><img src="{% static 'logo/pathgen.png' %}" alt="" width="64" height="64" decoding="async"><h1 id="login-heading" class="text-3xl font-bold tracking-tight [color:var(--color-text)]">PathGen</h1><p class="text-sm [color:var(--color-text-secondary)]">Sign in to continue</p></div>
-    {% if form.errors %}<div id="login-error" class="mb-5 flex gap-3 rounded-xl border p-4 text-sm [background:var(--color-danger-subtle)] [border-color:var(--color-danger)] [color:var(--color-text)]" role="alert"><i data-lucide="alert-triangle" class="h-5 w-5 shrink-0 [color:var(--color-danger)]" aria-hidden="true"></i><span>Incorrect username or password. Please try again.</span></div>{% endif %}
-    <form class="grid gap-5" method="post" action="{% url 'account:login' %}">{% csrf_token %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
-      <div class="grid gap-2"><label class="text-sm font-semibold [color:var(--color-text)]" for="login-username">Username</label><input id="login-username" name="username" type="text" value="{{ form.username.value|default_if_none:'' }}" autocomplete="username" maxlength="150" required autofocus {% if form.errors %}aria-invalid="true" aria-describedby="login-error"{% endif %} class="min-h-11 w-full rounded-xl border px-4 py-3 [background:var(--color-surface)] [border-color:var(--color-border-strong)] [color:var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [outline-color:var(--color-focus-ring)]"></div>
-      <div class="grid gap-2"><label class="text-sm font-semibold [color:var(--color-text)]" for="login-password">Password</label><input id="login-password" name="password" type="password" autocomplete="current-password" required {% if form.errors %}aria-invalid="true" aria-describedby="login-error"{% endif %} class="min-h-11 w-full rounded-xl border px-4 py-3 [background:var(--color-surface)] [border-color:var(--color-border-strong)] [color:var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [outline-color:var(--color-focus-ring)]"></div>
-      <button class="inline-flex min-h-11 w-full items-center justify-center rounded-xl px-5 py-3 font-semibold transition-transform active:scale-[0.98] [background:var(--color-primary)] [color:var(--color-on-primary)] hover:[background:var(--color-primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [outline-color:var(--color-focus-ring)]" type="submit">Log in</button>
+<main id="main-content" class="login-page" data-ui="login-page">
+  <header class="login-hero" aria-hidden="true">
+    <span class="login-hero-shape login-hero-shape-a"></span>
+    <span class="login-hero-shape login-hero-shape-b"></span>
+    <div class="login-hero-inner">
+      <img class="login-logo" src="{% static 'logo/pathgen.png' %}" alt="" width="56" height="56" decoding="async">
+      <p class="login-hero-kicker">Grade 7 Mathematics</p>
+      <p class="login-hero-title">Your path to mastering integers</p>
+      <ul class="login-hero-steps">
+        <li><i data-lucide="book-open" aria-hidden="true"></i>Learn</li>
+        <li><i data-lucide="pencil-line" aria-hidden="true"></i>Practice</li>
+        <li><i data-lucide="trending-up" aria-hidden="true"></i>Grow</li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="login-card ui-card" aria-labelledby="login-heading">
+    <h1 id="login-heading" class="login-title">Welcome to PathGen</h1>
+    <p class="login-subtitle">Sign in with the username and password from your teacher.</p>
+
+    {% if form.errors %}
+    <div id="login-error" class="ui-alert login-error" data-tone="danger" role="alert">
+      <i data-lucide="alert-triangle" aria-hidden="true"></i>
+      <p>Incorrect username or password. Please try again.</p>
+    </div>
+    {% endif %}
+
+    <form class="login-form" method="post" action="{% url 'account:login' %}">{% csrf_token %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+      <div class="login-field">
+        <label for="login-username">Username</label>
+        <div class="login-input">
+          <i data-lucide="user" aria-hidden="true"></i>
+          <input id="login-username" name="username" type="text" value="{{ form.username.value|default_if_none:'' }}" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="150" required autofocus {% if form.errors %}aria-invalid="true" aria-describedby="login-error"{% endif %}>
+        </div>
+      </div>
+      <div class="login-field">
+        <label for="login-password">Password</label>
+        <div class="login-input">
+          <i data-lucide="lock-keyhole" aria-hidden="true"></i>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required {% if form.errors %}aria-invalid="true" aria-describedby="login-error"{% endif %}>
+          <button class="login-reveal" type="button" data-password-toggle aria-controls="login-password" aria-pressed="false" aria-label="Show password"><i data-lucide="eye" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <button class="ui-btn ui-btn-primary ui-btn-block" type="submit">Log in<i data-lucide="arrow-right" aria-hidden="true"></i></button>
     </form>
+    <p class="login-help"><i data-lucide="circle-help" aria-hidden="true"></i>Forgot your password? Ask your teacher.</p>
   </section>
 </main>
 {% endblock %}

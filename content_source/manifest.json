@@ -1,18 +1,22 @@
 {
   "schema_version": 1,
-  "curriculum_version": "PATHGEN-CURRICULUM-V1",
+  "curriculum_version": "PATHGEN-CURRICULUM-V2",
   "scoring_policy": {
-    "code": "SCORING-V2",
-    "correct_required": 2,
-    "questions_per_skill": 3
+    "code": "SCORING-V3",
+    "description": "A skill passes with at least two-thirds of its questions correct: 2 of 3 in a two-skill exercise (Lessons 1 and 3) and in foundational work, 4 of 6 in a one-skill Lesson 2 batch exercise.",
+    "correct_required": {
+      "3": 2,
+      "6": 4
+    }
   },
   "counts": {
-    "lessons": 3,
-    "skills": 6,
-    "questions_total": 94,
-    "regular": 18,
-    "additional": 18,
-    "foundational": 18,
+    "lessons": 5,
+    "lesson_units": 3,
+    "skills": 7,
+    "questions_total": 121,
+    "regular": 30,
+    "additional": 30,
+    "foundational": 21,
     "activity": 10,
     "prepost": 30
   },
@@ -50,8 +54,8 @@
     },
     {
       "code": "S3",
-      "name": "Multiply and divide integers",
-      "description": "Multiply and divide integers.",
+      "name": "Multiply integers",
+      "description": "Multiply integers.",
       "p_l0": "0.300000",
       "p_t": "0.090000",
       "p_g": "0.100000",
@@ -83,8 +87,63 @@
       "p_t": "0.090000",
       "p_g": "0.100000",
       "p_s": "0.090000"
+    },
+    {
+      "code": "S7",
+      "name": "Divide integers",
+      "description": "Divide integers.",
+      "p_l0": "0.300000",
+      "p_t": "0.090000",
+      "p_g": "0.100000",
+      "p_s": "0.090000"
     }
   ],
+  "lesson_2_batches": {
+    "decided": "2026-10-03",
+    "structure": "Lesson 2 is taught in three parts, each its own lesson record with one skill: L2-1 adding and subtracting (S2), L2-2 multiplying (S3), L2-3 dividing (S7). Students still see Lessons 1-3.",
+    "skill_split": "S3 'Multiply and divide integers' became S3 'Multiply integers' and S7 'Divide integers'.",
+    "retagged_s3_to_s7": [
+      "L2-R-S3-02",
+      "L2-A-S3-02",
+      "L2-A-S3-03",
+      "L2-F-S3-02",
+      "PP-06",
+      "PP-17",
+      "PP-25",
+      "PP-30",
+      "ACT-S3-02"
+    ],
+    "retag_note": "Only skill_code changed; codes, prompts, choices, keys and order are unchanged. PP-17 mixes x and / and counts toward division.",
+    "draft_items_pending_review": [
+      "L2-R-S2-04",
+      "L2-R-S2-05",
+      "L2-R-S2-06",
+      "L2-A-S2-04",
+      "L2-A-S2-05",
+      "L2-A-S2-06",
+      "L2-R-S3-04",
+      "L2-R-S3-05",
+      "L2-R-S3-06",
+      "L2-R-S3-07",
+      "L2-A-S3-04",
+      "L2-A-S3-05",
+      "L2-A-S3-06",
+      "L2-A-S3-07",
+      "L2-A-S3-08",
+      "L2-F-S3-04",
+      "L2-R-S7-01",
+      "L2-R-S7-02",
+      "L2-R-S7-03",
+      "L2-R-S7-04",
+      "L2-R-S7-05",
+      "L2-A-S7-01",
+      "L2-A-S7-02",
+      "L2-A-S7-03",
+      "L2-A-S7-04",
+      "L2-F-S7-01",
+      "L2-F-S7-02"
+    ]
+  },
   "prepost_rewrites": [
     {
       "code": "PP-13",

@@ -1,5 +1,4 @@
 {% extends "_base.html" %}
-{% block content_width %}[&_main]:max-w-[720px]{% endblock %}
 {% load static %}
 
 {% block page_css %}
@@ -8,43 +7,109 @@
 {% block title %}{{ assessment_title }} · PathGen{% endblock %}
 {% block shell %}
 {% firstof session.session_type session_type as assessment_kind %}{% url 'account:student_dashboard' as default_back_url %}{% firstof exit_url dashboard_url default_back_url as assessment_back_url %}
-<header class="flex min-h-16 flex-wrap items-center justify-between gap-4 border-b px-4 py-2 sm:px-6 [background:var(--color-surface)] [border-color:var(--color-border)]"><a class="flex items-center gap-3 text-lg font-bold [color:var(--color-text)]" href="/"><img src="{% static 'logo/pathgen.png' %}" width="32" height="32" alt="">PathGen</a><div class="flex items-center gap-3">{% include "components/back_link.html" with back_url=assessment_back_url back_label="Back to dashboard" %}{% if mode == "question" %}<button class="min-h-11 rounded-xl border px-4 font-semibold [background:var(--color-surface)] [border-color:var(--color-border-strong)] [color:var(--color-text-link)]" type="button" data-dialog-open="exit-assessment-dialog">Exit</button>{% endif %}</div></header>
-<main id="main-content" class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6">
-  {% if messages %}<div class="mb-5 space-y-4" aria-live="polite">{% for message in messages %}<p class="rounded-xl border px-4 py-3 [background:var(--color-danger-subtle)] [border-color:var(--color-danger)]" role="alert">{{ message }}</p>{% endfor %}</div>{% endif %}
+{% if mode == "question" %}
+<header class="as-top" data-ui="assessment-bar">
+  <button class="as-exit" type="button" data-dialog-open="exit-assessment-dialog" aria-label="Exit assessment"><i data-lucide="x" aria-hidden="true"></i></button>
+  <div class="as-progress" role="status" aria-live="polite">
+    <span class="as-progress-label">Question <strong>{{ current_number }}</strong> of {{ total_questions }}</span>
+    <progress value="{{ current_number }}" max="{{ total_questions }}">{{ current_number }} of {{ total_questions }}</progress>
+  </div>
+</header>
+{% else %}
+{% include "components/back_link.html" with back_url=assessment_back_url back_label="Back to dashboard" %}
+{% endif %}
+<main id="main-content" class="content as-page" data-kind="{{ assessment_kind }}" data-mode="{{ mode }}">
+  {% if messages %}<div class="ui-messages" aria-live="polite">{% for message in messages %}<p class="ui-alert" data-tone="danger" role="alert"><i data-lucide="alert-triangle" aria-hidden="true"></i><span>{{ message }}</span></p>{% endfor %}</div>{% endif %}
+
   {% if mode == "overview" %}
-    <section class="grid gap-5 rounded-3xl border p-6 sm:p-8 [background:var(--color-surface)] [border-color:var(--color-border)] [box-shadow:var(--shadow-md)]" data-ui="assessment-overview">
-      <p class="text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">{% if assessment_kind == "pretest" %}Before the lessons{% elif assessment_kind == "posttest" %}Final assessment{% elif assessment_kind == "activity" %}After Lesson 3{% else %}{{ lesson.title }}{% endif %}</p><h1>{{ assessment_title }}</h1>
-      <p class="leading-7 [color:var(--color-text-secondary)]">{% if assessment_kind == "pretest" %}Answer {{ expected_items }} questions, one at a time. Results are shown only after the full pre-test.{% elif assessment_kind == "posttest" %}Answer {{ expected_items }} questions in the same fixed order as the pre-test. Feedback is delayed until submission.{% elif assessment_kind == "activity" %}Answer {{ expected_items }} questions across all six skills. Some questions include a video cue.{% else %}Answer {{ expected_items }} questions. Supportive feedback follows each answer.{% endif %}</p>
-      {% if locked_reason %}<div class="rounded-2xl border p-4 [background:var(--color-bg-subtle)] [border-color:var(--color-border)]" role="status"><strong>{% if assessment_kind == "posttest" %}Post-test locked{% else %}Not available yet{% endif %}</strong><p>{{ locked_reason }}</p></div>{% elif active_session %}<a class="inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)]" href="{% url 'learning:assessment_session' active_session.id %}">Resume {{ assessment_title|lower }}</a>{% else %}<form method="post">{% csrf_token %}<button class="inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)]" type="submit">Start {{ assessment_title|lower }}</button></form>{% endif %}
+    <section class="as-card as-overview" data-ui="assessment-overview">
+      <span class="as-kind-icon" aria-hidden="true">{% if assessment_kind == "pretest" %}<i data-lucide="clipboard-list"></i>{% elif assessment_kind == "posttest" %}<i data-lucide="flag"></i>{% elif assessment_kind == "activity" %}<i data-lucide="puzzle"></i>{% elif assessment_kind == "foundational" %}<i data-lucide="blocks"></i>{% elif assessment_kind == "additional" %}<i data-lucide="repeat"></i>{% else %}<i data-lucide="pencil-line"></i>{% endif %}</span>
+      <p class="ui-eyebrow">{% if assessment_kind == "pretest" %}Before the lessons{% elif assessment_kind == "posttest" %}Final assessment{% elif assessment_kind == "activity" %}After Lesson 3{% else %}{{ lesson.title }}{% endif %}</p>
+      <h1>{{ assessment_title }}</h1>
+      <p class="as-lead">{% if assessment_kind == "pretest" %}Answer {{ expected_items }} questions, one at a time. Results are shown only after the full pre-test.{% elif assessment_kind == "posttest" %}Answer {{ expected_items }} questions in the same fixed order as the pre-test. Feedback is delayed until submission.{% elif assessment_kind == "activity" %}Answer {{ expected_items }} questions across all seven skills. Some questions include a video cue.{% else %}Answer {{ expected_items }} questions. Supportive feedback follows each answer.{% endif %}</p>
+      <ul class="as-facts">
+        <li><i data-lucide="list-checks" aria-hidden="true"></i><span><strong>{{ expected_items }}</strong> questions</span></li>
+        <li><i data-lucide="mouse-pointer-click" aria-hidden="true"></i><span>One at a time, pick A, B, C, or D</span></li>
+        {% if assessment_kind == "pretest" or assessment_kind == "posttest" %}<li><i data-lucide="eye-off" aria-hidden="true"></i><span>Answers are checked at the end</span></li>{% else %}<li><i data-lucide="message-circle" aria-hidden="true"></i><span>See if you're right after each answer</span></li>{% endif %}
+        <li><i data-lucide="timer-off" aria-hidden="true"></i><span>No time limit — take your time</span></li>
+      </ul>
+      {% if locked_reason %}<div class="ui-alert" role="status"><i data-lucide="lock-keyhole" aria-hidden="true"></i><p><strong>{% if assessment_kind == "posttest" %}Post-test locked{% else %}Not available yet{% endif %}</strong>{{ locked_reason }}</p></div>
+      {% elif active_session %}<a class="ui-btn ui-btn-primary ui-btn-block" href="{% url 'learning:assessment_session' active_session.id %}">Resume {{ assessment_title|lower }}<i data-lucide="arrow-right" aria-hidden="true"></i></a>
+      {% else %}<form method="post">{% csrf_token %}<button class="ui-btn ui-btn-primary ui-btn-block" type="submit">Start {{ assessment_title|lower }}<i data-lucide="arrow-right" aria-hidden="true"></i></button></form>{% endif %}
     </section>
+
   {% elif mode == "question" %}
-    <div class="mb-5 grid gap-2 text-sm font-semibold [color:var(--color-text-secondary)] [&_progress]:h-2 [&_progress]:w-full [&_progress]:rounded-full [&_progress]:[accent-color:var(--color-primary)]" role="status" aria-live="polite"><span>Question {{ current_number }} of {{ total_questions }}</span><progress value="{{ current_number }}" max="{{ total_questions }}">{{ current_number }} of {{ total_questions }}</progress></div>
     {% if feedback and assessment_kind != "pretest" and assessment_kind != "posttest" %}
-      <section class="mb-5 grid gap-3 rounded-2xl border p-6 {% if feedback.is_correct %}[background:var(--color-success-subtle)] [border-color:var(--color-success)]{% else %}[background:var(--color-warning-subtle)] [border-color:var(--color-warning)]{% endif %}" tabindex="-1" aria-live="polite" data-feedback><p class="text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">Answer saved</p><h2>{{ feedback.heading }}</h2><p>{{ feedback.text }}</p>{% if feedback.explanation %}<p class="border-t pt-3 leading-7 [border-color:var(--color-border)] [color:var(--color-text-secondary)]"><strong>Why:</strong> {{ feedback.explanation }}</p>{% endif %}</section><a class="inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)]" href="{{ next_url }}">{% if session.status == "completed" %}View result{% else %}Next question{% endif %}</a>
+      {% with q=feedback.question %}
+      <section class="as-card as-question as-answered" data-correct="{% if feedback.is_correct %}true{% else %}false{% endif %}" aria-labelledby="answered-prompt">
+        <p class="as-kind-chip">{% if assessment_kind == "activity" %}<i data-lucide="puzzle" aria-hidden="true"></i>{% else %}<i data-lucide="pencil-line" aria-hidden="true"></i>{% endif %}{{ assessment_title }}{% if session.lesson %} · {{ session.lesson.display_label }}{% endif %}</p>
+        <p class="as-prompt" id="answered-prompt">{{ q.prompt }}</p>
+        {% if q.presentation_type == "figure" and q.image_asset %}
+          {% if feedback.figure_missing %}<div class="ui-figure-missing as-figure" role="img" aria-label="{{ q.image_alt }}"><i data-lucide="image" aria-hidden="true"></i><strong>Picture not available yet</strong></div>
+          {% else %}<figure class="as-figure"><img src="{% static q.image_asset %}" alt="{{ q.image_alt }}"></figure>{% endif %}
+        {% endif %}
+        <ul class="as-choices as-choices-locked" aria-label="Answer choices">
+          {% for choice in feedback.choices %}
+          <li class="as-choice" data-result="{% if choice.picked and choice.is_correct %}picked-correct{% elif choice.picked %}picked-wrong{% elif choice.is_correct %}correct{% else %}other{% endif %}">
+            <span class="as-letter" aria-hidden="true">{% if choice.is_correct %}<i data-lucide="check"></i>{% elif choice.picked %}<i data-lucide="x"></i>{% else %}{{ choice.label }}{% endif %}</span>
+            <span class="as-choice-text"><span class="sr-only">{{ choice.label }}. </span>{{ choice.text }}</span>
+            {% if choice.picked %}<span class="as-choice-tag">Your answer</span>{% elif choice.is_correct %}<span class="as-choice-tag">Correct answer</span>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+
+        <div class="as-explain" data-correct="{% if feedback.is_correct %}true{% else %}false{% endif %}" tabindex="-1" role="status" aria-live="polite" data-feedback>
+          <div class="as-explain-head">
+            <span class="as-explain-icon" aria-hidden="true">{% if feedback.is_correct %}<i data-lucide="circle-check"></i>{% else %}<i data-lucide="lightbulb"></i>{% endif %}</span>
+            <div>
+              <p class="as-explain-kicker">Answer saved · {{ feedback.heading }}</p>
+              <h2>{{ feedback.cheer }}</h2>
+            </div>
+          </div>
+          {% if feedback.text %}<p class="as-explain-text">{{ feedback.text }}</p>{% endif %}
+          {% if feedback.explanation %}<div class="as-why"><p class="as-why-label"><i data-lucide="info" aria-hidden="true"></i>Why</p><p>{{ feedback.explanation }}</p></div>{% endif %}
+        </div>
+
+        <div class="as-actions"><a class="ui-btn ui-btn-primary ui-btn-block" href="{{ next_url }}">{% if session.status == "completed" %}See my result{% else %}Next question{% endif %}<i data-lucide="arrow-right" aria-hidden="true"></i></a></div>
+      </section>
+      {% endwith %}
     {% else %}
-      {% if answer_saved %}<p class="mb-5 rounded-xl border p-4 [background:var(--color-success-subtle)] [border-color:var(--color-success)]" role="status" aria-live="polite">Answer saved.</p>{% endif %}
-      <section class="rounded-3xl border p-6 sm:p-8 [background:var(--color-surface)] [border-color:var(--color-border)] [box-shadow:var(--shadow-md)]"><form method="post" action="{% url 'learning:submit_response' session.id %}" data-assessment-form>{% csrf_token %}<input type="hidden" name="session_item" value="{{ current_item.id }}">
+      {% if answer_saved %}<p class="as-saved" role="status" aria-live="polite"><i data-lucide="check" aria-hidden="true"></i>Answer saved.</p>{% endif %}
+      <form class="as-card as-question" method="post" action="{% url 'learning:submit_response' session.id %}" data-assessment-form>{% csrf_token %}<input type="hidden" name="session_item" value="{{ current_item.id }}">
+        <p class="as-kind-chip">{% if assessment_kind == "pretest" %}<i data-lucide="clipboard-list" aria-hidden="true"></i>{% elif assessment_kind == "posttest" %}<i data-lucide="flag" aria-hidden="true"></i>{% elif assessment_kind == "activity" %}<i data-lucide="puzzle" aria-hidden="true"></i>{% else %}<i data-lucide="pencil-line" aria-hidden="true"></i>{% endif %}{{ assessment_title }}{% if session.lesson %} · {{ session.lesson.display_label }}{% endif %}</p>
         {% if question.presentation_type == "video" and question.video %}
-          <section class="mb-6 grid gap-4 rounded-2xl border p-5 [background:var(--color-bg-subtle)] [border-color:var(--color-border)]" data-video-cue data-video-code="{{ question.video.code }}" data-video-id="{% if video_available %}{{ question.video.youtube_video_id }}{% endif %}" data-segment-start-seconds="{{ video_start|default_if_none:'' }}" data-segment-end-seconds="{{ video_end|default_if_none:'' }}" data-pause-seconds="{{ question.video_pause_seconds|default_if_none:'' }}">
-            <div><p class="text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">Video cue</p><h3>{{ question.video.title }}</h3><p>{{ question.video.duration_seconds }} seconds</p></div>
-            {% if video_available %}<div class="aspect-video overflow-hidden rounded-xl [background:var(--color-text)]" data-video-container><iframe class="h-full w-full border-0" title="{{ question.video.title }}" src="https://www.youtube-nocookie.com/embed/{{ question.video.youtube_video_id }}?start={{ video_start }}&amp;end={{ video_end }}&amp;enablejsapi=1&amp;cc_load_policy=1" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" data-video-frame></iframe></div>{% else %}<div class="grid justify-items-start gap-2 rounded-xl border p-6 [background:var(--color-surface)] [border-color:var(--color-border)]" role="status"><i data-lucide="video" aria-hidden="true"></i><strong>Video not yet available</strong><p>Continue with the question and transcript.</p></div>{% endif %}
-            {% if video_available %}<a class="inline-flex min-h-11 items-center font-semibold [color:var(--color-text-link)]" href="https://www.youtube.com/watch?v={{ question.video.youtube_video_id }}&amp;cc_load_policy=1" target="_blank" rel="noopener">Open video with captions</a>{% endif %}
-            <a class="inline-flex min-h-11 items-center font-semibold [color:var(--color-text-link)]" href="{% url 'learning:transcript' question.video.code %}" target="_blank" rel="noopener">Open transcript</a>
-            {% if video_available %}<button class="hidden min-h-11 justify-self-start rounded-xl border px-4 font-semibold [background:var(--color-surface)] [border-color:var(--color-border-strong)]" type="button" data-reveal-question>Continue to question without watching</button>{% endif %}
+          <section class="as-video" data-video-cue data-video-code="{{ question.video.code }}" data-video-id="{% if video_available %}{{ question.video.youtube_video_id }}{% endif %}" data-segment-start-seconds="{{ video_start|default_if_none:'' }}" data-segment-end-seconds="{{ video_end|default_if_none:'' }}" data-pause-seconds="{{ question.video_pause_seconds|default_if_none:'' }}">
+            <p class="as-video-label"><i data-lucide="play-circle" aria-hidden="true"></i>Watch first · {{ question.video.title }}</p>
+            {% if video_available %}<div class="as-video-frame" data-video-container><iframe title="{{ question.video.title }}" src="https://www.youtube-nocookie.com/embed/{{ question.video.youtube_video_id }}?start={{ video_start }}&amp;end={{ video_end }}&amp;enablejsapi=1&amp;cc_load_policy=1" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" data-video-frame></iframe></div>
+            {% else %}<div class="ui-figure-missing" role="status"><i data-lucide="video-off" aria-hidden="true"></i><strong>Video not yet available</strong><span>Continue with the question and transcript.</span></div>{% endif %}
+            <div class="as-video-links">{% if video_available %}<a href="https://www.youtube.com/watch?v={{ question.video.youtube_video_id }}&amp;cc_load_policy=1" target="_blank" rel="noopener"><i data-lucide="captions" aria-hidden="true"></i>Open video with captions</a>{% endif %}<a href="{% url 'learning:transcript' question.video.code %}" target="_blank" rel="noopener"><i data-lucide="file-text" aria-hidden="true"></i>Open transcript</a></div>
+            {% if video_available %}<button class="ui-btn ui-btn-secondary ui-btn-block" type="button" data-reveal-question hidden>Continue to question without watching</button>{% endif %}
           </section>
         {% endif %}
-        <fieldset class="mb-5 border-0 p-0" data-video-question><legend class="mb-5 text-xl font-bold leading-8 [color:var(--color-text)]">{{ question.prompt }}</legend>
-          {% if question.presentation_type == "figure" and question.image_asset %}<figure class="mb-5"><img class="max-h-72 w-full rounded-2xl object-contain [background:var(--color-bg-subtle)]" src="{% static question.image_asset %}" alt="{{ question.image_alt }}"></figure>{% endif %}
-          <div class="grid gap-3">{% for choice in choices %}<label class="flex min-h-11 cursor-pointer items-center gap-3 rounded-xl border p-3 [background:var(--color-surface)] [border-color:var(--color-border)] [&:has(input:checked)]:[background:var(--color-primary-subtle)] [&:has(input:checked)]:[border-color:var(--color-primary)]"><input class="h-5 w-5 [accent-color:var(--color-primary)]" type="radio" name="choice" value="{{ choice.id }}" required><span><strong>{{ choice.label }}</strong> {{ choice.text }}</span></label>{% endfor %}</div>
+        <fieldset class="as-fieldset" data-video-question><legend class="as-prompt">{{ question.prompt }}</legend>
+          {% if question.presentation_type == "figure" and question.image_asset %}
+            {% if figure_missing %}<div class="ui-figure-missing as-figure" role="img" aria-label="{{ question.image_alt }}"><i data-lucide="image" aria-hidden="true"></i><strong>Picture not available yet</strong><span>Ask your teacher if you need the picture for this question.</span></div>
+            {% else %}<figure class="as-figure"><img src="{% static question.image_asset %}" alt="{{ question.image_alt }}"></figure>{% endif %}
+          {% endif %}
+          <div class="as-choices">{% for choice in choices %}<label class="as-choice"><input type="radio" name="choice" value="{{ choice.id }}" required><span class="as-letter" aria-hidden="true">{{ choice.label }}</span><span class="as-choice-text"><span class="sr-only">{{ choice.label }}. </span>{{ choice.text }}</span></label>{% endfor %}</div>
         </fieldset>
-        {% if assessment_kind == "foundational" %}<input type="hidden" name="hint_used" value="" data-hint-used><button class="min-h-11 rounded-xl border px-4 font-semibold [background:var(--color-surface)] [border-color:var(--color-border-strong)] [color:var(--color-text-link)]" type="button" data-hint-open aria-expanded="false">Show hint</button><div class="mt-4 rounded-2xl border p-4 [background:var(--color-bg-subtle)] [border-color:var(--color-border)]" data-hint-panel hidden tabindex="-1"><strong>Hint</strong><p>{{ question.hint }}</p></div>{% endif %}
-        <button class="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)]" type="submit" data-answer-submit>{% if assessment_kind == "pretest" or assessment_kind == "posttest" %}Save and continue{% else %}Submit answer{% endif %}</button>
-      </form></section>
+        {% if assessment_kind == "foundational" %}<div class="as-hint-wrap"><input type="hidden" name="hint_used" value="" data-hint-used><button class="ui-btn ui-btn-soft" type="button" data-hint-open aria-expanded="false"><i data-lucide="lightbulb" aria-hidden="true"></i>Show hint</button><div class="as-hint" data-hint-panel hidden tabindex="-1"><p class="as-hint-label"><i data-lucide="lightbulb" aria-hidden="true"></i>Hint</p><p>{{ question.hint }}</p></div></div>{% endif %}
+        <div class="as-actions"><button class="ui-btn ui-btn-primary ui-btn-block" type="submit" data-answer-submit>{% if assessment_kind == "pretest" or assessment_kind == "posttest" %}Save and continue{% else %}Submit answer{% endif %}<i data-lucide="arrow-right" aria-hidden="true"></i></button></div>
+      </form>
     {% endif %}
     {% include "modals/assessment/exit_assessment_confirm.html" %}
+
   {% else %}
-    <section class="grid gap-5 rounded-3xl border p-6 sm:p-8 [background:var(--color-surface)] [border-color:var(--color-border)] [box-shadow:var(--shadow-md)]"><p class="text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">{% if assessment_kind == "pretest" %}Complete{% elif assessment_kind == "posttest" %}Path complete{% elif assessment_kind == "activity" %}Activity complete{% else %}Exercise complete{% endif %}</p><h1>{% if assessment_kind == "pretest" %}Pre-test submitted{% elif assessment_kind == "posttest" %}Post-test submitted{% elif assessment_kind == "activity" %}Course activity result{% else %}{{ assessment_title }} result{% endif %}</h1><p class="flex items-baseline gap-2"><strong class="text-5xl [color:var(--color-primary-hover)]">{{ score }}</strong> of {{ total_questions }}</p>{% if assessment_kind == "pretest" %}<p>Your answers are locked. Item keys remain protected until the post-test is complete.</p>{% elif assessment_kind == "posttest" %}<p>Your score is derived from saved responses. This post-test did not update mastery.</p>{% endif %}<a class="inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 font-semibold [background:var(--color-primary)] [color:var(--color-on-primary)]" href="{{ my_lesson_url }}">Continue to My Lesson</a></section>
+    <section class="as-card as-result">
+      <span class="as-kind-icon" aria-hidden="true"><i data-lucide="badge-check"></i></span>
+      <p class="ui-eyebrow">{% if assessment_kind == "pretest" %}Complete{% elif assessment_kind == "posttest" %}Path complete{% elif assessment_kind == "activity" %}Activity complete{% else %}Exercise complete{% endif %}</p>
+      <h1>{% if assessment_kind == "pretest" %}Pre-test submitted{% elif assessment_kind == "posttest" %}Post-test submitted{% elif assessment_kind == "activity" %}Course activity result{% else %}{{ assessment_title }} result{% endif %}</h1>
+      <div class="as-score" style="--score: {% widthratio score total_questions 100 %}" role="img" aria-label="{{ score }} out of {{ total_questions }} correct">
+        <span class="as-score-inner"><strong>{{ score }}</strong><span>of {{ total_questions }}</span></span>
+      </div>
+      {% if assessment_kind == "pretest" %}<p class="as-lead">Your answers are locked. Item keys remain protected until the post-test is complete.</p>{% elif assessment_kind == "posttest" %}<p class="as-lead">Your score is derived from saved responses. This post-test did not update mastery.</p>{% else %}<p class="as-lead">Nice work finishing this set. Check My Lesson for your next step.</p>{% endif %}
+      <a class="ui-btn ui-btn-primary ui-btn-block" href="{{ my_lesson_url }}">Continue to My Lesson<i data-lucide="arrow-right" aria-hidden="true"></i></a>
+    </section>
   {% endif %}
 </main>
-<footer class="px-4 py-5 text-center text-sm [color:var(--color-text-muted)]"><p>Focused assessment</p></footer>
 {% endblock %}

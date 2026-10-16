@@ -88,6 +88,8 @@ def make_lesson(**overrides):
         "code": f"L-{sequence}",
         "slug": f"lesson-{sequence}",
         "lesson_order": sequence,
+        "unit_number": sequence,
+        "unit_title": "Integer Lesson",
         "title": "Integer Lesson",
         "summary": "A test lesson.",
         "content_json": [],

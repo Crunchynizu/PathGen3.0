@@ -1,0 +1,724 @@
+{
+  "schema_version": 1,
+  "lesson": {
+    "code": "L2-3",
+    "slug": "lesson-2-3",
+    "lesson_order": 4,
+    "unit_number": 2,
+    "part_number": 3,
+    "unit_title": "Operations with integers",
+    "title": "Dividing integers",
+    "summary": "Divide integers.",
+    "skill_codes": [
+      "S7"
+    ],
+    "content_schema_version": 1,
+    "content": {
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Dividing integers"
+        },
+        {
+          "type": "subheading",
+          "text": "Dividing"
+        },
+        {
+          "type": "paragraph",
+          "text": "Division uses the same sign rules as multiplication. Divide the distances first. Then decide the sign. Same signs give a positive result. Different signs give a negative result."
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            "(-24) / (-6) = 4",
+            "24 / (-6) = -4",
+            "(-24) / 6 = -4"
+          ]
+        },
+        {
+          "type": "figure",
+          "image_asset": "lesson/lesson-2/sign-rules.png",
+          "image_alt": "Sign rules chart for multiplication and division"
+        },
+        {
+          "type": "subheading",
+          "text": "Check with multiplication"
+        },
+        {
+          "type": "paragraph",
+          "text": "Division undoes multiplication. To check 24 / (-6) = -4, multiply back: (-4) x (-6) = 24."
+        },
+        {
+          "type": "video",
+          "video_code": "VID-INTEGER-MULTIPLY-DIVIDE",
+          "segment_start_seconds": 45,
+          "segment_end_seconds": 90
+        },
+        {
+          "type": "worked_example",
+          "title": "Choosing the sign",
+          "problem": "Compute (-24) / (-6).",
+          "steps": [
+            "Step 1: Signs of (-24) / (-6) are the same. Result is positive.",
+            "Step 2: 24 / 6 = 4."
+          ],
+          "answer": "Answer: 4."
+        },
+        {
+          "type": "common_mistake",
+          "text": "(-24) / 6 = 4 is wrong. The signs are different, so the answer is -4."
+        },
+        {
+          "type": "callout",
+          "variant": "cta",
+          "text": "Ready to practice. Continue to the regular exercise for 6 questions."
+        }
+      ],
+      "source_text": "Lesson 2.3 - Dividing integers\nSkill: S7\nObjective:\n1. Divide integers.\nDividing\nDivision uses the same sign rules as multiplication. Divide the distances first. Then decide the sign.\nSame signs -> positive\nDifferent signs -> negative\nExamples: (-24) / (-6) = 4. 24 / (-6) = -4. (-24) / 6 = -4.\nCheck with multiplication\nDivision undoes multiplication. To check 24 / (-6) = -4, multiply back: (-4) x (-6) = 24.\nWorked example\nProblem: Compute (-24) / (-6).\nStep 1: Signs of (-24) / (-6) are the same. Result is positive. Step 2: 24 / 6 = 4. Answer: 4.\nCommon mistake\n(-24) / 6 = 4 is wrong. The signs are different, so the answer is -4."
+    }
+  },
+  "question_sets": [
+    {
+      "code": "L2-3-R",
+      "name": "Lesson 2.3 Regular Exercise",
+      "set_type": "regular",
+      "lesson_code": "L2-3",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L2-R-S3-02",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-48) / (-8).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-6",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "6",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-40",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "40",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs give a positive result.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-R-S7-01",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute 56 / (-7).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-8",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "8",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-49",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "49",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative quotient: 56 / 7 = 8.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-R-S7-02",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-45) / 9.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-36",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "36",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-5",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "5",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative quotient: 45 / 9 = 5.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-R-S7-03",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-72) / (-8).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-9",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "9",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-64",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "64",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs give a positive quotient: 72 / 8 = 9.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-R-S7-04",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Which division has a negative quotient?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "(-30) / (-5)",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "30 / 5",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "30 / (-5)",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "(-30) / (-6)",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Only 30 / (-5) has different signs, so only its quotient is negative.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-R-S7-05",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "If (-6) x 7 = -42, what is (-42) / 7?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-35",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "35",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-6",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "6",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Division undoes multiplication, so (-42) / 7 = -6.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        }
+      ]
+    },
+    {
+      "code": "L2-3-A",
+      "name": "Lesson 2.3 Additional Exercise",
+      "set_type": "additional",
+      "lesson_code": "L2-3",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L2-A-S3-02",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-63) / 7.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-9",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "9",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-56",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "56",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative quotient.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-A-S7-01",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-36) / (-4).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-9",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "9",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-32",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "32",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs give a positive quotient: 36 / 4 = 9.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-A-S7-02",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute 70 / (-10).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-60",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "60",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-7",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "7",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative quotient: 70 / 10 = 7.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-A-S7-03",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-121) / 11.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-11",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "11",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-110",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "110",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative quotient: 121 / 11 = 11.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-A-S3-03",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Compute 96 / (-12).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-8",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "8",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-84",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "84",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "96 / 12 = 8, signs differ.",
+          "hint": null,
+          "image_asset": "exercise/lesson-2/L2-A-S3-03.png",
+          "image_alt": "Compute 96 / (-12).",
+          "source_figure_reference": "[insert figure: L2-A-S3-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-A-S7-04",
+          "skill_code": "S7",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Mika says (-50) / (-5) = -10. What is the correct quotient?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-10",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "10",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-45",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "45",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs give a positive quotient: 50 / 5 = 10.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        }
+      ]
+    },
+    {
+      "code": "L2-F-S7",
+      "name": "S7 Foundational Exercise",
+      "set_type": "foundational",
+      "lesson_code": null,
+      "skill_code": "S7",
+      "questions": [
+        {
+          "code": "L2-F-S3-02",
+          "skill_code": "S7",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-12) / 3.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-4",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "4",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-9",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "9",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs make a negative quotient.",
+          "hint": "12 / 3 = 4, signs differ.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-F-S7-01",
+          "skill_code": "S7",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute 20 / (-4).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-5",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "5",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-16",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "16",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs make a negative quotient.",
+          "hint": "Find 20 / 4 first, then decide the sign.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-F-S7-02",
+          "skill_code": "S7",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Compute (-18) / (-6).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-3",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "3",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-12",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "12",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs make a positive quotient.",
+          "hint": "Both numbers are negative.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        }
+      ]
+    }
+  ]
+}

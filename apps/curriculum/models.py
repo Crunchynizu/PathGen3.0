@@ -45,6 +45,11 @@ class Lesson(models.Model):
     code = models.CharField(max_length=16, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
     lesson_order = models.PositiveIntegerField(unique=True)
+    # Students see units (Lesson 1-3). A unit taught in parts (Lesson 2: 2.1, 2.2, 2.3) has
+    # one lesson record per part; lesson_order runs across all records.
+    unit_number = models.PositiveSmallIntegerField()
+    part_number = models.PositiveSmallIntegerField(null=True, blank=True)
+    unit_title = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     summary = models.TextField()
     content_json = models.JSONField()
@@ -64,7 +69,26 @@ class Lesson(models.Model):
                 condition=models.Q(content_schema_version__gt=0),
                 name="lesson_schema_version_positive",
             ),
+            models.CheckConstraint(
+                condition=models.Q(unit_number__gt=0)
+                & (models.Q(part_number__isnull=True) | models.Q(part_number__gt=0)),
+                name="lesson_unit_part_positive",
+            ),
+            models.UniqueConstraint(
+                fields=["unit_number", "part_number"],
+                name="unique_lesson_unit_part",
+            ),
         ]
+
+    @property
+    def display_number(self):
+        if self.part_number:
+            return f"{self.unit_number}.{self.part_number}"
+        return str(self.unit_number)
+
+    @property
+    def display_label(self):
+        return f"Lesson {self.display_number}"
 
 
 class LessonSkill(models.Model):

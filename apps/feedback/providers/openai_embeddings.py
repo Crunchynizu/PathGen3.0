@@ -7,6 +7,7 @@ from openai import OpenAI, RateLimitError
 EMBEDDING_MODEL = "text-embedding-3-small"
 EMBEDDING_DIM = 1536
 MAX_ATTEMPTS = 3
+TIMEOUT_SECONDS = 10.0
 
 
 class EmbeddingConfigurationError(RuntimeError):
@@ -24,7 +25,9 @@ class OpenAIEmbeddingClient:
             raise EmbeddingConfigurationError(
                 "OPENAI_API_KEY is required to create embeddings."
             )
-        self.client = client or OpenAI(api_key=api_key, max_retries=0)
+        self.client = client or OpenAI(
+            api_key=api_key, timeout=TIMEOUT_SECONDS, max_retries=0
+        )
         self.sleep = sleep
 
     def embed(self, text):

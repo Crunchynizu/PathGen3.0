@@ -37,6 +37,7 @@ from apps.core.dashboard_data import (
     chart_spec,
     decisions_chart,
     display_name,
+    lesson_display_labels,
 )
 from apps.core.selectors import (
     dashboard_classrooms,
@@ -398,16 +399,18 @@ def teacher_dashboard(request):
     actions = ("progress", "additional_exercise", "foundational_exercise")
     decisions_by_lesson = decisions_metric["value"] or {}
     lesson_labels = list(decisions_by_lesson)
+    lesson_names = lesson_display_labels()
     decision_rows = [
         [action, *[decisions_by_lesson[lesson].get(action, 0) for lesson in lesson_labels]]
         for action in actions
     ] if decisions_metric["n"] else []
     decisions = chart_spec(
         chart_id="decisions", title="Q-Learning decisions", metric=decisions_metric,
-        headers=["Decision action", *lesson_labels], rows=decision_rows,
+        headers=["Decision action", *[lesson_names.get(lesson, lesson) for lesson in lesson_labels]],
+        rows=decision_rows,
         labels=list(actions) if decisions_metric["n"] else [],
         datasets=[
-            {"label": lesson, "data": [decisions_by_lesson[lesson].get(action, 0) for action in actions]}
+            {"label": lesson_names.get(lesson, lesson), "data": [decisions_by_lesson[lesson].get(action, 0) for action in actions]}
             for lesson in lesson_labels
         ],
         aria_label=f"Grouped bar chart of Q-Learning decision actions by lesson for {cohort}.",

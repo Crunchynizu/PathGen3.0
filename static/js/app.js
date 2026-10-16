@@ -434,8 +434,28 @@
     });
   });
 
+  document.querySelectorAll("[data-password-toggle]").forEach((button) => {
+    const input = document.getElementById(button.getAttribute("aria-controls"));
+    if (!input) return;
+    button.addEventListener("click", () => {
+      const show = input.type === "password";
+      input.type = show ? "text" : "password";
+      button.setAttribute("aria-pressed", String(show));
+      button.setAttribute("aria-label", show ? "Hide password" : "Show password");
+      button.innerHTML = `<i data-lucide="${show ? "eye-off" : "eye"}" aria-hidden="true"></i>`;
+      window.refreshIcons?.();
+    });
+  });
+
   const feedback = document.querySelector("[data-feedback]");
-  if (feedback) requestAnimationFrame(() => feedback.focus());
+  if (feedback) {
+    // Keep the question and marked choices visible; bring the explanation into view.
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    requestAnimationFrame(() => {
+      feedback.focus({ preventScroll: true });
+      window.setTimeout(() => feedback.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "nearest" }), calm ? 0 : 350);
+    });
+  }
 
   function setupVideoCues(root = document) {
   root.querySelectorAll("[data-video-cue]").forEach((shell) => {
@@ -473,7 +493,7 @@
     if (!frame || !hasBounds) return;
     if (question) {
       question.hidden = true;
-      revealButton?.classList.remove("hidden");
+      if (revealButton) revealButton.hidden = false;
       window.setTimeout(revealQuestion, 12000);
     }
 

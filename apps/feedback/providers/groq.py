@@ -6,7 +6,7 @@ from groq import APIConnectionError, APITimeoutError, Groq
 
 DEFAULT_MODEL = "gpt-oss-120b"
 MAX_ATTEMPTS = 2
-TIMEOUT_SECONDS = 30.0
+TIMEOUT_SECONDS = 20.0
 
 
 class GroqConfigurationError(RuntimeError):

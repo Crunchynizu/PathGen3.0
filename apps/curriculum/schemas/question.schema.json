@@ -14,7 +14,7 @@
   ],
   "properties": {
     "code": {"type": "string", "minLength": 1},
-    "skill_code": {"type": "string", "pattern": "^S[1-6]$"},
+    "skill_code": {"type": "string", "pattern": "^S[1-7]$"},
     "difficulty": {"enum": ["standard", "foundational"]},
     "presentation_type": {"enum": ["text", "figure", "video"]},
     "cognitive_level": {

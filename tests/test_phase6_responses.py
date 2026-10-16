@@ -87,7 +87,7 @@ class ResponseServiceTests(Phase6SeededTestCase):
         self.assertEqual(self.path.status, StudentPath.Status.LEARNING)
         self.assertEqual(self.path.current_lesson.lesson_order, 1)
 
-        lesson3 = self.lesson(3)
+        lesson3 = self.lessons()[-1]
         self.set_path(status=StudentPath.Status.LEARNING, stage=StudentPath.Stage.REGULAR, lesson=lesson3)
         regular = self._session(Session.SessionType.REGULAR, lesson=lesson3, limit=1)
         self._answer(regular)

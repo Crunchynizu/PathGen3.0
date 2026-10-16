@@ -175,56 +175,64 @@ def _mark_completed(session):
     session.save(update_fields=["status", "completed_at", "updated_at"])
 
 
-def finalize_pending_sessions(*, feedback_generator=None):
-    """Generate feedback outside locks, then persist it in a short transaction."""
+def finalize_pending_session(session_id, *, feedback_generator=None):
+    """Finalize one submitted session: feedback outside locks, then a short transaction.
+
+    Returns True when this call marked the session completed.
+    """
     feedback_generator = feedback_generator or generate_session_feedback
+    session = Session.objects.select_related("lesson").filter(pk=session_id).first()
+    if session is None or session.status != Session.Status.SUBMITTED:
+        return False
+
+    draft = None
+    if (
+        session.session_type in RAG_ELIGIBLE_TYPES
+        and not SessionFeedback.objects.filter(session_id=session_id).exists()
+    ):
+        try:
+            draft = feedback_generator(session)
+        except Exception:
+            draft = generate_fallback_draft(session)
+
+    with transaction.atomic():
+        session = Session.objects.select_for_update(of=("self",)).get(
+            pk=session_id
+        )
+        if (
+            session.status != Session.Status.SUBMITTED
+            or session.submitted_at is None
+        ):
+            return False
+
+        if session.session_type not in RAG_ELIGIBLE_TYPES:
+            _mark_completed(session)
+            return True
+
+        if not SessionFeedback.objects.filter(session=session).exists():
+            if draft is None:
+                draft = generate_fallback_draft(session)
+            SessionFeedback.objects.bulk_create(
+                [
+                    SessionFeedback(
+                        session=session,
+                        feedback_text=draft.feedback_text,
+                        generation_status=draft.generation_status,
+                        model_name=draft.model_name,
+                    )
+                ],
+                ignore_conflicts=True,
+            )
+        if not SessionFeedback.objects.filter(session=session).exists():
+            return False
+        _mark_completed(session)
+        return True
+
+
+def finalize_pending_sessions(*, feedback_generator=None):
+    """Recover every submitted session (crash recovery / batch use)."""
     completed = 0
     for session_id in _pending_session_ids():
-        session = Session.objects.select_related("lesson").filter(pk=session_id).first()
-        if session is None:
-            continue
-
-        draft = None
-        if (
-            session.session_type in RAG_ELIGIBLE_TYPES
-            and not SessionFeedback.objects.filter(session_id=session_id).exists()
-        ):
-            try:
-                draft = feedback_generator(session)
-            except Exception:
-                draft = generate_fallback_draft(session)
-
-        with transaction.atomic():
-            session = Session.objects.select_for_update(of=("self",)).get(
-                pk=session_id
-            )
-            if (
-                session.status != Session.Status.SUBMITTED
-                or session.submitted_at is None
-            ):
-                continue
-
-            if session.session_type not in RAG_ELIGIBLE_TYPES:
-                _mark_completed(session)
-                completed += 1
-                continue
-
-            if not SessionFeedback.objects.filter(session=session).exists():
-                if draft is None:
-                    draft = generate_fallback_draft(session)
-                SessionFeedback.objects.bulk_create(
-                    [
-                        SessionFeedback(
-                            session=session,
-                            feedback_text=draft.feedback_text,
-                            generation_status=draft.generation_status,
-                            model_name=draft.model_name,
-                        )
-                    ],
-                    ignore_conflicts=True,
-                )
-            if not SessionFeedback.objects.filter(session=session).exists():
-                continue
-            _mark_completed(session)
+        if finalize_pending_session(session_id, feedback_generator=feedback_generator):
             completed += 1
     return completed

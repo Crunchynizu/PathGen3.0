@@ -12,3 +12,8 @@ urlpatterns = [
     path("", include("apps.core.urls")),
     path("health/", health, name="health"),
 ]
+
+handler400 = "apps.core.errors.bad_request"
+handler403 = "apps.core.errors.permission_denied"
+handler404 = "apps.core.errors.page_not_found"
+handler500 = "apps.core.errors.server_error"

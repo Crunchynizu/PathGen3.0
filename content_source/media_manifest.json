@@ -8,8 +8,8 @@
       "segment_start_seconds": 60,
       "segment_end_seconds": 110,
       "duration_seconds": 50,
-      "youtube_url": "https://www.youtube.com/watch?v=qW-Ce44lI0Q",
-      "youtube_video_id": "qW-Ce44lI0Q",
+      "youtube_url": null,
+      "youtube_video_id": null,
       "transcript_file": "transcripts/VID-INTEGER-NUMBER-LINE.txt"
     },
     {

@@ -38,7 +38,8 @@ def content(request):
         "pages/shared/content.html",
         {
             "breadcrumbs": _content_breadcrumbs("Content"),
-            "lesson_count": published_lessons().count(),
+            # lessons as students see them (Lesson 2's three parts count once)
+            "lesson_count": published_lessons().values("unit_number").distinct().count(),
             "visible_question_count": sum(counts.values()),
             "set_counts": counts,
         },
@@ -110,6 +111,7 @@ def view_lesson_detail(request, code):
     )
     return render(request, "pages/shared/view_lesson.detail.html", {
         "lesson": lesson,
+        "lesson_count": published_lessons().count(),
         "blocks": blocks,
         "question_sets": question_sets,
         "question_total": sum(question_set.question_count for question_set in question_sets),
@@ -118,7 +120,7 @@ def view_lesson_detail(request, code):
         "breadcrumbs": [
             {"label": "Content", "url": reverse("curriculum:content")},
             {"label": "Lessons", "url": reverse("curriculum:view_lessons")},
-            {"label": f"Lesson {lesson.lesson_order}", "url": None},
+            {"label": lesson.display_label, "url": None},
         ],
     })
 

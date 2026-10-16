@@ -50,7 +50,7 @@ class ButtonAudit(HTMLParser):
         "data-access-switch", "data-dialog-close", "data-dialog-confirm",
         "data-dialog-open", "data-drawer-close", "data-drawer-open",
         "data-hint-open", "data-lesson-next", "data-lesson-prev",
-        "data-reveal-question",
+        "data-reveal-question", "data-lesson-dot", "data-password-toggle",
     }
 
     def __init__(self):
@@ -410,6 +410,12 @@ class QAWalkthroughTests(Phase6SeededTestCase):
                     missing.append(f"{path}: submit button outside form")
                 elif kind == "button" and not ButtonAudit.ACTION_HOOKS.intersection(attrs):
                     missing.append(f"{path}: button without JS hook")
+        # lucide.min.js is a subset build, so icons created in scripts must be in it too.
+        for path in (Path(settings.BASE_DIR) / "static/js").glob("*.js"):
+            source = path.read_text(encoding="utf-8")
+            for expression in re.findall(r"data-lucide=\"\$\{([^}]*)\}\"", source):
+                lucide_names.update(re.findall(r"\"([a-z0-9-]+)\"", expression))
+            lucide_names.update(re.findall(r"\bbutton\([^()]*,\s*\"([a-z0-9-]+)\"\)", source))
         for static_path in static_paths:
             with self.subTest(static=static_path):
                 self.assertTrue((Path(settings.BASE_DIR) / "static" / static_path).is_file())
@@ -454,10 +460,12 @@ class QAWalkthroughTests(Phase6SeededTestCase):
             "remove_student_class_confirm.html", "close_study_access_confirm.html",
             "lock_posttest_confirm.html",
         }
+        theme = (Path(settings.BASE_DIR) / "static/css/theme.css").read_text(encoding="utf-8")
+        self.assertRegex(theme, r"\[data-ui~=\"danger-button\"\][^{]*\{[^}]*background:\s*var\(--danger\)")
         for path in modals:
             with self.subTest(modal=str(path)):
                 source = path.read_text(encoding="utf-8")
                 self.assertIn("aria-labelledby=", source)
                 self.assertRegex(source, r"(?i)\bCancel\b")
                 if path.name in destructive:
-                    self.assertIn("var(--color-danger)", source)
+                    self.assertIn('data-ui="danger-button"', source)

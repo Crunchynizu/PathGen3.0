@@ -32,16 +32,18 @@ class FullStudentPathAcceptanceTests(IntegrationSeededTestCase):
         self.assertEqual(self.path.current_stage, StudentPath.Stage.LESSON)
 
         regular_sessions = []
-        for lesson_order in (1, 2, 3):
-            lesson = self.lesson(lesson_order)
+        lessons = self.lessons()
+        self.assertEqual([lesson.display_label for lesson in lessons],
+                         ["Lesson 1", "Lesson 2.1", "Lesson 2.2", "Lesson 2.3", "Lesson 3"])
+        for lesson in lessons:
             session = self.complete_regular_lesson(lesson)
             regular_sessions.append(session)
             self.assertEqual(session.items.count(), 6)
-            if lesson_order < 3:
+            if lesson != lessons[-1]:
                 self.assertEqual(self.path.status, StudentPath.Status.LEARNING)
                 self.assertEqual(
                     self.path.current_lesson.lesson_order,
-                    lesson_order + 1,
+                    lesson.lesson_order + 1,
                 )
                 self.assertEqual(self.path.current_stage, StudentPath.Stage.LESSON)
             else:
@@ -108,7 +110,9 @@ class FullStudentPathAcceptanceTests(IntegrationSeededTestCase):
         )
         self.assertEqual(metric["value"], expected_percentage_point_gain)
         self.assertEqual(metric["n"], 1)
+        # pre-test, one regular session per lesson record (Lesson 2 has three parts),
+        # activity, post-test
         self.assertEqual(
             Session.objects.filter(student=self.student).count(),
-            6,
+            3 + len(lessons),
         )

@@ -36,6 +36,10 @@ class Phase6SeededTestCase(TestCase):
     def lesson(self, order):
         return Lesson.objects.get(lesson_order=order)
 
+    def lessons(self):
+        """Every published lesson record in path order (Lesson 2 is three parts)."""
+        return list(Lesson.objects.filter(is_published=True).order_by("lesson_order"))
+
     def skill(self, code):
         return Skill.objects.get(code=code)
 

@@ -1,6 +1,6 @@
 from django.urls import reverse
 
-from apps.curriculum.models import Question, QuestionSet
+from apps.curriculum.models import Question, QuestionSet, Video
 from apps.learning.models import Session, SessionItem, StudentPath
 from apps.learning.services.responses import submit_response
 from tests.phase6_helpers import Phase6SeededTestCase
@@ -70,7 +70,33 @@ class FeedbackRuleTests(Phase6SeededTestCase):
         self.assertTemplateUsed(response, "assessment/assessment.html")
         self.assertNotContains(response, "error.html")
 
+    def _video_question_session(self):
+        question = Question.objects.get(code="ACT-S5-01")
+        session = Session.objects.create(
+            student=self.student,
+            session_type=Session.SessionType.ACTIVITY,
+            status=Session.Status.IN_PROGRESS,
+            attempt_number=1,
+        )
+        SessionItem.objects.create(session=session, question=question, display_order=1)
+        self.client.force_login(self.student)
+        return session
+
+    def test_video_question_with_hidden_video_shows_question_and_transcript(self):
+        # Its number-line video was removed from YouTube, so the manifest no longer lists an ID.
+        session = self._video_question_session()
+        response = self.client.get(reverse("learning:assessment_session", args=[session.pk]))
+        self.assertContains(response, "Video not yet available")
+        self.assertContains(response, "content_source/transcripts/VID-INTEGER-NUMBER-LINE.txt")
+        self.assertNotContains(response, "youtube-nocookie.com/embed/")
+        self.assertNotContains(response, "Continue to question without watching")
+        self.assertContains(response, "data-video-question")
+
     def test_video_question_has_bounded_cue_transcript_and_optional_watch(self):
+        # The cue mechanism, checked with a video that is still on YouTube.
+        Question.objects.filter(code="ACT-S5-01").update(
+            video=Video.objects.get(code="VID-INTEGER-ADD-SUBTRACT")
+        )
         question = Question.objects.get(code="ACT-S5-01")
         session = Session.objects.create(
             student=self.student,
@@ -82,8 +108,8 @@ class FeedbackRuleTests(Phase6SeededTestCase):
         self.client.force_login(self.student)
         response = self.client.get(reverse("learning:assessment_session", args=[session.pk]))
         self.assertContains(response, 'data-pause-seconds="110"')
-        self.assertContains(response, 'start=60&amp;end=110')
-        self.assertContains(response, "content_source/transcripts/VID-INTEGER-NUMBER-LINE.txt")
+        self.assertContains(response, 'start=80&amp;end=125')  # the borrowed video's clip bounds
+        self.assertContains(response, "content_source/transcripts/VID-INTEGER-ADD-SUBTRACT.txt")
         self.assertContains(response, "data-video-question")
         self.assertNotContains(response, "data-video-question hidden")
         self.assertContains(response, "Continue to question without watching")

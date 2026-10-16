@@ -153,7 +153,7 @@ class PublishedLessonDetailTests(TestCase):
         for marker in (
             "Extra heading", "Extra subheading", "Extra paragraph", "Bullet marker",
             "Numbered marker", "Example marker", "Step marker", "Mistake marker",
-            "Callout marker", "integer-number-line.png", "youtube-nocookie.com",
+            "Callout marker", "integer-number-line.png", "Negative numbers and number-line examples",
         ):
             with self.subTest(marker=marker):
                 self.assertContains(response, marker)
@@ -166,15 +166,17 @@ class PublishedLessonDetailTests(TestCase):
         self.assertTrue(all(question_set.set_type != "prepost" for question_set in response.context["question_sets"]))
 
     def test_video_uses_youtube_nocookie_and_segment_bounds(self):
+        # Lesson 1's video is hidden (removed from YouTube); Lesson 2.1's still embeds.
         self.client.force_login(self.teacher)
-        response = self.client.get(self.url())
-        self.assertContains(response, "https://www.youtube-nocookie.com/embed/")
-        self.assertContains(response, "start=60&amp;end=110")
+        response = self.client.get(self.url("L2-1"))
+        self.assertContains(response, "https://www.youtube-nocookie.com/embed/NQSN00zL5gg")
+        self.assertContains(response, "start=80&amp;end=125")
+        self.assertNotContains(self.client.get(self.url()), "youtube-nocookie.com/embed/")
 
     def test_unpublished_lesson_is_404_and_navigation_is_published_only(self):
-        Lesson.objects.filter(code="L2").update(is_published=False)
+        Lesson.objects.filter(code="L2-1").update(is_published=False)
         self.client.force_login(self.admin)
-        self.assertEqual(self.client.get(self.url("L2")).status_code, 404)
+        self.assertEqual(self.client.get(self.url("L2-1")).status_code, 404)
         response = self.client.get(self.url())
-        self.assertNotContains(response, self.url("L2"))
-        self.assertContains(response, self.url("L3"))
+        self.assertNotContains(response, self.url("L2-1"))
+        self.assertContains(response, self.url("L2-2"))

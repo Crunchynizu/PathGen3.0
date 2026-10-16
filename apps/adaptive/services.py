@@ -32,6 +32,19 @@ ADDITIONAL_ACTIONS = [
     Decision.Action.PROGRESS,
     Decision.Action.FOUNDATIONAL_EXERCISE,
 ]
+# SCORING-V3: a skill passes with at least two-thirds of its questions correct. A skill has
+# 3 questions in a two-skill exercise and in foundational work, 6 in a one-skill Lesson 2 part.
+SCORED_SKILL_TOTALS = {3, 6}
+
+
+def skill_passed(total, correct):
+    return total in SCORED_SKILL_TOTALS and correct * 3 >= total * 2
+
+
+def skill_failed(total, correct):
+    return total in SCORED_SKILL_TOTALS and correct * 3 < total * 2
+
+
 SCORED_SESSION_TYPES = [
     Session.SessionType.REGULAR,
     Session.SessionType.ADDITIONAL,
@@ -139,7 +152,7 @@ def _skill_scores(session):
         row["session_item__question__skill_id"]: {
             "total": row["total"],
             "correct": row["correct"],
-            "passed": row["total"] == 3 and row["correct"] >= 2,
+            "passed": skill_passed(row["total"], row["correct"]),
         }
         for row in rows
     }
@@ -154,9 +167,11 @@ def _ordered_lesson_skills(session):
 
 
 def _state_for_session(session, scores):
+    # Lessons 1 and 3 have two skills; each Lesson 2 part has one, which gives keys such as
+    # "(dev, dev, p)" (weakest = average) in the same Q-table.
     lesson_skills = _ordered_lesson_skills(session)
-    if len(lesson_skills) != 2:
-        raise ValueError("Adaptive exercise decisions require exactly two lesson skills.")
+    if len(lesson_skills) not in (1, 2):
+        raise ValueError("Adaptive exercise decisions require one or two lesson skills.")
 
     masteries = {
         mastery.skill_id: mastery
@@ -165,8 +180,8 @@ def _state_for_session(session, scores):
             skill_id__in=[row.skill_id for row in lesson_skills],
         )
     }
-    if len(masteries) != 2:
-        raise ValueError("Adaptive exercise decisions require mastery for both skills.")
+    if len(masteries) != len(lesson_skills):
+        raise ValueError("Adaptive exercise decisions require mastery for every lesson skill.")
 
     probabilities = [float(masteries[row.skill_id].p_known) for row in lesson_skills]
     weakest_band = mastery_band(min(probabilities))
@@ -182,7 +197,7 @@ def _failed_skill_ids(scores):
     return {
         skill_id
         for skill_id, score in scores.items()
-        if score["total"] == 3 and not score["passed"]
+        if skill_failed(score["total"], score["correct"])
     }
 
 
@@ -209,7 +224,7 @@ def _failure_count(*, student_id, skill_id, current_session_id):
             correct=Count("id", filter=Q(selected_choice__is_correct=True)),
         )
     )
-    return sum(row["total"] == 3 and row["correct"] < 2 for row in rows)
+    return sum(skill_failed(row["total"], row["correct"]) for row in rows)
 
 
 def _snapshot(*, state, q_values, chosen_action, available_actions):

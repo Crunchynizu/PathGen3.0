@@ -1,1 +1,28 @@
-/* view_student_progress_detail — styles for templates/pages/shared/view_student_progress_detail.html */
+/* view_student_progress_detail — styles for templates/pages/shared/view_student_progress_detail.html (shared kit in theme.css) */
+[data-ui~="secondary-content"].st-page { padding: 0; border: 0; box-shadow: none; background: none; }
+.sp-who { display: flex; align-items: center; gap: 14px; }
+.sp-avatar { width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: var(--gray-100); box-shadow: 0 0 0 3px var(--color-surface), 0 0 0 5px var(--primary-200); }
+.sp-summary { border-top: 4px solid var(--tone-teal); }
+.sp-summary[data-tone="violet"] { border-top-color: var(--tone-violet); }
+.sp-summary h2 { margin: 2px 0 0; font-size: var(--text-lg); letter-spacing: -0.01em; }
+
+.sp-skills { display: grid; gap: 10px; padding: 16px 18px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.sp-skill {
+  --band: var(--gray-400); --band-bg: var(--gray-50); --band-text: var(--color-text-secondary);
+  display: grid; gap: 8px; padding: 12px 14px; border-radius: var(--radius-md);
+  background: var(--band-bg); border: 1px solid var(--color-border); border-left: 4px solid var(--band);
+}
+.sp-skill[data-band="np"] { --band: var(--danger); --band-bg: var(--danger-bg); --band-text: var(--color-danger-text); }
+.sp-skill[data-band="dev"] { --band: var(--warning); --band-bg: var(--warning-bg); --band-text: var(--color-warning-text); }
+.sp-skill[data-band="strong"] { --band: var(--success); --band-bg: var(--success-bg); --band-text: var(--color-success-text); }
+.sp-skill-name { display: flex; align-items: baseline; gap: 8px; }
+.sp-skill-name h3 { margin: 0; font-size: var(--text-sm); font-weight: 600; line-height: 1.35; }
+.sp-code { flex-shrink: 0; font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; color: var(--color-text-muted); }
+.sp-skill-band { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.sp-band { margin: 0; font-size: var(--text-sm); font-weight: 700; color: var(--band-text); }
+
+.sp-quote {
+  margin: 0; padding: 12px 14px; border-left: 4px solid var(--color-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--color-primary-subtle); font-size: var(--text-sm); line-height: 1.65; white-space: pre-line; color: var(--color-text);
+}
+.tabular-nums { font-variant-numeric: tabular-nums; }

@@ -27,10 +27,11 @@ from tests.factories import make_user
 class CurriculumSourceTests(SimpleTestCase):
     def test_source_contract_and_pdf_hash_pass(self):
         summary = validate_curriculum_source()
-        self.assertEqual(summary["questions_total"], 94)
+        self.assertEqual(summary["questions_total"], 121)
+        self.assertEqual((summary["lessons"], summary["lesson_units"], summary["skills"]), (5, 3, 7))
         self.assertEqual(
             {key: summary[key] for key in ("regular", "additional", "foundational", "activity", "prepost")},
-            {"regular": 18, "additional": 18, "foundational": 18, "activity": 10, "prepost": 30},
+            {"regular": 30, "additional": 30, "foundational": 21, "activity": 10, "prepost": 30},
         )
 
     def test_prepost_rewrite_and_fixed_order(self):
@@ -51,7 +52,7 @@ class CurriculumSourceTests(SimpleTestCase):
         )["question_set"]["questions"]
         self.assertEqual(
             Counter(question["skill_code"] for question in activity),
-            Counter({"S1": 2, "S2": 2, "S3": 2, "S4": 2, "S5": 1, "S6": 1}),
+            Counter({"S1": 2, "S2": 2, "S3": 1, "S4": 2, "S5": 1, "S6": 1, "S7": 1}),
         )
         self.assertEqual(Counter(question["bloom_band"] for question in activity), Counter({"LOTS": 6, "HOTS": 4}))
 
@@ -77,13 +78,13 @@ class CurriculumSeedAndPageTests(TestCase):
         cls.student = make_user(User.Role.STUDENT)
 
     def test_seeded_database_counts_and_choice_contract(self):
-        self.assertEqual(Skill.objects.count(), 6)
-        self.assertEqual(Lesson.objects.count(), 3)
+        self.assertEqual(Skill.objects.count(), 7)
+        self.assertEqual(Lesson.objects.count(), 5)
         self.assertEqual(Video.objects.count(), 4)
-        self.assertEqual(Question.objects.count(), 94)
-        self.assertEqual(QuestionChoice.objects.count(), 376)
-        self.assertEqual(QuestionSet.objects.count(), 14)
-        self.assertEqual(QuestionSetItem.objects.count(), 94)
+        self.assertEqual(Question.objects.count(), 121)
+        self.assertEqual(QuestionChoice.objects.count(), 484)
+        self.assertEqual(QuestionSet.objects.count(), 19)
+        self.assertEqual(QuestionSetItem.objects.count(), 121)
         self.assertFalse(
             Question.objects.annotate(choice_total=Count("choices")).exclude(choice_total=4).exists()
         )
@@ -95,7 +96,7 @@ class CurriculumSeedAndPageTests(TestCase):
         output = io.StringIO()
         call_command("seed_curriculum", stdout=output)
         self.assertIn("Created: skills=0, lessons=0, videos=0, questions=0, choices=0, sets=0, items=0", output.getvalue())
-        self.assertEqual(Question.objects.count(), 94)
+        self.assertEqual(Question.objects.count(), 121)
 
     def test_admin_and_teacher_content_pages_render(self):
         pages = [

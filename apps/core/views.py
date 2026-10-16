@@ -46,6 +46,7 @@ from apps.core.services.settings import (
     current_system_setting,
     update_system_setting,
 )
+from apps.curriculum.models import Skill
 from apps.curriculum.selectors import published_lessons
 from apps.learning.models import Session, StudentPath
 
@@ -271,18 +272,18 @@ def admin_dashboard(request):
     charts[2]["metric"] = {
         **decision_metric,
         "n": None if decision_metric.get("failed") else decision_n,
-        "definition": "Persisted decisions for Lessons 1–3, grouped by selected action; whole-course decisions are excluded.",
+        "definition": "Persisted decisions for Lessons 1–3 (Lesson 2 by part), grouped by selected action; whole-course decisions are excluded.",
     }
     if decision_n:
         charts[2]["rows"] = [
             [
-                f"Lesson {lesson.lesson_order}",
+                lesson.display_label,
                 *[decision_data.get(lesson.code, {}).get(action, 0) for action in decision_actions],
             ]
             for lesson in lessons
         ]
         charts[2]["config"]["data"]["labels"] = [
-            f"Lesson {lesson.lesson_order}" for lesson in lessons
+            lesson.display_label for lesson in lessons
         ]
         for dataset, action in zip(
             charts[2]["config"]["data"]["datasets"], decision_actions
@@ -433,10 +434,13 @@ def student_list(request):
         memberships.setdefault(membership.student_id, membership)
     paths = StudentPath.objects.filter(student_id__in=student_ids).in_bulk()
     mastery_values = defaultdict(list)
-    for student_id, p_known in SkillMastery.objects.filter(
+    mastery_by_skill = defaultdict(dict)
+    skill_codes = list(Skill.objects.order_by("code").values_list("code", flat=True))
+    for student_id, skill_code, p_known in SkillMastery.objects.filter(
         student_id__in=student_ids, evidence_count__gt=0
-    ).values_list("student_id", "p_known"):
+    ).values_list("student_id", "skill__code", "p_known"):
         mastery_values[student_id].append(p_known)
+        mastery_by_skill[student_id][skill_code] = mastery_band(p_known)
     latest_activity = dict(
         Session.objects.filter(student_id__in=student_ids)
         .annotate(activity_at=Coalesce("completed_at", "submitted_at", "started_at", "created_at"))
@@ -462,6 +466,14 @@ def student_list(request):
             "path": paths.get(student.pk),
             "mastery_band": band,
             "mastery_label": band_labels.get(band, "Not enough evidence"),
+            "skill_bands": [
+                {
+                    "code": code,
+                    "band": mastery_by_skill[student.pk].get(code, "none"),
+                    "label": band_labels.get(mastery_by_skill[student.pk].get(code), "Not enough evidence"),
+                }
+                for code in skill_codes
+            ],
             "latest_activity": latest_activity.get(student.pk),
             "needs_follow_up": student.pk in follow_up_ids,
             "progress_url": reverse("portal:student_progress", args=[student.pk]),
@@ -475,6 +487,7 @@ def student_list(request):
         "path_status": path_status,
         "path_choices": StudentPath.Status.choices,
         "filter_active": bool(query or account_status or path_status),
+        "filter_count": bool(account_status) + bool(path_status),
     })
 
 

@@ -66,9 +66,9 @@ EXPECTED_COLUMNS = {
         "created_at", "updated_at",
     },
     "curriculum_lesson": {
-        "id", "code", "slug", "lesson_order", "title", "summary",
-        "content_json", "content_schema_version", "is_published", "created_at",
-        "updated_at",
+        "id", "code", "slug", "lesson_order", "unit_number", "part_number",
+        "unit_title", "title", "summary", "content_json", "content_schema_version",
+        "is_published", "created_at", "updated_at",
     },
     "curriculum_lesson_skill": {"lesson_id", "skill_id", "display_order"},
     "curriculum_video": {

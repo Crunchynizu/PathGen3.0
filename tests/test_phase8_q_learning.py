@@ -70,9 +70,24 @@ class QLearningTests(SimpleTestCase):
             result = q_learning.decide("np", "dev", "pf", q_learning.ACTIONS)
         self.assertEqual(result, ("additional_exercise", "q_learning_argmax"))
 
-    def test_valid_artifact_loads_all_24_rows(self):
+    def test_valid_artifact_loads_all_30_rows(self):
+        # 24 two-skill rows (Lessons 1, 3) + 6 one-skill rows for the Lesson 2 parts
         q_learning.load_q_table.cache_clear()
-        self.assertEqual(len(q_learning.load_q_table()), 24)
+        self.assertEqual(len(q_learning.load_q_table()), 30)
+
+    def test_trained_artifact_moves_passed_lesson_2_parts_on(self):
+        # q-learning-test-v3: a passed part (4 of 6) always progresses; a failed one gets support
+        q_learning.load_q_table.cache_clear()
+        artifact = json.loads(q_learning.Q_TABLE_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(artifact["_meta"]["artifact_kind"], "externally_trained")
+        for band in ("np", "dev", "strong"):
+            with self.subTest(band=band):
+                self.assertEqual(
+                    q_learning.decide(band, band, "p", q_learning.ACTIONS),
+                    ("progress", "q_learning_argmax"),
+                )
+                action, _ = q_learning.decide(band, band, "f", q_learning.ACTIONS)
+                self.assertNotEqual(action, "progress")
 
     def test_invalid_policy_version_falls_back(self):
         artifact = json.loads(q_learning.Q_TABLE_PATH.read_text(encoding="utf-8"))

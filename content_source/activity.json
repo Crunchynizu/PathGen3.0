@@ -214,7 +214,7 @@
       },
       {
         "code": "ACT-S3-02",
-        "skill_code": "S3",
+        "skill_code": "S7",
         "difficulty": "standard",
         "presentation_type": "text",
         "cognitive_level": "analyze",

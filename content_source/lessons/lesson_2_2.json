@@ -1,0 +1,724 @@
+{
+  "schema_version": 1,
+  "lesson": {
+    "code": "L2-2",
+    "slug": "lesson-2-2",
+    "lesson_order": 3,
+    "unit_number": 2,
+    "part_number": 2,
+    "unit_title": "Operations with integers",
+    "title": "Multiplying integers",
+    "summary": "Multiply integers.",
+    "skill_codes": [
+      "S3"
+    ],
+    "content_schema_version": 1,
+    "content": {
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Multiplying integers"
+        },
+        {
+          "type": "subheading",
+          "text": "Multiplying"
+        },
+        {
+          "type": "paragraph",
+          "text": "Work with distances first. Then decide the sign. Same signs give a positive result. Different signs give a negative result."
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            "(-6) x 4 = -24",
+            "6 x (-4) = -24",
+            "(-6) x (-4) = 24"
+          ]
+        },
+        {
+          "type": "figure",
+          "image_asset": "lesson/lesson-2/sign-rules.png",
+          "image_alt": "Sign rules chart for multiplication and division"
+        },
+        {
+          "type": "subheading",
+          "text": "More than two factors"
+        },
+        {
+          "type": "paragraph",
+          "text": "Count the negative factors. An even number of negatives gives a positive product. An odd number gives a negative product. Example: (-1) x (-2) x (-3) = -6."
+        },
+        {
+          "type": "video",
+          "video_code": "VID-INTEGER-MULTIPLY-DIVIDE",
+          "segment_start_seconds": 45,
+          "segment_end_seconds": 90
+        },
+        {
+          "type": "worked_example",
+          "title": "Choosing the sign",
+          "problem": "Compute (-6) x 4.",
+          "steps": [
+            "Step 1: Signs of (-6) x 4 are different. Result is negative.",
+            "Step 2: 6 x 4 = 24."
+          ],
+          "answer": "Answer: -24."
+        },
+        {
+          "type": "common_mistake",
+          "text": "(-6) x 4 = 24 is wrong. The signs are different, so the answer is -24."
+        },
+        {
+          "type": "callout",
+          "variant": "cta",
+          "text": "Ready to practice. Continue to the regular exercise for 6 questions."
+        }
+      ],
+      "source_text": "Lesson 2.2 - Multiplying integers\nSkill: S3\nObjective:\n1. Multiply integers.\nMultiplying\nWork with distances first. Then decide the sign.\nSame signs -> positive\nDifferent signs -> negative\nExamples: (-6) x 4 = -24. 6 x (-4) = -24. (-6) x (-4) = 24.\nMore than two factors\nCount the negative factors. An even number of negatives gives a positive product. An odd number gives a negative product.\nExample: (-1) x (-2) x (-3) = -6.\nWorked example\nProblem: Compute (-6) x 4.\nStep 1: Signs of (-6) x 4 are different. Result is negative. Step 2: 6 x 4 = 24. Answer: -24.\nCommon mistake\n(-6) x 4 = 24 is wrong. The signs are different, so the answer is -24."
+    }
+  },
+  "question_sets": [
+    {
+      "code": "L2-2-R",
+      "name": "Lesson 2.2 Regular Exercise",
+      "set_type": "regular",
+      "lesson_code": "L2-2",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L2-R-S3-01",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-7) x 6.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-42",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "42",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-13",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "13",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative result.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-R-S3-04",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute 8 x (-5).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-40",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "40",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-13",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "13",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative product: 8 x 5 = 40.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-R-S3-05",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-11) x (-3).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-33",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "33",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-14",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "14",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs give a positive product: 11 x 3 = 33.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-R-S3-06",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-12) x 5.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-17",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "17",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-60",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "60",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative product: 12 x 5 = 60.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-R-S3-03",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "What do four equal groups of -3 total?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-12",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "12",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-7",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "7",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "4 x (-3) = -12.",
+          "hint": null,
+          "image_asset": "exercise/lesson-2/L2-R-S3-03.png",
+          "image_alt": "What do four equal groups of -3 total?",
+          "source_figure_reference": "[insert figure: L2-R-S3-04]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-R-S3-07",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Without computing, what is the sign of (-2) x (-3) x (-4)?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "Positive",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "Negative",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "Zero",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "It cannot be known",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "There are three negative factors. An odd number of negatives gives a negative product.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        }
+      ]
+    },
+    {
+      "code": "L2-2-A",
+      "name": "Lesson 2.2 Additional Exercise",
+      "set_type": "additional",
+      "lesson_code": "L2-2",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L2-A-S3-01",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-9) x (-4).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-36",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "36",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-13",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "13",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs give a positive product.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-A-S3-04",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute 7 x (-8).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-56",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "56",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-15",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "15",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative product: 7 x 8 = 56.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-A-S3-05",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-6) x (-9).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-15",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "15",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-54",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "54",
+              "is_correct": true
+            }
+          ],
+          "correct_answer": "D",
+          "solution_steps": [],
+          "explanation": "Same signs give a positive product: 6 x 9 = 54.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-A-S3-06",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-10) x 7.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-17",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "17",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-70",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "70",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Different signs give a negative product: 10 x 7 = 70.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-A-S3-07",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Which product is positive?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "(-4) x 5",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "4 x (-5)",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "(-4) x (-5)",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "(-4) x 5 x 1",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Only (-4) x (-5) has two negative factors, so only it is positive.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-A-S3-08",
+          "skill_code": "S3",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Lito says (-3) x (-7) = -21. What is the correct product?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-21",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "21",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-10",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "10",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs give a positive product: 3 x 7 = 21.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        }
+      ]
+    },
+    {
+      "code": "L2-F-S3",
+      "name": "S3 Foundational Exercise",
+      "set_type": "foundational",
+      "lesson_code": null,
+      "skill_code": "S3",
+      "questions": [
+        {
+          "code": "L2-F-S3-01",
+          "skill_code": "S3",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "remember",
+          "bloom_band": "LOTS",
+          "prompt": "Compute (-3) x 4.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-12",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "12",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-7",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "7",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "One negative factor gives a negative product.",
+          "hint": "Find 3 x 4 first, then the sign.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L2-F-S3-04",
+          "skill_code": "S3",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Compute 5 x (-3).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-15",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "15",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-8",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "8",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Different signs make a negative product.",
+          "hint": "Find 5 x 3 first, then decide the sign.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-04_pending_teacher_review"
+        },
+        {
+          "code": "L2-F-S3-03",
+          "skill_code": "S3",
+          "difficulty": "foundational",
+          "presentation_type": "figure",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Compute (-2) x (-5).",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-10",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "10",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-7",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "7",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Same signs -> positive product.",
+          "hint": "Both factors are negative.",
+          "image_asset": "exercise/lesson-2/L2-F-S3-03.png",
+          "image_alt": "Compute (-2) x (-5).",
+          "source_figure_reference": "[insert figure: L2-F-S3-03]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    }
+  ]
+}

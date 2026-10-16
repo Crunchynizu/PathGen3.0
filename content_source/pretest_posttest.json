@@ -216,7 +216,7 @@
       },
       {
         "code": "PP-06",
-        "skill_code": "S3",
+        "skill_code": "S7",
         "difficulty": "standard",
         "presentation_type": "text",
         "cognitive_level": "apply",
@@ -667,7 +667,7 @@
       },
       {
         "code": "PP-17",
-        "skill_code": "S3",
+        "skill_code": "S7",
         "difficulty": "standard",
         "presentation_type": "text",
         "cognitive_level": "apply",
@@ -995,7 +995,7 @@
       },
       {
         "code": "PP-25",
-        "skill_code": "S3",
+        "skill_code": "S7",
         "difficulty": "standard",
         "presentation_type": "text",
         "cognitive_level": "apply",
@@ -1200,7 +1200,7 @@
       },
       {
         "code": "PP-30",
-        "skill_code": "S3",
+        "skill_code": "S7",
         "difficulty": "standard",
         "presentation_type": "text",
         "cognitive_level": "apply",

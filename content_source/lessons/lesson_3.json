@@ -3,7 +3,10 @@
   "lesson": {
     "code": "L3",
     "slug": "lesson-3",
-    "lesson_order": 3,
+    "lesson_order": 5,
+    "unit_number": 3,
+    "part_number": null,
+    "unit_title": "Application of integers",
     "title": "Application of integers",
     "summary": "Evaluate expressions using order of operations. Model signed-change situations.",
     "skill_codes": [
@@ -83,7 +86,7 @@
         },
         {
           "type": "common_mistake",
-          "text": "Adding before dividing is wrong. In -3 x (-4) + (-18) / 6, division goes before addition. Correct order gives 14."
+          "text": "Adding before dividing is wrong. In -3 x (-4) + (-18) / 6, division goes before addition. Correct order gives 9."
         },
         {
           "type": "callout",
@@ -91,7 +94,7 @@
           "text": "Ready to practice. Continue to the regular exercise for 6 questions."
         }
       ],
-      "source_text": "Lesson 3 — Application of integers\nSkills: S4 + S6\nObjectives:\n1. Evaluate expressions using order of operations.\n2. Model signed-change situations.\nA story about temperature\nThe temperature at 7:00 AM was -7 degrees C. By noon it rose by 8 degrees.\nThe change is +8. Add: -7 + 8 = 1.\nThe new temperature is 1 degree C.\nOrder of operations\nWhen an expression has more than one operation:\n1. Grouping first: ( ), [ ], { }.\n2. Multiply and divide, left to right.\n3. Add and subtract, left to right.\n[insert figure: lesson3/operation-order-steps]\nWords that mean signs\nRise, gain, deposit, up -> positive.\nFall, loss, withdrawal, down -> negative.\nInterpreting the result\nAlways include the unit. Say if the result is positive or negative. Explain what it means.\n[insert figure: lesson3/temperature-change]\n[insert video: VID-INTEGER-ORDER-OPERATIONS | 0:40-1:25] (optional)\nWorked example\nProblem: Evaluate -3 x (-4) + (-18) / 6 - (-5).\nStep 1: Do multiplication and division first, left to right.\n-3 x (-4) = 12\n(-18) / 6 = -3\nStep 2: Rewrite: 12 + (-3) - (-5).\nStep 3: Subtract negative = add positive: 12 + (-3) + 5.\nStep 4: Add left to right: 12 - 3 = 9, then 9 + 5 = 14.\nAnswer: 14.\nCommon mistake\nAdding before dividing is wrong. In -3 x (-4) + (-18) / 6, division goes before addition. Correct\norder gives 14.\nReady to practice\nContinue to the regular exercise for 6 questions."
+      "source_text": "Lesson 3 — Application of integers\nSkills: S4 + S6\nObjectives:\n1. Evaluate expressions using order of operations.\n2. Model signed-change situations.\nA story about temperature\nThe temperature at 7:00 AM was -7 degrees C. By noon it rose by 8 degrees.\nThe change is +8. Add: -7 + 8 = 1.\nThe new temperature is 1 degree C.\nOrder of operations\nWhen an expression has more than one operation:\n1. Grouping first: ( ), [ ], { }.\n2. Multiply and divide, left to right.\n3. Add and subtract, left to right.\n[insert figure: lesson3/operation-order-steps]\nWords that mean signs\nRise, gain, deposit, up -> positive.\nFall, loss, withdrawal, down -> negative.\nInterpreting the result\nAlways include the unit. Say if the result is positive or negative. Explain what it means.\n[insert figure: lesson3/temperature-change]\n[insert video: VID-INTEGER-ORDER-OPERATIONS | 0:40-1:25] (optional)\nWorked example\nProblem: Evaluate -3 x (-4) + (-18) / 6 - (-5).\nStep 1: Do multiplication and division first, left to right.\n-3 x (-4) = 12\n(-18) / 6 = -3\nStep 2: Rewrite: 12 + (-3) - (-5).\nStep 3: Subtract negative = add positive: 12 + (-3) + 5.\nStep 4: Add left to right: 12 - 3 = 9, then 9 + 5 = 14.\nAnswer: 14.\nCommon mistake\nAdding before dividing is wrong. In -3 x (-4) + (-18) / 6, division goes before addition. Correct\norder gives 9.\nReady to practice\nContinue to the regular exercise for 6 questions."
     }
   },
   "question_sets": [

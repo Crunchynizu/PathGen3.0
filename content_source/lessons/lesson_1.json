@@ -4,6 +4,9 @@
     "code": "L1",
     "slug": "lesson-1",
     "lesson_order": 1,
+    "unit_number": 1,
+    "part_number": null,
+    "unit_title": "Understanding and representing integers",
     "title": "Understanding and representing integers",
     "summary": "Identify integers, opposites, and absolute value. Represent, compare, and order integers on a number line.",
     "skill_codes": [

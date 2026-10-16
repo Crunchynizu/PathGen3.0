@@ -30,3 +30,6 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
+
+# Lucide subset build (scripts/build_lucide_subset.mjs)
+.lucide-build/

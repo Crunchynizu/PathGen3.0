@@ -139,8 +139,8 @@ class IntegrationSeededTestCase(ProviderGuardMixin, Phase6SeededTestCase):
     def complete_through_activity(self, *, pretest_correct=0):
         sessions = {"pretest": self.complete_pretest(correct_total=pretest_correct)}
         regular = []
-        for lesson_order in (1, 2, 3):
-            regular.append(self.complete_regular_lesson(self.lesson(lesson_order)))
+        for lesson in self.lessons():
+            regular.append(self.complete_regular_lesson(lesson))
         sessions["regular"] = regular
         sessions["activity"] = self.complete_activity()
         return sessions

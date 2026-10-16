@@ -1,1 +1,16 @@
-/* error — styles for templates/error/error.html */
+/* error — styles for templates/error/error.html (phone first) */
+body:has(.er-page) { background: var(--color-bg-subtle); }
+.er-page { display: grid; place-items: center; min-height: calc(100dvh - 60px); padding: 24px 16px; }
+.er-card {
+  display: grid; justify-items: center; gap: 10px; width: min(100%, 460px); padding: 28px 22px 26px; text-align: center;
+  border-radius: var(--radius-xl); background: var(--color-surface); border: 2px solid var(--color-border); box-shadow: 0 4px 0 var(--color-border);
+}
+.er-card .back-link, .er-card [data-ui~="back-link"] { position: static; justify-self: center; margin: 10px 0 0; }
+.er-icon {
+  display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%;
+  background: var(--color-primary-subtle); color: var(--color-primary);
+}
+.er-icon svg { width: 30px; height: 30px; }
+.er-code { margin: 4px 0 0; font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-cyan); }
+.er-card h1 { margin: 0; font-size: var(--text-2xl); line-height: var(--leading-tight); letter-spacing: -0.02em; }
+.er-message { margin: 0; max-width: 42ch; font-size: var(--text-sm); line-height: 1.6; color: var(--color-text-secondary); }

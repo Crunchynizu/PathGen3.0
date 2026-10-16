@@ -1,5 +1,4 @@
 {% extends "_base.html" %}
-{% block content_width %}[&_main]:max-w-[760px]{% endblock %}
 {% load static %}
 
 {% block page_css %}
@@ -7,36 +6,60 @@
 {% endblock %}
 {% block title %}Overrides · PathGen{% endblock %}
 {% block shell %}
-<div class="min-h-screen lg:grid lg:grid-cols-[240px_1fr] [background:var(--color-bg-subtle)]" data-ui="app-frame">
-  <aside class="fixed inset-y-0 left-0 hidden w-60 border-r lg:block [background:var(--color-surface)] [border-color:var(--color-border)]" data-ui="desktop-sidebar" aria-label="Primary navigation">{% include "components/sidebar.html" %}</aside>
+<div data-ui="app-frame">
+  <aside aria-label="Primary navigation" data-ui="desktop-sidebar">{% include "components/sidebar.html" %}</aside>
   {% include "components/hamburger_menu.html" %}
-  <div class="min-w-0 lg:col-start-2" data-drawer-background>
-    <main id="main-content" class="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
-      <header class="mb-8 border-b pb-6 [border-color:var(--color-border)]"><p class="mb-2 text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">Admin</p><h1 class="text-3xl font-bold [color:var(--color-text)]">Overrides</h1><p class="mt-2 [color:var(--color-text-secondary)]">This is the only place to change Study Access and Post-test Access.</p></header>
-      {% if messages %}<div class="mb-5 space-y-3" aria-live="polite">{% for message in messages %}<p class="rounded-xl border p-4 [background:var(--color-success-subtle)] [border-color:var(--color-success)]" role="status">{{ message }}</p>{% endfor %}</div>{% endif %}
-      {% if conflict %}<p class="mb-5 rounded-xl border p-4 [background:var(--color-danger-subtle)] [border-color:var(--color-danger)]" role="alert">Someone else changed this. Please review and try again.</p>{% endif %}
-      {% if override_form.errors and not conflict %}<div class="mb-5 rounded-xl border p-4 [background:var(--color-danger-subtle)] [border-color:var(--color-danger)]" role="alert"><strong>Please correct the setting form.</strong>{{ override_form.non_field_errors }}{% for field in override_form %}{% for error in field.errors %}<p>{{ field.label }}: {{ error }}</p>{% endfor %}{% endfor %}</div>{% endif %}
-      <div class="grid gap-5 md:grid-cols-2">
-        <section class="rounded-2xl border p-5 sm:p-6 [background:var(--color-surface)] [border-color:var(--color-border)] [box-shadow:var(--shadow-sm)]" aria-labelledby="study-access-title">
+  <div data-drawer-background>
+    <main id="main-content" class="content st-page" data-width="narrow" data-ui="override-page">
+      <header class="st-header">
+        <div>
+          <p class="ui-eyebrow"><i data-lucide="shield-check" aria-hidden="true"></i>Admin</p>
+          <h1>Overrides</h1>
+          <p class="st-lead">This is the only place to change Study Access and Post-test Access.</p>
+        </div>
+      </header>
+      {% if messages %}<div class="ui-messages" aria-live="polite">{% for message in messages %}<p class="ui-alert" data-tone="success" role="status"><i data-lucide="circle-check" aria-hidden="true"></i><span>{{ message }}</span></p>{% endfor %}</div>{% endif %}
+      {% if conflict %}<p class="ui-alert" data-tone="danger" role="alert"><i data-lucide="alert-triangle" aria-hidden="true"></i><span>Someone else changed this. Please review and try again.</span></p>{% endif %}
+      {% if override_form.errors and not conflict %}<div class="ui-alert" data-tone="danger" role="alert"><i data-lucide="alert-triangle" aria-hidden="true"></i><div><strong>Please correct the setting form.</strong>{{ override_form.non_field_errors }}{% for field in override_form %}{% for error in field.errors %}<p>{{ field.label }}: {{ error }}</p>{% endfor %}{% endfor %}</div></div>{% endif %}
+      <div class="st-grid st-grid-2">
+        <section class="st-panel ov-card" data-state="{% if setting.study_access_enabled %}open{% else %}closed{% endif %}" aria-labelledby="study-access-title">
           <form method="post" data-access-form>{% csrf_token %}<input type="hidden" name="expected_revision" value="{{ revision }}"><input type="hidden" name="setting_name" value="study_access"><input type="hidden" name="enabled" value="{% if setting.study_access_enabled %}true{% else %}false{% endif %}" data-switch-value>
-            <p class="text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">Global student policy</p><h2 id="study-access-title" class="mt-2 text-xl font-bold">Study Access</h2><p class="mt-2 leading-7 [color:var(--color-text-secondary)]">Closing access affects students only. Class membership is never checked.</p>
-            <div class="mt-5 flex flex-wrap items-center justify-between gap-3"><span id="study-access-label" class="font-semibold">Study Access</span><button type="button" role="switch" aria-labelledby="study-access-label" aria-checked="{% if setting.study_access_enabled %}true{% else %}false{% endif %}" data-access-switch class="inline-flex min-h-11 min-w-28 items-center justify-center rounded-full border px-4 py-2 font-semibold transition-transform active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [outline-color:var(--color-focus-ring)] [border-color:var(--color-border-strong)] {% if setting.study_access_enabled %}[background:var(--color-primary-subtle)] [color:var(--color-primary-hover)]{% else %}[background:var(--color-bg-subtle)] [color:var(--color-text-secondary)]{% endif %}"><span data-switch-label>{% if setting.study_access_enabled %}OPEN{% else %}CLOSED{% endif %}</span></button></div>
-            <label class="mt-5 block font-semibold" for="study-reason">Reason for change</label><textarea id="study-reason" name="reason" required minlength="3" maxlength="1000" rows="3" class="mt-2 w-full rounded-xl border p-3 [background:var(--color-surface)] [border-color:var(--color-border-strong)]" placeholder="Why is this change needed?"></textarea>
-            <button type="submit" class="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 font-semibold transition-transform active:scale-[0.98] [background:var(--color-primary)] [color:var(--color-on-primary)] hover:[background:var(--color-primary-hover)]">Save Study Access</button>
+            <div class="st-panel-body">
+              <div class="ov-head">
+                <span class="ov-icon" aria-hidden="true"><i data-lucide="book-open"></i></span>
+                <div>
+                  <p class="st-kicker">Global student policy</p>
+                  <h2 id="study-access-title">Study Access</h2>
+                </div>
+              </div>
+              <p>Closing access affects students only. Class membership is never checked.</p>
+              <div class="ov-switch-row"><span id="study-access-label">Study Access</span><button type="button" role="switch" aria-labelledby="study-access-label" aria-checked="{% if setting.study_access_enabled %}true{% else %}false{% endif %}" data-access-switch class="st-switch"><span data-switch-label>{% if setting.study_access_enabled %}OPEN{% else %}CLOSED{% endif %}</span></button></div>
+              <div class="st-field"><label for="study-reason">Reason for change</label><textarea id="study-reason" name="reason" required minlength="3" maxlength="1000" rows="3" placeholder="Why is this change needed?"></textarea></div>
+            </div>
+            <div class="st-panel-foot"><button type="submit" class="ui-btn ui-btn-primary ui-btn-sm"><i data-lucide="save" aria-hidden="true"></i>Save Study Access</button></div>
           </form>
         </section>
-        <section class="rounded-2xl border p-5 sm:p-6 [background:var(--color-surface)] [border-color:var(--color-border)] [box-shadow:var(--shadow-sm)]" aria-labelledby="posttest-access-title">
+        <section class="st-panel ov-card" data-state="{% if setting.posttest_access_enabled %}open{% else %}closed{% endif %}" aria-labelledby="posttest-access-title">
           <form method="post" data-access-form>{% csrf_token %}<input type="hidden" name="expected_revision" value="{{ revision }}"><input type="hidden" name="setting_name" value="posttest_access"><input type="hidden" name="enabled" value="{% if setting.posttest_access_enabled %}true{% else %}false{% endif %}" data-switch-value>
-            <p class="text-sm font-semibold uppercase tracking-wider [color:var(--color-text-cyan)]">Global assessment policy</p><h2 id="posttest-access-title" class="mt-2 text-xl font-bold">Post-test Access</h2><p class="mt-2 leading-7 [color:var(--color-text-secondary)]">Opening access does not make a student eligible; the learning path must also be post-test ready.</p>
-            <div class="mt-5 flex flex-wrap items-center justify-between gap-3"><span id="posttest-access-label" class="font-semibold">Post-test Access</span><button type="button" role="switch" aria-labelledby="posttest-access-label" aria-checked="{% if setting.posttest_access_enabled %}true{% else %}false{% endif %}" data-access-switch class="inline-flex min-h-11 min-w-28 items-center justify-center rounded-full border px-4 py-2 font-semibold transition-transform active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [outline-color:var(--color-focus-ring)] [border-color:var(--color-border-strong)] {% if setting.posttest_access_enabled %}[background:var(--color-primary-subtle)] [color:var(--color-primary-hover)]{% else %}[background:var(--color-bg-subtle)] [color:var(--color-text-secondary)]{% endif %}"><span data-switch-label>{% if setting.posttest_access_enabled %}OPEN{% else %}CLOSED{% endif %}</span></button></div>
-            <label class="mt-5 block font-semibold" for="posttest-reason">Reason for change</label><textarea id="posttest-reason" name="reason" required minlength="3" maxlength="1000" rows="3" class="mt-2 w-full rounded-xl border p-3 [background:var(--color-surface)] [border-color:var(--color-border-strong)]" placeholder="Why is this change needed?"></textarea>
-            <button type="submit" class="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 font-semibold transition-transform active:scale-[0.98] [background:var(--color-primary)] [color:var(--color-on-primary)] hover:[background:var(--color-primary-hover)]">Save Post-test Access</button>
+            <div class="st-panel-body">
+              <div class="ov-head">
+                <span class="ov-icon" aria-hidden="true"><i data-lucide="flag"></i></span>
+                <div>
+                  <p class="st-kicker">Global assessment policy</p>
+                  <h2 id="posttest-access-title">Post-test Access</h2>
+                </div>
+              </div>
+              <p>Opening access does not make a student eligible; the learning path must also be post-test ready.</p>
+              <div class="ov-switch-row"><span id="posttest-access-label">Post-test Access</span><button type="button" role="switch" aria-labelledby="posttest-access-label" aria-checked="{% if setting.posttest_access_enabled %}true{% else %}false{% endif %}" data-access-switch class="st-switch"><span data-switch-label>{% if setting.posttest_access_enabled %}OPEN{% else %}CLOSED{% endif %}</span></button></div>
+              <div class="st-field"><label for="posttest-reason">Reason for change</label><textarea id="posttest-reason" name="reason" required minlength="3" maxlength="1000" rows="3" placeholder="Why is this change needed?"></textarea></div>
+            </div>
+            <div class="st-panel-foot"><button type="submit" class="ui-btn ui-btn-primary ui-btn-sm"><i data-lucide="save" aria-hidden="true"></i>Save Post-test Access</button></div>
           </form>
         </section>
       </div>
-      <p class="mt-6 text-sm [color:var(--color-text-secondary)]" data-ui="revision-note">Revision {{ revision }}{% if setting %} · Last changed {{ setting.changed_at }} by {{ setting.changed_by.get_full_name|default:setting.changed_by.username }}{% else %} · No override has been recorded yet{% endif %}</p>
+      <p class="st-note ov-revision" data-ui="revision-note"><i data-lucide="history" aria-hidden="true"></i>Revision {{ revision }}{% if setting %} · Last changed {{ setting.changed_at }} by {{ setting.changed_by.get_full_name|default:setting.changed_by.username }}{% else %} · No override has been recorded yet{% endif %}</p>
+      <footer class="st-footer"><p>PathGen · Grade 7 Mathematics</p></footer>
     </main>
-    <footer class="px-4 py-5 text-center text-sm [color:var(--color-text-muted)]"><p>PathGen · Grade 7 Mathematics</p></footer>
   </div>
 </div>
 {% endblock %}

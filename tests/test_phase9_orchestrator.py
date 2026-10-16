@@ -37,10 +37,8 @@ class OrchestratorTests(Phase9SeededTestCase):
         )
         self._complete_issued(pretest)
 
-        regular_sessions = [
-            self._complete_regular_lesson(self.lesson(order))
-            for order in (1, 2, 3)
-        ]
+        lessons = self.lessons()
+        regular_sessions = [self._complete_regular_lesson(lesson) for lesson in lessons]
 
         activity = issue_session(
             actor=self.student,
@@ -64,8 +62,9 @@ class OrchestratorTests(Phase9SeededTestCase):
         posttest.refresh_from_db()
         self.assertEqual(self.path.status, StudentPath.Status.COMPLETED)
         self.assertEqual(posttest.status, Session.Status.COMPLETED)
-        self.assertEqual(Decision.objects.count(), 4)
-        self.assertEqual(SessionFeedback.objects.count(), 4)
+        # one per lesson record (Lesson 2 has three parts) plus the activity
+        self.assertEqual(Decision.objects.count(), len(lessons) + 1)
+        self.assertEqual(SessionFeedback.objects.count(), len(lessons) + 1)
         self.assertEqual(
             Decision.objects.filter(session__in=[pretest, posttest]).count(),
             0,
@@ -76,7 +75,7 @@ class OrchestratorTests(Phase9SeededTestCase):
             ).count(),
             0,
         )
-        self.assertEqual(len(regular_sessions), 3)
+        self.assertEqual(len(regular_sessions), 5)
 
     def test_regular_passes_progress_to_next_lesson(self):
         session = self.exercise_session(Session.SessionType.REGULAR)

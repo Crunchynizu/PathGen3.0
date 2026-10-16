@@ -215,13 +215,17 @@ def teacher_dashboard(request):
 @role_required(User.Role.STUDENT)
 @require_GET
 def student_dashboard(request):
+    data = student_dashboard_data(request.user)
+    steps = data.get("path_steps") or []
     return render(
         request,
         "pages/student/student_dashboard.html",
         {
             "student_name": display_name(request.user),
             "membership": current_membership_for_student(request.user),
-            **student_dashboard_data(request.user),
+            "stops_done": sum(1 for step in steps if step.get("state") == "completed"),
+            "stops_total": len(steps),
+            **data,
         },
     )
 

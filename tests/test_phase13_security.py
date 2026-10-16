@@ -247,8 +247,11 @@ class Phase13SecurityTests(TestCase):
 
     def test_15_prepost_answer_key_is_not_in_student_facing_response(self):
         self.client.force_login(self.student_b)
+        # Every item is answered, so the view no longer renders an empty question
+        # form; it redirects. Whatever page the student lands on must not leak keys.
         response = self.client.get(
-            reverse("learning:assessment_session", args=[self.other_session.pk])
+            reverse("learning:assessment_session", args=[self.other_session.pk]),
+            follow=True,
         )
         content = response.content.decode()
         self.assertEqual(response.status_code, 200)
