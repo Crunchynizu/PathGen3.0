@@ -44,7 +44,6 @@ EXPECTED_COUNTS = {
     Session.SessionType.POSTTEST: 30,
     Session.SessionType.REGULAR: 6,
     Session.SessionType.ADDITIONAL: 6,
-    Session.SessionType.ACTIVITY: 10,
 }
 
 REQUIRED_PATH_STATUS = {
@@ -145,8 +144,11 @@ def _question_rows(*, actor, path, session_type, lesson, weak_skills):
     rows = list(
         question_set.items.select_related("question").order_by("display_order")
     )
-    expected = EXPECTED_COUNTS[session_type]
-    if len(rows) != expected:
+    # The activity covers every skill, so its size follows the curriculum.
+    expected = EXPECTED_COUNTS.get(session_type)
+    if expected is None and not rows:
+        raise QuestionSetInvalid(f"Question set {question_set.code} has no items.")
+    if expected is not None and len(rows) != expected:
         raise QuestionSetInvalid(
             f"Question set {question_set.code} must contain exactly {expected} items."
         )

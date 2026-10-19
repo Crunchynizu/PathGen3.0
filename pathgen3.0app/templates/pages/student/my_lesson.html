@@ -96,10 +96,10 @@
               </div>
               {% if activity_state == "completed" %}<span class="ui-chip" data-tone="done" data-ui="status-badge"><i data-lucide="check" aria-hidden="true"></i>Done</span>{% elif activity_state == "current" %}<span class="ui-chip" data-tone="current" data-ui="status-badge"><i data-lucide="map-pin" aria-hidden="true"></i>You are here</span>{% else %}<span class="ui-chip" data-tone="locked" data-ui="status-badge"><i data-lucide="lock-keyhole" aria-hidden="true"></i>Locked</span>{% endif %}
             </div>
-            <p class="ml-desc">10 questions that mix all seven skills together.</p>
+            <p class="ml-desc">A mixed review with questions from every skill.</p>
             {% if activity_session %}<a class="ui-btn ui-btn-secondary ui-btn-block" data-ui="secondary-link" href="{% url 'learning:assessment_result' activity_session.id %}"><i data-lucide="eye" aria-hidden="true"></i>View activity result</a>
             {% elif activity_state == "current" %}<a class="ui-btn ui-btn-primary ui-btn-block" data-ui="primary-button" href="{% url 'learning:activity_overview' %}">Open activity<i data-lucide="arrow-right" aria-hidden="true"></i></a>
-            {% elif activity_state == "locked" %}<p class="ml-locked" data-ui="locked-copy"><i data-lucide="lock-keyhole" aria-hidden="true"></i>Complete Lesson 3 to unlock the activity.</p>{% endif %}
+            {% elif activity_state == "locked" %}<p class="ml-locked" data-ui="locked-copy"><i data-lucide="lock-keyhole" aria-hidden="true"></i>Finish every lesson to unlock the activity.</p>{% endif %}
           </div>
         </li>
 

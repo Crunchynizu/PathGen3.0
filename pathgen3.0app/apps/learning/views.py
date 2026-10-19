@@ -15,7 +15,7 @@ from apps.accounts.models import User
 from apps.accounts.permissions import role_required
 from apps.adaptive.models import Decision
 from apps.core.models import SystemSetting
-from apps.curriculum.models import Lesson, Video
+from apps.curriculum.models import Lesson, QuestionSet, QuestionSetItem, Video
 from apps.curriculum.units import group_by_unit, unit_state
 from apps.learning.forms import ResponseForm
 from apps.learning.models import Response, Session, SessionItem, StudentPath
@@ -174,9 +174,14 @@ def _overview_context(*, request, session_type, lesson=None, locked_reason=None)
         "pretest": 30,
         "regular": 6,
         "additional": 6,
-        "activity": 10,
         "posttest": 30,
     }.get(session_type, "3 per assigned skill")
+    if session_type == Session.SessionType.ACTIVITY:
+        # one item or more per skill, so the size follows the curriculum
+        expected = QuestionSetItem.objects.filter(
+            question_set__set_type=QuestionSet.SetType.ACTIVITY,
+            question_set__is_published=True,
+        ).count()
     return {
         "mode": "overview",
         "assessment_title": ASSESSMENT_TITLES[session_type],

@@ -41,7 +41,9 @@
       "p_l0": "0.300000",
       "p_t": "0.090000",
       "p_g": "0.100000",
-      "p_s": "0.090000"
+      "p_s": "0.090000",
+      "prerequisites": [],
+      "junyi_exercises": []
     },
     {
       "code": "S2",
@@ -50,7 +52,12 @@
       "p_l0": "0.300000",
       "p_t": "0.090000",
       "p_g": "0.100000",
-      "p_s": "0.090000"
+      "p_s": "0.090000",
+      "prerequisites": [
+        "S1",
+        "S5"
+      ],
+      "junyi_exercises": []
     },
     {
       "code": "S3",
@@ -59,7 +66,11 @@
       "p_l0": "0.300000",
       "p_t": "0.090000",
       "p_g": "0.100000",
-      "p_s": "0.090000"
+      "p_s": "0.090000",
+      "prerequisites": [
+        "S2"
+      ],
+      "junyi_exercises": []
     },
     {
       "code": "S4",
@@ -68,7 +79,13 @@
       "p_l0": "0.300000",
       "p_t": "0.090000",
       "p_g": "0.100000",
-      "p_s": "0.090000"
+      "p_s": "0.090000",
+      "prerequisites": [
+        "S2",
+        "S3",
+        "S7"
+      ],
+      "junyi_exercises": []
     },
     {
       "code": "S5",
@@ -77,7 +94,11 @@
       "p_l0": "0.300000",
       "p_t": "0.090000",
       "p_g": "0.100000",
-      "p_s": "0.090000"
+      "p_s": "0.090000",
+      "prerequisites": [
+        "S1"
+      ],
+      "junyi_exercises": []
     },
     {
       "code": "S6",
@@ -86,7 +107,11 @@
       "p_l0": "0.300000",
       "p_t": "0.090000",
       "p_g": "0.100000",
-      "p_s": "0.090000"
+      "p_s": "0.090000",
+      "prerequisites": [
+        "S2"
+      ],
+      "junyi_exercises": []
     },
     {
       "code": "S7",
@@ -95,9 +120,17 @@
       "p_l0": "0.300000",
       "p_t": "0.090000",
       "p_g": "0.100000",
-      "p_s": "0.090000"
+      "p_s": "0.090000",
+      "prerequisites": [
+        "S3"
+      ],
+      "junyi_exercises": []
     }
   ],
+  "skill_metadata": {
+    "prerequisites": "DRAFT 2026-10-19 from the lesson order, pending group review; may be replaced by Junyi prerequisite links once exercises are mapped.",
+    "junyi_exercises": "Junyi 2015 exercise names (junyi_Exercise_table.csv name column) mapped to this skill; empty until skill_map.csv is agreed."
+  },
   "lesson_2_batches": {
     "decided": "2026-10-03",
     "structure": "Lesson 2 is taught in three parts, each its own lesson record with one skill: L2-1 adding and subtracting (S2), L2-2 multiplying (S3), L2-3 dividing (S7). Students still see Lessons 1-3.",
