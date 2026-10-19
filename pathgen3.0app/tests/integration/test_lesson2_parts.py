@@ -104,7 +104,7 @@ class Lesson2PartTests(IntegrationSeededTestCase):
         self.finalize_feedback(session)
 
         self.path.refresh_from_db()
-        self.assertEqual(self.path.current_lesson.code, "L3")
+        self.assertEqual(self.path.current_lesson.code, "L3-1")
         self.assertIn(
             "continue to the next lesson",
             SessionFeedback.objects.get(session=session).feedback_text,
@@ -119,8 +119,10 @@ class Lesson2PartTests(IntegrationSeededTestCase):
         self.client.force_login(self.student)
 
         my_lesson = self.client.get(reverse("account:my_lesson"))
+        self.assertContains(my_lesson, "Lesson 1 · 2 parts")
         self.assertContains(my_lesson, "Lesson 2 · 3 parts")
-        self.assertContains(my_lesson, 'data-ui="lesson-part"', count=3)
+        self.assertContains(my_lesson, "Lesson 3 · 2 parts")
+        self.assertContains(my_lesson, 'data-ui="lesson-part"', count=7)
         self.assertContains(my_lesson, 'data-ui="lesson-step"', count=6)
 
         dashboard = self.client.get(reverse("account:student_dashboard"))

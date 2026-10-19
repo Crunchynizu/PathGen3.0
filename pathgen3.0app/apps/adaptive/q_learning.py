@@ -14,10 +14,15 @@ ACTIONS = {
     "foundational_exercise",
 }
 Q_TABLE_PATH = Path(__file__).with_name("q_table.json")
+BANDS = ("np", "dev", "strong")
 
 
 def state_key(weakest_band, average_band, pass_result):
     return f"({weakest_band}, {average_band}, {pass_result})"
+
+
+# One skill per lesson part, so weakest = average: np/dev/strong x passed/failed.
+PART_STATE_KEYS = frozenset(state_key(band, band, result) for band in BANDS for result in ("p", "f"))
 
 
 def _validate_q_values(data):
@@ -27,8 +32,8 @@ def _validate_q_values(data):
     if not isinstance(meta, dict) or meta.get("policy_version") != POLICY_VERSION:
         raise ValueError("The Q-table policy version is invalid.")
     q_values = data.get("q_values")
-    if not isinstance(q_values, dict) or len(q_values) < 24:
-        raise ValueError("The Q-table must contain at least 24 rows.")
+    if not isinstance(q_values, dict) or not PART_STATE_KEYS <= set(q_values):
+        raise ValueError("The Q-table must contain the six one-skill part rows.")
     for row in q_values.values():
         if not isinstance(row, dict) or set(row) != ACTIONS:
             raise ValueError("Every Q-table row must contain exactly three actions.")

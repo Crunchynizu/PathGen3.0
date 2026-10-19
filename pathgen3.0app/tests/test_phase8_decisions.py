@@ -66,7 +66,7 @@ class DecisionPersistenceTests(Phase6SeededTestCase):
             .select_related("question")
             .order_by("display_order")
         )
-        self.assertEqual(len(questions), 3)
+        self.assertEqual(len(questions), 6)  # a lesson part's exercise: 6 questions on one skill
         for attempt in range(1, attempts + 1):
             session = Session.objects.create(
                 student=self.student,

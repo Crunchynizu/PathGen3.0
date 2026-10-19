@@ -243,6 +243,24 @@ Students use phones, often on mobile data, so this pass cut what each page downl
 
 ---
 
+## 10. Instructor changes: dynamic curriculum and one skill per part (2026-10-19)
+
+The instructor asked for a dynamic curriculum, one lesson part per skill, and BKT numbers from the Junyi 2015 dataset instead of assumed ones, with Q-learning staying as the decision agent.
+
+- **Curriculum from JSON rules.** `apps/curriculum/source.py` no longer requires skills S1-S7, five lessons or fixed question totals. It checks rules: unique skills with valid BKT numbers, prerequisites without loops, lessons numbered 1..N, one regular and one additional exercise per lesson, one foundational set per skill, the activity covers every skill, video references and pauses are valid, and manifest counts match. The pre/post-test stays fixed. `tests/test_dynamic_curriculum.py` adds a whole new lesson and skill as JSON only and it validates.
+- **New skill fields** in `manifest.json`: `prerequisites` (a draft from the lesson order) and `junyi_exercises` (empty until the Junyi mapping is agreed).
+- **Lessons 1 and 3 split into parts:** 1.1 (S1), 1.2 (S5), 3.1 (S4), 3.2 (S6). Students still see Lessons 1-3. 24 new draft questions and 4 draft lesson blocks; see `LESSONS_1_3_PARTS_REVIEW.md`.
+- **Q-learning v4** (`../q-learning-test-v4/`): one-skill rows only (6 rows), separate BKT numbers per skill from `skill_params.json`. With today's numbers it reproduces v3's Lesson 2 rows exactly. Installed as `apps/adaptive/q_table.json`; the loader now requires exactly the six part rows. A near-miss state (3 of 6 as its own result) was tested and changed no decision, so it was not added.
+
+**To do:**
+- [ ] Rebuild the RAG index: `.venv\Scripts\python.exe manage.py build_retrieval_index` (needs the OpenAI key in `.env`). Until then feedback works without lesson retrieval, and `test_phase13_queries` fails on the stale index.
+- [ ] Teacher review of the drafts in `LESSONS_1_3_PARTS_REVIEW.md`.
+- [ ] Group review of the draft skill prerequisites.
+- [ ] When the Junyi fit is ready: replace `../q-learning-test-v4/skill_params.json`, run `python run_all.py`, copy `output/q_table.json` to `apps/adaptive/`, and put the same numbers into `content_source/manifest.json`.
+- [ ] Deploy needs a fresh database: lesson records and exercise sets changed.
+
+---
+
 ## Running it locally
 
 From `pathgen3.0app/`, using the project's `.venv` (plain `python` has no Django):

@@ -87,10 +87,18 @@ class ResponseServiceTests(Phase6SeededTestCase):
         self.assertEqual(self.path.status, StudentPath.Status.LEARNING)
         self.assertEqual(self.path.current_lesson.lesson_order, 1)
 
+        # passing the last lesson part's exercise opens the activity
         lesson3 = self.lessons()[-1]
         self.set_path(status=StudentPath.Status.LEARNING, stage=StudentPath.Stage.REGULAR, lesson=lesson3)
-        regular = self._session(Session.SessionType.REGULAR, lesson=lesson3, limit=1)
-        self._answer(regular)
+        regular = self._session(Session.SessionType.REGULAR, lesson=lesson3, limit=6)
+        for item in regular.items.order_by("display_order"):
+            submit_response(
+                actor=self.student,
+                session_id=regular.pk,
+                session_item_id=item.pk,
+                selected_choice_id=item.question.choices.get(is_correct=True).pk,
+                hint_used=False,
+            )
         self.path.refresh_from_db()
         self.assertEqual(self.path.status, StudentPath.Status.ACTIVITY_READY)
 

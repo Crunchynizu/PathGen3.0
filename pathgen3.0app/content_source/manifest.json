@@ -3,19 +3,19 @@
   "curriculum_version": "PATHGEN-CURRICULUM-V2",
   "scoring_policy": {
     "code": "SCORING-V3",
-    "description": "A skill passes with at least two-thirds of its questions correct: 2 of 3 in a two-skill exercise (Lessons 1 and 3) and in foundational work, 4 of 6 in a one-skill Lesson 2 batch exercise.",
+    "description": "A skill passes with at least two-thirds of its questions correct: 4 of 6 in a lesson part's exercise, 2 of 3 in foundational work.",
     "correct_required": {
       "3": 2,
       "6": 4
     }
   },
   "counts": {
-    "lessons": 5,
+    "lessons": 7,
     "lesson_units": 3,
     "skills": 7,
-    "questions_total": 121,
-    "regular": 30,
-    "additional": 30,
+    "questions_total": 145,
+    "regular": 42,
+    "additional": 42,
     "foundational": 21,
     "activity": 10,
     "prepost": 30
@@ -175,6 +175,43 @@
       "L2-A-S7-04",
       "L2-F-S7-01",
       "L2-F-S7-02"
+    ]
+  },
+  "lesson_parts": {
+    "decided": "2026-10-16",
+    "structure": "Every lesson is taught in one-skill parts (instructor decision 2026-10-16): L1-1 integers, opposites and absolute value (S1), L1-2 comparing and ordering (S5), L2-1/L2-2/L2-3 as before, L3-1 order of operations (S4), L3-2 signed-change situations (S6). Students still see Lessons 1-3.",
+    "content_split": "Lesson 1 and 3 blocks were divided by skill without rewording; L1-1 repeats the one-sentence number-line orientation that opposites and absolute value rely on.",
+    "draft_items_pending_review": [
+      "L1-R-S1-04",
+      "L1-R-S1-05",
+      "L1-R-S1-06",
+      "L1-A-S1-04",
+      "L1-A-S1-05",
+      "L1-A-S1-06",
+      "L1-R-S5-04",
+      "L1-R-S5-05",
+      "L1-R-S5-06",
+      "L1-A-S5-04",
+      "L1-A-S5-05",
+      "L1-A-S5-06",
+      "L3-R-S4-04",
+      "L3-R-S4-05",
+      "L3-R-S4-06",
+      "L3-A-S4-04",
+      "L3-A-S4-05",
+      "L3-A-S4-06",
+      "L3-R-S6-04",
+      "L3-R-S6-05",
+      "L3-R-S6-06",
+      "L3-A-S6-04",
+      "L3-A-S6-05",
+      "L3-A-S6-06"
+    ],
+    "draft_blocks_pending_review": [
+      "L1-1 common mistake (|-5| = -5)",
+      "L1-2 worked example (ordering 4, -6, 0, -1)",
+      "L3-2 worked example (diver at -12 m rises 5 m)",
+      "L3-2 common mistake (a fall of 6 written as +6)"
     ]
   },
   "prepost_rewrites": [

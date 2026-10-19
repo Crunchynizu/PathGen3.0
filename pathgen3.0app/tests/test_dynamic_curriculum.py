@@ -62,11 +62,11 @@ class DynamicCurriculumTests(SimpleTestCase):
 
     def test_current_curriculum_is_valid(self):
         summary = self.copy.validate()
-        self.assertEqual((summary["skills"], summary["lessons"], summary["questions_total"]), (7, 5, 121))
+        self.assertEqual((summary["skills"], summary["lessons"], summary["questions_total"]), (7, 7, 145))
 
     def test_new_lesson_with_new_skill_needs_only_json(self):
         manifest = self.copy.load("manifest.json")
-        template = self.copy.load("lessons/lesson_3.json")
+        template = self.copy.load("lessons/lesson_3_2.json")
         question = template["question_sets"][0]["questions"][0]
 
         manifest["skills"].append({
@@ -76,7 +76,7 @@ class DynamicCurriculumTests(SimpleTestCase):
         })
         blooms = ["LOTS"] * 4 + ["HOTS"] * 2
         lesson = copy.deepcopy(template)
-        lesson["lesson"].update(code="L4", slug="integer-exponents", lesson_order=6, unit_number=4,
+        lesson["lesson"].update(code="L4", slug="integer-exponents", lesson_order=8, unit_number=4,
                                 part_number=None, unit_title="Integer exponents", title="Integer exponents",
                                 skill_codes=["S8"])
         lesson["question_sets"] = [
@@ -95,12 +95,12 @@ class DynamicCurriculumTests(SimpleTestCase):
         self.copy.save("activity.json", activity)
 
         counts = manifest["counts"]
-        counts.update(lessons=6, lesson_units=4, skills=8, regular=36, additional=36, foundational=24,
+        counts.update(lessons=8, lesson_units=4, skills=8, regular=48, additional=48, foundational=24,
                       activity=11, questions_total=counts["questions_total"] + 16)
         self.copy.save("manifest.json", manifest)
 
         summary = self.copy.validate()
-        self.assertEqual((summary["skills"], summary["lessons"], summary["lesson_units"]), (8, 6, 4))
+        self.assertEqual((summary["skills"], summary["lessons"], summary["lesson_units"]), (8, 8, 4))
         self.assertEqual(summary["activity"], 11)
 
     def test_prerequisite_loop_is_refused(self):
@@ -130,10 +130,10 @@ class DynamicCurriculumTests(SimpleTestCase):
         self.assertRefused("S1 p_g must be a probability between 0 and 1")
 
     def test_gap_in_lesson_order_is_refused(self):
-        lesson = self.copy.load("lessons/lesson_3.json")
-        lesson["lesson"]["lesson_order"] = 7
-        self.copy.save("lessons/lesson_3.json", lesson)
-        self.assertRefused("Lesson order must run 1 through 5 with no gaps")
+        lesson = self.copy.load("lessons/lesson_3_2.json")
+        lesson["lesson"]["lesson_order"] = 9
+        self.copy.save("lessons/lesson_3_2.json", lesson)
+        self.assertRefused("Lesson order must run 1 through 7 with no gaps")
 
     def test_unknown_video_is_refused(self):
         activity = self.copy.load("activity.json")
@@ -158,13 +158,13 @@ class DynamicCurriculumTests(SimpleTestCase):
         self.assertRefused("The activity must cover every skill; missing ['S6']")
 
     def test_skill_without_foundational_set_is_refused(self):
-        lesson = self.copy.load("lessons/lesson_3.json")
+        lesson = self.copy.load("lessons/lesson_3_2.json")
         lesson["question_sets"] = [s for s in lesson["question_sets"] if s.get("skill_code") != "S6"]
-        self.copy.save("lessons/lesson_3.json", lesson)
+        self.copy.save("lessons/lesson_3_2.json", lesson)
         self.assertRefused("Every skill needs exactly one foundational set")
 
     def test_manifest_counts_must_match_content(self):
         manifest = self.copy.load("manifest.json")
         manifest["counts"]["regular"] = 99
         self.copy.save("manifest.json", manifest)
-        self.assertRefused("manifest.json counts.regular must be 30")
+        self.assertRefused("manifest.json counts.regular must be 42")

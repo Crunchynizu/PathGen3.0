@@ -33,7 +33,7 @@ ADDITIONAL_ACTIONS = [
     Decision.Action.FOUNDATIONAL_EXERCISE,
 ]
 # SCORING-V3: a skill passes with at least two-thirds of its questions correct. A skill has
-# 3 questions in a two-skill exercise and in foundational work, 6 in a one-skill Lesson 2 part.
+# 6 questions in a lesson part's exercise and 3 in foundational work.
 SCORED_SKILL_TOTALS = {3, 6}
 
 
@@ -167,11 +167,11 @@ def _ordered_lesson_skills(session):
 
 
 def _state_for_session(session, scores):
-    # Lessons 1 and 3 have two skills; each Lesson 2 part has one, which gives keys such as
-    # "(dev, dev, p)" (weakest = average) in the same Q-table.
+    # Every lesson part teaches one skill, which gives keys such as "(dev, dev, p)"
+    # (weakest = average); the Q-table holds exactly these six rows.
     lesson_skills = _ordered_lesson_skills(session)
-    if len(lesson_skills) not in (1, 2):
-        raise ValueError("Adaptive exercise decisions require one or two lesson skills.")
+    if len(lesson_skills) != 1:
+        raise ValueError("Adaptive exercise decisions require exactly one lesson skill.")
 
     masteries = {
         mastery.skill_id: mastery

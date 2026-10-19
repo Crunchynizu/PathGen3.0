@@ -62,7 +62,7 @@ class OrchestratorTests(Phase9SeededTestCase):
         posttest.refresh_from_db()
         self.assertEqual(self.path.status, StudentPath.Status.COMPLETED)
         self.assertEqual(posttest.status, Session.Status.COMPLETED)
-        # one per lesson record (Lesson 2 has three parts) plus the activity
+        # one per lesson part record plus the activity
         self.assertEqual(Decision.objects.count(), len(lessons) + 1)
         self.assertEqual(SessionFeedback.objects.count(), len(lessons) + 1)
         self.assertEqual(
@@ -75,7 +75,7 @@ class OrchestratorTests(Phase9SeededTestCase):
             ).count(),
             0,
         )
-        self.assertEqual(len(regular_sessions), 5)
+        self.assertEqual(len(regular_sessions), 7)
 
     def test_regular_passes_progress_to_next_lesson(self):
         session = self.exercise_session(Session.SessionType.REGULAR)

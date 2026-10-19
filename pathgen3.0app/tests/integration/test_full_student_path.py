@@ -34,7 +34,7 @@ class FullStudentPathAcceptanceTests(IntegrationSeededTestCase):
         regular_sessions = []
         lessons = self.lessons()
         self.assertEqual([lesson.display_label for lesson in lessons],
-                         ["Lesson 1", "Lesson 2.1", "Lesson 2.2", "Lesson 2.3", "Lesson 3"])
+                         ["Lesson 1.1", "Lesson 1.2", "Lesson 2.1", "Lesson 2.2", "Lesson 2.3", "Lesson 3.1", "Lesson 3.2"])
         for lesson in lessons:
             session = self.complete_regular_lesson(lesson)
             regular_sessions.append(session)

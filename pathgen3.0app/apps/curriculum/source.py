@@ -24,9 +24,8 @@ PREPOST_CODES = [f"PP-{i:02d}" for i in range(1, 31)]
 SCORING_POLICY = {
     "code": "SCORING-V3",
     "description": (
-        "A skill passes with at least two-thirds of its questions correct: 2 of 3 in a "
-        "two-skill exercise (Lessons 1 and 3) and in foundational work, 4 of 6 in a one-skill "
-        "Lesson 2 batch exercise."
+        "A skill passes with at least two-thirds of its questions correct: 4 of 6 in a lesson "
+        "part's exercise, 2 of 3 in foundational work."
     ),
     "correct_required": {"3": 2, "6": 4},
 }

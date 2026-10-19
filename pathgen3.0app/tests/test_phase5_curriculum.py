@@ -27,11 +27,11 @@ from tests.factories import make_user
 class CurriculumSourceTests(SimpleTestCase):
     def test_source_contract_and_pdf_hash_pass(self):
         summary = validate_curriculum_source()
-        self.assertEqual(summary["questions_total"], 121)
-        self.assertEqual((summary["lessons"], summary["lesson_units"], summary["skills"]), (5, 3, 7))
+        self.assertEqual(summary["questions_total"], 145)
+        self.assertEqual((summary["lessons"], summary["lesson_units"], summary["skills"]), (7, 3, 7))
         self.assertEqual(
             {key: summary[key] for key in ("regular", "additional", "foundational", "activity", "prepost")},
-            {"regular": 30, "additional": 30, "foundational": 21, "activity": 10, "prepost": 30},
+            {"regular": 42, "additional": 42, "foundational": 21, "activity": 10, "prepost": 30},
         )
 
     def test_prepost_rewrite_and_fixed_order(self):
@@ -79,12 +79,12 @@ class CurriculumSeedAndPageTests(TestCase):
 
     def test_seeded_database_counts_and_choice_contract(self):
         self.assertEqual(Skill.objects.count(), 7)
-        self.assertEqual(Lesson.objects.count(), 5)
+        self.assertEqual(Lesson.objects.count(), 7)
         self.assertEqual(Video.objects.count(), 4)
-        self.assertEqual(Question.objects.count(), 121)
-        self.assertEqual(QuestionChoice.objects.count(), 484)
-        self.assertEqual(QuestionSet.objects.count(), 19)
-        self.assertEqual(QuestionSetItem.objects.count(), 121)
+        self.assertEqual(Question.objects.count(), 145)
+        self.assertEqual(QuestionChoice.objects.count(), 580)
+        self.assertEqual(QuestionSet.objects.count(), 23)
+        self.assertEqual(QuestionSetItem.objects.count(), 145)
         self.assertFalse(
             Question.objects.annotate(choice_total=Count("choices")).exclude(choice_total=4).exists()
         )
@@ -96,7 +96,7 @@ class CurriculumSeedAndPageTests(TestCase):
         output = io.StringIO()
         call_command("seed_curriculum", stdout=output)
         self.assertIn("Created: skills=0, lessons=0, videos=0, questions=0, choices=0, sets=0, items=0", output.getvalue())
-        self.assertEqual(Question.objects.count(), 121)
+        self.assertEqual(Question.objects.count(), 145)
 
     def test_admin_and_teacher_content_pages_render(self):
         pages = [

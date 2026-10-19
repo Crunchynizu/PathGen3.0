@@ -2,7 +2,7 @@
   "_meta": {
     "policy_version": "Q-LEARNING-V1",
     "artifact_kind": "externally_trained",
-    "trainer_revision": "terminal-aware-v3-lesson2-batches",
+    "trainer_revision": "terminal-aware-v4-one-skill-parts",
     "trained_episodes_per_seed": 75000,
     "training_seeds": [
       11,
@@ -36,37 +36,57 @@
       "burden_weight": 0.02,
       "completion_utility": 0.02
     },
+    "skill_params": {
+      "dataset": "PLACEHOLDER: not fitted yet. Every skill uses the BKT numbers PathGen uses today (Hawkins et al. 2013, ASSISTments), so v4 can be built and checked before the Junyi fit arrives.",
+      "method": "none",
+      "distinct_parameter_sets": 1,
+      "skills": {
+        "S1": {
+          "p_l0": 0.3,
+          "p_t": 0.09,
+          "p_g": 0.1,
+          "p_s": 0.09
+        },
+        "S2": {
+          "p_l0": 0.3,
+          "p_t": 0.09,
+          "p_g": 0.1,
+          "p_s": 0.09
+        },
+        "S3": {
+          "p_l0": 0.3,
+          "p_t": 0.09,
+          "p_g": 0.1,
+          "p_s": 0.09
+        },
+        "S4": {
+          "p_l0": 0.3,
+          "p_t": 0.09,
+          "p_g": 0.1,
+          "p_s": 0.09
+        },
+        "S5": {
+          "p_l0": 0.3,
+          "p_t": 0.09,
+          "p_g": 0.1,
+          "p_s": 0.09
+        },
+        "S6": {
+          "p_l0": 0.3,
+          "p_t": 0.09,
+          "p_g": 0.1,
+          "p_s": 0.09
+        },
+        "S7": {
+          "p_l0": 0.3,
+          "p_t": 0.09,
+          "p_g": 0.1,
+          "p_s": 0.09
+        }
+      }
+    },
     "state_families": {
-      "pair": {
-        "skills_per_exercise": 2,
-        "items_per_skill": 3,
-        "pass_rule": "2 of 3 correct",
-        "foundational_items_per_failed_skill": 3,
-        "passed_exercise_moves_on": false,
-        "rows": [
-          "(np, np, pp)",
-          "(np, np, pf)",
-          "(np, np, fp)",
-          "(np, np, ff)",
-          "(np, dev, pp)",
-          "(np, dev, pf)",
-          "(np, dev, fp)",
-          "(np, dev, ff)",
-          "(dev, dev, pp)",
-          "(dev, dev, pf)",
-          "(dev, dev, fp)",
-          "(dev, dev, ff)",
-          "(dev, strong, pp)",
-          "(dev, strong, pf)",
-          "(dev, strong, fp)",
-          "(dev, strong, ff)",
-          "(strong, strong, pp)",
-          "(strong, strong, pf)",
-          "(strong, strong, fp)",
-          "(strong, strong, ff)"
-        ]
-      },
-      "batch": {
+      "part": {
         "skills_per_exercise": 1,
         "items_per_skill": 6,
         "pass_rule": "4 of 6 correct",
@@ -85,32 +105,16 @@
     "declared_policy_rules": [
       "median raw Q order",
       "section 9 practical-tie rule on unstable rows",
-      "all-passed rows (pp, p): progress ranks above foundational_exercise",
-      "batch rows: a passed batch (p) always chooses progress"
+      "passed rows (p): progress ranks above foundational_exercise",
+      "a passed part (p) always chooses progress"
     ],
     "export_transform": "per-row affine to [0.05, 0.95], then ranked actions separated by at least 0.001 after rounding",
     "foundational_hint_probability": 0.5,
-    "reachable_training_rows": 26,
-    "unreachable_compatibility_rows": [
-      "(np, strong, pp)",
-      "(np, strong, pf)",
-      "(np, strong, fp)",
-      "(np, strong, ff)"
-    ],
+    "reachable_training_rows": 6,
     "practical_tie_rows": [
-      "(dev, dev, ff)",
-      "(dev, strong, ff)",
-      "(strong, strong, pp)",
-      "(strong, strong, pf)",
-      "(strong, strong, fp)",
-      "(strong, strong, ff)",
       "(strong, strong, f)"
     ],
     "pass_rule_rows": [
-      "(np, np, pp)",
-      "(np, dev, pp)",
-      "(dev, dev, pp)",
-      "(dev, strong, pp)",
       "(np, np, p)",
       "(dev, dev, p)",
       "(strong, strong, p)"
@@ -121,133 +125,11 @@
       "(strong, strong, p)"
     ],
     "hint_sensitive_rows": [
-      "(dev, strong, fp)",
-      "(dev, strong, pf)",
       "(strong, strong, f)"
     ],
     "converged": true
   },
   "q_values": {
-    "(np, np, pp)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.049
-    },
-    "(np, np, pf)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.386016
-    },
-    "(np, np, fp)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.403836
-    },
-    "(np, np, ff)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.791072
-    },
-    "(np, dev, pp)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.049
-    },
-    "(np, dev, pf)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.613436
-    },
-    "(np, dev, fp)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.574359
-    },
-    "(np, dev, ff)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.83931
-    },
-    "(np, strong, pp)": {
-      "progress": 0.95,
-      "additional_exercise": 0.5,
-      "foundational_exercise": 0.05
-    },
-    "(np, strong, pf)": {
-      "progress": 0.95,
-      "additional_exercise": 0.5,
-      "foundational_exercise": 0.05
-    },
-    "(np, strong, fp)": {
-      "progress": 0.95,
-      "additional_exercise": 0.5,
-      "foundational_exercise": 0.05
-    },
-    "(np, strong, ff)": {
-      "progress": 0.95,
-      "additional_exercise": 0.5,
-      "foundational_exercise": 0.05
-    },
-    "(dev, dev, pp)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.049
-    },
-    "(dev, dev, pf)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.438213
-    },
-    "(dev, dev, fp)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.473296
-    },
-    "(dev, dev, ff)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.83977
-    },
-    "(dev, strong, pp)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.049
-    },
-    "(dev, strong, pf)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.44214
-    },
-    "(dev, strong, fp)": {
-      "progress": 0.05,
-      "additional_exercise": 0.95,
-      "foundational_exercise": 0.512952
-    },
-    "(dev, strong, ff)": {
-      "progress": 0.05,
-      "additional_exercise": 0.783155,
-      "foundational_exercise": 0.782155
-    },
-    "(strong, strong, pp)": {
-      "progress": 0.052,
-      "additional_exercise": 0.051,
-      "foundational_exercise": 0.05
-    },
-    "(strong, strong, pf)": {
-      "progress": 0.052,
-      "additional_exercise": 0.051,
-      "foundational_exercise": 0.05
-    },
-    "(strong, strong, fp)": {
-      "progress": 0.052,
-      "additional_exercise": 0.051,
-      "foundational_exercise": 0.05
-    },
-    "(strong, strong, ff)": {
-      "progress": 0.052,
-      "additional_exercise": 0.05,
-      "foundational_exercise": 0.051
-    },
     "(np, np, p)": {
       "progress": 0.052,
       "additional_exercise": 0.051,

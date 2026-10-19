@@ -70,16 +70,28 @@ class QLearningTests(SimpleTestCase):
             result = q_learning.decide("np", "dev", "pf", q_learning.ACTIONS)
         self.assertEqual(result, ("additional_exercise", "q_learning_argmax"))
 
-    def test_valid_artifact_loads_all_30_rows(self):
-        # 24 two-skill rows (Lessons 1, 3) + 6 one-skill rows for the Lesson 2 parts
+    def test_valid_artifact_loads_the_six_part_rows(self):
+        # every lesson part has one skill: np/dev/strong x passed/failed (q-learning-test-v4)
         q_learning.load_q_table.cache_clear()
-        self.assertEqual(len(q_learning.load_q_table()), 30)
+        self.assertEqual(set(q_learning.load_q_table()), q_learning.PART_STATE_KEYS)
 
-    def test_trained_artifact_moves_passed_lesson_2_parts_on(self):
-        # q-learning-test-v3: a passed part (4 of 6) always progresses; a failed one gets support
+    def test_artifact_missing_a_part_row_falls_back(self):
+        artifact = json.loads(q_learning.Q_TABLE_PATH.read_text(encoding="utf-8"))
+        del artifact["q_values"]["(dev, dev, f)"]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "q_table.json"
+            path.write_text(json.dumps(artifact), encoding="utf-8")
+            with patch.object(q_learning, "Q_TABLE_PATH", path):
+                q_learning.load_q_table.cache_clear()
+                result = q_learning.decide("np", "np", "f", q_learning.ACTIONS)
+        self.assertEqual(result, ("progress", "q_learning_missing_fallback"))
+
+    def test_trained_artifact_moves_passed_parts_on(self):
+        # a passed part (4 of 6) always progresses; a failed one gets support
         q_learning.load_q_table.cache_clear()
         artifact = json.loads(q_learning.Q_TABLE_PATH.read_text(encoding="utf-8"))
         self.assertEqual(artifact["_meta"]["artifact_kind"], "externally_trained")
+        self.assertEqual(artifact["_meta"]["trainer_revision"], "terminal-aware-v4-one-skill-parts")
         for band in ("np", "dev", "strong"):
             with self.subTest(band=band):
                 self.assertEqual(

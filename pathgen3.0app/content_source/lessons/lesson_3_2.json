@@ -1,0 +1,719 @@
+{
+  "schema_version": 1,
+  "lesson": {
+    "code": "L3-2",
+    "slug": "lesson-3-2",
+    "lesson_order": 7,
+    "unit_number": 3,
+    "part_number": 2,
+    "unit_title": "Application of integers",
+    "title": "Signed-change situations",
+    "summary": "Model signed-change situations.",
+    "skill_codes": [
+      "S6"
+    ],
+    "content_schema_version": 1,
+    "content": {
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Signed-change situations"
+        },
+        {
+          "type": "subheading",
+          "text": "A story about temperature"
+        },
+        {
+          "type": "paragraph",
+          "text": "The temperature at 7:00 AM was -7 degrees C. By noon it rose by 8 degrees. The change is +8. Add: -7 + 8 = 1. The new temperature is 1 degree C."
+        },
+        {
+          "type": "subheading",
+          "text": "Words that mean signs"
+        },
+        {
+          "type": "paragraph",
+          "text": "Rise, gain, deposit, and up mean positive changes. Fall, loss, withdrawal, and down mean negative changes."
+        },
+        {
+          "type": "subheading",
+          "text": "Interpreting the result"
+        },
+        {
+          "type": "paragraph",
+          "text": "Always include the unit. Say if the result is positive or negative. Explain what it means."
+        },
+        {
+          "type": "figure",
+          "image_asset": "lesson/lesson-3/temperature-change.png",
+          "image_alt": "Number line showing start at -7 and endpoint at 1"
+        },
+        {
+          "type": "worked_example",
+          "title": "Modeling a change",
+          "problem": "A diver is at -12 m and rises 5 m. Where is the diver now?",
+          "steps": [
+            "Step 1: The start is -12. Rises means a positive change: +5.",
+            "Step 2: Add: -12 + 5 = -7.",
+            "Step 3: Interpret: the diver is 7 m below sea level."
+          ],
+          "answer": "-7 m (7 m below sea level)"
+        },
+        {
+          "type": "common_mistake",
+          "text": "Writing a fall of 6 degrees as +6 is wrong. Fall means a negative change, so write -6."
+        },
+        {
+          "type": "callout",
+          "variant": "cta",
+          "text": "Ready to practice. Continue to the regular exercise for 6 questions."
+        }
+      ],
+      "source_text": "Lesson 3.2 - Signed-change situations\nSkill: S6\nObjective:\n1. Model signed-change situations.\nA story about temperature\nThe temperature at 7:00 AM was -7 degrees C. By noon it rose by 8 degrees.\nThe change is +8. Add: -7 + 8 = 1.\nThe new temperature is 1 degree C.\nWords that mean signs\nRise, gain, deposit, up -> positive.\nFall, loss, withdrawal, down -> negative.\nInterpreting the result\nAlways include the unit. Say if the result is positive or negative. Explain what it means.\nWorked example\nProblem: A diver is at -12 m and rises 5 m. Where is the diver now?\nStep 1: The start is -12. Rises means a positive change: +5.\nStep 2: Add: -12 + 5 = -7.\nStep 3: Interpret: the diver is 7 m below sea level.\nAnswer: -7 m (7 m below sea level).\nCommon mistake\nWriting a fall of 6 degrees as +6 is wrong. Fall means a negative change, so write -6."
+    }
+  },
+  "question_sets": [
+    {
+      "code": "L3-2-R",
+      "name": "Lesson 3.2 Regular Exercise",
+      "set_type": "regular",
+      "lesson_code": "L3-2",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L3-R-S6-01",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "It is -4 degrees C and warms by 9 degrees. What is the new temperature?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-13",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-5",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "5",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "13",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "-4 + 9 = 5.",
+          "hint": null,
+          "image_asset": "exercise/lesson-3/L3-R-S6-01.png",
+          "image_alt": "It is -4 degrees C and warms by 9 degrees. What is the new temperature?",
+          "source_figure_reference": "[insert figure: L3-R-S6-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-R-S6-02",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "A diver is at -6 m and descends 4 m. What is the new position?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-10 m",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-2 m",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "2 m",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "10 m",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "-6 + (-4) = -10.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-R-S6-04",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Which integer shows a loss of 15 pesos?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-15",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "+15",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "0",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "30",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "A loss is a negative change: -15.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
+          "code": "L3-R-S6-05",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "An account has 120 pesos. You withdraw 150 pesos. What is the new balance?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-270 pesos",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-30 pesos",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "30 pesos",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "270 pesos",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "120 - 150 = -30.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
+          "code": "L3-R-S6-03",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "An elevator starts at floor 3 and goes down 7 floors. Where does it stop?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-10",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-4",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "4",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "10",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "3 - 7 = -4.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-R-S6-06",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "At 6:00 PM it was 3 degrees C. By midnight it was -5 degrees C. What was the change in temperature?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-8 degrees C (a fall of 8)",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-2 degrees C",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "+2 degrees C",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "+8 degrees C (a rise of 8)",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Change = end - start = -5 - 3 = -8, a fall of 8 degrees.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        }
+      ]
+    },
+    {
+      "code": "L3-2-A",
+      "name": "Lesson 3.2 Additional Exercise",
+      "set_type": "additional",
+      "lesson_code": "L3-2",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L3-A-S6-01",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "A submarine is at -18 m and rises 7 m. Where is it now?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-25 m",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-11 m",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "11 m",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "25 m",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "-18 + 7 = -11.",
+          "hint": null,
+          "image_asset": "exercise/lesson-3/L3-A-S6-01.png",
+          "image_alt": "A submarine is at -18 m and rises 7 m. Where is it now?",
+          "source_figure_reference": "[insert figure: L3-A-S6-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-A-S6-02",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "The temperature is 6 degrees C and falls 14 degrees. What is the new temperature?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-20",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-8",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "8",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "20",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "6 - 14 = -8.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-A-S6-04",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "A bird is 9 m above the ground and flies down 12 m. Which expression models its new height?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "9 + 12",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "9 - 12",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "-9 - 12",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "-9 + 12",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Start at 9; flying down is a negative change of 12.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
+          "code": "L3-A-S6-05",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "A jeepney driver earned 350 pesos, then spent 420 pesos on fuel. What is the net amount?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-770 pesos",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-70 pesos",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "70 pesos",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "770 pesos",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "350 - 420 = -70, a net loss of 70 pesos.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
+          "code": "L3-A-S6-03",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "A hiker is 12 m above sea level, descends 19 m, then rises 3 m. Where is the hiker?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-10 m",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-4 m",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "4 m",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "10 m",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "12 - 19 + 3 = -4.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-A-S6-06",
+          "skill_code": "S6",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "A submarine at -40 m rises 15 m, then dives 25 m. Where is it, compared with where it started?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-50 m, lower",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-50 m, higher",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-30 m, higher",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "-80 m, lower",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "-40 + 15 - 25 = -50, which is below -40.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        }
+      ]
+    },
+    {
+      "code": "L3-F-S6",
+      "name": "S6 Foundational Exercise",
+      "set_type": "foundational",
+      "lesson_code": null,
+      "skill_code": "S6",
+      "questions": [
+        {
+          "code": "L3-F-S6-01",
+          "skill_code": "S6",
+          "difficulty": "foundational",
+          "presentation_type": "figure",
+          "cognitive_level": "remember",
+          "bloom_band": "LOTS",
+          "prompt": "It is -2 degrees C, then warms 5 degrees. What is the temperature?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-7",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-3",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "3",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "7",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "-2 + 5 = 3.",
+          "hint": "Warming adds a positive change.",
+          "image_asset": "exercise/lesson-3/L3-F-S6-01.png",
+          "image_alt": "It is -2 degrees C, then warms 5 degrees. What is the temperature?",
+          "source_figure_reference": "[insert figure: L3-F-S6-01]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-F-S6-02",
+          "skill_code": "S6",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "A diver is at -3 m and goes down 2 m. Where is the diver?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-5 m",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-1 m",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "1 m",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "5 m",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "-3 - 2 = -5.",
+          "hint": "Down means subtract 2.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L3-F-S6-03",
+          "skill_code": "S6",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "What expression models a rise of 4 from -6?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-6 + 4",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-6 - 4",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "6 + 4",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "6 - 4",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "A rise adds a positive change.",
+          "hint": "Start value plus change.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    }
+  ]
+}

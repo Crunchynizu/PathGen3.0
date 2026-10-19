@@ -110,7 +110,7 @@ class PublishedLessonDetailTests(TestCase):
         cls.teacher = make_user(User.Role.TEACHER)
         cls.student = make_user(User.Role.STUDENT)
 
-    def url(self, code="L1"):
+    def url(self, code="L1-2"):
         return reverse("curriculum:view_lesson_detail", args=[code])
 
     def test_admin_get(self):
@@ -118,7 +118,7 @@ class PublishedLessonDetailTests(TestCase):
         response = self.client.get(self.url())
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/shared/view_lesson.detail.html")
-        self.assertContains(response, "Understanding and representing integers")
+        self.assertContains(response, "Comparing and ordering integers")
 
     def test_teacher_get(self):
         self.client.force_login(self.teacher)
@@ -134,7 +134,7 @@ class PublishedLessonDetailTests(TestCase):
         self.assertIn("/account/login/", response["Location"])
 
     def test_renders_all_block_types(self):
-        lesson = Lesson.objects.get(code="L1")
+        lesson = Lesson.objects.get(code="L1-2")
         content = lesson.content_json
         content["blocks"] += [
             {"type": "heading", "text": "Extra heading"},
@@ -166,7 +166,7 @@ class PublishedLessonDetailTests(TestCase):
         self.assertTrue(all(question_set.set_type != "prepost" for question_set in response.context["question_sets"]))
 
     def test_video_uses_youtube_nocookie_and_segment_bounds(self):
-        # Lesson 1's video is hidden (removed from YouTube); Lesson 2.1's still embeds.
+        # Lesson 1.2's video is hidden (removed from YouTube); Lesson 2.1's still embeds.
         self.client.force_login(self.teacher)
         response = self.client.get(self.url("L2-1"))
         self.assertContains(response, "https://www.youtube-nocookie.com/embed/NQSN00zL5gg")

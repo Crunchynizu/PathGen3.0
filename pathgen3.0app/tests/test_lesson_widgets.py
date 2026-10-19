@@ -22,11 +22,13 @@ class LessonWidgetTests(Phase6SeededTestCase):
 
     def test_lesson_pages_render_widgets_reveals_and_mistake_quiz(self):
         expected = {
-            "L1": {"numberline"},
+            "L1-1": {"numberline"},
+            "L1-2": {"numberline"},
             "L2-1": {"chips"},
             "L2-2": {"signs"},
             "L2-3": {"signs"},
-            "L3": {"order", "thermometer"},
+            "L3-1": {"order"},
+            "L3-2": {"thermometer"},
         }
         self.client.force_login(self.student)
         for order, kinds in expected.items():

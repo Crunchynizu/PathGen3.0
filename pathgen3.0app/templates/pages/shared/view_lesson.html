@@ -10,7 +10,7 @@
   {% include "components/breadcrumbs.html" %}
   <div class="st-page" data-ui="secondary-content">
     {% if messages %}<div class="ui-messages" aria-live="polite">{% for message in messages %}<p class="ui-alert" data-tone="info" role="status"><i data-lucide="info" aria-hidden="true"></i><span>{{ message }}</span></p>{% endfor %}</div>{% endif %}
-    <header class="st-header"><div><p class="ui-eyebrow"><i data-lucide="book-open" aria-hidden="true"></i>Content</p><h1>Lessons</h1><p class="st-lead">The published lessons, in order. Lessons 1 and 3 each cover two skills; Lesson 2 is taught in three parts with one skill each.</p></div></header>
+    <header class="st-header"><div><p class="ui-eyebrow"><i data-lucide="book-open" aria-hidden="true"></i>Content</p><h1>Lessons</h1><p class="st-lead">The published lessons, in order. Each lesson is taught in parts, and each part covers one skill.</p></div></header>
     <div class="ui-alert" role="note"><i data-lucide="lock" aria-hidden="true"></i><span>Read-only. Published lessons can be reviewed here; editing is unavailable in PathGen.</span></div>
 
     <div class="vl-list" data-ui="lesson-list">

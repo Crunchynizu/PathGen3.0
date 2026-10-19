@@ -1,16 +1,15 @@
 {
   "schema_version": 1,
   "lesson": {
-    "code": "L1",
-    "slug": "lesson-1",
-    "lesson_order": 1,
+    "code": "L1-2",
+    "slug": "lesson-1-2",
+    "lesson_order": 2,
     "unit_number": 1,
-    "part_number": null,
+    "part_number": 2,
     "unit_title": "Understanding and representing integers",
-    "title": "Understanding and representing integers",
-    "summary": "Identify integers, opposites, and absolute value. Represent, compare, and order integers on a number line.",
+    "title": "Comparing and ordering integers",
+    "summary": "Represent, compare, and order integers on a number line.",
     "skill_codes": [
-      "S1",
       "S5"
     ],
     "content_schema_version": 1,
@@ -18,26 +17,7 @@
       "blocks": [
         {
           "type": "heading",
-          "text": "Understanding and representing integers"
-        },
-        {
-          "type": "subheading",
-          "text": "What is an integer?"
-        },
-        {
-          "type": "paragraph",
-          "text": "An integer is a whole number. It can be positive, negative, or zero. It has no fractional part and no decimal."
-        },
-        {
-          "type": "bullet_list",
-          "items": [
-            "-8, -3, 0, 5, and 12 are integers.",
-            "3/4, 0.6, and 12% are not integers."
-          ]
-        },
-        {
-          "type": "paragraph",
-          "text": "We use negative numbers every day. A temperature 3 degrees below zero is -3. A debt of 500 pesos is -500. A diver 6 meters under the sea is at -6."
+          "text": "Comparing and ordering integers"
         },
         {
           "type": "subheading",
@@ -58,23 +38,6 @@
           "caption": "Integers increase from left to right."
         },
         {
-          "type": "subheading",
-          "text": "Opposites and absolute value"
-        },
-        {
-          "type": "paragraph",
-          "text": "Opposites are two integers the same distance from zero on different sides. -5 and 5 are opposites."
-        },
-        {
-          "type": "paragraph",
-          "text": "Absolute value is the distance from zero. Distance is always positive or zero. We write it with two bars. |5| = 5, |-5| = 5, |0| = 0."
-        },
-        {
-          "type": "figure",
-          "image_asset": "lesson/lesson-1/opposites-example.png",
-          "image_alt": "Number line showing -5 and 5 as opposites around zero"
-        },
-        {
           "type": "video",
           "video_code": "VID-INTEGER-NUMBER-LINE",
           "segment_start_seconds": 60,
@@ -82,14 +45,14 @@
         },
         {
           "type": "worked_example",
-          "title": "Recognizing an integer",
-          "problem": "Is -11 an integer? What is its opposite? What is |-11|?",
+          "title": "Ordering integers",
+          "problem": "Order 4, -6, 0, and -1 from least to greatest.",
           "steps": [
-            "Step 1: -11 has no fraction and no decimal. So it is an integer.",
-            "Step 2: The opposite of -11 is 11. Same distance, other side of zero.",
-            "Step 3: |-11| = 11 because -11 is 11 units from zero."
+            "Step 1: Place each number on the number line. -6 is farthest left and 4 is farthest right.",
+            "Step 2: Between them, -1 is left of 0.",
+            "Step 3: Read the numbers from left to right."
           ],
-          "answer": "-11 is an integer. Opposite: 11. Absolute value: 11."
+          "answer": "-6, -1, 0, 4"
         },
         {
           "type": "common_mistake",
@@ -98,143 +61,20 @@
         {
           "type": "callout",
           "variant": "cta",
-          "text": "Ready to practice. Continue to the regular exercise for 6 questions covering both skills."
+          "text": "Ready to practice. Continue to the regular exercise for 6 questions."
         }
       ],
-      "source_text": "Lesson 1 — Understanding and representing integers\nSkills: S1 + S5\nObjectives:\n1. Identify integers, opposites, and absolute value.\n2. Represent, compare, and order integers on a number line.\nWhat is an integer?\nAn integer is a whole number. It can be positive, negative, or zero. It has no fractional part and\nno decimal.\nExamples: -8, -3, 0, 5, 12.\nNot integers: 3/4, 0.6, 12%.\nWe use negative numbers every day. A temperature 3 degrees below zero is -3. A debt of 500\npesos is -500. A diver 6 meters under the sea is at -6.\nThe number line\nA number line shows integers in order. Zero is in the middle. Positive integers go right. Negative\nintegers go left.\nValues increase as you move right. So -7 < -2 < 0 < 4.\nCompare by position, not by digit size. -7 is smaller than -2 because it is farther left.\n[insert figure: lesson1/integer-number-line]\nOpposites and absolute value\nOpposites are two integers the same distance from zero on different sides. -5 and 5 are opposites.\nAbsolute value is the distance from zero. Distance is always positive or zero. We write it with\ntwo bars.\n-\n|5| = 5\n-\n|-5| = 5\n-\n|0| = 0\n[insert figure: lesson1/opposites-example]\n[insert video: VID-INTEGER-NUMBER-LINE | 1:00-1:50] (optional)\nWorked example\nProblem: Is -11 an integer? What is its opposite? What is |-11|?\nStep 1: -11 has no fraction and no decimal. So it is an integer.\nStep 2: The opposite of -11 is 11. Same distance, other side of zero.\nStep 3: |-11| = 11 because -11 is 11 units from zero.\nAnswer: -11 is an integer. Opposite: 11. Absolute value: 11.\nCommon mistake\n-7 > -3 is wrong. The digit 7 is bigger, but -7 is farther left. Correct: -7 < -3.\nReady to practice\nContinue to the regular exercise for 6 questions covering both skills."
+      "source_text": "Lesson 1.2 - Comparing and ordering integers\nSkill: S5\nObjective:\n1. Represent, compare, and order integers on a number line.\nThe number line\nA number line shows integers in order. Zero is in the middle. Positive integers go right. Negative integers go left.\nValues increase as you move right. So -7 < -2 < 0 < 4.\nCompare by position, not by digit size. -7 is smaller than -2 because it is farther left.\nWorked example\nProblem: Order 4, -6, 0, and -1 from least to greatest.\nStep 1: Place each number on the number line. -6 is farthest left and 4 is farthest right.\nStep 2: Between them, -1 is left of 0.\nStep 3: Read the numbers from left to right.\nAnswer: -6, -1, 0, 4.\nCommon mistake\n-7 > -3 is wrong. The digit 7 is bigger, but -7 is farther left. Correct: -7 < -3."
     }
   },
   "question_sets": [
     {
-      "code": "L1-R",
-      "name": "Lesson 1 Regular Exercise",
+      "code": "L1-2-R",
+      "name": "Lesson 1.2 Regular Exercise",
       "set_type": "regular",
-      "lesson_code": "L1",
+      "lesson_code": "L1-2",
       "skill_code": null,
       "questions": [
-        {
-          "code": "L1-R-S1-01",
-          "skill_code": "S1",
-          "difficulty": "standard",
-          "presentation_type": "text",
-          "cognitive_level": "understand",
-          "bloom_band": "LOTS",
-          "prompt": "Which value is an integer?",
-          "choices": [
-            {
-              "label": "A",
-              "text": "-8",
-              "is_correct": true
-            },
-            {
-              "label": "B",
-              "text": "3/4",
-              "is_correct": false
-            },
-            {
-              "label": "C",
-              "text": "0.6",
-              "is_correct": false
-            },
-            {
-              "label": "D",
-              "text": "12%",
-              "is_correct": false
-            }
-          ],
-          "correct_answer": "A",
-          "solution_steps": [],
-          "explanation": "-8 has no fractional part.",
-          "hint": null,
-          "image_asset": null,
-          "image_alt": null,
-          "source_figure_reference": null,
-          "video_code": null,
-          "video_pause_seconds": null,
-          "source_answer_basis": "pdf_answer_line"
-        },
-        {
-          "code": "L1-R-S1-02",
-          "skill_code": "S1",
-          "difficulty": "standard",
-          "presentation_type": "text",
-          "cognitive_level": "apply",
-          "bloom_band": "LOTS",
-          "prompt": "What is the opposite of -12?",
-          "choices": [
-            {
-              "label": "A",
-              "text": "-12",
-              "is_correct": false
-            },
-            {
-              "label": "B",
-              "text": "0",
-              "is_correct": false
-            },
-            {
-              "label": "C",
-              "text": "12",
-              "is_correct": true
-            },
-            {
-              "label": "D",
-              "text": "1/12",
-              "is_correct": false
-            }
-          ],
-          "correct_answer": "C",
-          "solution_steps": [],
-          "explanation": "Same distance from zero, different sign.",
-          "hint": null,
-          "image_asset": null,
-          "image_alt": null,
-          "source_figure_reference": null,
-          "video_code": null,
-          "video_pause_seconds": null,
-          "source_answer_basis": "pdf_answer_line"
-        },
-        {
-          "code": "L1-R-S1-03",
-          "skill_code": "S1",
-          "difficulty": "standard",
-          "presentation_type": "figure",
-          "cognitive_level": "analyze",
-          "bloom_band": "HOTS",
-          "prompt": "What is |-9|?",
-          "choices": [
-            {
-              "label": "A",
-              "text": "-9",
-              "is_correct": false
-            },
-            {
-              "label": "B",
-              "text": "9",
-              "is_correct": true
-            },
-            {
-              "label": "C",
-              "text": "0",
-              "is_correct": false
-            },
-            {
-              "label": "D",
-              "text": "1/9",
-              "is_correct": false
-            }
-          ],
-          "correct_answer": "B",
-          "solution_steps": [],
-          "explanation": "The distance from -9 to zero is 9.",
-          "hint": null,
-          "image_asset": "exercise/lesson-1/L1-R-S1-03.png",
-          "image_alt": "What is |-9|?",
-          "source_figure_reference": "[insert figure: L1-R-S1-03]",
-          "video_code": null,
-          "video_pause_seconds": null,
-          "source_answer_basis": "pdf_answer_line"
-        },
         {
           "code": "L1-R-S5-01",
           "skill_code": "S5",
@@ -318,6 +158,88 @@
           "source_answer_basis": "pdf_answer_line"
         },
         {
+          "code": "L1-R-S5-04",
+          "skill_code": "S5",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "On a number line, which integer is farthest to the left?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-9",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-1",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "0",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "3",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "-9 is the least, so it is farthest left.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
+          "code": "L1-R-S5-05",
+          "skill_code": "S5",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Order -4, 2, -10, and 0 from least to greatest.",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-10, -4, 0, 2",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-4, -10, 0, 2",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "2, 0, -4, -10",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "0, -4, -10, 2",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Start with the farthest left: -10, then -4, 0, 2.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
           "code": "L1-R-S5-03",
           "skill_code": "S5",
           "difficulty": "standard",
@@ -357,139 +279,57 @@
           "video_code": null,
           "video_pause_seconds": null,
           "source_answer_basis": "pdf_answer_line"
-        }
-      ]
-    },
-    {
-      "code": "L1-A",
-      "name": "Lesson 1 Additional Exercise",
-      "set_type": "additional",
-      "lesson_code": "L1",
-      "skill_code": null,
-      "questions": [
-        {
-          "code": "L1-A-S1-01",
-          "skill_code": "S1",
-          "difficulty": "standard",
-          "presentation_type": "text",
-          "cognitive_level": "understand",
-          "bloom_band": "LOTS",
-          "prompt": "Which value belongs to the integers?",
-          "choices": [
-            {
-              "label": "A",
-              "text": "-15",
-              "is_correct": true
-            },
-            {
-              "label": "B",
-              "text": "2.5",
-              "is_correct": false
-            },
-            {
-              "label": "C",
-              "text": "1/3",
-              "is_correct": false
-            },
-            {
-              "label": "D",
-              "text": "7.1%",
-              "is_correct": false
-            }
-          ],
-          "correct_answer": "A",
-          "solution_steps": [],
-          "explanation": "-15 is a whole number.",
-          "hint": null,
-          "image_asset": null,
-          "image_alt": null,
-          "source_figure_reference": null,
-          "video_code": null,
-          "video_pause_seconds": null,
-          "source_answer_basis": "pdf_answer_line"
         },
         {
-          "code": "L1-A-S1-02",
-          "skill_code": "S1",
-          "difficulty": "standard",
-          "presentation_type": "figure",
-          "cognitive_level": "apply",
-          "bloom_band": "LOTS",
-          "prompt": "The point is -4. Which value is its opposite?",
-          "choices": [
-            {
-              "label": "A",
-              "text": "-4",
-              "is_correct": false
-            },
-            {
-              "label": "B",
-              "text": "0",
-              "is_correct": false
-            },
-            {
-              "label": "C",
-              "text": "4",
-              "is_correct": true
-            },
-            {
-              "label": "D",
-              "text": "8",
-              "is_correct": false
-            }
-          ],
-          "correct_answer": "C",
-          "solution_steps": [],
-          "explanation": "Reflect -4 across zero.",
-          "hint": null,
-          "image_asset": "exercise/lesson-1/L1-A-S1-02.png",
-          "image_alt": "The point is -4. Which value is its opposite?",
-          "source_figure_reference": "[insert figure: L1-A-S1-02]",
-          "video_code": null,
-          "video_pause_seconds": null,
-          "source_answer_basis": "pdf_answer_line"
-        },
-        {
-          "code": "L1-A-S1-03",
-          "skill_code": "S1",
+          "code": "L1-R-S5-06",
+          "skill_code": "S5",
           "difficulty": "standard",
           "presentation_type": "text",
           "cognitive_level": "analyze",
           "bloom_band": "HOTS",
-          "prompt": "What is |-14|?",
+          "prompt": "Which integer is between -6 and -2?",
           "choices": [
             {
               "label": "A",
-              "text": "-14",
+              "text": "-8",
               "is_correct": false
             },
             {
               "label": "B",
-              "text": "0",
-              "is_correct": false
-            },
-            {
-              "label": "C",
-              "text": "14",
+              "text": "-4",
               "is_correct": true
             },
             {
+              "label": "C",
+              "text": "-1",
+              "is_correct": false
+            },
+            {
               "label": "D",
-              "text": "28",
+              "text": "3",
               "is_correct": false
             }
           ],
-          "correct_answer": "C",
+          "correct_answer": "B",
           "solution_steps": [],
-          "explanation": "Distance from zero is 14 units.",
+          "explanation": "-4 is right of -6 and left of -2.",
           "hint": null,
           "image_asset": null,
           "image_alt": null,
           "source_figure_reference": null,
           "video_code": null,
           "video_pause_seconds": null,
-          "source_answer_basis": "pdf_answer_line"
-        },
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        }
+      ]
+    },
+    {
+      "code": "L1-2-A",
+      "name": "Lesson 1.2 Additional Exercise",
+      "set_type": "additional",
+      "lesson_code": "L1-2",
+      "skill_code": null,
+      "questions": [
         {
           "code": "L1-A-S5-01",
           "skill_code": "S5",
@@ -573,6 +413,88 @@
           "source_answer_basis": "pdf_answer_line"
         },
         {
+          "code": "L1-A-S5-04",
+          "skill_code": "S5",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Which symbol makes -12 __ -15 true?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "<",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": ">",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "=",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "+",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "-12 is to the right of -15, so -12 > -15.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
+          "code": "L1-A-S5-05",
+          "skill_code": "S5",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "Morning temperatures were -3, 1, -8, and 0 degrees C. Which was the coldest?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-3",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "1",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-8",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "0",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "-8 is the least, so it is the coldest.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
           "code": "L1-A-S5-03",
           "skill_code": "S5",
           "difficulty": "standard",
@@ -612,144 +534,53 @@
           "video_code": null,
           "video_pause_seconds": null,
           "source_answer_basis": "pdf_answer_line"
-        }
-      ]
-    },
-    {
-      "code": "L1-F-S1",
-      "name": "Lesson 1 Foundational Exercise (S1)",
-      "set_type": "foundational",
-      "lesson_code": null,
-      "skill_code": "S1",
-      "questions": [
-        {
-          "code": "L1-F-S1-01",
-          "skill_code": "S1",
-          "difficulty": "foundational",
-          "presentation_type": "text",
-          "cognitive_level": "remember",
-          "bloom_band": "LOTS",
-          "prompt": "Zero belongs to which set?",
-          "choices": [
-            {
-              "label": "A",
-              "text": "Integers",
-              "is_correct": true
-            },
-            {
-              "label": "B",
-              "text": "Only fractions",
-              "is_correct": false
-            },
-            {
-              "label": "C",
-              "text": "Only decimals",
-              "is_correct": false
-            },
-            {
-              "label": "D",
-              "text": "Only percentages",
-              "is_correct": false
-            }
-          ],
-          "correct_answer": "A",
-          "solution_steps": [],
-          "explanation": "Zero is an integer.",
-          "hint": "Integers include negatives, zero, and positive whole numbers.",
-          "image_asset": null,
-          "image_alt": null,
-          "source_figure_reference": null,
-          "video_code": null,
-          "video_pause_seconds": null,
-          "source_answer_basis": "pdf_answer_line"
         },
         {
-          "code": "L1-F-S1-02",
-          "skill_code": "S1",
-          "difficulty": "foundational",
+          "code": "L1-A-S5-06",
+          "skill_code": "S5",
+          "difficulty": "standard",
           "presentation_type": "text",
-          "cognitive_level": "understand",
-          "bloom_band": "LOTS",
-          "prompt": "What is the opposite of 5?",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Ana says -2 < -9 because 2 < 9. Which correction is right?",
           "choices": [
             {
               "label": "A",
-              "text": "5",
+              "text": "She is right",
               "is_correct": false
             },
             {
               "label": "B",
-              "text": "-5",
+              "text": "-2 > -9 because -2 is farther right",
               "is_correct": true
             },
             {
               "label": "C",
-              "text": "0",
+              "text": "-2 = -9",
               "is_correct": false
             },
             {
               "label": "D",
-              "text": "10",
+              "text": "-2 < -9 because both are negative",
               "is_correct": false
             }
           ],
           "correct_answer": "B",
           "solution_steps": [],
-          "explanation": "Mirror 5 across zero.",
-          "hint": "Keep the distance, change the sign.",
+          "explanation": "Compare by position: -2 is right of -9, so -2 > -9.",
+          "hint": null,
           "image_asset": null,
           "image_alt": null,
           "source_figure_reference": null,
           "video_code": null,
           "video_pause_seconds": null,
-          "source_answer_basis": "pdf_answer_line"
-        },
-        {
-          "code": "L1-F-S1-03",
-          "skill_code": "S1",
-          "difficulty": "foundational",
-          "presentation_type": "figure",
-          "cognitive_level": "analyze",
-          "bloom_band": "HOTS",
-          "prompt": "What is |-3|?",
-          "choices": [
-            {
-              "label": "A",
-              "text": "-3",
-              "is_correct": false
-            },
-            {
-              "label": "B",
-              "text": "0",
-              "is_correct": false
-            },
-            {
-              "label": "C",
-              "text": "3",
-              "is_correct": true
-            },
-            {
-              "label": "D",
-              "text": "6",
-              "is_correct": false
-            }
-          ],
-          "correct_answer": "C",
-          "solution_steps": [],
-          "explanation": "Three unit steps to zero.",
-          "hint": "Count steps from -3 to zero.",
-          "image_asset": "exercise/lesson-1/L1-F-S1-03.png",
-          "image_alt": "What is |-3|?",
-          "source_figure_reference": "[insert figure: L1-F-S1-03]",
-          "video_code": null,
-          "video_pause_seconds": null,
-          "source_answer_basis": "pdf_answer_line"
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
         }
       ]
     },
     {
       "code": "L1-F-S5",
-      "name": "Lesson 1 Foundational Exercise (S5)",
+      "name": "S5 Foundational Exercise",
       "set_type": "foundational",
       "lesson_code": null,
       "skill_code": "S5",

@@ -1,0 +1,730 @@
+{
+  "schema_version": 1,
+  "lesson": {
+    "code": "L1-1",
+    "slug": "lesson-1-1",
+    "lesson_order": 1,
+    "unit_number": 1,
+    "part_number": 1,
+    "unit_title": "Understanding and representing integers",
+    "title": "Integers, opposites, and absolute value",
+    "summary": "Identify integers, opposites, and absolute value.",
+    "skill_codes": [
+      "S1"
+    ],
+    "content_schema_version": 1,
+    "content": {
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Integers, opposites, and absolute value"
+        },
+        {
+          "type": "subheading",
+          "text": "What is an integer?"
+        },
+        {
+          "type": "paragraph",
+          "text": "An integer is a whole number. It can be positive, negative, or zero. It has no fractional part and no decimal."
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            "-8, -3, 0, 5, and 12 are integers.",
+            "3/4, 0.6, and 12% are not integers."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We use negative numbers every day. A temperature 3 degrees below zero is -3. A debt of 500 pesos is -500. A diver 6 meters under the sea is at -6."
+        },
+        {
+          "type": "subheading",
+          "text": "Opposites and absolute value"
+        },
+        {
+          "type": "paragraph",
+          "text": "A number line shows integers in order. Zero is in the middle. Positive integers go right. Negative integers go left."
+        },
+        {
+          "type": "paragraph",
+          "text": "Opposites are two integers the same distance from zero on different sides. -5 and 5 are opposites."
+        },
+        {
+          "type": "paragraph",
+          "text": "Absolute value is the distance from zero. Distance is always positive or zero. We write it with two bars. |5| = 5, |-5| = 5, |0| = 0."
+        },
+        {
+          "type": "figure",
+          "image_asset": "lesson/lesson-1/opposites-example.png",
+          "image_alt": "Number line showing -5 and 5 as opposites around zero"
+        },
+        {
+          "type": "worked_example",
+          "title": "Recognizing an integer",
+          "problem": "Is -11 an integer? What is its opposite? What is |-11|?",
+          "steps": [
+            "Step 1: -11 has no fraction and no decimal. So it is an integer.",
+            "Step 2: The opposite of -11 is 11. Same distance, other side of zero.",
+            "Step 3: |-11| = 11 because -11 is 11 units from zero."
+          ],
+          "answer": "-11 is an integer. Opposite: 11. Absolute value: 11."
+        },
+        {
+          "type": "common_mistake",
+          "text": "|-5| = -5 is wrong. Absolute value is a distance from zero, so it is never negative. Correct: |-5| = 5."
+        },
+        {
+          "type": "callout",
+          "variant": "cta",
+          "text": "Ready to practice. Continue to the regular exercise for 6 questions."
+        }
+      ],
+      "source_text": "Lesson 1.1 - Integers, opposites, and absolute value\nSkill: S1\nObjective:\n1. Identify integers, opposites, and absolute value.\nWhat is an integer?\nAn integer is a whole number. It can be positive, negative, or zero. It has no fractional part and no decimal.\nExamples: -8, -3, 0, 5, 12.\nNot integers: 3/4, 0.6, 12%.\nWe use negative numbers every day. A temperature 3 degrees below zero is -3. A debt of 500 pesos is -500. A diver 6 meters under the sea is at -6.\nOpposites and absolute value\nA number line shows integers in order. Zero is in the middle. Positive integers go right. Negative integers go left.\nOpposites are two integers the same distance from zero on different sides. -5 and 5 are opposites.\nAbsolute value is the distance from zero. Distance is always positive or zero. We write it with two bars.\n|5| = 5\n|-5| = 5\n|0| = 0\nWorked example\nProblem: Is -11 an integer? What is its opposite? What is |-11|?\nStep 1: -11 has no fraction and no decimal. So it is an integer.\nStep 2: The opposite of -11 is 11. Same distance, other side of zero.\nStep 3: |-11| = 11 because -11 is 11 units from zero.\nAnswer: -11 is an integer. Opposite: 11. Absolute value: 11.\nCommon mistake\n|-5| = -5 is wrong. Absolute value is a distance from zero, so it is never negative. Correct: |-5| = 5."
+    }
+  },
+  "question_sets": [
+    {
+      "code": "L1-1-R",
+      "name": "Lesson 1.1 Regular Exercise",
+      "set_type": "regular",
+      "lesson_code": "L1-1",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L1-R-S1-01",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Which value is an integer?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-8",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "3/4",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "0.6",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "12%",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "-8 has no fractional part.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L1-R-S1-02",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "What is the opposite of -12?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-12",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "0",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "12",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "1/12",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Same distance from zero, different sign.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L1-R-S1-04",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Which list contains only integers?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-3, 0, 7",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "-3, 0.5, 7",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "1/2, 0, 7",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "-3, 0, 7.5",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "-3, 0 and 7 have no fractional or decimal part.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
+          "code": "L1-R-S1-05",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "What is the opposite of 0?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "0",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "1",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-1",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "It has no opposite",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Zero is 0 units from zero, so it is its own opposite.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
+          "code": "L1-R-S1-03",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "What is |-9|?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-9",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "9",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "0",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "1/9",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "The distance from -9 to zero is 9.",
+          "hint": null,
+          "image_asset": "exercise/lesson-1/L1-R-S1-03.png",
+          "image_alt": "What is |-9|?",
+          "source_figure_reference": "[insert figure: L1-R-S1-03]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L1-R-S1-06",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Which two numbers have an absolute value of 8?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "8 and -8",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "8 and 0",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "-8 and 0",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "4 and -4",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Both 8 and -8 are 8 units from zero.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        }
+      ]
+    },
+    {
+      "code": "L1-1-A",
+      "name": "Lesson 1.1 Additional Exercise",
+      "set_type": "additional",
+      "lesson_code": "L1-1",
+      "skill_code": null,
+      "questions": [
+        {
+          "code": "L1-A-S1-01",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "Which value belongs to the integers?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-15",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "2.5",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "1/3",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "7.1%",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "-15 is a whole number.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L1-A-S1-02",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "figure",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "The point is -4. Which value is its opposite?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-4",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "0",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "4",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "8",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Reflect -4 across zero.",
+          "hint": null,
+          "image_asset": "exercise/lesson-1/L1-A-S1-02.png",
+          "image_alt": "The point is -4. Which value is its opposite?",
+          "source_figure_reference": "[insert figure: L1-A-S1-02]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L1-A-S1-04",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "A debt of 250 pesos is written as which integer?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-250",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "250",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "0",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "-25",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "A debt is below zero, so it is negative: -250.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
+          "code": "L1-A-S1-05",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "apply",
+          "bloom_band": "LOTS",
+          "prompt": "What is |-7| + |3|?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-4",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "4",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "10",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "-10",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "|-7| = 7 and |3| = 3, so 7 + 3 = 10.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        },
+        {
+          "code": "L1-A-S1-03",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "What is |-14|?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-14",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "0",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "14",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "28",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Distance from zero is 14 units.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L1-A-S1-06",
+          "skill_code": "S1",
+          "difficulty": "standard",
+          "presentation_type": "text",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "Which statement is true?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "|-6| = -6",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "|-6| < |4|",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "The opposite of -6 is 6",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "-6 is not an integer",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "6 is the same distance from zero as -6, on the other side.",
+          "hint": null,
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "draft_2026-10-19_pending_teacher_review"
+        }
+      ]
+    },
+    {
+      "code": "L1-F-S1",
+      "name": "S1 Foundational Exercise",
+      "set_type": "foundational",
+      "lesson_code": null,
+      "skill_code": "S1",
+      "questions": [
+        {
+          "code": "L1-F-S1-01",
+          "skill_code": "S1",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "remember",
+          "bloom_band": "LOTS",
+          "prompt": "Zero belongs to which set?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "Integers",
+              "is_correct": true
+            },
+            {
+              "label": "B",
+              "text": "Only fractions",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "Only decimals",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "Only percentages",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "A",
+          "solution_steps": [],
+          "explanation": "Zero is an integer.",
+          "hint": "Integers include negatives, zero, and positive whole numbers.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L1-F-S1-02",
+          "skill_code": "S1",
+          "difficulty": "foundational",
+          "presentation_type": "text",
+          "cognitive_level": "understand",
+          "bloom_band": "LOTS",
+          "prompt": "What is the opposite of 5?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "5",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "-5",
+              "is_correct": true
+            },
+            {
+              "label": "C",
+              "text": "0",
+              "is_correct": false
+            },
+            {
+              "label": "D",
+              "text": "10",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "B",
+          "solution_steps": [],
+          "explanation": "Mirror 5 across zero.",
+          "hint": "Keep the distance, change the sign.",
+          "image_asset": null,
+          "image_alt": null,
+          "source_figure_reference": null,
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        },
+        {
+          "code": "L1-F-S1-03",
+          "skill_code": "S1",
+          "difficulty": "foundational",
+          "presentation_type": "figure",
+          "cognitive_level": "analyze",
+          "bloom_band": "HOTS",
+          "prompt": "What is |-3|?",
+          "choices": [
+            {
+              "label": "A",
+              "text": "-3",
+              "is_correct": false
+            },
+            {
+              "label": "B",
+              "text": "0",
+              "is_correct": false
+            },
+            {
+              "label": "C",
+              "text": "3",
+              "is_correct": true
+            },
+            {
+              "label": "D",
+              "text": "6",
+              "is_correct": false
+            }
+          ],
+          "correct_answer": "C",
+          "solution_steps": [],
+          "explanation": "Three unit steps to zero.",
+          "hint": "Count steps from -3 to zero.",
+          "image_asset": "exercise/lesson-1/L1-F-S1-03.png",
+          "image_alt": "What is |-3|?",
+          "source_figure_reference": "[insert figure: L1-F-S1-03]",
+          "video_code": null,
+          "video_pause_seconds": null,
+          "source_answer_basis": "pdf_answer_line"
+        }
+      ]
+    }
+  ]
+}
