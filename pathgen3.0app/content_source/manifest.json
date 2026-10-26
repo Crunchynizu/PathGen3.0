@@ -38,98 +38,119 @@
       "code": "S1",
       "name": "Identify integers, opposites, and absolute value",
       "description": "Identify integers, opposites, and absolute value.",
-      "p_l0": "0.300000",
-      "p_t": "0.090000",
-      "p_g": "0.100000",
-      "p_s": "0.090000",
+      "p_l0": "0.826621",
+      "p_t": "0.066434",
+      "p_g": "0.300000",
+      "p_s": "0.100000",
       "prerequisites": [],
-      "junyi_exercises": []
+      "junyi_exercises": [
+        "absolute_value",
+        "absolute_values_meaning",
+        "definition_opposite_number",
+        "comparing_absolute_values"
+      ]
     },
     {
       "code": "S2",
       "name": "Add and subtract integers",
       "description": "Add and subtract integers.",
-      "p_l0": "0.300000",
-      "p_t": "0.090000",
-      "p_g": "0.100000",
-      "p_s": "0.090000",
+      "p_l0": "0.579770",
+      "p_t": "0.032624",
+      "p_g": "0.300000",
+      "p_s": "0.100000",
       "prerequisites": [
         "S1",
         "S5"
       ],
-      "junyi_exercises": []
+      "junyi_exercises": [
+        "adding_negative_numbers",
+        "adding_and_subtracting_negative_numbers",
+        "number_line_3",
+        "number_line_4"
+      ]
     },
     {
       "code": "S3",
       "name": "Multiply integers",
       "description": "Multiply integers.",
-      "p_l0": "0.300000",
-      "p_t": "0.090000",
-      "p_g": "0.100000",
-      "p_s": "0.090000",
+      "p_l0": "0.891055",
+      "p_t": "0.197093",
+      "p_g": "0.300000",
+      "p_s": "0.080984",
       "prerequisites": [
         "S2"
       ],
-      "junyi_exercises": []
+      "junyi_exercises": [
+        "multiplying_and_dividing_negative_numbers"
+      ]
     },
     {
       "code": "S4",
       "name": "Evaluate expressions using order of operations",
       "description": "Evaluate expressions using order of operations.",
-      "p_l0": "0.300000",
-      "p_t": "0.090000",
-      "p_g": "0.100000",
-      "p_s": "0.090000",
+      "p_l0": "0.151090",
+      "p_t": "0.032588",
+      "p_g": "0.284078",
+      "p_s": "0.100000",
       "prerequisites": [
         "S2",
         "S3",
         "S7"
       ],
-      "junyi_exercises": []
+      "junyi_exercises": [
+        "operations_with_negative_numbers"
+      ]
     },
     {
       "code": "S5",
       "name": "Represent, compare, and order integers",
       "description": "Represent, compare, and order integers on a number line.",
-      "p_l0": "0.300000",
-      "p_t": "0.090000",
-      "p_g": "0.100000",
-      "p_s": "0.090000",
+      "p_l0": "0.697637",
+      "p_t": "0.300000",
+      "p_g": "0.300000",
+      "p_s": "0.058303",
       "prerequisites": [
         "S1"
       ],
-      "junyi_exercises": []
+      "junyi_exercises": [
+        "ordering_negative_numbers"
+      ]
     },
     {
       "code": "S6",
       "name": "Model signed-change situations",
       "description": "Model signed-change situations.",
-      "p_l0": "0.300000",
-      "p_t": "0.090000",
-      "p_g": "0.100000",
-      "p_s": "0.090000",
+      "p_l0": "0.176518",
+      "p_t": "0.079938",
+      "p_g": "0.300000",
+      "p_s": "0.100000",
       "prerequisites": [
         "S2"
       ],
-      "junyi_exercises": []
+      "junyi_exercises": [
+        "negative_number_word_problems"
+      ]
     },
     {
       "code": "S7",
       "name": "Divide integers",
       "description": "Divide integers.",
-      "p_l0": "0.300000",
-      "p_t": "0.090000",
-      "p_g": "0.100000",
-      "p_s": "0.090000",
+      "p_l0": "0.848698",
+      "p_t": "0.164690",
+      "p_g": "0.300000",
+      "p_s": "0.100000",
       "prerequisites": [
         "S3"
       ],
-      "junyi_exercises": []
+      "junyi_exercises": [
+        "multiplying_and_dividing_negative_numbers"
+      ]
     }
   ],
   "skill_metadata": {
     "prerequisites": "DRAFT 2026-10-19 from the lesson order, pending group review; may be replaced by Junyi prerequisite links once exercises are mapped.",
-    "junyi_exercises": "Junyi 2015 exercise names (junyi_Exercise_table.csv name column) mapped to this skill; empty until skill_map.csv is agreed."
+    "junyi_exercises": "Junyi 2015 exercise names (junyi_Exercise_table.csv name column) mapped to this skill, from thesis/junyi-model/skill_map.csv (agreed 2026-10-25). S3 and S7 share multiplying_and_dividing_negative_numbers: S3 uses its problem_type multiplying, S7 dividing.",
+    "bkt": "p_l0, p_t, p_g, p_s fitted on the Junyi 2015 log by maximum likelihood (thesis/junyi-model/fit_bkt.py, variant final, 2026-10-25): all mapped answers, student-disjoint 80/20 split, limits p_g <= 0.3, p_s <= 0.1, p_t <= 0.3; p_l0 is Junyi's own estimate. Replaces the borrowed 0.30/0.09/0.10/0.09 (Hawkins et al. 2013)."
   },
   "lesson_2_batches": {
     "decided": "2026-10-03",

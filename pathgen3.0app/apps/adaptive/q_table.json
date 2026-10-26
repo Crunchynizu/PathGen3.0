@@ -37,51 +37,51 @@
       "completion_utility": 0.02
     },
     "skill_params": {
-      "dataset": "PLACEHOLDER: not fitted yet. Every skill uses the BKT numbers PathGen uses today (Hawkins et al. 2013, ASSISTments), so v4 can be built and checked before the Junyi fit arrives.",
-      "method": "none",
-      "distinct_parameter_sets": 1,
+      "dataset": "Junyi Academy Math Practicing Log, January 2015 release (all mapped answers)",
+      "method": "standard BKT, maximum likelihood (L-BFGS-B, 6 starts), variant 'final'",
+      "distinct_parameter_sets": 7,
       "skills": {
         "S1": {
-          "p_l0": 0.3,
-          "p_t": 0.09,
-          "p_g": 0.1,
-          "p_s": 0.09
+          "p_l0": 0.826621,
+          "p_t": 0.066434,
+          "p_g": 0.3,
+          "p_s": 0.1
         },
         "S2": {
-          "p_l0": 0.3,
-          "p_t": 0.09,
-          "p_g": 0.1,
-          "p_s": 0.09
+          "p_l0": 0.57977,
+          "p_t": 0.032624,
+          "p_g": 0.3,
+          "p_s": 0.1
         },
         "S3": {
-          "p_l0": 0.3,
-          "p_t": 0.09,
-          "p_g": 0.1,
-          "p_s": 0.09
+          "p_l0": 0.891055,
+          "p_t": 0.197093,
+          "p_g": 0.3,
+          "p_s": 0.080984
         },
         "S4": {
-          "p_l0": 0.3,
-          "p_t": 0.09,
-          "p_g": 0.1,
-          "p_s": 0.09
+          "p_l0": 0.15109,
+          "p_t": 0.032588,
+          "p_g": 0.284078,
+          "p_s": 0.1
         },
         "S5": {
-          "p_l0": 0.3,
-          "p_t": 0.09,
-          "p_g": 0.1,
-          "p_s": 0.09
+          "p_l0": 0.697637,
+          "p_t": 0.3,
+          "p_g": 0.3,
+          "p_s": 0.058303
         },
         "S6": {
-          "p_l0": 0.3,
-          "p_t": 0.09,
-          "p_g": 0.1,
-          "p_s": 0.09
+          "p_l0": 0.176518,
+          "p_t": 0.079938,
+          "p_g": 0.3,
+          "p_s": 0.1
         },
         "S7": {
-          "p_l0": 0.3,
-          "p_t": 0.09,
-          "p_g": 0.1,
-          "p_s": 0.09
+          "p_l0": 0.848698,
+          "p_t": 0.16469,
+          "p_g": 0.3,
+          "p_s": 0.1
         }
       }
     },
@@ -124,9 +124,7 @@
       "(dev, dev, p)",
       "(strong, strong, p)"
     ],
-    "hint_sensitive_rows": [
-      "(strong, strong, f)"
-    ],
+    "hint_sensitive_rows": [],
     "converged": true
   },
   "q_values": {
@@ -138,7 +136,7 @@
     "(np, np, f)": {
       "progress": 0.05,
       "additional_exercise": 0.95,
-      "foundational_exercise": 0.524742
+      "foundational_exercise": 0.537807
     },
     "(dev, dev, p)": {
       "progress": 0.052,
@@ -148,7 +146,7 @@
     "(dev, dev, f)": {
       "progress": 0.05,
       "additional_exercise": 0.95,
-      "foundational_exercise": 0.501367
+      "foundational_exercise": 0.568747
     },
     "(strong, strong, p)": {
       "progress": 0.052,
@@ -157,8 +155,8 @@
     },
     "(strong, strong, f)": {
       "progress": 0.05,
-      "additional_exercise": 0.666699,
-      "foundational_exercise": 0.667699
+      "additional_exercise": 0.772068,
+      "foundational_exercise": 0.773068
     }
   }
 }
