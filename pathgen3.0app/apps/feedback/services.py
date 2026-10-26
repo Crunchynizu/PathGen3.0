@@ -10,7 +10,7 @@ from apps.feedback.fallbacks import deterministic_fallback
 from apps.feedback.models import SessionFeedback
 from apps.feedback.prompts import assemble_prompt
 from apps.feedback.providers.groq import GroqFeedbackClient
-from apps.feedback.providers.openai_embeddings import OpenAIEmbeddingClient
+from apps.feedback.providers.embeddings import get_embedding_client
 from apps.feedback.retrieval.similarity import retrieve
 from apps.learning.models import Response
 
@@ -190,7 +190,9 @@ def generate_session_feedback(session):
         model_name=None,
     )
     try:
-        query_embedding, _ = OpenAIEmbeddingClient().embed(build_query(evidence))
+        query_embedding, _ = get_embedding_client(purpose="query").embed(
+            build_query(evidence)
+        )
         chunks = retrieve(query_embedding, top_k=4, min_similarity=0.35)
         if not chunks:
             return fallback

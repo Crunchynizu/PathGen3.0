@@ -22,8 +22,10 @@ class ProviderGuardMixin:
     def setUp(self):
         super().setUp()
         self._embedding_patcher = patch(
-            "apps.feedback.services.OpenAIEmbeddingClient.embed",
-            side_effect=AssertionError("Acceptance tests must not call OpenAI."),
+            "apps.feedback.services.get_embedding_client",
+            side_effect=AssertionError(
+                "Acceptance tests must not call an embedding provider."
+            ),
         )
         self._groq_patcher = patch(
             "apps.feedback.services.GroqFeedbackClient.generate",

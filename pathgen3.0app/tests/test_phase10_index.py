@@ -68,7 +68,7 @@ class Phase10IndexTests(SimpleTestCase):
             stdout = StringIO()
             with patch(
                 "apps.feedback.management.commands.build_retrieval_index."
-                "OpenAIEmbeddingClient",
+                "get_embedding_client",
                 FakeEmbeddingClient,
             ):
                 call_command(

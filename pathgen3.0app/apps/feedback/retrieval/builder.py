@@ -2,10 +2,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from apps.feedback.providers.openai_embeddings import (
-    EMBEDDING_DIM,
-    EMBEDDING_MODEL,
-)
+from apps.feedback.providers.embeddings import EMBEDDING_DIM, embedding_model
 from apps.feedback.retrieval.chunking import (
     CHUNKING_POLICY,
     MAX_TOKENS,
@@ -43,7 +40,7 @@ def build_index(*, source_dir, output_path, embedder, built_at=None):
             "target_tokens": TARGET_TOKENS,
             "max_tokens": MAX_TOKENS,
             "overlap_tokens": OVERLAP_TOKENS,
-            "embedding_model": EMBEDDING_MODEL,
+            "embedding_model": embedding_model(),
             "embedding_dim": EMBEDDING_DIM,
             "built_at": built_at or datetime.now(timezone.utc).isoformat(),
             "source_fingerprints": source_fingerprints,

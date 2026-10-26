@@ -54,7 +54,7 @@ class Phase11FeedbackTests(Phase9SeededTestCase):
         groq_class = Mock(return_value=groq_instance)
         stack = self.enterContext(
             patch(
-                "apps.feedback.services.OpenAIEmbeddingClient",
+                "apps.feedback.services.get_embedding_client",
                 return_value=FakeOpenAIClient(),
             )
         )
@@ -161,7 +161,7 @@ class Phase11FeedbackTests(Phase9SeededTestCase):
             submitted_at=timezone.now(),
         )
         openai_client = self.enterContext(
-            patch("apps.feedback.services.OpenAIEmbeddingClient")
+            patch("apps.feedback.services.get_embedding_client")
         )
         groq_client = self.enterContext(
             patch("apps.feedback.services.GroqFeedbackClient")
@@ -271,7 +271,7 @@ class Phase11FeedbackTests(Phase9SeededTestCase):
             "apps.learning.services.finalization.transaction.atomic",
             monitored_atomic,
         ), patch(
-            "apps.feedback.services.OpenAIEmbeddingClient",
+            "apps.feedback.services.get_embedding_client",
             return_value=TransactionAwareOpenAI(),
         ), patch(
             "apps.feedback.services.retrieve",

@@ -145,7 +145,7 @@ The primary research outcome is matched learning gain: post-test score minus pre
 - External provider calls must occur outside long database locks.
 
 ## RAG
-- OpenAI `text-embedding-3-small` creates embeddings only.
+- Google `gemini-embedding-001` (1536 dimensions) creates embeddings only; OpenAI `text-embedding-3-small` remains selectable with `EMBEDDING_PROVIDER=openai`. Rebuild the index after switching.
 - Groq `gpt-oss-120b` generates grounded feedback.
 - Versioned JSON index and in-memory cosine similarity.
 - Policy: 350-token target, 500 maximum, 50 overlap, top 4, similarity 0.35.

@@ -3,7 +3,7 @@ from pathlib import Path
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-from apps.feedback.providers.openai_embeddings import OpenAIEmbeddingClient
+from apps.feedback.providers.embeddings import get_embedding_client
 from apps.feedback.retrieval.builder import build_index
 from apps.feedback.retrieval.index import load_index
 
@@ -29,7 +29,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            embedder = OpenAIEmbeddingClient()
+            embedder = get_embedding_client(purpose="document")
             index = build_index(
                 source_dir=options["source_dir"],
                 output_path=options["output"],

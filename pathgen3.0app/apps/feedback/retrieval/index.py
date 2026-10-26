@@ -5,10 +5,7 @@ from pathlib import Path
 
 from django.conf import settings
 
-from apps.feedback.providers.openai_embeddings import (
-    EMBEDDING_DIM,
-    EMBEDDING_MODEL,
-)
+from apps.feedback.providers.embeddings import EMBEDDING_DIM, embedding_model
 from apps.feedback.retrieval.builder import POLICY_VERSION
 from apps.feedback.retrieval.chunking import (
     CHUNKING_POLICY,
@@ -50,7 +47,7 @@ def _validate_index(data):
         raise IndexStaleError("The retrieval policy version is stale.")
     if meta.get("chunking") != CHUNKING_POLICY:
         raise IndexStaleError("The retrieval chunking policy is stale.")
-    if meta.get("embedding_model") != EMBEDDING_MODEL:
+    if meta.get("embedding_model") != embedding_model():
         raise IndexStaleError("The retrieval embedding model is stale.")
     if meta.get("embedding_dim") != EMBEDDING_DIM:
         raise IndexStaleError("The retrieval embedding dimension is invalid.")
