@@ -1,0 +1,36 @@
+﻿skill,variant,p_l0,p_t,p_g,p_s,at_limit,train_answers,test_answers,train_students,test_students,auc,brier,log_loss,accuracy,baseline_accuracy,band 6/6,band 5/6 missed last,band 5/6 missed first,band 4/6 missed last two,band 4/6 missed first two,band 3/6 missed last three,band 2/6,start
+S1,borrowed,0.3,0.09,0.1,0.09,,196880,51491,6355,1614,0.544,0.1181,0.3959,0.8515,0.8713,1.00 strong,1.00 strong,1.00 strong,0.98 strong,1.00 strong,0.41 np,0.12 np,0.30 np
+S1,unconstrained,0.6035,0.0118,0.7274,0.0516,starts_agree=6/6,196880,51491,6355,1614,0.7075,0.105,0.3548,0.8713,0.8713,0.89 strong,0.55 dev,0.57 dev,0.16 np,0.22 np,0.04 np,0.02 np,0.60 dev
+S1,bounded,0.8266,0.0664,0.3,0.1,p_g p_s starts_agree=6/6,196880,51491,6355,1614,0.5878,0.1091,0.3735,0.8704,0.8713,1.00 strong,1.00 strong,1.00 strong,0.92 strong,0.96 strong,0.40 np,0.10 np,0.83 strong
+S1,fixed_guess,0.8413,0.1016,0.25,0.114,starts_agree=6/6,196880,51491,6355,1614,0.5652,0.1091,0.3739,0.8717,0.8713,1.00 strong,1.00 strong,1.00 strong,0.97 strong,0.99 strong,0.63 dev,0.18 np,0.84 strong
+S1,final,0.8266,0.0664,0.3,0.1,p_g p_s starts_agree=6/6,196880,51491,6355,1614,0.5878,0.1091,0.3735,0.8704,0.8713,1.00 strong,1.00 strong,1.00 strong,0.92 strong,0.96 strong,0.40 np,0.10 np,0.83 strong
+S2,borrowed,0.3,0.09,0.1,0.09,,483265,128518,17248,4294,0.5725,0.188,0.5889,0.7632,0.7665,1.00 strong,1.00 strong,1.00 strong,0.98 strong,1.00 strong,0.41 np,0.12 np,0.30 np
+S2,unconstrained,0.4986,0.0133,0.5855,0.1213,starts_agree=6/6,483265,128518,17248,4294,0.6713,0.1666,0.5108,0.7665,0.7665,0.93 strong,0.71 dev,0.73 dev,0.33 np,0.40 np,0.10 np,0.04 np,0.50 np
+S2,bounded,0.5798,0.0326,0.3,0.1,p_g p_s starts_agree=6/6,483265,128518,17248,4294,0.6229,0.1753,0.5436,0.7651,0.7665,1.00 strong,0.98 strong,0.99 strong,0.74 dev,0.89 strong,0.15 np,0.05 np,0.58 dev
+S2,fixed_guess,0.7376,0.0431,0.25,0.1897,starts_agree=6/6,483265,128518,17248,4294,0.5777,0.1713,0.5247,0.7698,0.7665,1.00 strong,1.00 strong,1.00 strong,0.96 strong,0.97 strong,0.68 dev,0.19 np,0.74 dev
+S2,final,0.5798,0.0326,0.3,0.1,p_g p_s starts_agree=6/6,483265,128518,17248,4294,0.6229,0.1753,0.5436,0.7651,0.7665,1.00 strong,0.98 strong,0.99 strong,0.74 dev,0.89 strong,0.15 np,0.05 np,0.58 dev
+S3,borrowed,0.3,0.09,0.1,0.09,,33356,8409,4265,1074,0.5817,0.1358,0.4257,0.7909,0.8974,1.00 strong,1.00 strong,1.00 strong,0.98 strong,1.00 strong,0.41 np,0.12 np,0.30 np
+S3,unconstrained,0.7771,0.097,0.6253,0.0583,starts_agree=6/6,33356,8409,4265,1074,0.6142,0.0903,0.3226,0.8974,0.8974,0.99 strong,0.89 strong,0.92 strong,0.49 np,0.74 dev,0.18 np,0.13 np,0.78 dev
+S3,bounded,0.8911,0.1971,0.3,0.081,p_g starts_agree=6/6,33356,8409,4265,1074,0.5967,0.0907,0.3236,0.8954,0.8974,1.00 strong,1.00 strong,1.00 strong,0.97 strong,0.99 strong,0.62 dev,0.26 np,0.89 strong
+S3,fixed_guess,0.8994,0.2147,0.25,0.0832,starts_agree=6/6,33356,8409,4265,1074,0.5931,0.0908,0.3241,0.8952,0.8974,1.00 strong,1.00 strong,1.00 strong,0.99 strong,1.00 strong,0.74 dev,0.30 np,0.90 strong
+S3,final,0.8911,0.1971,0.3,0.081,p_g starts_agree=5/6,33356,8409,4265,1074,0.5967,0.0907,0.3236,0.8954,0.8974,1.00 strong,1.00 strong,1.00 strong,0.97 strong,0.99 strong,0.62 dev,0.26 np,0.89 strong
+S4,borrowed,0.3,0.09,0.1,0.09,,20590,5462,1436,376,0.7838,0.1992,0.6111,0.7375,0.5611,1.00 strong,1.00 strong,1.00 strong,0.98 strong,1.00 strong,0.41 np,0.12 np,0.30 np
+S4,unconstrained,0.3244,0.0362,0.1701,0.2374,starts_agree=6/6,20590,5462,1436,376,0.7802,0.1842,0.5526,0.7426,0.5611,1.00 strong,1.00 strong,1.00 strong,0.95 strong,0.98 strong,0.57 dev,0.13 np,0.32 np
+S4,bounded,0.1511,0.0326,0.2841,0.1,p_s starts_agree=6/6,20590,5462,1436,376,0.785,0.1942,0.5833,0.7303,0.5611,1.00 strong,0.91 strong,0.97 strong,0.33 np,0.87 strong,0.06 np,0.04 np,0.15 np
+S4,fixed_guess,0.2595,0.0343,0.25,0.2151,starts_agree=6/6,20590,5462,1436,376,0.7825,0.1865,0.5591,0.7408,0.5611,1.00 strong,0.98 strong,0.98 strong,0.79 dev,0.91 strong,0.27 np,0.08 np,0.26 np
+S4,final,0.1511,0.0326,0.2841,0.1,p_s starts_agree=6/6,20590,5462,1436,376,0.785,0.1942,0.5833,0.7303,0.5611,1.00 strong,0.91 strong,0.97 strong,0.33 np,0.87 strong,0.06 np,0.04 np,0.15 np
+S5,borrowed,0.3,0.09,0.1,0.09,,113856,29982,8814,2259,0.6236,0.0949,0.3228,0.8705,0.9196,1.00 strong,1.00 strong,1.00 strong,0.98 strong,1.00 strong,0.41 np,0.12 np,0.30 np
+S5,unconstrained,0.63,0.7367,0.2394,0.0593,starts_agree=6/6,113856,29982,8814,2259,0.621,0.0696,0.26,0.9196,0.9196,1.00 strong,1.00 strong,1.00 strong,1.00 strong,1.00 strong,0.99 strong,0.92 strong,0.63 dev
+S5,bounded,0.63,0.7367,0.2394,0.0593,starts_agree=6/6,113856,29982,8814,2259,0.621,0.0696,0.26,0.9196,0.9196,1.00 strong,1.00 strong,1.00 strong,1.00 strong,1.00 strong,0.99 strong,0.92 strong,0.63 dev
+S5,fixed_guess,0.6249,0.7341,0.25,0.0592,starts_agree=6/6,113856,29982,8814,2259,0.6217,0.0696,0.26,0.9196,0.9196,1.00 strong,1.00 strong,1.00 strong,1.00 strong,1.00 strong,0.99 strong,0.92 strong,0.62 dev
+S5,final,0.6976,0.3,0.3,0.0583,p_t p_g starts_agree=6/6,113856,29982,8814,2259,0.6254,0.0724,0.2673,0.9196,0.9196,1.00 strong,1.00 strong,1.00 strong,0.94 strong,1.00 strong,0.46 np,0.34 np,0.70 dev
+S6,borrowed,0.3,0.09,0.1,0.09,,79232,19295,4250,1060,0.681,0.2082,0.6317,0.721,0.6981,1.00 strong,1.00 strong,1.00 strong,0.98 strong,1.00 strong,0.41 np,0.12 np,0.30 np
+S6,unconstrained,0.247,0.0894,0.361,0.193,starts_agree=6/6,79232,19295,4250,1060,0.6838,0.1887,0.5621,0.7207,0.6981,0.99 strong,0.92 strong,0.96 strong,0.63 dev,0.89 strong,0.26 np,0.17 np,0.25 np
+S6,bounded,0.1765,0.0799,0.3,0.1,p_g p_s starts_agree=6/6,79232,19295,4250,1060,0.6867,0.1952,0.5859,0.7145,0.6981,1.00 strong,0.94 strong,0.98 strong,0.44 np,0.94 strong,0.12 np,0.10 np,0.18 np
+S6,fixed_guess,0.3734,0.1014,0.25,0.2096,starts_agree=6/6,79232,19295,4250,1060,0.6804,0.1891,0.5633,0.7225,0.6981,1.00 strong,0.99 strong,0.99 strong,0.91 strong,0.97 strong,0.50 np,0.22 np,0.37 np
+S6,final,0.1765,0.0799,0.3,0.1,p_g p_s starts_agree=6/6,79232,19295,4250,1060,0.6867,0.1952,0.5859,0.7145,0.6981,1.00 strong,0.94 strong,0.98 strong,0.44 np,0.94 strong,0.12 np,0.10 np,0.18 np
+S7,borrowed,0.3,0.09,0.1,0.09,,33426,8412,4293,1093,0.5843,0.164,0.5018,0.755,0.8489,1.00 strong,1.00 strong,1.00 strong,0.98 strong,1.00 strong,0.41 np,0.12 np,0.30 np
+S7,unconstrained,0.7448,0.0858,0.5791,0.0862,starts_agree=6/6,33426,8412,4293,1093,0.6204,0.1242,0.411,0.8489,0.8489,0.99 strong,0.91 strong,0.93 strong,0.59 dev,0.77 dev,0.23 np,0.13 np,0.74 dev
+S7,bounded,0.8487,0.1647,0.3,0.1,p_g p_s starts_agree=6/6,33426,8412,4293,1093,0.6014,0.1252,0.4139,0.8453,0.8489,1.00 strong,1.00 strong,1.00 strong,0.97 strong,0.99 strong,0.61 dev,0.24 np,0.85 strong
+S7,fixed_guess,0.8848,0.1682,0.25,0.1185,starts_agree=6/6,33426,8412,4293,1093,0.5973,0.1252,0.4136,0.8458,0.8489,1.00 strong,1.00 strong,1.00 strong,0.99 strong,0.99 strong,0.81 strong,0.32 np,0.88 strong
+S7,final,0.8487,0.1647,0.3,0.1,p_g p_s starts_agree=6/6,33426,8412,4293,1093,0.6014,0.1252,0.4139,0.8453,0.8489,1.00 strong,1.00 strong,1.00 strong,0.97 strong,0.99 strong,0.61 dev,0.24 np,0.85 strong

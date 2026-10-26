@@ -1,0 +1,15 @@
+{
+  "dataset": "PLACEHOLDER: not fitted yet. Every skill uses the BKT numbers PathGen uses today (Hawkins et al. 2013, ASSISTments), so v4 can be built and checked before the Junyi fit arrives.",
+  "method": "none",
+  "label_rule": null,
+  "split": null,
+  "skills": {
+    "S1": {"p_l0": 0.30, "p_t": 0.09, "p_g": 0.10, "p_s": 0.09, "junyi_exercises": []},
+    "S2": {"p_l0": 0.30, "p_t": 0.09, "p_g": 0.10, "p_s": 0.09, "junyi_exercises": []},
+    "S3": {"p_l0": 0.30, "p_t": 0.09, "p_g": 0.10, "p_s": 0.09, "junyi_exercises": []},
+    "S4": {"p_l0": 0.30, "p_t": 0.09, "p_g": 0.10, "p_s": 0.09, "junyi_exercises": []},
+    "S5": {"p_l0": 0.30, "p_t": 0.09, "p_g": 0.10, "p_s": 0.09, "junyi_exercises": []},
+    "S6": {"p_l0": 0.30, "p_t": 0.09, "p_g": 0.10, "p_s": 0.09, "junyi_exercises": []},
+    "S7": {"p_l0": 0.30, "p_t": 0.09, "p_g": 0.10, "p_s": 0.09, "junyi_exercises": []}
+  }
+}

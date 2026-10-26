@@ -1,0 +1,98 @@
+{
+  "Q": {
+    "(np, np, p)": {
+      "progress": 0.02,
+      "additional_exercise": 0.35658966006222603,
+      "foundational_exercise": 0.02
+    },
+    "(np, np, f)": {
+      "progress": 0.02,
+      "additional_exercise": 0.36870975366212777,
+      "foundational_exercise": 0.2086515382539255
+    },
+    "(dev, dev, p)": {
+      "progress": 0.02,
+      "additional_exercise": 0.16993661793138373,
+      "foundational_exercise": 0.02
+    },
+    "(dev, dev, f)": {
+      "progress": 0.02,
+      "additional_exercise": 0.172908720354904,
+      "foundational_exercise": 0.09059982979824925
+    },
+    "(strong, strong, p)": {
+      "progress": 0.02,
+      "additional_exercise": 0.04093965495421689,
+      "foundational_exercise": 0.02
+    },
+    "(strong, strong, f)": {
+      "progress": 0.02,
+      "additional_exercise": 0.046225378511957654,
+      "foundational_exercise": 0.0356341032498604
+    }
+  },
+  "visits": {
+    "regular|(np, np, p)|progress": 2067,
+    "regular|(np, np, p)|additional_exercise": 2111,
+    "regular|(np, np, p)|foundational_exercise": 2072,
+    "regular|(np, np, f)|progress": 2062,
+    "regular|(np, np, f)|additional_exercise": 2081,
+    "regular|(np, np, f)|foundational_exercise": 2107,
+    "regular|(dev, dev, p)|progress": 2080,
+    "regular|(dev, dev, p)|additional_exercise": 2030,
+    "regular|(dev, dev, p)|foundational_exercise": 2140,
+    "regular|(dev, dev, f)|progress": 1992,
+    "regular|(dev, dev, f)|additional_exercise": 2076,
+    "regular|(dev, dev, f)|foundational_exercise": 2182,
+    "regular|(strong, strong, p)|progress": 2097,
+    "regular|(strong, strong, p)|additional_exercise": 2073,
+    "regular|(strong, strong, p)|foundational_exercise": 2080,
+    "regular|(strong, strong, f)|progress": 2050,
+    "regular|(strong, strong, f)|additional_exercise": 2107,
+    "regular|(strong, strong, f)|foundational_exercise": 2093,
+    "additional|(np, np, p)|progress": 3078,
+    "additional|(np, np, p)|foundational_exercise": 3172,
+    "additional|(np, np, f)|progress": 4538,
+    "additional|(np, np, f)|foundational_exercise": 4582,
+    "additional|(dev, dev, p)|progress": 3142,
+    "additional|(dev, dev, p)|foundational_exercise": 3108,
+    "additional|(dev, dev, f)|progress": 3510,
+    "additional|(dev, dev, f)|foundational_exercise": 3355,
+    "additional|(strong, strong, p)|progress": 7229,
+    "additional|(strong, strong, p)|foundational_exercise": 7284,
+    "additional|(strong, strong, f)|progress": 3490,
+    "additional|(strong, strong, f)|foundational_exercise": 3490
+  },
+  "checkpoint_80": {
+    "(np, np, p)": {
+      "progress": 0.02,
+      "additional_exercise": 0.35072006113534937,
+      "foundational_exercise": 0.02
+    },
+    "(np, np, f)": {
+      "progress": 0.02,
+      "additional_exercise": 0.36774080962744193,
+      "foundational_exercise": 0.2097590703879011
+    },
+    "(dev, dev, p)": {
+      "progress": 0.02,
+      "additional_exercise": 0.1617528840499103,
+      "foundational_exercise": 0.02
+    },
+    "(dev, dev, f)": {
+      "progress": 0.02,
+      "additional_exercise": 0.17308824416476018,
+      "foundational_exercise": 0.09169650061522745
+    },
+    "(strong, strong, p)": {
+      "progress": 0.02,
+      "additional_exercise": 0.04051854836371347,
+      "foundational_exercise": 0.02
+    },
+    "(strong, strong, f)": {
+      "progress": 0.02,
+      "additional_exercise": 0.04250857074573837,
+      "foundational_exercise": 0.036546843381455155
+    }
+  }
+}

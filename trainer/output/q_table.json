@@ -1,0 +1,162 @@
+{
+  "_meta": {
+    "policy_version": "Q-LEARNING-V1",
+    "artifact_kind": "externally_trained",
+    "trainer_revision": "terminal-aware-v4-one-skill-parts",
+    "trained_episodes_per_seed": 75000,
+    "training_seeds": [
+      11,
+      23,
+      37,
+      41,
+      53,
+      67,
+      71,
+      83,
+      97,
+      101
+    ],
+    "calibration_seeds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "gamma": 0.6,
+    "alpha_schedule": "1/n^1.0, n = updates to the shared state-action cell",
+    "behavior_policy": "uniform_allowed_actions",
+    "reward": {
+      "type": "mastery_gain_minus_burden_plus_completion",
+      "burden_weight": 0.02,
+      "completion_utility": 0.02
+    },
+    "skill_params": {
+      "dataset": "Junyi Academy Math Practicing Log, January 2015 release (all mapped answers)",
+      "method": "standard BKT, maximum likelihood (L-BFGS-B, 6 starts), variant 'final'",
+      "distinct_parameter_sets": 7,
+      "skills": {
+        "S1": {
+          "p_l0": 0.826621,
+          "p_t": 0.066434,
+          "p_g": 0.3,
+          "p_s": 0.1
+        },
+        "S2": {
+          "p_l0": 0.57977,
+          "p_t": 0.032624,
+          "p_g": 0.3,
+          "p_s": 0.1
+        },
+        "S3": {
+          "p_l0": 0.891055,
+          "p_t": 0.197093,
+          "p_g": 0.3,
+          "p_s": 0.080984
+        },
+        "S4": {
+          "p_l0": 0.15109,
+          "p_t": 0.032588,
+          "p_g": 0.284078,
+          "p_s": 0.1
+        },
+        "S5": {
+          "p_l0": 0.697637,
+          "p_t": 0.3,
+          "p_g": 0.3,
+          "p_s": 0.058303
+        },
+        "S6": {
+          "p_l0": 0.176518,
+          "p_t": 0.079938,
+          "p_g": 0.3,
+          "p_s": 0.1
+        },
+        "S7": {
+          "p_l0": 0.848698,
+          "p_t": 0.16469,
+          "p_g": 0.3,
+          "p_s": 0.1
+        }
+      }
+    },
+    "state_families": {
+      "part": {
+        "skills_per_exercise": 1,
+        "items_per_skill": 6,
+        "pass_rule": "4 of 6 correct",
+        "foundational_items_per_failed_skill": 3,
+        "passed_exercise_moves_on": true,
+        "rows": [
+          "(np, np, p)",
+          "(np, np, f)",
+          "(dev, dev, p)",
+          "(dev, dev, f)",
+          "(strong, strong, p)",
+          "(strong, strong, f)"
+        ]
+      }
+    },
+    "declared_policy_rules": [
+      "median raw Q order",
+      "section 9 practical-tie rule on unstable rows",
+      "passed rows (p): progress ranks above foundational_exercise",
+      "a passed part (p) always chooses progress"
+    ],
+    "export_transform": "per-row affine to [0.05, 0.95], then ranked actions separated by at least 0.001 after rounding",
+    "foundational_hint_probability": 0.5,
+    "reachable_training_rows": 6,
+    "practical_tie_rows": [
+      "(strong, strong, f)"
+    ],
+    "pass_rule_rows": [
+      "(np, np, p)",
+      "(dev, dev, p)",
+      "(strong, strong, p)"
+    ],
+    "moves_on_rule_rows": [
+      "(np, np, p)",
+      "(dev, dev, p)",
+      "(strong, strong, p)"
+    ],
+    "hint_sensitive_rows": [],
+    "converged": true
+  },
+  "q_values": {
+    "(np, np, p)": {
+      "progress": 0.052,
+      "additional_exercise": 0.051,
+      "foundational_exercise": 0.05
+    },
+    "(np, np, f)": {
+      "progress": 0.05,
+      "additional_exercise": 0.95,
+      "foundational_exercise": 0.537807
+    },
+    "(dev, dev, p)": {
+      "progress": 0.052,
+      "additional_exercise": 0.051,
+      "foundational_exercise": 0.05
+    },
+    "(dev, dev, f)": {
+      "progress": 0.05,
+      "additional_exercise": 0.95,
+      "foundational_exercise": 0.568747
+    },
+    "(strong, strong, p)": {
+      "progress": 0.052,
+      "additional_exercise": 0.051,
+      "foundational_exercise": 0.05
+    },
+    "(strong, strong, f)": {
+      "progress": 0.05,
+      "additional_exercise": 0.772068,
+      "foundational_exercise": 0.773068
+    }
+  }
+}

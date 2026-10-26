@@ -1,0 +1,50 @@
+{
+  "seed": 42,
+  "test_share": 0.2,
+  "answers_by_exercise": {
+    "ordering_negative_numbers": 143838,
+    "adding_and_subtracting_negative_numbers": 181133,
+    "multiplying_and_dividing_negative_numbers|multiplying": 41765,
+    "adding_negative_numbers": 129099,
+    "absolute_value": 106815,
+    "number_line_4": 80488,
+    "multiplying_and_dividing_negative_numbers|dividing": 41838,
+    "negative_number_word_problems": 98527,
+    "number_line_3": 221063,
+    "definition_opposite_number": 35716,
+    "comparing_absolute_values": 75024,
+    "absolute_values_meaning": 30816,
+    "operations_with_negative_numbers": 26052
+  },
+  "train": {
+    "answers": 960605,
+    "students": 23008,
+    "answers_by_skill": {
+      "S1": 196880,
+      "S2": 483265,
+      "S3": 33356,
+      "S4": 20590,
+      "S5": 113856,
+      "S6": 79232,
+      "S7": 33426
+    },
+    "correct_rate": 0.8032
+  },
+  "test": {
+    "answers": 251569,
+    "students": 5752,
+    "answers_by_skill": {
+      "S1": 51491,
+      "S2": 128518,
+      "S3": 8409,
+      "S4": 5462,
+      "S5": 29982,
+      "S6": 19295,
+      "S7": 8412
+    },
+    "correct_rate": 0.8036
+  },
+  "train_sha256": "8f786e50bbfa8c5f6d15b75e53fff76f65ef0da480914da13b11ed825f4fde44",
+  "test_sha256": "2f879baf0e788f228ae8f6505848b917e0c900b3ee90eab1c4da49ded4494044",
+  "skill_map_sha256": "79d4debff0641f1a907cc63fe1b2bcf4cf9be9ab4ddc9238d86aff2b4b053430"
+}

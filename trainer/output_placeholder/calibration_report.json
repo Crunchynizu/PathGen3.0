@@ -1,0 +1,542 @@
+[
+  {
+    "burden_weight": 0.02,
+    "completion_utility": 0.02,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.02,
+    "completion_utility": 0.04,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.02,
+    "completion_utility": 0.06,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.02,
+    "completion_utility": 0.08,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.02,
+    "completion_utility": 0.1,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.04,
+    "completion_utility": 0.02,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.04,
+    "completion_utility": 0.04,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.04,
+    "completion_utility": 0.06,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.04,
+    "completion_utility": 0.08,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.04,
+    "completion_utility": 0.1,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.06,
+    "completion_utility": 0.02,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.06,
+    "completion_utility": 0.04,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.06,
+    "completion_utility": 0.06,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.06,
+    "completion_utility": 0.08,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.06,
+    "completion_utility": 0.1,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.08,
+    "completion_utility": 0.02,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.08,
+    "completion_utility": 0.04,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.08,
+    "completion_utility": 0.06,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.08,
+    "completion_utility": 0.08,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.08,
+    "completion_utility": 0.1,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.1,
+    "completion_utility": 0.02,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.1,
+    "completion_utility": 0.04,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.1,
+    "completion_utility": 0.06,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.1,
+    "completion_utility": 0.08,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.1,
+    "completion_utility": 0.1,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.12,
+    "completion_utility": 0.02,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.12,
+    "completion_utility": 0.04,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.12,
+    "completion_utility": 0.06,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 2,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.12,
+    "completion_utility": 0.08,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  },
+  {
+    "burden_weight": 0.12,
+    "completion_utility": 0.1,
+    "passes_all_gates": true,
+    "part": {
+      "passes": true,
+      "gate1_all_passed_rows": true,
+      "gate2_strong_progress": true,
+      "gate3_some_np_row_supports": true,
+      "gate4_clear_rows_seed_stable": true,
+      "gate5_terminal_test": true,
+      "gate1_failing_rows": [],
+      "gate2_failing_rows": [],
+      "gate4_failing_rows": [],
+      "tie_rule_rows": 1,
+      "min_visits_per_seed": 1985
+    }
+  }
+]
